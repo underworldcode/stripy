@@ -1,0 +1,86 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module _stripy ! in
+    interface  ! in :_stripy
+        subroutine trans(n,rlat,rlon,x,y,z) ! in :_stripy:_stripy.f90
+            integer( kind = 4 ), intent(in) :: n
+            real( kind = 8 ) dimension(n), intent(in) :: rlat
+            real( kind = 8 ) dimension(n), intent(in) :: rlon
+            real( kind = 8 ) dimension(n), intent(out) :: x
+            real( kind = 8 ) dimension(n), intent(out) :: y
+            real( kind = 8 ) dimension(n), intent(out) :: z
+        end subroutine trans
+
+        function areas(v1,v2,v3) ! in :_stripy:_stripy.f90
+            real(kind=8) dimension(3), intent(in) :: v1
+            real(kind=8) dimension(3), intent(in) :: v2
+            real(kind=8) dimension(3), intent(in) :: v3
+            real(kind=8) intent(out):: areas
+        end function areas
+
+
+        subroutine trfind(nst, p,n,x,y,z,list,lptr,lend,b1,b2,b3,i1,i2,i3) ! in :_stripy:_stripy.f90
+            integer(kind=4) :: nst
+            real(kind=8) dimension(3) :: p
+            integer(kind=4), optional,check(len(x)>=n),depend(x) :: n=len(x)
+            real(kind=8) dimension(n) :: x
+            real(kind=8) dimension(n),depend(n) :: y
+            real(kind=8) dimension(n),depend(n) :: z
+            integer(kind=4) dimension(6 * n - 12),depend(n) :: list
+            integer(kind=4) dimension(6 * n - 12),depend(n) :: lptr
+            integer(kind=4) dimension(n),depend(n) :: lend
+            real(kind=8), intent(out) :: b1
+            real(kind=8), intent(out) :: b2
+            real(kind=8), intent(out) :: b3
+            integer(kind=4), intent(out) :: i1
+            integer(kind=4), intent(out) :: i2
+            integer(kind=4), intent(out) :: i3
+        end subroutine trfind
+
+        subroutine trmesh(n,x,y,z,list,lptr,lend,ier) ! in :_stripy:_stripy.f90
+            integer( kind = 4 ), intent(in) :: n
+            real( kind = 8 ) dimension(n), intent(in) :: x
+            real( kind = 8 ) dimension(n), intent(in) :: y
+            real( kind = 8 ) dimension(n), intent(in) :: z
+            integer( kind = 4 ) dimension(6*(n-2)), intent(out) :: list,lptr
+            integer( kind = 4 ) dimension(n), intent(out) :: lend
+            integer( kind = 4 ), intent(out) :: ier
+        end subroutine trmesh
+
+        subroutine interp_n(npts,nptso,order,olats,olons,x,y,z,data,lst,lptr,lend,odata,ierr)
+           integer( kind = 4 ), intent(in) :: npts, nptso, order
+           integer( kind = 4 ), intent(out) :: ierr
+           real( kind = 8 ), intent(in), dimension(nptso) :: olats,olons
+           real( kind = 8 ), intent(in), dimension(npts) :: x,y,z,data
+           real( kind = 8 ), intent(out), dimension(nptso) :: odata
+           integer( kind = 4 ), intent(in), dimension(npts) :: lend
+           integer( kind = 4 ), intent(in), dimension(6*(npts-2)) :: lst,lptr
+        end subroutine interp_n
+
+!        subroutine trlist(n,list,lptr,lend,nrow,nt,ltri,ier) ! in :_stripy:_stripy.f90
+!            integer(kind=4), optional,check((len(list)+12)/(6)>=n),depend(list) :: n=(len(list)+12)/(6)
+!            integer(kind=4) dimension(6 * n - 12) :: list
+!            integer(kind=4) dimension(6 * n - 12),depend(n) :: lptr
+!            integer(kind=4) dimension(n),depend(n) :: lend
+!            integer(kind=4), optional,check(shape(ltri,0)==nrow),depend(ltri) :: nrow=shape(ltri,0)
+!            integer(kind=4) :: nt
+!            integer(kind=4) dimension(nrow,*) :: ltri
+!            integer(kind=4) :: ier
+!        end subroutine trlist
+
+        subroutine trlist2(n,list,lptr,lend, nt, ltri, ier) ! in :_stripy:_stripy.f90
+            integer(kind=4), intent(in) :: n
+            integer(kind=4)  dimension(6 * n - 12) :: list
+            integer(kind=4)  dimension(6 * n - 12) :: lptr
+            integer(kind=4)  dimension(n) :: lend
+            integer(kind=4), intent(out) :: nt
+            integer(kind=4), dimension(3, 2 * n - 4 ), intent(out) :: ltri
+            integer(kind=4), intent(out) :: ier
+        end subroutine trlist2
+
+
+end python module _stripy
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

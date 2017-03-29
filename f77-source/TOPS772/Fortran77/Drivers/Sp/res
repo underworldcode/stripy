@@ -1,0 +1,99 @@
+
+
+
+                          STRIPACK test
+
+
+
+
+
+
+               STRIPACK Triangulation Data Structure,  N =     9
+
+
+ Node     Longitude      Latitude                  Neighbors of Node
+
+
+    1   0.000000E+00   0.900000E+02        6    7    8    9    2    3    4    5
+
+    2   0.000000E+00   0.600000E+02        3    1    9    0
+
+    3   0.450000E+02   0.600000E+02        4    1    2    0
+
+    4   0.900000E+02   0.600000E+02        5    1    3    0
+
+    5   0.135000E+03   0.600000E+02        6    1    4    0
+
+    6   0.180000E+03   0.600000E+02        7    1    5    0
+
+    7   0.225000E+03   0.600000E+02        8    1    6    0
+
+    8   0.270000E+03   0.600000E+02        9    1    7    0
+
+    9   0.315000E+03   0.600000E+02        2    1    8    0
+
+
+ NB =    8 Boundary Nodes     NA =    16 Arcs     NT =     8 Triangles
+
+
+
+                  STRIPACK (TRLIST) Output,  N =    9
+
+
+                Node        Longitude         Latitude
+
+
+                   1     0.000000E+00     0.900000E+02
+                   2     0.000000E+00     0.600000E+02
+                   3     0.450000E+02     0.600000E+02
+                   4     0.900000E+02     0.600000E+02
+                   5     0.135000E+03     0.600000E+02
+                   6     0.180000E+03     0.600000E+02
+                   7     0.225000E+03     0.600000E+02
+                   8     0.270000E+03     0.600000E+02
+                   9     0.315000E+03     0.600000E+02
+
+
+ Triangle        Vertices            Neighbors              Arcs
+    KT       N1     N2     N3    KT1    KT2    KT3    KA1    KA2    KA3
+
+     1        1      6      7      0      2      8      1      3     15
+     2        1      7      8      0      3      1      2      5      3
+     3        1      8      9      0      4      2      4      7      5
+     4        1      9      2      0      5      3      6      9      7
+     5        1      2      3      0      6      4      8     11      9
+     6        1      3      4      0      7      5     10     13     11
+     7        1      4      5      0      8      6     12     16     13
+     8        1      5      6      0      1      7     14     15     16
+
+ NB =    8 Boundary Nodes     NA =    16 Arcs     NT =     8 Triangles
+
+     A triangulation plot file was successfully created.
+
+
+
+     Area of convex hull relative to total surface area =     0.06
+
+
+     Output from BNODES:     8 boundary nodes,    16 arcs,     8 triangles.
+
+
+
+     A Voronoi diagram plot file was successfully created.
+
+                 Voronoi region for node    1
+
+     Triangle     Latitude     Longitude     Circumradius
+
+            8    73.826469   -157.500000         0.282281
+            9    73.826469   -112.500008         0.282281
+           10    73.826469    -67.500008         0.282281
+           11    73.826469    -22.500008         0.282281
+           12    73.826469     22.500002         0.282281
+           13    73.826469     67.500000         0.282281
+           14    73.826469    112.500000         0.282281
+            7    73.826469    157.500015         0.282281
+
+
+     No errors encountered.
+

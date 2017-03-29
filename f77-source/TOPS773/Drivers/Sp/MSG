@@ -1,0 +1,23 @@
+
+
+
+                          SSRFTEST Output
+
+     Number of nodes =   33
+     Range of latitude = -20.00 to  20.00
+     Range of longitude =  -20.00 to   20.00
+     Range of data values =    0.0000 to   20.0000
+
+
+     GRADL:  Average number of nodes used in the least squares fits =  9.1
+
+
+     GETSIG:    48 tension factors altered;  Max change = 0.850E+02
+
+
+     UNIF:  Number of evaluation points = 1024
+            Number of extrapolation points =  17
+
+
+     No error encountered.
+
