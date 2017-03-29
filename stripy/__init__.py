@@ -1,4 +1,4 @@
-import  _stripack
+import  _stripy
 import numpy as np
 
 __version__ = "1.1"
@@ -10,7 +10,7 @@ given mesh points (lons,lats in radians) define triangulation.
 n is size of input mesh (length of 1-d arrays lons and lats).
 
 Algorithm:
- R. J. Renka, "ALGORITHM 772: STRIPACK: Delaunay triangulation
+ R. J. Renka, "ALGORITHM 772: stripy: Delaunay triangulation
  and Voronoi diagram on the surface of a sphere"
  ACM Trans. Math. Software, Volume 23 Issue 3, Sept. 1997
  pp 416-434.
@@ -62,9 +62,9 @@ The indices are 1-based (as in Fortran), not zero based (as in python).
 
         # compute cartesian coords on unit sphere.
 
-        x,y,z = _stripack.trans(lats,lons,npts)
+        x,y,z = _stripy.trans(lats,lons,npts)
 
-        lst,lptr,lend,ierr = _stripack.trmesh(x,y,z,npts)
+        lst,lptr,lend,ierr = _stripy.trmesh(x,y,z,npts)
 
         if ierr != 0:
             raise ValueError('ierr = %s in trmesh' % ierr)
@@ -120,7 +120,7 @@ Algorithms:
             raise ValueError('order must be 0,1 or 3')
         else:
             odata,ierr = \
-            _stripack.interp_n(order, olats1, olons1,\
+            _stripy.interp_n(order, olats1, olons1,\
             self.x, self.y, self.z, data.astype(np.float64),\
             self.lst,self.lptr,self.lend,self.npts,nptso)
         if ierr != 0:
@@ -148,11 +148,11 @@ same as interp(olons,olats,data,order=3)"""
         lats = self.lats[tr-1]
 
 
-        xyz1 = _stripack.trans(lats[0], lons[0],1)
-        xyz2 = _stripack.trans(lats[1], lons[1],1)
-        xyz3 = _stripack.trans(lats[2], lons[2],1)
+        xyz1 = _stripy.trans(lats[0], lons[0],1)
+        xyz2 = _stripy.trans(lats[1], lons[1],1)
+        xyz3 = _stripy.trans(lats[2], lons[2],1)
 
-        area = _stripack.areas(xyz1, xyz2, xyz3)
+        area = _stripy.areas(xyz1, xyz2, xyz3)
 
         return area
 
@@ -164,7 +164,7 @@ same as interp(olons,olats,data,order=3)"""
 
             npts = len(lon)
 
-            p = np.array(_stripack.trans(lat, lon, npts)).T
+            p = np.array(_stripy.trans(lat, lon, npts)).T
 
             # if (np.abs(olons1)).max() > 2.*np.pi:
             #     msg="lons must be in radians (-2*pi <= lon <= 2*pi)"
@@ -183,7 +183,7 @@ same as interp(olons,olats,data,order=3)"""
 
                 point = p[i]
 
-                pt = _stripack.trfind(1,point,self.x,self.y,self.z,self.lst,self.lptr,self.lend, self.npts)
+                pt = _stripy.trfind(1,point,self.x,self.y,self.z,self.lst,self.lptr,self.lend, self.npts)
 
                 bcc = np.array(pt[0:3], dtype=float)
                 bcc /=  bcc.sum()
@@ -205,7 +205,7 @@ same as interp(olons,olats,data,order=3)"""
 
     def tri_list(self):
 
-        nt,ltri,ier = _stripack.trlist2(self.lst, self.lptr, self.lend, self.npts)
+        nt,ltri,ier = _stripy.trlist2(self.lst, self.lptr, self.lend, self.npts)
 
         # Errors should be handled here and not returned !
 
