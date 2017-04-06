@@ -1,9 +1,9 @@
 !    -*- f90 -*-
 ! Note: the context of this file is case sensitive.
 
-python module _stripy ! in
-    interface  ! in :_stripy
-        subroutine trans(n,rlat,rlon,x,y,z) ! in :_stripy:_stripy.f90
+python module _stripack ! in
+    interface  ! in :_stripack
+        subroutine trans(n,rlat,rlon,x,y,z) ! in :_stripack:stripack.f90
             integer( kind = 4 ), intent(in) :: n
             real( kind = 8 ) dimension(n), intent(in) :: rlat
             real( kind = 8 ) dimension(n), intent(in) :: rlon
@@ -12,7 +12,7 @@ python module _stripy ! in
             real( kind = 8 ) dimension(n), intent(out) :: z
         end subroutine trans
 
-        function areas(v1,v2,v3) ! in :_stripy:_stripy.f90
+        function areas(v1,v2,v3) ! in :_stripack:stripack.f90
             real(kind=8) dimension(3), intent(in) :: v1
             real(kind=8) dimension(3), intent(in) :: v2
             real(kind=8) dimension(3), intent(in) :: v3
@@ -20,7 +20,7 @@ python module _stripy ! in
         end function areas
 
 
-        subroutine trfind(nst, p,n,x,y,z,list,lptr,lend,b1,b2,b3,i1,i2,i3) ! in :_stripy:_stripy.f90
+        subroutine trfind(nst, p,n,x,y,z,list,lptr,lend,b1,b2,b3,i1,i2,i3) ! in :_stripack:stripack.f90
             integer(kind=4) :: nst
             real(kind=8) dimension(3) :: p
             integer(kind=4), optional,check(len(x)>=n),depend(x) :: n=len(x)
@@ -38,7 +38,7 @@ python module _stripy ! in
             integer(kind=4), intent(out) :: i3
         end subroutine trfind
 
-        subroutine trmesh(n,x,y,z,list,lptr,lend,ier) ! in :_stripy:_stripy.f90
+        subroutine trmesh(n,x,y,z,list,lptr,lend,ier) ! in :_stripack:stripack.f90
             integer( kind = 4 ), intent(in) :: n
             real( kind = 8 ) dimension(n), intent(in) :: x
             real( kind = 8 ) dimension(n), intent(in) :: y
@@ -58,7 +58,7 @@ python module _stripy ! in
            integer( kind = 4 ), intent(in), dimension(6*(npts-2)) :: lst,lptr
         end subroutine interp_n
 
-!        subroutine trlist(n,list,lptr,lend,nrow,nt,ltri,ier) ! in :_stripy:_stripy.f90
+!        subroutine trlist(n,list,lptr,lend,nrow,nt,ltri,ier) ! in :_stripack:stripack.f90
 !            integer(kind=4), optional,check((len(list)+12)/(6)>=n),depend(list) :: n=(len(list)+12)/(6)
 !            integer(kind=4) dimension(6 * n - 12) :: list
 !            integer(kind=4) dimension(6 * n - 12),depend(n) :: lptr
@@ -69,7 +69,7 @@ python module _stripy ! in
 !            integer(kind=4) :: ier
 !        end subroutine trlist
 
-        subroutine trlist2(n,list,lptr,lend, nt, ltri, ier) ! in :_stripy:_stripy.f90
+        subroutine trlist2(n,list,lptr,lend, nt, ltri, ier) ! in :_stripack:stripack.f90
             integer(kind=4), intent(in) :: n
             integer(kind=4)  dimension(6 * n - 12) :: list
             integer(kind=4)  dimension(6 * n - 12) :: lptr
@@ -80,7 +80,7 @@ python module _stripy ! in
         end subroutine trlist2
 
 
-end python module _stripy
+end python module _stripack
 
 ! This file was auto-generated with f2py (version:2).
 ! See http://cens.ioc.ee/projects/f2py2e/

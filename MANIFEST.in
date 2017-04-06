@@ -1,8 +1,14 @@
 include README.md
 include MANIFEST.in
 include COPYING
-include _stripy.pyf
-include _stripy.f90
+include _stripack.pyf
+include _stripack.f90
+include _tripack.pyf
+include _tripack.f90
+include _srfpack.pyf
+include _srfpack.f
+include _ssrfpack.pyf
+include _ssrfpack.f
 include setup.py
 include stripack.html
 recursive-include stripy *
