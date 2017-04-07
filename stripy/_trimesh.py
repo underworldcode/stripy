@@ -78,6 +78,7 @@ class Triangulation(object):
 
         self.x = x
         self.y = y
+        self.points = np.column_stack([x,y])
         self.npoints = x.size
 
         self.lst = lst
