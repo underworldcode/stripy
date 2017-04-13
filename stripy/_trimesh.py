@@ -2,6 +2,9 @@ import _tripack
 import _srfpack
 import numpy as np
 
+try: range = xrange
+except: pass
+
 __version__ = "1.1"
 
 _ier_codes = {0:  "no errors were encountered.",
@@ -385,6 +388,14 @@ class Triangulation(object):
             tolerance for convergence.
             gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
 
+        Returns
+        -------
+         f_smooth : ndarray of floats, shape (n,)
+            smoothed version of f
+         (dfdx, dfdy) : tuple of floats, tuple of 2 shape (n,) arrays
+            first derivatives of f_smooth in the x and y directions
+
+
         """
         if f.size != self.npoints or f.size != w.size:
             raise ValueError('f and w should be the same size as mesh')
@@ -392,8 +403,8 @@ class Triangulation(object):
         sigma = 0
         use_sigma_array = 0
 
-        f_smooth, d2f, ierr = _srfpack.smsurf(self.x, self.y, f, self.lst, self.lptr, self.lend,\
-                                              use_sigma_array, sigma, w, sm, smtol, gstol)
+        f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, f, self.lst, self.lptr, self.lend,\
+                                             use_sigma_array, sigma, w, sm, smtol, gstol)
 
         if ierr < 0:
             raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
@@ -402,4 +413,18 @@ class Triangulation(object):
                   F, FX, and FY are the values and partials of a linear function \
                   which minimizes Q2(F), and Q1 = 0.")
 
-        return f_smooth, (d2f[0], d2f[1])
+        return f_smooth, (df[0], df[1])
+
+
+    def convex_hull(self):
+        """
+        Find the Convex Hull of the set of x,y points.
+
+        Returns
+        -------
+         bnodes : ndarray of ints
+            indices corresponding to points on the convex hull
+        """
+        bnodes, nb, na, nt = _tripack.bnodes(self.lst, self.lptr, self.lend,\
+                                             self.npoints, n=self.npoints)
+        return bnodes[:nb] - 1
