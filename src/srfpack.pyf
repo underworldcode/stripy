@@ -146,7 +146,7 @@ python module _srfpack ! in
             integer, intent(out) :: ier
         end subroutine gradg
         subroutine gradl(k,ncc,lcc,n,x,y,z,list,lptr,lend,dx,dy,ier) ! in :_srfpack:srfpack.f
-            integer :: k
+            integer, intent(in) :: k
             integer, optional :: ncc=0
             integer dimension(ncc+1), optional :: lcc
             integer, depend(x), intent(hide) :: n=len(x)
