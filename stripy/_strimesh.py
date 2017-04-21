@@ -39,14 +39,20 @@ class sTriangulation(object):
 
     Attributes
     ----------
-     x : ndarray of floats, shape (n,)
+     lons : array of floats, shape (n,)
+        stored longitudinal coordinates on a sphere
+     lats : array of floats, shape (n,)
+        stored latitudinal coordinates on a sphere
+     x : array of floats, shape (n,)
         stored Cartesian x coordinates from input
-     y : ndarray of floats, shape (n,)
+     y : array of floats, shape (n,)
         stored Cartesian y coordinates from input
-     simplices : ndarray of ints, shape (nsimplex, 3)
+     z : array of floats, shape (n,)
+        stored Cartesian z coordinates from input
+     simplices : array of ints, shape (nsimplex, 3)
         indices of the points forming the simplices in the triangulation
         points are ordered anticlockwise
-     lst : ndarray of ints, shape (6n-12,)
+     lst : array of ints, shape (6n-12,)
         nodal indices with lptr and lend, define the triangulation as a set of N
         adjacency lists; counterclockwise-ordered sequences of neighboring nodes
         such that the first and last neighbors of a boundary node are boundary
@@ -54,12 +60,12 @@ class sTriangulation(object):
         distinguish between interior and boundary nodes, the last neighbor of
         each boundary node is represented by the negative of its index.
         The indices are 1-based (as in Fortran), not zero based (as in python).
-     lptr : ndarray of ints, shape (6n-12),)
+     lptr : array of ints, shape (6n-12),)
         set of pointers in one-to-one correspondence with the elements of lst.
         lst(lptr(i)) indexes the node which follows lst(i) in cyclical
         counterclockwise order (the first neighbor follows the last neighbor).
         The indices are 1-based (as in Fortran), not zero based (as in python).
-     lend : ndarray of ints, shape (n,)
+     lend : array of ints, shape (n,)
         N pointers to adjacency lists.
         lend(k) points to the last neighbor of node K. 
         lst(lend(K)) < 0 if and only if K is a boundary node.
@@ -119,23 +125,59 @@ class sTriangulation(object):
             raise ValueError("lats must be in radians (-pi/2 <= lat <= pi/2)")
 
 
-    def interpolate(self, lons, lats, data, order=1):
+    def interpolate(self, lons, lats, zdata, order=1):
+        """
+        Base class to handle nearest neighbour, linear, and cubic interpolation.
+        Given a triangulation of a set of nodes on the unit sphere, along with data
+        values at the nodes, this method interpolates (or extrapolates) the value
+        at a given longitude and latitude.
 
+        Parameters
+        ----------
+         lons : float / array of floats, shape (l,)
+            longitudinal coordinate(s) on the sphere
+         lats : float / array of floats, shape (l,)
+            latitudinal coordinate(s) on the sphere
+         zdata : array of floats, shape (n,)
+            value at each point in the triangulation
+            must be the same size of the mesh
+         order : int (default=1)
+            order of the interpolatory function used
+             0 = nearest-neighbour
+             1 = linear
+             3 = cubic
+        
+        Returns
+        -------
+         zi : float / array of floats, shape (l,)
+            interpolates value(s) at (lons, lats)
+        """
+        lons, lats = np.array(lons), np.array(lats)
         self._check_integrity(lons, lats)
 
         if order not in [0,1,3]:
             raise ValueError("order must be 0, 1, or 3")
-        if data.size != self.npoints:
+        if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
-        interp, ierr = _stripack.interp_n(order, lats, lons,\
-                                          self.x, self.y, self.z, data,\
+        if np.array(lons).size > 1:
+            n = lons.size
+            zi = np.empty(n)
+            # iterate
+            for i in range(0, n):
+                zi[i], ierr = _stripack.interp_n(order, lats, lons,\
+                                                 self.x, self.y, self.z, zdata,\
+                                                 self.lst, self.lptr, self.lend)
+
+        else:
+            zi, ierr = _stripack.interp_n(order, lats, lons,\
+                                          self.x, self.y, self.z, zdata,\
                                           self.lst, self.lptr, self.lend)
 
         if ierr != 0:
             raise ValueError('ierr={} in interp_n\n{}'.format(ierr, _ier_codes[ierr]))
 
-        return interp
+        return zi
 
 
     def interpolate_nearest(self,lons,lats,data):
@@ -282,3 +324,83 @@ class sTriangulation(object):
         #     raise ValueError('ierr = %s in intrpc0_n' % ierr)
 
         return bccList, nodesList
+
+
+    def smoothing(self, f, w, sm, smtol, gstol):
+        """
+        Smooths a surface f by choosing nodal function values and gradients to
+        minimize the linearized curvature of F subject to a bound on the
+        deviation from the data values. This is more appropriate than interpolation
+        when significant errors are present in the data.
+
+        Parameters
+        ----------
+         f : array of floats, shape (n,)
+            field to apply smoothing on
+         w : array of floats, shape (n,)
+            weights associated with data value in f
+            w[i] = 1/sigma_f^2 is a good rule of thumb.
+         sm : float
+            positive parameter specifying an upper bound on Q2(f).
+            generally n-sqrt(2n) <= sm <= n+sqrt(2n)
+         smtol : float
+            specifies relative error in satisfying the constraint
+            sm(1-smtol) <= Q2 <= sm(1+smtol) between 0 and 1.
+         gstol : float
+            tolerance for convergence.
+            gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
+
+        Returns
+        -------
+         f_smooth : array of floats, shape (n,)
+            smoothed version of f
+         (dfdx, dfdy, dfdz) : tuple of floats, tuple of 3 shape (n,) arrays
+            first derivatives of f_smooth in the x, y, and z directions
+        """
+        if f.size != self.npoints or f.size != w.size:
+            raise ValueError('f and w should be the same size as mesh')
+
+        sigma = 0
+        use_sigma_array = 0
+        prnt = -1
+
+        f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, self.z, f, self.lst, self.lptr, self.lend,\
+                                             use_sigma_array, sigma, w, sm, smtol, gstol, prnt)
+
+        if ierr < 0:
+            raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
+        if ierr == 1:
+            raise RuntimeWarning("No errors were encountered but the constraint is not active --\n\
+                  F, FX, and FY are the values and partials of a linear function \
+                  which minimizes Q2(F), and Q1 = 0.")
+        if ierr == 2:
+            raise RuntimeWarning("if the constraint could not be satisfied to within SMTOL\
+                  due to ill-conditioned linear systems.")
+
+        return f_smooth, (df[0], df[1], df[2])
+
+
+    def tri_area(self, triangle):
+        """
+        Calculate the area of a spherical triangle on the unit sphere
+
+        Parameters
+        ----------
+         triangle : int
+            index corresponding to the triangle in self.simplices
+
+        Returns
+        -------
+         area : float
+            area of triangle on the unit sphere
+
+        """
+        simplices = self.simplices[int(triangle)]
+        x = self.x[simplices]
+        y = self.y[simplices]
+        z = self.z[simplices]
+        area = _stripack.areas(x, y, z)
+
+        return area
+
+

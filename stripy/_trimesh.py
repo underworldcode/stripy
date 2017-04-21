@@ -39,14 +39,14 @@ class Triangulation(object):
 
     Attributes
     ----------
-     x : ndarray of floats, shape (n,)
+     x : array of floats, shape (n,)
         stored Cartesian x coordinates from input
-     y : ndarray of floats, shape (n,)
+     y : array of floats, shape (n,)
         stored Cartesian y coordinates from input
-     simplices : ndarray of ints, shape (nsimplex, 3)
+     simplices : array of ints, shape (nsimplex, 3)
         indices of the points forming the simplices in the triangulation
         points are ordered anticlockwise
-     lst : ndarray of ints, shape (6n-12,)
+     lst : array of ints, shape (6n-12,)
         nodal indices with lptr and lend, define the triangulation as a set of N
         adjacency lists; counterclockwise-ordered sequences of neighboring nodes
         such that the first and last neighbors of a boundary node are boundary
@@ -54,12 +54,12 @@ class Triangulation(object):
         distinguish between interior and boundary nodes, the last neighbor of
         each boundary node is represented by the negative of its index.
         The indices are 1-based (as in Fortran), not zero based (as in python).
-     lptr : ndarray of ints, shape (6n-12),)
+     lptr : array of ints, shape (6n-12),)
         set of pointers in one-to-one correspondence with the elements of lst.
         lst(lptr(i)) indexes the node which follows lst(i) in cyclical
         counterclockwise order (the first neighbor follows the last neighbor).
         The indices are 1-based (as in Fortran), not zero based (as in python).
-     lend : ndarray of ints, shape (n,)
+     lend : array of ints, shape (n,)
         N pointers to adjacency lists.
         lend(k) points to the last neighbor of node K. 
         lst(lend(K)) < 0 if and only if K is a boundary node.
@@ -138,6 +138,7 @@ class Triangulation(object):
          a set of points to find their nearest neighbours.
         """
         # i is the node at which we start the search
+        # the closest x coordinate is a good place
         i = ((self.x - xi)**2).argmin() + 1
         idx, d = _tripack.nearnd(xi, yi, i, self.x, self.y, self.lst, self.lptr, self.lend)
         return idx - 1, d
@@ -150,11 +151,11 @@ class Triangulation(object):
 
         Parameters
         ----------
-         indices : ndarray of ints, shape (n,)
+         indices : array of ints, shape (n,)
             the indices of the n-1 closest nodes to indices[0] in the first
             n-1 locations. On output, updated with the index of the n-th
             closest node to index[0]
-         distances : ndarray of floats, shape (n,)
+         distances : array of floats, shape (n,)
             the distance between indices(1) and indices(i) in the n-th
             position for i = 0,...,n-1. Thus, distances[0] = 0. 
             On output, updated with the distance between indices[0]
@@ -274,17 +275,17 @@ class Triangulation(object):
 
         Parameters
         ----------
-         xi : float / ndarray of floats, shape (l,)
+         xi : float / array of floats, shape (l,)
             x coordinates on the Cartesian plane
-         yi : float / ndarray of floats, shape (l,)
+         yi : float / array of floats, shape (l,)
             y coordinates on the Cartesian plane
-         zdata : ndarray of floats, shape (n,)
+         zdata : array of floats, shape (n,)
             value at each point in the triangulation
             must be the same size of the mesh
 
         Returns
         -------
-         zi : float / ndarray of floats, shape (l,)
+         zi : float / array of floats, shape (l,)
             interpolated value(s) of (xi,yi)
         """
 
@@ -318,11 +319,11 @@ class Triangulation(object):
 
         Parameters
         ----------
-         xi : float / ndarray of floats, shape (l,)
+         xi : float / array of floats, shape (l,)
             x coordinates on the Cartesian plane
-         yi : float / ndarray of floats, shape (l,)
+         yi : float / array of floats, shape (l,)
             y coordinates on the Cartesian plane
-         zdata : ndarray of floats, shape (n,)
+         zdata : array of floats, shape (n,)
             value at each point in the triangulation
             must be the same size of the mesh
          derivatives : bool (default: False)
@@ -330,9 +331,9 @@ class Triangulation(object):
 
         Returns
         -------
-         zi : float / ndarray of floats, shape (l,)
+         zi : float / array of floats, shape (l,)
             interpolated value(s) of (xi,yi)
-         dzx, dzy (optional) : float, ndarray of floats, shape(l,)
+         dzx, dzy (optional) : float, array of floats, shape(l,)
             first partial derivatives in x and y direction at (xi,yi)
         """
 
@@ -373,9 +374,9 @@ class Triangulation(object):
 
         Parameters
         ----------
-         f : ndarray of floats, shape (n,)
+         f : array of floats, shape (n,)
             field to apply smoothing on
-         w : ndarray of floats, shape (n,)
+         w : array of floats, shape (n,)
             weights associated with data value in f
             w[i] = 1/sigma_f^2 is a good rule of thumb.
          sm : float
@@ -390,7 +391,7 @@ class Triangulation(object):
 
         Returns
         -------
-         f_smooth : ndarray of floats, shape (n,)
+         f_smooth : array of floats, shape (n,)
             smoothed version of f
          (dfdx, dfdy) : tuple of floats, tuple of 2 shape (n,) arrays
             first derivatives of f_smooth in the x and y directions
@@ -422,7 +423,7 @@ class Triangulation(object):
 
         Returns
         -------
-         bnodes : ndarray of ints
+         bnodes : array of ints
             indices corresponding to points on the convex hull
         """
         bnodes, nb, na, nt = _tripack.bnodes(self.lst, self.lptr, self.lend,\
