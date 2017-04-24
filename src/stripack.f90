@@ -451,6 +451,64 @@ function areas ( v1, v2, v3 )
 
   return
 end
+subroutine triareas ( n, x, y, z, nt, triangles, triarea )
+!*****************************************************************************
+!! TRIAREAS computes the area of every triangle within a triangulation of points
+!
+! Discussion:
+!
+!   This subroutine computes the area of each triangle
+!   returned by TRMESH and TRLIST. It uses the AREA function
+!   to compute the area between 3 points on a sphere.
+!
+! Parameters:
+!
+!   Input, integer ( kind = 4 ), n
+!   number of points in the triangulation
+!
+!   Input, real ( kind = 8 ), x(n), y(n), z(n)
+!   points that make up the triangulation
+!
+!   Input, integer ( kind = 4 ), nt
+!   number of triangles returned by TRLIST or TRLIST2
+!
+!   Input, integer ( kind = 8 ), triangles(3,nt)
+!   triangles that constitute the triangulation
+!
+!   Output, real ( kind = 8 ), triarea(nt)
+!   area of the each triangle
+!
+! Local parameters:
+!
+!   v1, v2, v3 =  x,y,z coordinates for 3 points of a triangle
+!   areas      =  area of a single triangle
+!
+  implicit none
+
+  integer ( kind = 4 ) n
+  real ( kind = 8 ) x(n)
+  real ( kind = 8 ) y(n)
+  real ( kind = 8 ) z(n)
+  integer ( kind = 4 ) nt
+  integer ( kind = 4 ) triangles(3,nt)
+  real ( kind = 8 ) v1(3)
+  real ( kind = 8 ) v2(3)
+  real ( kind = 8 ) v3(3)
+  integer ( kind = 4 ) tri(3)
+  real ( kind = 8 ) triarea(nt)
+  real ( kind = 8 ) areas
+  integer ( kind = 4 ) i
+
+  do i = 1, nt
+    tri = triangles(:,i)
+    v1 = x(tri)
+    v2 = y(tri)
+    v3 = z(tri)
+    triarea(i) = areas( v1, v2, v3 )
+  end do
+
+  return
+end
 subroutine bdyadd ( kk, i1, i2, list, lptr, lend, lnew )
 
 !*****************************************************************************80

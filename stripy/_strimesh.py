@@ -73,7 +73,7 @@ class sTriangulation(object):
     """
     def __init__(self, lons, lats):
 
-        self._check_integrity(lons, lats)
+        lons, lats = self._check_integrity(lons, lats)
 
         npoints = lons.size
 
@@ -115,6 +115,9 @@ class sTriangulation(object):
          - equal size
          - within the appropriate range in radians
         """
+        lons = np.array(lons).ravel()
+        lats = np.array(lats).ravel()
+
         if len(lons.shape) != 1 or len(lats.shape) != 1:
             raise ValueError('lons and lats must be 1D')
         if lats.size != lons.size:
@@ -123,6 +126,7 @@ class sTriangulation(object):
             raise ValueError("lons must be in radians (-2*pi <= lon <= 2*pi)")
         if (np.abs(lats)).max() > 0.5*np.pi:
             raise ValueError("lats must be in radians (-pi/2 <= lat <= pi/2)")
+        return lons, lats
 
 
     def interpolate(self, lons, lats, zdata, order=1):
@@ -152,8 +156,7 @@ class sTriangulation(object):
          zi : float / array of floats, shape (l,)
             interpolates value(s) at (lons, lats)
         """
-        lons, lats = np.array(lons), np.array(lats)
-        self._check_integrity(lons, lats)
+        lons, lats = self._check_integrity(lons, lats)
 
         if order not in [0,1,3]:
             raise ValueError("order must be 0, 1, or 3")
@@ -380,14 +383,16 @@ class sTriangulation(object):
         return f_smooth, (df[0], df[1], df[2])
 
 
-    def tri_area(self, triangle):
+    def tri_area(self, lons, lats):
         """
-        Calculate the area of a spherical triangle on the unit sphere
+        Calculate the area enclosed by 3 points on the unit sphere.
 
         Parameters
         ----------
-         triangle : int
-            index corresponding to the triangle in self.simplices
+         lons : array of floats, shape (3)
+            longitudinal coordinates in radians
+         lats : array of floats, shape (3)
+            latitudinal coordinates in radians
 
         Returns
         -------
@@ -395,12 +400,31 @@ class sTriangulation(object):
             area of triangle on the unit sphere
 
         """
-        simplices = self.simplices[int(triangle)]
-        x = self.x[simplices]
-        y = self.y[simplices]
-        z = self.z[simplices]
+        lons, lats = self._check_integrity(lons, lats)
+
+        # translate to unit sphere
+        x, y, z = _stripack.trans(lats, lons)
+
+        # compute area
         area = _stripack.areas(x, y, z)
 
         return area
 
 
+    def areas(self):
+        """
+        Compute the area each triangle within the triangulation of points
+        on the unit sphere.
+
+        Returns
+        -------
+         area : array of floats, shape (nt,)
+            area of each triangle in self.simplices where nt
+            is the number of triangles.
+
+        Notes
+        -----
+         This uses a Fortran 90 subroutine that wraps the AREA function
+         to iterate over many points.
+        """
+        return _stripack.triareas(self.x, self.y, self.z, self.simplices.T+1)

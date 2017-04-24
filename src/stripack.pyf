@@ -25,6 +25,13 @@ python module _stripack ! in
             real(kind=8) dimension(3), intent(in) :: v3
             real(kind=8), intent(out) :: areas
         end function areas
+        subroutine triareas(n,x,y,z,nt,triangles,triarea) ! in :_stripack:stripack.f90
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n) :: x,y,z
+            integer(kind=4), depend(triangles), intent(hide) :: nt=shape(triangles,1)
+            integer(kind=4) dimension(3,nt) :: triangles
+            real(kind=8) dimension(nt), intent(out) :: triarea
+        end subroutine triareas
 !        subroutine bdyadd(kk,i1,i2,list,lptr,lend,lnew) ! in :_stripack:stripack.f90
 !            integer(kind=4) :: kk
 !            integer(kind=4) :: i1
