@@ -218,6 +218,17 @@ python module _tripack ! in
             real(kind=8), intent(out) :: dsq
             integer(kind=4), intent(out) :: nearnd
         end function nearnd
+        subroutine nearnds(l,xp,yp,ist,n,x,y,list,lptr,lend,dsqs) ! in :_tripack:tripack.f90
+            integer(kind=4), depend(xp), intent(hide) :: l=len(xp)
+            real(kind=8) dimension(l) :: xp
+            real(kind=8) dimension(l) :: yp
+            integer(kind=4) dimension(l), intent(in,out) :: ist
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n), intent(in) :: x,y
+            integer(kind=4) dimension(6*n-12), intent(in) :: list,lptr
+            integer(kind=4) dimension(n), intent(in) :: lend
+            real(kind=8) dimension(l), intent(out) :: dsqs
+        end subroutine nearnds
 !        subroutine optim(x,y,na,list,lptr,lend,nit,iwk,ier) ! in :_tripack:tripack.f90
 !            real(kind=8) dimension(*) :: x
 !            real(kind=8) dimension(*) :: y

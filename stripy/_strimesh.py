@@ -70,10 +70,18 @@ class sTriangulation(object):
         lend(k) points to the last neighbor of node K. 
         lst(lend(K)) < 0 if and only if K is a boundary node.
         The indices are 1-based (as in Fortran), not zero based (as in python).
+
+    Notes
+    -----
+     Provided the nodes are randomly ordered, the algorithm
+     has expected time complexity O(N*log(N)) for most nodal
+     distributions.  Note, however, that the complexity may be
+     as high as O(N**2) if, for example, the nodes are ordered
+     on increasing latitude.
     """
     def __init__(self, lons, lats):
 
-        lons, lats = self._check_integrity(lons, lats)
+        # lons, lats = self._check_integrity(lons, lats)
 
         npoints = lons.size
 
@@ -183,21 +191,21 @@ class sTriangulation(object):
         return zi
 
 
-    def interpolate_nearest(self,lons,lats,data):
+    def interpolate_nearest(self, lons, lats, data):
         """
         Interpolate using nearest-neighbour approximation
         Returns the same as interpolate(lons,lats,data,order=0)
         """
         return self.interp(lons, lats, data, order=0)
 
-    def interpolate_linear(self,lons,lats,data):
+    def interpolate_linear(self, lons, lats, data):
         """
         Interpolate using nearest-neighbour approximation
         Returns the same as interpolate(lons,lats,data,order=1)
         """
         return self.interp(lons, lats, data, order=1)
 
-    def interpolate_cubic(self,lons,lats,data):
+    def interpolate_cubic(self, lons, lats, data):
         """
         Interpolate using nearest-neighbour approximation
         Returns the same as interpolate(lons,lats,data,order=3)
@@ -205,20 +213,26 @@ class sTriangulation(object):
         return self.interp(lons, lats, data, order=3)
 
 
-    def tri_area(self, tr):
+    def nearest_neighbour(self, lon, lat):
+        """
+        Get the index of the nearest neighbour to a point (lon,lat)
+        and return the squared distance between (lon,lat) and
+        its nearest neighbour.
 
-        # Note the indexing must be 0 based for the py arrays
-        lons = self.lons[tr-1]
-        lats = self.lats[tr-1]
+        Notes
+        -----
+         Faster searches can be obtained using a KDTree.
+         Store all x and y coordinates in a KDTree, then query
+         a set of points to find their nearest neighbours.
+        """
+        # translate to unit sphere
+        xi, yi, zi = _stripack.trans(lat, lon)
 
-
-        xyz1 = _stripack.trans(lats[0], lons[0],1)
-        xyz2 = _stripack.trans(lats[1], lons[1],1)
-        xyz3 = _stripack.trans(lats[2], lons[2],1)
-
-        area = _stripack.areas(xyz1, xyz2, xyz3)
-
-        return area
+        # i is the node at which we start the search
+        # the closest x coordinate is a good place
+        i = ((self.x - xi)**2).argmin() + 1
+        idx, d = _tripack.nearnd((xi,yi,zi), self.x, self.y, self.z, self.lst, self.lptr, self.lend, i)
+        return idx - 1, d
 
 
     def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
@@ -283,50 +297,48 @@ class sTriangulation(object):
         return gradient[0], gradient[1], gradient[2]
 
 
-    def find_point(self, lon, lat):
+    def transform_to_spherical(self, dfdx, dfdy, dfdz):
+        """
+        Transform the derivatives of f in the x,y,z directions into spherical
+        derivatives.
 
-        lat = np.array(lat).astype(np.float64,copy=False)
-        lon = np.array(lon).astype(np.float64,copy=False)
+        Arguments
+        ---------
+         dfdx : array of floats, shape (n,)
+            derivative of f in the x direction
+         dfdy : array of floats, shape (n,)
+            derivative of f in the y direction
+         dfdz : array of floats, shape (n,)
+            derivative of f in the z direction
 
-        npts = len(lon)
+        Returns
+        -------
+         dfdlons : array of floats, shape (n,)
+            derivatives of f w.r.t. longitude
+         dfdlats : array of floats, shape (n,)
+            derivatives of f w.r.t. latitude
 
-        p = np.array(_stripack.trans(lat, lon, npts)).T
+        """
+        cos_lons = np.cos(self.lons)
+        sin_lons = np.sin(self.lons)
 
-        # if (np.abs(olons1)).max() > 2.*np.pi:
-        #     msg="lons must be in radians (-2*pi <= lon <= 2*pi)"
-        #     raise ValueError(msg)
-        #
-        # if (np.abs(olats1)).max() > 0.5*np.pi:
-        #     msg="lats must be in radians (-pi/2 <= lat <= pi/2)"
-        #     raise ValueError(msg)
+        cos_lats = np.cos(self.lats)
+        sin_lats = np.sin(self.lats)
 
-        # This works one at a time only ... right now
+        dxdlons = -sin_lons*sin_lats
+        dxdlats =  cos_lons*cos_lats
 
-        bccList   = []
-        nodesList = []
+        dydlons =  cos_lons*sin_lats
+        dydlats =  sin_lons*cos_lats
 
-        for i in range(0,npts):
+        dzdlons = -sin_lons
+        dzdlats = 0.0
 
-            point = p[i]
+        # chain rule
+        dfdlons = dfdx*dxdlons + dfdy*dydlons + dfdz*dzdlons
+        dfdlats = dfdx*dxdlats + dfdy*dydlats + dfdz*dzdlats
 
-            pt = _stripack.trfind(1,point,self.x,self.y,self.z,self.lst,self.lptr,self.lend, self.npts)
-
-            bcc = np.array(pt[0:3], dtype=float)
-            bcc /=  bcc.sum()
-
-            # The minimum of the 3 cyclic permutations is always returned
-            ttup1 = tuple((pt[3], pt[4], pt[5]))
-            ttup2 = tuple((pt[4], pt[5], pt[3]))
-            ttup3 = tuple((pt[5], pt[3], pt[4]))
-            nodes= min(ttup1, ttup2, ttup3)
-
-            bccList.append(bcc)
-            nodesList.append(nodes)
-
-        # if ierr != 0:
-        #     raise ValueError('ierr = %s in intrpc0_n' % ierr)
-
-        return bccList, nodesList
+        return dfdlons, dfdlats
 
 
     def smoothing(self, f, w, sm, smtol, gstol):

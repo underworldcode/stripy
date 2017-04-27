@@ -64,6 +64,14 @@ class Triangulation(object):
         lend(k) points to the last neighbor of node K. 
         lst(lend(K)) < 0 if and only if K is a boundary node.
         The indices are 1-based (as in Fortran), not zero based (as in python).
+
+    Notes
+    -----
+     Provided the nodes are randomly ordered, the algorithm
+     has expected time complexity O(N*log(N)) for most nodal
+     distributions.  Note, however, that the complexity may be
+     as high as O(N**2) if, for example, the nodes are ordered
+     on increasing latitude.
     """
     def __init__(self, x, y):
 
@@ -142,46 +150,6 @@ class Triangulation(object):
         i = ((self.x - xi)**2).argmin() + 1
         idx, d = _tripack.nearnd(xi, yi, i, self.x, self.y, self.lst, self.lptr, self.lend)
         return idx - 1, d
-
-    def nearest_neighbours(self, indices, distances, copy=False):
-        """
-        Determines the ordered sequence of L closest nodes to a given node,
-        along with the associated distances. The distance between nodes is
-        taken to be the length of the shortest connecting path.
-
-        Parameters
-        ----------
-         indices : array of ints, shape (n,)
-            the indices of the n-1 closest nodes to indices[0] in the first
-            n-1 locations. On output, updated with the index of the n-th
-            closest node to index[0]
-         distances : array of floats, shape (n,)
-            the distance between indices(1) and indices(i) in the n-th
-            position for i = 0,...,n-1. Thus, distances[0] = 0. 
-            On output, updated with the distance between indices[0]
-            and indices(i) in position n-1.
-         copy : bool (default: False)
-            controls whether indices and distances are updated in-place
-            or copied to another array (set to True)
-
-        Notes
-        -----
-         indices contain the indexes of n-1 nodes which must be ordered
-         by distance from indices[0].
-
-         The input parameters, indices and distances, are updated in-place.
-         A pointer to the data is returned.
-        """
-        if copy:
-            ind = indices.copy()
-            dist = distances.copy()
-        else:
-            ind = indices
-            dist = distances
-        ind += 1 # convert to 1-based ordering
-        _tripack.getnp(x, y, lst, lptr, lend, ind, dist)
-        ind -= 1 # convert back to 0-based ordering
-        return indices, distances
 
 
     def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
@@ -266,6 +234,31 @@ class Triangulation(object):
 
         return gradX, gradY
 
+
+    def interpolate_nearest(self, xi, yi, zdata):
+        """
+        Nearest-neighbour interpolation.
+        Calls nearnd to find the index of the closest neighbours to xi,yi
+
+        Parameters
+        ----------
+         xi : float / array of floats, shape (l,)
+            x coordinates on the Cartesian plane
+         yi : float / array of floats, shape (l,)
+            y coordinates on the Cartesian plane
+
+        Returns 
+        -------
+         zi : float / array of floats, shape (l,)
+            nearest-neighbour interpolated value(s) of (xi,yi)
+        """
+        if zdata.size != self.npoints:
+            raise ValueError('zdata should be same size as mesh')
+
+        ist = np.ones_like(xi)
+        ist, dist = _tripack.nearnds(xi, yi, ist, self.x, self.y,
+                                     self.lst, self.lptr, self.lend)
+        return zdata[ist - 1]
 
 
     def interpolate_linear(self, xi, yi, zdata):
@@ -429,3 +422,21 @@ class Triangulation(object):
         bnodes, nb, na, nt = _tripack.bnodes(self.lst, self.lptr, self.lend,\
                                              self.npoints, n=self.npoints)
         return bnodes[:nb] - 1
+
+
+    def areas(self):
+        """
+        Compute the area each triangle within the triangulation of points.
+
+        Returns
+        -------
+         area : array of floats, shape (nt,)
+            area of each triangle in self.simplices where nt
+            is the number of triangles.
+
+        """
+        v1 = self.points[self.simplices[:,1]] - self.points[self.simplices[:,0]]
+        v2 = self.points[self.simplices[:,2]] - self.points[self.simplices[:,1]]
+
+        area = 0.5*(v1[:,0]*v2[:,1] - v1[:,1]*v2[:,0])
+        return area

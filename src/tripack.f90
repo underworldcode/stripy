@@ -4135,6 +4135,34 @@ function nearnd ( xp, yp, ist, n, x, y, list, lptr, lend, dsq )
 
   return
 end
+subroutine nearnds ( l, xp, yp, ist, n, x, y, list, lptr, lend, dsqs )
+
+  implicit none
+
+  integer ( kind = 4 ) l
+  real ( kind = 8 ) xp(l)
+  real ( kind = 8 ) yp(l)
+  integer ( kind = 4 ) ist(l)
+  integer ( kind = 4 ) n
+  real ( kind = 8 ) x(n)
+  real ( kind = 8 ) y(n)
+  integer ( kind = 4 ) list(6*(n-2))
+  integer ( kind = 4 ) lptr(6*(n-2))
+  integer ( kind = 4 ) lend(n)
+  real ( kind = 8 ) dsq
+  real ( kind = 8 ) dsqs(l)
+  integer ( kind = 4 ) nearnd
+  integer ( kind = 4 ) i
+  integer ( kind = 4 ) nn
+
+  do i = 1, l
+    nn = nearnd(xp(i), yp(i), ist(i), n, x, y, list, lptr, lend, dsq)
+    dsqs(i) = dsq
+    ist(i) = nn
+  end do
+
+  return
+end
 subroutine optim ( x, y, na, list, lptr, lend, nit, iwk, ier )
 
 !*****************************************************************************80
