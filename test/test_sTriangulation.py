@@ -39,8 +39,8 @@ def test_area(mesh):
     nt = mesh.simplices.shape[0]
 
     area1 = np.empty(nt)
-    area2 = np.empty(nt)
 
+    t = clock()
     for i in range(0,nt):
         tr = mesh.simplices[i]
         xi = mesh.x[tr]
@@ -48,13 +48,15 @@ def test_area(mesh):
         zi = mesh.z[tr]
 
         area1[i] = compute_area(xi, yi, zi)
-        area2[i] = stripy._stripack.areas(xi, yi, zi)
-    area3 = stripy.areas()
+    t1 = clock() - t
+    t = clock()
+    area2 = mesh.areas()
+    t2 = clock() - t
 
-    res12 = ((area1 - area2)**2).max()
-    res23 = ((area2 - area3)**2).max()
-    res = max(res12, res23)
-    print("squared misfit in area computation = {}".format(res))
+    res = ((area1 - area2)**2).max()
+    print("squared error in area calculation = {}\n  \
+     - numpy took {}\n  \
+     - stripy took {}".format(res, t1, t2))
 
     
 
@@ -62,7 +64,7 @@ def test_derivative(mesh):
     from scipy import interpolate
 
     # Create a field to test derivatives
-    lons, lats = mesh.lons, mesh.lats
+    lons, lats = mesh.lons, mesh.lats + np.pi/2
     Z = np.exp(-lons**2 - lats**2)
     Zlons = -2*lons*Z
     Zlats = -2*lats*Z
@@ -70,9 +72,10 @@ def test_derivative(mesh):
 
     # Stripy
     t = clock()
-    Zlons1, Zlats1 = mesh.gradient(Z, nit=10, tol=1e-10)
+    Zx, Zy, Zz = mesh.gradient(Z, nit=10, tol=1e-10)
     t1 = clock() - t
-    gradZ1 = np.hypot(Zlons1 Zlats1)
+    Zlons1, Zlats1 = mesh.transform_to_spherical(Zx, Zy, Zz)
+    gradZ1 = np.hypot(Zlons1, Zlats1)
 
     # Spline
     spl = interpolate.SmoothSphereBivariateSpline(lats, lons, Z, s=1)
@@ -85,8 +88,8 @@ def test_derivative(mesh):
     res1 = ((gradZ1 - gradZ)**2).max()
     res2 = ((gradZ2 - gradZ)**2).max()
     print("squared error in first derivative\n  \
-           - stripy = {} took {}s\n  \
-           - spline = {} took {}s".format(res1, t1, res2, t2))
+     - stripy = {} took {}s\n  \
+     - spline = {} took {}s".format(res1, t1, res2, t2))
 
 
 def test_interpolation(mesh):
@@ -95,7 +98,7 @@ def test_interpolation(mesh):
     lons, lats = mesh.lons, mesh.lats
     Z = np.exp(-lons**2 - lats**2)
     lon = 2.*np.pi*np.random.random(10)
-    lat = np.arccos(2.*np.random.random(10) - 1.)
+    lat = np.arccos(2.*np.random.random(10) - 1.) - np.pi/2
 
     # Stripy
     zn1 = mesh.interpolate_nearest(lon, lat, Z)
@@ -112,19 +115,15 @@ def test_interpolation(mesh):
 
 
     # Cubic spline
-    spl = interpolate.SmoothSphereBivariateSpline(lats, lons, Z, s=1)
-    zc2 = spl((lat,lon))
+    spl = interpolate.SmoothSphereBivariateSpline(lats+np.pi/2, lons, Z, s=1)
+    zc2 = spl.ev(lat+np.pi/2,lon)
 
-    print("squared residual in interpolation\n   \
-           - nearest neighbour = {}\n  \
-           - linear = {}\n  \
-           - cubic (clough-tocher) = {}\n  \
-           - cubic (spline) = {}\n  \
-           - cubic (rbf) = {}".format(((zn1 - zn2)**2).max(), \
-                                               ((zl1 - zl2)**2).max(), \
-                                               ((zc1 - zc2)**2).max(), \
-                                               ((zc1 - zc3)**2).max(), \
-                                               ((zc1 - zc4)**2).max(),) )
+    print("squared residual in interpolation\n  \
+     - nearest neighbour = {}\n  \
+     - linear = {}\n  \
+     - cubic  = {}".format(((zn1 - zn2)**2).max(), \
+                           ((zl1 - zl2)**2).max(), \
+                           ((zc1 - zc2)**2).max()))
 
 def test_smoothing(mesh):
     pass
@@ -138,3 +137,6 @@ if __name__ == "__main__":
 
     # triangulation
     mesh = stripy.sTriangulation(lons, lats - np.pi/2)
+    test_area(mesh)
+    test_derivative(mesh)
+    test_interpolation(mesh)

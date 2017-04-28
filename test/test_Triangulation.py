@@ -56,8 +56,9 @@ def test_interpolation(mesh):
 
     x, y = mesh.x, mesh.y
     Z = np.exp(-x**2 - y**2)
-    xi = np.random.random(10)
-    yi = np.random.random(10)
+    # We ensure interpolation points are within convex hull
+    xi = np.random.uniform(0.1, 0.9, 10)
+    yi = np.random.uniform(0.1, 0.9, 10)
 
     # Stripy
     zn1 = mesh.interpolate_nearest(xi, yi, Z)
@@ -69,32 +70,33 @@ def test_interpolation(mesh):
     zn2 = tree(xi, yi)
 
     # Qhull
-    tri = interpolate.LinearNDInterpolator((x,y), Z)
+    tri = interpolate.LinearNDInterpolator((x,y), Z, 0.0)
     zl2 = tri((xi, yi))
 
     # Clough Tocher
     cti = interpolate.CloughTocher2DInterpolator(np.column_stack([x,y]),\
                                                  Z, tol=1e-10, maxiter=20)
     zc2 = cti((xi, yi))
+    zc2[np.isnan(zc2)] = 0.0
 
     # Spline
     spl = interpolate.SmoothBivariateSpline(x, y, Z)
-    zc3 = spl((xi,yi))
+    zc3 = spl.ev(xi,yi)
 
     # Radial basis function
     rbf = interpolate.Rbf(x, y, Z)
     zc4 = rbf(xi, yi)
 
-    print("squared residual in interpolation\n   \
+    print("squared residual in interpolation\n  \
            - nearest neighbour = {}\n  \
            - linear = {}\n  \
            - cubic (clough-tocher) = {}\n  \
            - cubic (spline) = {}\n  \
            - cubic (rbf) = {}".format(((zn1 - zn2)**2).max(), \
-                                               ((zl1 - zl2)**2).max(), \
-                                               ((zc1 - zc2)**2).max(), \
-                                               ((zc1 - zc3)**2).max(), \
-                                               ((zc1 - zc4)**2).max(),) )
+                                      ((zl1 - zl2)**2).max(), \
+                                      ((zc1 - zc2)**2).max(), \
+                                      ((zc1 - zc3)**2).max(), \
+                                      ((zc1 - zc4)**2).max(),) )
 
 
 def test_smoothing(mesh):

@@ -197,12 +197,12 @@ class Triangulation(object):
 
         gradient = np.zeros((2,self.npoints), order='F', dtype=np.float32)
         sigma = 0
-        use_sigma_array = 0
+        iflgs = 0
 
         ierr = 1
         while ierr == 1:
             ierr = _srfpack.gradg(self.x, self.y, f, self.lst, self.lptr, self.lend,\
-                                  use_sigma_array, sigma, gradient, nit=nit, dgmax=tol)
+                                  iflgs, sigma, gradient, nit=nit, dgmax=tol)
             if not guarantee_convergence:
                 break
 
@@ -305,7 +305,7 @@ class Triangulation(object):
         return zi
 
 
-    def interpolate_cubic(self, xi, yi, zdata, derivatives=False):
+    def interpolate_cubic(self, xi, yi, zdata, gradz=None, derivatives=False):
         """
         Cubic spline interpolation/extrapolation to arbirary point(s).
         This method has C^1 continuity.
@@ -319,7 +319,11 @@ class Triangulation(object):
          zdata : array of floats, shape (n,)
             value at each point in the triangulation
             must be the same size of the mesh
-         derivatives : bool (default: False)
+         gradz (optional) : array of floats, shape (2,n)
+            derivative at each point in the triangulation in the
+            x-direction (first row), y-direction (second row)
+            if not supplied it is evaluated using the gradg routine
+         derivatives (optional) : bool (default: False)
             optionally returns the first derivatives at point(s) (xi,yi)
 
         Returns
@@ -333,7 +337,23 @@ class Triangulation(object):
         if zdata.size != self.npoints:
             raise ValueError('zdata should be same size as mesh')
 
-        if np.array(xi).size > 1:
+        iflgs = 0
+        dflag = 1
+        sigma = 0.0
+        ist = 1
+
+        xi = np.array(xi)
+        yi = np.array(yi)
+
+        if gradz == None:
+            gradz = np.zeros((2,self.npoints), order='F', dtype=np.float32)
+            ierr = _srfpack.gradg(self.x, self.y, zdata, self.lst, self.lptr, self.lend,\
+                                  iflgs, sigma, gradz, nit=3, dgmax=1e-3)
+            if ierr < 0:
+                raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
+
+
+        if xi.size > 1:
             if xi.size != yi.size:
                 raise ValueError('xi and yi must have same length')
 
@@ -341,16 +361,17 @@ class Triangulation(object):
             zi  = np.empty(n)
             dzx = np.empty(n)
             dzy = np.empty(n)
-            ist = 1
             
             # iterate
             for i in range(0,n):
-                zi[i], dzx[i], dzy[i], t = _srfpack.intrc1(xi[i], yi[i], self.x, self.y, zdata,\
-                                                           self.lst, self.lptr, self.lend, ist)
+                zi[i], dzx[i], dzy[i], ierr = _srfpack.intrc1(xi[i], yi[i], self.x, self.y, zdata,\
+                                   self.lst, self.lptr, self.lend, iflgs, sigma, gradz, dflag, ist)
         else:
-            ist = 1
-            zi, dzx, dzy, t = _srfpack.intrc1(xi, yi, self.x, self.y, zdata,\
-                                              self.lst, self.lptr, self.lend, ist)
+            zi, dzx, dzy, ierr = _srfpack.intrc1(xi, yi, self.x, self.y, zdata,\
+                      self.lst, self.lptr, self.lend, iflgs, sigma, gradz, dflag, ist)
+
+        if ierr < 0:
+            raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
 
         if derivatives:
             return zi, (dzx, dzy)
@@ -395,10 +416,10 @@ class Triangulation(object):
             raise ValueError('f and w should be the same size as mesh')
 
         sigma = 0
-        use_sigma_array = 0
+        iflgs = 0
 
         f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, f, self.lst, self.lptr, self.lend,\
-                                             use_sigma_array, sigma, w, sm, smtol, gstol)
+                                             iflgs, sigma, w, sm, smtol, gstol)
 
         if ierr < 0:
             raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))

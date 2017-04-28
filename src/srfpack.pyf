@@ -171,7 +171,7 @@ python module _srfpack ! in
             real, intent(in) :: py
             integer, optional :: ncc=0
             integer dimension(ncc+1), optional :: lcc
-            integer, depend(x), intent(hidden) :: n=len(x)
+            integer, depend(x), intent(hide) :: n=len(x)
             real dimension(n), intent(in) :: x
             real dimension(n), intent(in) :: y
             real dimension(n), intent(in) :: z
@@ -187,7 +187,7 @@ python module _srfpack ! in
             real, intent(in) :: py
             integer, optional :: ncc=0
             integer dimension(ncc+1), optional :: lcc
-            integer, depend(x), intent(hidden) :: n=len(x)
+            integer, depend(x), intent(hide) :: n=len(x)
             real dimension(n), intent(in) :: x
             real dimension(n), intent(in) :: y
             real dimension(n), intent(in) :: z

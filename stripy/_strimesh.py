@@ -171,19 +171,9 @@ class sTriangulation(object):
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
-        if np.array(lons).size > 1:
-            n = lons.size
-            zi = np.empty(n)
-            # iterate
-            for i in range(0, n):
-                zi[i], ierr = _stripack.interp_n(order, lats, lons,\
-                                                 self.x, self.y, self.z, zdata,\
-                                                 self.lst, self.lptr, self.lend)
-
-        else:
-            zi, ierr = _stripack.interp_n(order, lats, lons,\
-                                          self.x, self.y, self.z, zdata,\
-                                          self.lst, self.lptr, self.lend)
+        zi, ierr = _stripack.interp_n(order, lats, lons,\
+                                      self.x, self.y, self.z, zdata,\
+                                      self.lst, self.lptr, self.lend)
 
         if ierr != 0:
             raise ValueError('ierr={} in interp_n\n{}'.format(ierr, _ier_codes[ierr]))
@@ -196,21 +186,21 @@ class sTriangulation(object):
         Interpolate using nearest-neighbour approximation
         Returns the same as interpolate(lons,lats,data,order=0)
         """
-        return self.interp(lons, lats, data, order=0)
+        return self.interpolate(lons, lats, data, order=0)
 
     def interpolate_linear(self, lons, lats, data):
         """
         Interpolate using nearest-neighbour approximation
         Returns the same as interpolate(lons,lats,data,order=1)
         """
-        return self.interp(lons, lats, data, order=1)
+        return self.interpolate(lons, lats, data, order=1)
 
     def interpolate_cubic(self, lons, lats, data):
         """
         Interpolate using nearest-neighbour approximation
         Returns the same as interpolate(lons,lats,data,order=3)
         """
-        return self.interp(lons, lats, data, order=3)
+        return self.interpolate(lons, lats, data, order=3)
 
 
     def nearest_neighbour(self, lon, lat):
@@ -282,12 +272,12 @@ class sTriangulation(object):
 
         gradient = np.zeros((3,self.npoints), order='F', dtype=np.float32)
         sigma = 0
-        use_sigma_array = 0
+        iflgs = 0
 
         ierr = 1
         while ierr == 1:
             ierr = _ssrfpack.gradg(self.x, self.y, self.z, f, self.lst, self.lptr, self.lend,\
-                                   use_sigma_array, sigma, nit, tol, gradient)
+                                   iflgs, sigma, nit, tol, gradient)
             if not guarantee_convergence:
                 break
 
@@ -336,7 +326,7 @@ class sTriangulation(object):
 
         # chain rule
         dfdlons = dfdx*dxdlons + dfdy*dydlons + dfdz*dzdlons
-        dfdlats = dfdx*dxdlats + dfdy*dydlats + dfdz*dzdlats
+        dfdlats = dfdx*dxdlats + dfdy*dydlats
 
         return dfdlons, dfdlats
 
@@ -376,11 +366,11 @@ class sTriangulation(object):
             raise ValueError('f and w should be the same size as mesh')
 
         sigma = 0
-        use_sigma_array = 0
+        iflgs = 0
         prnt = -1
 
         f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, self.z, f, self.lst, self.lptr, self.lend,\
-                                             use_sigma_array, sigma, w, sm, smtol, gstol, prnt)
+                                             iflgs, sigma, w, sm, smtol, gstol, prnt)
 
         if ierr < 0:
             raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
