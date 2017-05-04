@@ -284,8 +284,8 @@ python module _tripack ! in
 !            integer(kind=4) :: i3
 !        end subroutine trfind
         subroutine trlist(ncc,lcc,n,list,lptr,lend,nrow,nt,ltri,lct,ier) ! in :_tripack:tripack.f90
-            integer(kind=4) :: ncc
-            integer(kind=4) dimension(ncc) :: lcc
+            integer(kind=4), optional :: ncc=0
+            integer(kind=4) dimension(ncc+1), optional :: lcc=0
             integer(kind=4), depend(lend), intent(hide) :: n=len(lend)
             integer(kind=4) dimension(6*n-12), intent(in) :: list
             integer(kind=4) dimension(6*n-12), intent(in) :: lptr

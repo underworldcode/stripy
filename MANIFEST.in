@@ -1,15 +1,7 @@
 include README.md
 include MANIFEST.in
 include COPYING
-include _stripack.pyf
-include _stripack.f90
-include _tripack.pyf
-include _tripack.f90
-include _srfpack.pyf
-include _srfpack.f
-include _ssrfpack.pyf
-include _ssrfpack.f
-include setup.py
-include stripack.html
-recursive-include stripy *
-recursive-include test *
+recursive include src *
+include stripy/__init__.py
+include stripy/_trimesh.py
+include stripy/_strimesh.py

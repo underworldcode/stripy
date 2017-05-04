@@ -8160,5 +8160,3 @@ subroutine trprnt ( ncc, lcc, n, x, y, list, lptr, lend, prntx )
   109 format (1x,9x,14i5)
   110 format (1x,10x,'*** N is outside its valid range ***')
 end
- 
-

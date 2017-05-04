@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import _tripack
 import _srfpack
 import numpy as np
@@ -440,8 +442,7 @@ class Triangulation(object):
          bnodes : array of ints
             indices corresponding to points on the convex hull
         """
-        bnodes, nb, na, nt = _tripack.bnodes(self.lst, self.lptr, self.lend,\
-                                             self.npoints, n=self.npoints)
+        bnodes, nb, na, nt = _tripack.bnodes(self.lst, self.lptr, self.lend, self.npoints)
         return bnodes[:nb] - 1
 
 

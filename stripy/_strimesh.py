@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import _stripack
 import _ssrfpack
 import numpy as np
