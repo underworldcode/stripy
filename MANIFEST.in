@@ -1,7 +1,7 @@
 include README.md
 include MANIFEST.in
 include COPYING
-recursive include src *
+include src/*
 include stripy/__init__.py
 include stripy/_trimesh.py
 include stripy/_strimesh.py
