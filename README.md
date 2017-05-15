@@ -1,7 +1,6 @@
 # Stripy
 
-A Python interface to TRIPACK and STRIPACK Fortran code for
-(constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives.
+A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives.
 
 ## Installation
 
@@ -11,7 +10,7 @@ To install ([numpy](http://numpy.org) and fortran compiler, preferably
 - ``python setup.py build``
    - If you change the fortran compiler, you may have to add the 
 flags `config_fc --fcompiler=<compiler name>` when setup.py is run
-(see docs for [numpy.distutils] (http://docs.scipy.org/doc/numpy-dev/f2py/distutils.html)).
+(see docs for [numpy.distutils](http://docs.scipy.org/doc/numpy-dev/f2py/distutils.html)).
 - ``python setup.py install``
 
 Alternatively install using pip:
@@ -25,7 +24,7 @@ Two classes are included as part of the Stripy package:
 - Triangulation (Cartesian coordinates)
 - sTriangulation (Spherical coordinates)
 
-Aside from the intent of triangulating Cartesian and Spherical coordinates, the classes share almost identical methods and attributes. They can be easily interchanged.
+These classes share similar methods and can be easily interchanged.
 
 To run a series of tests, execute ``python tests/__init__.py``.
 
