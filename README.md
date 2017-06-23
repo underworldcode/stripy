@@ -2,6 +2,8 @@
 
 A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives.
 
+This package was inspired by Jeffrey Whittaker's [implementation](https://github.com/jswhit/stripack) for STRIPACK.
+
 ## Installation
 
 To install ([numpy](http://numpy.org) and fortran compiler, preferably 
@@ -15,7 +17,7 @@ flags `config_fc --fcompiler=<compiler name>` when setup.py is run
 
 Alternatively install using pip:
 
-- `` [sudo] pip install stripy``
+- ``pip install [--user] stripy``
 
 ## Usage
 
@@ -26,7 +28,7 @@ Two classes are included as part of the Stripy package:
 
 These classes share similar methods and can be easily interchanged.
 
-To run a series of tests, execute ``python tests/__init__.py``.
+A series of tests are located in the *tests* subdirectory.
 
 ## References
 
