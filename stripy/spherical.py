@@ -1,13 +1,29 @@
+"""
+Copyright 2017 Louis Moresi, Ben Mather
+
+This file is part of Stripy.
+
+Stripy is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or any later version.
+
+Stripy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Stripy.  If not, see <http://www.gnu.org/licenses/>.
+"""
+
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import _stripack
-import _ssrfpack
+from . import _stripack
+from . import _ssrfpack
 import numpy as np
 
 try: range = xrange
 except: pass
-
-__version__ = "1.1"
 
 _ier_codes = {0:  "no errors were encountered.",
               -1: "N < 3 on input.",
@@ -102,6 +118,7 @@ class sTriangulation(object):
         self.x = x
         self.y = y
         self.z = z
+        self.points = np.column_stack([x, y, z])
         self.lst = lst
         self.lptr = lptr
         self.lend = lend

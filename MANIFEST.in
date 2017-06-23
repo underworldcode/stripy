@@ -1,7 +1,8 @@
 include README.md
 include MANIFEST.in
 include COPYING
+include COPYING.LESSER
 include src/*
 include stripy/__init__.py
-include stripy/_trimesh.py
-include stripy/_strimesh.py
+include stripy/cartesian.py
+include stripy/spherical.py
