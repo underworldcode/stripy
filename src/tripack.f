@@ -1,3 +1,8 @@
+      MODULE SWPCOM
+      REAL SWTOL
+      SAVE SWTOL
+      END
+
       SUBROUTINE ADDCST (NCC,LCC,N,X,Y, LWK,IWK,LIST,LPTR,
      .                   LEND, IER)
       INTEGER NCC, LCC(*), N, LWK, IWK(LWK), LIST(*),
@@ -3557,6 +3562,7 @@ C
       RETURN
       END
       LOGICAL FUNCTION SWPTST (IN1,IN2,IO1,IO2,X,Y)
+      USE SWPCOM, ONLY: SWTOL
       INTEGER IN1, IN2, IO1, IO2
       REAL    X(*), Y(*)
 C
@@ -3615,11 +3621,10 @@ C
 C***********************************************************
 C
       REAL DX11, DX12, DX22, DX21, DY11, DY12, DY22, DY21,
-     .     SIN1, SIN2, COS1, COS2, SIN12, SWTOL
+     .     SIN1, SIN2, COS1, COS2, SIN12
 C
 C Tolerance stored by TRMESH or TRMSHR.
 C
-      COMMON/SWPCOM/SWTOL
 C
 C Local parameters:
 C
@@ -4496,6 +4501,7 @@ C
       END
       SUBROUTINE TRMESH (N,X,Y, LIST,LPTR,LEND,LNEW,NEAR,
      .                   NEXT,DIST,IER)
+      USE SWPCOM, ONLY: SWTOL
       INTEGER N, LIST(*), LPTR(*), LEND(N), LNEW, NEAR(N),
      .        NEXT(N), IER
       REAL    X(N), Y(N), DIST(N)
@@ -4704,8 +4710,7 @@ C
       REAL    STORE
       INTEGER I, I0, J, K, KM1, LCC(1), LP, LPL, NCC, NEXTI,
      .        NN
-      REAL    D, D1, D2, D3, EPS, SWTOL
-      COMMON/SWPCOM/SWTOL
+      REAL    D, D1, D2, D3, EPS
 C
 C Local parameters:
 C
@@ -4940,6 +4945,7 @@ C
       END
       SUBROUTINE TRMSHR (N,NX,X,Y, NIT, LIST,LPTR,LEND,LNEW,
      .                   IER)
+      USE SWPCOM, ONLY: SWTOL
       INTEGER  N, NX, NIT, LIST(*), LPTR(*), LEND(N), LNEW,
      .         IER
       REAL     X(N), Y(N)
@@ -5056,8 +5062,7 @@ C
      .        M1, M2, M3, M4, MAXIT, N0, N1, N2, N3, N4, NI,
      .        NJ, NM1, NN, NNB
       LOGICAL TST
-      REAL    EPS, SWTOL
-      COMMON/SWPCOM/SWTOL
+      REAL    EPS
 C
 C Store local variables and test for errors in input
 C   parameters.

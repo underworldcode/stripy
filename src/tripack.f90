@@ -1,3 +1,8 @@
+module swpcom
+  real ( kind = 8 ) :: swtol
+  save swtol
+end module swpcom
+
 subroutine addcst ( ncc, lcc, n, x, y, lwk, iwk, list, lptr, lend, ier )
 
 !*****************************************************************************80
@@ -4654,6 +4659,7 @@ function swptst ( in1, in2, io1, io2, x, y )
 !                IN2->IO1 -- proportional to cos(T2)
 !    SIN12 =     SIN1*COS2 + COS1*SIN2 -- proportional to sin(T1+T2)
 !
+  use swpcom, only: swtol
   implicit none
 
   real ( kind = 8 ) cos1
@@ -4674,13 +4680,12 @@ function swptst ( in1, in2, io1, io2, x, y )
   real ( kind = 8 ) sin12
   real ( kind = 8 ) sin2
   logical swptst
-  real ( kind = 8 ) swtol
   real ( kind = 8 ) x(*)
   real ( kind = 8 ) y(*)
 !
 !  Tolerance stored by TRMESH or TRMSHR.
 !
-  common /swpcom/ swtol
+
 !
 !  Compute the vectors containing the angles T1 and T2.
 !
@@ -6302,6 +6307,7 @@ subroutine trmesh ( n, x, y, list, lptr, lend, lnew, near, next, dist, ier )
 !    NN =       Local copy of N
 !    SWTOL =    Tolerance for function SWPTST
 !
+  use swpcom, only: swtol
   implicit none
 
   integer ( kind = 4 ) n
@@ -6331,11 +6337,8 @@ subroutine trmesh ( n, x, y, list, lptr, lend, lnew, near, next, dist, ier )
   integer ( kind = 4 ) next(n)
   integer ( kind = 4 ) nexti
   integer ( kind = 4 ) nn
-  real ( kind = 8 ) swtol
   real ( kind = 8 ) x(n)
   real ( kind = 8 ) y(n)
-
-  common /swpcom/ swtol
 
   nn = n
 
@@ -6676,6 +6679,7 @@ subroutine trmshr ( n, nx, x, y, nit, list, lptr, lend, lnew, ier )
 !      within the allowable number of iterations.  The triangulation is
 !      valid but not optimal in this case.
 !
+  use swpcom, only: swtol
   implicit none
 
   integer ( kind = 4 ) n
@@ -6717,12 +6721,10 @@ subroutine trmshr ( n, nx, x, y, nit, list, lptr, lend, lnew, ier )
   integer ( kind = 4 ) nnb
   integer ( kind = 4 ) nx
   logical swptst
-  real ( kind = 8 ) swtol
   logical tst
   real ( kind = 8 ) x(n)
   real ( kind = 8 ) y(n)
 
-  common /swpcom/ swtol
 !
 !  Store local variables and test for errors in input parameters.
 !

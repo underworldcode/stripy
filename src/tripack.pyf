@@ -265,7 +265,6 @@ python module _tripack ! in
 !            real(kind=8) dimension(*) :: y
 !            real(kind=8) :: swtol
 !            logical :: swptst
-!            common /swpcom/ swtol
 !        end function swptst
 !        subroutine timestamp ! in :_tripack:tripack.f90
 !        end subroutine timestamp
@@ -328,7 +327,6 @@ python module _tripack ! in
             real(kind=8) dimension(n), depend(n), intent(hide) :: dist
             integer(kind=4), intent(out) :: ier
             real(kind=8), intent(hide) :: swtol
-            common /swpcom/ swtol
         end subroutine trmesh
         subroutine trmshr(n,nx,x,y,nit,list,lptr,lend,lnew,ier) ! in :_tripack:tripack.f90
             integer(kind=4), depend(x), intent(hide) :: n=len(x)
@@ -342,7 +340,6 @@ python module _tripack ! in
             integer(kind=4), intent(hide) :: lnew
             integer(kind=4), intent(out) :: ier
             real(kind=8), intent(hide) :: swtol
-            common /swpcom/ swtol
         end subroutine trmshr
 !        subroutine trmtst(n,x,y,list,lptr,lend,lnew,tol,armax,ier) ! in :_tripack:tripack.f90
 !            integer(kind=4), optional,check(len(x)>=n),depend(x) :: n=len(x)
