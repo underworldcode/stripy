@@ -6,3 +6,4 @@ include src/*
 include stripy/__init__.py
 include stripy/cartesian.py
 include stripy/spherical.py
+include stripy/spherical_meshes.py

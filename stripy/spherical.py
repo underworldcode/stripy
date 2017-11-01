@@ -85,7 +85,7 @@ class sTriangulation(object):
         The indices are 1-based (as in Fortran), not zero based (as in python).
      lend : array of ints, shape (n,)
         N pointers to adjacency lists.
-        lend(k) points to the last neighbor of node K. 
+        lend(k) points to the last neighbor of node K.
         lst(lend(K)) < 0 if and only if K is a boundary node.
         The indices are 1-based (as in Fortran), not zero based (as in python).
 
@@ -97,16 +97,22 @@ class sTriangulation(object):
      as high as O(N**2) if, for example, the nodes are ordered
      on increasing latitude.
     """
-    def __init__(self, lons, lats):
+    def __init__(self, lons=None, lats=None, refinement_levels=0):
 
         # lons, lats = self._check_integrity(lons, lats)
+
+        self._update_triangulation(lons, lats)
+
+        return
+
+
+    def _update_triangulation(self, lons, lats):
 
         npoints = lons.size
 
         # compute cartesian coords on unit sphere.
 
         x, y, z = _stripack.trans(lats, lons)
-
         lst, lptr, lend, ierr = _stripack.trmesh(x, y, z)
 
         if ierr != 0:
@@ -133,6 +139,9 @@ class sTriangulation(object):
 
         # extract triangle list and convert to zero-based ordering
         self.simplices = ltri.T[:nt] - 1
+
+        return
+
 
 
     def _check_integrity(self, lons, lats):
@@ -177,7 +186,7 @@ class sTriangulation(object):
              0 = nearest-neighbour
              1 = linear
              3 = cubic
-        
+
         Returns
         -------
          zi : float / array of floats, shape (l,)
@@ -231,17 +240,59 @@ class sTriangulation(object):
         Notes
         -----
          Faster searches can be obtained using a KDTree.
-         Store all x and y coordinates in a KDTree, then query
+         Store all x,y and z coordinates in a (c)KDTree, then query
          a set of points to find their nearest neighbours.
+
+         The KDTree will fail if the Euclidian distance to some node is
+         shorter than the great circle distance to the near neighbour
+         on the surface. scipy's KDTree will also return the Euclidian
+         distance whereas this routine returns the great circle distance.
         """
+
         # translate to unit sphere
         xi, yi, zi = _stripack.trans(lat, lon)
 
         # i is the node at which we start the search
         # the closest x coordinate is a good place
         i = ((self.x - xi)**2).argmin() + 1
-        idx, d = _tripack.nearnd((xi,yi,zi), self.x, self.y, self.z, self.lst, self.lptr, self.lend, i)
+        idx, d = _stripack.nearnd((xi,yi,zi), self.x, self.y, self.z, self.lst, self.lptr, self.lend, i)
         return idx - 1, d
+
+    def nearest_vertex(self, lons, lats):
+        """
+        Locate the index of the nearest vertex to points (lons, lats)
+        and return the squared great circle distance between (lons,lats) and
+        each nearest neighbour.
+
+        Notes
+        -----
+         Faster searches can be obtained using a KDTree.
+         Store all x,y and z coordinates in a (c)KDTree, then query
+         a set of points to find their nearest neighbours.
+
+         The KDTree will fail if the Euclidian distance to some node is
+         shorter than the great circle distance to the near neighbour
+         on the surface. scipy's KDTree will also return the Euclidian
+         distance whereas this routine returns the great circle distance.
+        """
+
+        # translate to unit sphere
+        xi = np.array(_stripack.trans(lats, lons))
+        idx = np.empty_like(xi[0,:], dtype=np.int)
+        dist = np.empty_like(xi[0,:], dtype=np.float)
+
+        for pt in range(0, xi.shape[1]):
+            xi0 = xi[:,pt]
+
+            # i is the node at which we start the search
+            # the closest x coordinate is a good place
+            i = ((self.x - xi0[0])**2).argmin() + 1
+
+            idx0, d0 = _stripack.nearnd((xi0[0],xi0[1],xi0[2]), self.x, self.y, self.z, self.lst, self.lptr, self.lend, i)
+            idx[pt]  = idx0 - 1
+            dist[pt] = d0
+
+        return idx, dist
 
 
     def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
@@ -448,4 +499,217 @@ class sTriangulation(object):
          This uses a Fortran 90 subroutine that wraps the AREA function
          to iterate over many points.
         """
+
         return _stripack.triareas(self.x, self.y, self.z, self.simplices.T+1)
+
+
+##
+##  Better not to have pyproj as dependency (and we assume a sphere in this module)
+##
+    # def sTriangulation_midpoints_pyproj(self):
+    #
+    #     interpolator = self
+    #
+    #     import pyproj
+    #
+    #     lst  = interpolator.lst
+    #     lend = interpolator.lend
+    #     lptr = interpolator.lptr
+    #
+    #     g = pyproj.Geod(ellps='WGS84')
+    #
+    #     midlon_array = np.ones((len(lptr))) * -99999.0
+    #     midlat_array = np.ones((len(lptr))) * -99999.0
+    #
+    #     lonv1 = interpolator.lons
+    #     latv1 = interpolator.lats
+    #
+    #     for i in range(0,len(lptr),1):
+    #         n1 = lst[i]-1
+    #         n2 = lst[lptr[i]-1]-1
+    #         if n1 < n2:
+    #             midlonlat, = g.npts(lonv1[n1],latv1[n1],lonv1[n2],latv1[n2], 1 , radians=True )
+    #             midlon_array[i] = midlonlat[0]
+    #             midlat_array[i] = midlonlat[1]
+    #
+    #     valid_points =  np.where(midlon_array != -99999.0 )
+    #
+    #     midlon_array = midlon_array[valid_points[0]]
+    #     midlat_array = midlat_array[valid_points[0]]
+    #
+    #     return midlon_array, midlat_array
+
+
+    def segment_midpoints(self):
+        """
+        Identify the midpoints of every line segment in the triangulation
+        """
+
+        lst  = self.lst
+        lend = self.lend
+        lptr = self.lptr
+
+        segments_array = np.empty((len(lptr),2),dtype=np.int)
+        segments_array[:,0] = lst[:] - 1
+        segments_array[:,1] = lst[lptr[:]-1] - 1
+
+        valid = np.where(segments_array[:,0] < segments_array[:,1])[0]
+        segments = segments_array[valid,:]
+
+        mids = (self.points[segments[:,0]] + self.points[segments[:,1]]) * 0.5
+        mids /= np.sqrt(mids[:,0]**2 + mids[:,1]**2 + mids[:,2]**2 ).reshape(-1,1)
+
+
+        midlls = self.xyz2lonlat(mids[:,0], mids[:,1], mids[:,2])
+
+        return midlls
+
+    def segment_tripoints(self, ratio=0.33333):
+        """
+        Identify the trisection points of every line segment in the triangulation
+        """
+
+
+        lst  = self.lst
+        lend = self.lend
+        lptr = self.lptr
+
+
+        segments_array = np.empty((len(lptr),2),dtype=np.int)
+        segments_array[:,0] = lst[:] - 1
+        segments_array[:,1] = lst[lptr[:]-1] - 1
+
+        valid = np.where(segments_array[:,0] < segments_array[:,1])[0]
+        segments = segments_array[valid,:]
+
+        mids1 = ratio * self.points[segments[:,0]] + (1.0-ratio) * self.points[segments[:,1]]
+        mids1 /= np.sqrt(mids1[:,0]**2 + mids1[:,1]**2 + mids1[:,2]**2 ).reshape(-1,1)
+
+        mids2 = (1.0-ratio) *  self.points[segments[:,0]] + ratio * self.points[segments[:,1]]
+        mids2 /= np.sqrt(mids2[:,0]**2 + mids2[:,1]**2 + mids2[:,2]**2 ).reshape(-1,1)
+
+        mids = np.vstack((mids1,mids2))
+
+        midlls = self.xyz2lonlat(mids[:,0], mids[:,1], mids[:,2])
+
+        return midlls
+
+
+    def face_midpoints(self):
+        """
+        Identify the centroid of every simplex in the triangulation
+        """
+
+        mids = self.points[self.simplices].mean(axis=1)
+        mids /= np.sqrt(mids[:,0]**2 + mids[:,1]**2 + mids[:,2]**2 ).reshape(-1,1)
+
+        midlls = self.xyz2lonlat(mids[:,0], mids[:,1], mids[:,2])
+
+        return midlls
+
+    def lons_map_to_wrapped(self, lon):
+
+        lons = np.array(lon)
+        lons = np.mod(lon+np.pi, 2*np.pi) - np.pi
+
+        return lons
+
+
+    def lonlat2xyz(self,lon, lat):
+        """
+        Convert lon / lat (radians) for the spherical triangulation into x,y,z
+        on the unit sphere
+        """
+
+        lons = np.array(lon)
+        lats = np.array(lat)
+
+        xs = np.cos(lats) * np.cos(lons)
+        ys = np.cos(lats) * np.sin(lons)
+        zs = np.sin(lats)
+
+        return xs, ys, zs
+
+    def xyz2lonlat(self, x,y,z):
+        """
+        Convert x,y,z representation of points *on the unit sphere* of the
+        spherical triangulation to lon / lat (radians).
+
+        Note - no check is made here that (x,y,z) are unit vectors
+        """
+
+        xs = np.array(x)
+        ys = np.array(y)
+        zs = np.array(z)
+
+        lons = np.arctan2(y, x)
+        lats = np.arcsin(z)
+
+        return lons, lats
+
+    def _add_spherical_midpoints(self):
+
+        midlon_array, midlat_array = self.segment_midpoints()
+
+        lonv2 = np.concatenate((self.lons, midlon_array), axis=0)
+        latv2 = np.concatenate((self.lats, midlat_array), axis=0)
+
+        return lonv2, latv2
+
+    def _add_spherical_tripoints(self, ratio=0.333333):
+
+        midlon_array, midlat_array = self.segment_tripoints(ratio=ratio)
+
+        lonv2 = np.concatenate((self.lons, midlon_array), axis=0)
+        latv2 = np.concatenate((self.lats, midlat_array), axis=0)
+
+        return lonv2, latv2
+
+    def _add_face_centroids(self):
+
+        facelon_array, facelat_array = self.face_midpoints()
+
+        lonv2 = np.concatenate((self.lons, facelon_array), axis=0)
+        latv2 = np.concatenate((self.lats, facelat_array), axis=0)
+
+        return lonv2, latv2
+
+
+    def uniformly_refine_triangulation(self, faces=False, trisect=False):
+        """
+        return a refined triangulation obtained by bisection of all edges
+        in the triangulation
+        """
+
+        if faces:
+            lonv1, latv1 = self._add_face_centroids()
+
+        else:
+            if not trisect:
+                lonv1, latv1 = self._add_spherical_midpoints()
+            else:
+                lonv1, latv1 = self._add_spherical_tripoints(ratio=0.333333)
+
+
+        return lonv1, latv1
+
+    def join(self, t2, unique=False):
+        """
+        Join this triangulation with another. If the points are known to have no duplicates, then
+        set unique=False to skip the testing and duplicate removal
+        """
+
+        lonv1 = np.concatenate((self.lons, t2.lons), axis=0)
+        latv1 = np.concatenate((self.lats, t2.lats), axis=0)
+
+        ## remove any duplicates
+
+        if not unique:
+            a = np.ascontiguousarray(np.vstack((lonv1, latv1)).T)
+            unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
+            llunique = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
+
+            lonv1 = llunique[:,0]
+            latv1 = llunique[:,1]
+
+        return lonv1, latv1

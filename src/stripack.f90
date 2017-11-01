@@ -307,6 +307,9 @@ function arc_cosine ( c )
 
   return
 end
+
+
+
 function areas ( v1, v2, v3 )
 
 !*****************************************************************************80
@@ -451,6 +454,9 @@ function areas ( v1, v2, v3 )
 
   return
 end
+
+
+
 subroutine triareas ( n, x, y, z, nt, triangles, triarea )
 !*****************************************************************************
 !! TRIAREAS computes the area of every triangle within a triangulation of points
@@ -501,14 +507,25 @@ subroutine triareas ( n, x, y, z, nt, triangles, triarea )
 
   do i = 1, nt
     tri = triangles(:,i)
-    v1 = x(tri)
-    v2 = y(tri)
-    v3 = z(tri)
+    v1(1) = x(tri(1))
+    v1(2) = y(tri(1))
+    v1(3) = z(tri(1))
+
+    v2(1) = x(tri(2))
+    v2(2) = y(tri(2))
+    v2(3) = z(tri(2))
+
+    v3(1) = x(tri(3))
+    v3(2) = y(tri(3))
+    v3(3) = z(tri(3))
+
     triarea(i) = areas( v1, v2, v3 )
   end do
 
   return
 end
+
+
 subroutine bdyadd ( kk, i1, i2, list, lptr, lend, lnew )
 
 !*****************************************************************************80

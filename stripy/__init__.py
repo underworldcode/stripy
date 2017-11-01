@@ -16,3 +16,4 @@ along with Stripy.  If not, see <http://www.gnu.org/licenses/>.
 
 from spherical import *
 from cartesian import *
+from spherical_meshes import *
