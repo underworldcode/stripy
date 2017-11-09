@@ -62,9 +62,9 @@ class icosahedral_mesh(spherical.sTriangulation):
         return
 
 
-class octohedral_mesh(spherical.sTriangulation):
+class octahedral_mesh(spherical.sTriangulation):
     """
-    An octohedral triangulated mesh based on the sTriangulation class
+    An octahedral triangulated mesh based on the sTriangulation class
     """
 
     def __init__(self, refinement_levels=0, include_face_points=False):
@@ -82,7 +82,7 @@ class octohedral_mesh(spherical.sTriangulation):
         vertices_lat = np.radians(vertices_LatLonDeg.T[0])
         vertices_lon = np.radians(vertices_LatLonDeg.T[1])
 
-        super(octohedral_mesh, self).__init__(lons=vertices_lon, lats=vertices_lat)
+        super(octahedral_mesh, self).__init__(lons=vertices_lon, lats=vertices_lat)
 
         if include_face_points:
             lons, lats = self.uniformly_refine_triangulation(faces=True)
@@ -146,7 +146,6 @@ class triangulated_soccerball_mesh(spherical.sTriangulation):
         ## Now randomise the point order
         np.random.shuffle(ll)
 
-
         super(triangulated_soccerball_mesh, self).__init__(lons=ll[:,0], lats=ll[:,1])
 
         for r in range(0,refinement_levels):
@@ -155,8 +154,31 @@ class triangulated_soccerball_mesh(spherical.sTriangulation):
 
         return
 
+class random_mesh(spherical.sTriangulation):
+    """
+    A mesh of random points. Take care if you use this is parallel
+    as the location of points will not be the same on all processors
+    """
+
+    def __init__(self, number_of_points=5000):
+
+        xyz =  np.random.random((number_of_points,3)) * 2.0 - 1.0
+        xyz /= np.sqrt(xyz[:,0]**2 + xyz[:,1]**2 + xyz[:,2]**2).reshape(-1,1)
+
+        lon,lat = spherical.xyz2lonlat(xyz[:,0], xyz[:,1], xyz[:,2])
+
+        super(random_mesh, self).__init__(lons=lon, lats=lat)
+
+        return
+
 
 class uniform_ring_mesh(spherical.sTriangulation):
+    """
+    A mesh of made of rings to create a roughly gridded, even spacing on
+    the sphere. There is a small random component to prevent points lying along the
+    prime meridian so this mesh should be used with caution in parallel
+    """
+
 
     def __init__(self, resolution=9, refinement_levels=0):
 

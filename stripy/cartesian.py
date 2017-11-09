@@ -79,7 +79,7 @@ class Triangulation(object):
         The indices are 1-based (as in Fortran), not zero based (as in python).
      lend : array of ints, shape (n,)
         N pointers to adjacency lists.
-        lend(k) points to the last neighbor of node K. 
+        lend(k) points to the last neighbor of node K.
         lst(lend(K)) < 0 if and only if K is a boundary node.
         The indices are 1-based (as in Fortran), not zero based (as in python).
 
@@ -265,7 +265,7 @@ class Triangulation(object):
          yi : float / array of floats, shape (l,)
             y coordinates on the Cartesian plane
 
-        Returns 
+        Returns
         -------
          zi : float / array of floats, shape (l,)
             nearest-neighbour interpolated value(s) of (xi,yi)
@@ -310,7 +310,7 @@ class Triangulation(object):
             n = xi.size
             zi = np.empty(n)
             ist = 1
-            
+
             # iterate
             for i in range(0,n):
                 zi[i], t = _srfpack.intrc0(xi[i], yi[i], self.x, self.y, zdata,\
@@ -379,7 +379,7 @@ class Triangulation(object):
             zi  = np.empty(n)
             dzx = np.empty(n)
             dzy = np.empty(n)
-            
+
             # iterate
             for i in range(0,n):
                 zi[i], dzx[i], dzy[i], ierr = _srfpack.intrc1(xi[i], yi[i], self.x, self.y, zdata,\
