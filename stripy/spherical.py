@@ -97,15 +97,20 @@ class sTriangulation(object):
      as high as O(N**2) if, for example, the nodes are ordered
      on increasing latitude.
     """
-    def __init__(self, lons=None, lats=None, refinement_levels=0):
+
+    def __init__(self, lons=None, lats=None, refinement_levels=0, tree=False):
 
         # lons, lats = self._check_integrity(lons, lats)
+
+        self.tree = tree
 
         self._update_triangulation(lons, lats)
 
         for r in range(0,refinement_levels):
             lons, lats = self.uniformly_refine_triangulation(faces=False, trisect=False)
             self._update_triangulation(lons,lats)
+
+
 
         return
 
@@ -144,6 +149,11 @@ class sTriangulation(object):
         # extract triangle list and convert to zero-based ordering
         self.simplices = ltri.T[:nt] - 1
         ## np.ndarray.sort(self.simplices, axis=1)
+
+        ## If scipy is installed, build a KDtree to find neighbour points
+
+        if self.tree:
+            self._build_cKDtree()
 
         return
 
@@ -353,6 +363,7 @@ class sTriangulation(object):
          (dfdx, dfdy, dfdz) : tuple of floats, tuple of 3 shape (n,) arrays
             first derivatives of f_smooth in the x, y, and z directions
         """
+
         if f.size != self.npoints or f.size != w.size:
             raise ValueError('f and w should be the same size as mesh')
 
@@ -400,8 +411,6 @@ class sTriangulation(object):
 
 
 
-
-
     def interpolate(self, lons, lats, zdata, order=1):
         """
         Base class to handle nearest neighbour, linear, and cubic interpolation.
@@ -429,6 +438,9 @@ class sTriangulation(object):
          zi : float / array of floats, shape (l,)
             interpolates value(s) at (lons, lats)
         """
+
+        shape = lons.shape
+
         lons, lats = self._check_integrity(lons, lats)
 
         if order not in [0,1,3]:
@@ -443,7 +455,7 @@ class sTriangulation(object):
         if ierr != 0:
             raise ValueError('ierr={} in interp_n\n{}'.format(ierr, _ier_codes[ierr]))
 
-        return zi
+        return zi.reshape(shape)
 
 
     def interpolate_nearest(self, lons, lats, data):
@@ -591,7 +603,7 @@ class sTriangulation(object):
 
         Notes:
         ------
-        
+
         That the ordering
         of the vertices may differ from that stored in the self.simplices
         array but will still be a loop around the simplex.
@@ -893,8 +905,6 @@ class sTriangulation(object):
 
 
 
-
-
     def _add_spherical_midpoints(self):
 
         midlon_array, midlat_array = self.segment_midpoints()
@@ -1055,6 +1065,51 @@ class sTriangulation(object):
 
         return lonv1, latv1
 
+
+    def _build_cKDtree(self):
+
+        try:
+            import scipy.spatial
+            self._cKDtree =  scipy.spatial.cKDTree(self.points)
+
+        except:
+            self._cKDtree = None
+
+
+    def nearest_vertices(self, lon, lat, k=1, max_distance=2.0 ):
+
+        if self.tree == None:
+            return 0, 0
+
+        lons = np.array(lon).reshape(-1,1)
+        lats = np.array(lat).reshape(-1,1)
+
+        xyz = np.empty((lons.shape[0],3))
+        x,y,z = lonlat2xyz(lons, lats)
+
+        xyz[:,0] = x[:].reshape(-1)
+        xyz[:,1] = y[:].reshape(-1)
+        xyz[:,2] = z[:].reshape(-1)
+
+        dxyz, vertices = self._cKDtree.query(xyz, k=k, distance_upper_bound=max_distance)
+
+
+        if k == 1:   # force this to be a 2D array
+            vertices = np.reshape(vertices, (-1, 1))
+
+        ## Now find the angular separation / great circle distance: dlatlon
+
+
+        vertxyz = self.points[vertices].transpose(0,2,1)
+        extxyz  = np.repeat(xyz, k, axis=1).reshape(vertxyz.shape)
+
+        angles = np.arccos((extxyz * vertxyz).sum(axis=1))
+
+        return angles, vertices
+
+
+
+
 ## Helper functions for the module
 
 def lonlat2xyz(lon, lat):
@@ -1121,3 +1176,25 @@ def dxyz2dlonlat(x,y,z, dfx, dfy, dfz):
     dlon[valid] = dlon[valid] / corr[valid]
 
     return dlon , dlat
+
+def great_circle_points(start, finish, segments):
+    """
+    Return a set of points along a great circle between the given points.
+    start(lon, lat), finish(lon,lat) in radians.
+    Fails if start and end are on a diameter
+    """
+
+    xyz = np.array(lonlat2xyz(np.array((start[0], finish[0])), np.array((start[1], finish[1]))))
+
+    w = (np.linspace(1.0,0.0,segments))
+    vectors_xyz = np.empty((segments,3))
+
+    vectors_xyz[:,0] = xyz.T[0,0] * w[:] + xyz.T[1,0] * (1.0-w[:])
+    vectors_xyz[:,1] = xyz.T[0,1] * w[:] + xyz.T[1,1] * (1.0-w[:])
+    vectors_xyz[:,2] = xyz.T[0,2] * w[:] + xyz.T[1,2] * (1.0-w[:])
+
+    vectors_xyz[:,:] /= np.sqrt((vectors_xyz[:,:]**2).sum(axis=1)).reshape(-1,1)
+
+    lons, lats = xyz2lonlat(vectors_xyz[:,0], vectors_xyz[:,1],vectors_xyz[:,2])
+
+    return lons, lats

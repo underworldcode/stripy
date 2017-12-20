@@ -29,7 +29,7 @@ class icosahedral_mesh(spherical.sTriangulation):
     An icosahedral triangulated mesh based on the sTriangulation class.
     """
 
-    def __init__(self, refinement_levels=0, include_face_points=False, trisection=False):
+    def __init__(self, refinement_levels=0, include_face_points=False, trisection=False, tree=False):
 
         vertices_LatLonDeg = np.array(
                                        [[ 90,         0.0 ],
@@ -49,7 +49,7 @@ class icosahedral_mesh(spherical.sTriangulation):
         vertices_lat = np.radians(vertices_LatLonDeg.T[0])
         vertices_lon = np.radians(vertices_LatLonDeg.T[1])
 
-        super(icosahedral_mesh, self).__init__(lons=vertices_lon, lats=vertices_lat)
+        super(icosahedral_mesh, self).__init__(lons=vertices_lon, lats=vertices_lat, tree=tree)
 
         if include_face_points:
             lons, lats = self.uniformly_refine_triangulation(faces=True)
@@ -67,7 +67,7 @@ class octahedral_mesh(spherical.sTriangulation):
     An octahedral triangulated mesh based on the sTriangulation class
     """
 
-    def __init__(self, refinement_levels=0, include_face_points=False):
+    def __init__(self, refinement_levels=0, include_face_points=False, tree=False):
 
         vertices_LatLonDeg = np.array(
                                        [[  0.00,    0.0],
@@ -82,7 +82,7 @@ class octahedral_mesh(spherical.sTriangulation):
         vertices_lat = np.radians(vertices_LatLonDeg.T[0])
         vertices_lon = np.radians(vertices_LatLonDeg.T[1])
 
-        super(octahedral_mesh, self).__init__(lons=vertices_lon, lats=vertices_lat)
+        super(octahedral_mesh, self).__init__(lons=vertices_lon, lats=vertices_lat, tree=tree)
 
         if include_face_points:
             lons, lats = self.uniformly_refine_triangulation(faces=True)
@@ -101,7 +101,7 @@ class triangulated_cube_mesh(spherical.sTriangulation):
     An cube-based triangulated mesh based on the sTriangulation class
     """
 
-    def __init__(self, refinement_levels=0):
+    def __init__(self, refinement_levels=0, tree=False):
 
         vertices_LatLonDeg = np.array(
                                          [[  35.26 , 0.0],
@@ -118,7 +118,7 @@ class triangulated_cube_mesh(spherical.sTriangulation):
         vertices_lat = np.radians(vertices_LatLonDeg.T[0])
         vertices_lon = np.radians(vertices_LatLonDeg.T[1])
 
-        super(triangulated_cube_mesh, self).__init__(lons=vertices_lon, lats=vertices_lat)
+        super(triangulated_cube_mesh, self).__init__(lons=vertices_lon, lats=vertices_lat, tree=tree)
 
         for r in range(0,refinement_levels):
             lons, lats = self.uniformly_refine_triangulation(faces=False, trisect=False)
@@ -134,7 +134,7 @@ class triangulated_soccerball_mesh(spherical.sTriangulation):
     a uniform triangulation.
     """
 
-    def __init__(self, refinement_levels=0):
+    def __init__(self, refinement_levels=0, tree=False):
 
         base_mesh = icosahedral_mesh(refinement_levels=1, trisection=True)
         face_mesh = icosahedral_mesh(refinement_levels=0, include_face_points=True)
@@ -146,7 +146,7 @@ class triangulated_soccerball_mesh(spherical.sTriangulation):
         ## Now randomise the point order
         np.random.shuffle(ll)
 
-        super(triangulated_soccerball_mesh, self).__init__(lons=ll[:,0], lats=ll[:,1])
+        super(triangulated_soccerball_mesh, self).__init__(lons=ll[:,0], lats=ll[:,1], tree=tree)
 
         for r in range(0,refinement_levels):
             lons, lats = self.uniformly_refine_triangulation(faces=False, trisect=False)
@@ -160,14 +160,14 @@ class random_mesh(spherical.sTriangulation):
     as the location of points will not be the same on all processors
     """
 
-    def __init__(self, number_of_points=5000):
+    def __init__(self, number_of_points=5000, tree=False):
 
         xyz =  np.random.random((number_of_points,3)) * 2.0 - 1.0
         xyz /= np.sqrt(xyz[:,0]**2 + xyz[:,1]**2 + xyz[:,2]**2).reshape(-1,1)
 
         lon,lat = spherical.xyz2lonlat(xyz[:,0], xyz[:,1], xyz[:,2])
 
-        super(random_mesh, self).__init__(lons=lon, lats=lat)
+        super(random_mesh, self).__init__(lons=lon, lats=lat, tree=tree)
 
         return
 
@@ -180,7 +180,7 @@ class uniform_ring_mesh(spherical.sTriangulation):
     """
 
 
-    def __init__(self, resolution=9, refinement_levels=0):
+    def __init__(self, resolution=9, refinement_levels=0, tree=False):
 
         # mesh of uniform-spaced rings
 
@@ -195,7 +195,9 @@ class uniform_ring_mesh(spherical.sTriangulation):
         for lat in lat_values:
             length = np.fabs(np.cos(lat)) * 2 * np.pi
             samples = length // spacing
-            lons = np.random.random() * np.pi / samples + np.linspace(0.0, 2.0*np.pi, samples, endpoint=False)
+            offset = (2.0 * lat / samples)
+
+            lons = offset + np.linspace(0.0, 2.0*np.pi, samples, endpoint=False)
             lats = np.ones_like(lons)*lat
 
             lons_list.append(lons)
@@ -210,7 +212,7 @@ class uniform_ring_mesh(spherical.sTriangulation):
         ## Now randomise the point order
         np.random.shuffle(ll)
 
-        super(uniform_ring_mesh, self).__init__(lons=ll[:,0], lats=ll[:,1])
+        super(uniform_ring_mesh, self).__init__(lons=ll[:,0], lats=ll[:,1], tree=tree)
 
         for r in range(0,refinement_levels):
             lons, lats = self.uniformly_refine_triangulation(faces=False, trisect=False)
