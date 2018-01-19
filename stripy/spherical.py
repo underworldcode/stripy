@@ -439,6 +439,8 @@ class sTriangulation(object):
             interpolates value(s) at (lons, lats)
         """
 
+        import warnings
+
         shape = lons.shape
 
         lons, lats = self._check_integrity(lons, lats)
@@ -448,14 +450,15 @@ class sTriangulation(object):
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
-        zi, ierr = _stripack.interp_n(order, lats, lons,\
+        zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
                                       self.x, self.y, self.z, zdata,\
                                       self.lst, self.lptr, self.lend)
 
         if ierr != 0:
-            raise ValueError('ierr={} in interp_n\n{}'.format(ierr, _ier_codes[ierr]))
+            print 'Warning some points may have errors - check error array\n'.format(ierr)
+            zi[zierr < 0] = float('NaN')
 
-        return zi.reshape(shape)
+        return zi.reshape(shape), zierr.reshape(shape)
 
 
     def interpolate_nearest(self, lons, lats, data):

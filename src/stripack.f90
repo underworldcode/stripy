@@ -7549,7 +7549,8 @@ SUBROUTINE WVAL (B1,B2,B3,V1,V2,V3,W1,W2,W3,G1,G2,G3, &
       END
 
       subroutine interp_n(npts,nptso,order,olats,olons,x,y,z,datain,lst,&
-                           lptr,lend,odata,ierr)
+                           lptr,lend,odata,edata,ierr)
+
       integer( kind = 4 ), intent(in) :: npts, nptso, order
       integer( kind = 4 ), intent(out) :: ierr
       real( kind = 8 ), intent(in), dimension(nptso) :: olats,olons
@@ -7558,23 +7559,34 @@ SUBROUTINE WVAL (B1,B2,B3,V1,V2,V3,W1,W2,W3,G1,G2,G3, &
       integer( kind = 4 ), intent(in), dimension(npts) :: lend
       integer( kind = 4 ), intent(in), dimension(6*(npts-2)) :: lst,lptr
       integer( kind = 4 ) n,ierr1,ist
+      integer( kind = 4 ), intent(out), dimension(nptso) :: edata
       ist = 1
       ierr = 0
+
       if (order .ne. 0 .and. order .ne. 1 .and. order .ne. 3) then
          print *,'fatal error: interp order must be 0, 1 or 3'
          stop
       endif
+
       do n=1,nptso
          call interp(npts,order,olats(n),olons(n),x,y,z,datain,lst,lptr,&
                      lend,ist,odata(n),ierr1)
-         if (ierr1 .ne. 0) then
+
+         edata(n) = ierr1
+
+         if (ierr1 .lt. 0) then
            !print *,n,'warning: ierr = ',ierr1,' in interp_n'
            !print *,olats(n), olons(n), npts
            !stop
            ierr = ierr + ierr1
+
          endif
       enddo
+
       end subroutine interp_n
+
+
+
 
       subroutine trlist ( n, list, lptr, lend, nrow, nt, ltri, ier )
 
