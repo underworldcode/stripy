@@ -35,7 +35,8 @@ _ier_codes = {0:  "no errors were encountered.",
                    The linked list represents a triangulation of nodes 1 to M-1 in this case.",
               1: "NCC, N, NROW, or an LCC entry is outside its valid range on input.",
               2: "the triangulation data structure (LIST,LPTR,LEND) is invalid.",
-              'K': 'NPTS(K) is not a valid index in the range 1 to N.'}
+              'K': 'NPTS(K) is not a valid index in the range 1 to N.',
+              9999: "Triangulation encountered duplicate nodes."}
 
 
 class sTriangulation(object):
@@ -179,6 +180,8 @@ class sTriangulation(object):
         x, y, z = _stripack.trans(lats, lons)
         lst, lptr, lend, ierr = _stripack.trmesh(x, y, z)
 
+        if ierr > 0:
+            raise ValueError('ierr={} in trmesh\n{}'.format(ierr, _ier_codes[9999]))
         if ierr != 0:
             raise ValueError('ierr={} in trmesh\n{}'.format(ierr, _ier_codes[ierr]))
 
@@ -547,17 +550,17 @@ class sTriangulation(object):
         Parameters
         ----------
          lons : float / array of floats, shape (l,)
-            longitudinal coordinate(s) on the sphere
+                longitudinal coordinate(s) on the sphere
          lats : float / array of floats, shape (l,)
-            latitudinal coordinate(s) on the sphere
+                latitudinal coordinate(s) on the sphere
          zdata : array of floats, shape (n,)
-            value at each point in the triangulation
-            must be the same size of the mesh
+                value at each point in the triangulation
+                must be the same size of the mesh
          order : int (default=1)
-            order of the interpolatory function used
-             0 = nearest-neighbour
-             1 = linear
-             3 = cubic
+                order of the interpolatory function used
+                 0 = nearest-neighbour
+                 1 = linear
+                 3 = cubic
 
         Returns
         -------
@@ -605,43 +608,9 @@ class sTriangulation(object):
         return self.interpolate(lons, lats, data, order=3)
 
 
-    def nearest_neighbour(self, lon, lat):
-        """
-        Get the index of the nearest vertex to a given point (lon,lat)
-        and return the squared distance between (lon,lat) and
-        its nearest neighbour.
-
-        Notes
-        -----
-         Faster searches can be obtained using a KDTree.
-         Store all x,y and z coordinates in a (c)KDTree, then query
-         a set of points to find their nearest neighbours.
-
-         The KDTree will fail if the Euclidian distance to some node is
-         shorter than the great circle distance to the near neighbour
-         on the surface. scipy's KDTree will also return the Euclidian
-         distance whereas this routine returns the great circle distance.
-        """
-
-        # translate to unit sphere
-        xi, yi, zi = _stripack.trans(lat, lon)
-
-        # i is the node at which we start the search
-        # the closest x coordinate is a good place
-        i = ((self._x - xi)**2).argmin() + 1
-        idx, d = _stripack.nearnd((xi,yi,zi), self._x, self._y, self._z, self.lst, self.lptr, self.lend, i)
-
-        idx -= 1 # return to C ordering
-
-        if self.permute:
-            p = self.permutation
-            return ip[idx], d
-        else:
-            return idx, d
-
     def nearest_vertex(self, lons, lats):
         """
-        Locate the index of the nearest vertex to points (lons, lats)
+        Locate the index of the nearest vertex to points (lons,lats)
         and return the squared great circle distance between (lons,lats) and
         each nearest neighbour.
 
@@ -654,10 +623,9 @@ class sTriangulation(object):
 
         Returns
         -------
-
-         index: array of ints - the nearest vertex to each of the supplied points
-
-         distance: array of floats
+         index : array of ints
+            the nearest vertex to each of the supplied points
+         dist : array of floats
             great circle distance (angle) on the unit sphere to the closest
             vertex identified.
 
@@ -709,8 +677,7 @@ class sTriangulation(object):
 
         Returns
         -------
-
-         tri_indices: array of ints, shape (l,)
+         tri_indices : array of ints, shape (l,)
 
 
         Notes
