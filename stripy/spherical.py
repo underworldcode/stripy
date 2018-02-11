@@ -115,6 +115,7 @@ class sTriangulation(object):
 
         # lons, lats = self._check_integrity(lons, lats)
         self.permute = permute
+        self.tree = tree
 
         self._update_triangulation(lons, lats)
 
@@ -186,8 +187,6 @@ class sTriangulation(object):
         if ierr != 0:
             raise ValueError('ierr={} in trmesh\n{}'.format(ierr, _ier_codes[ierr]))
 
-        self.lons = lons
-        self.lats = lats
         self.npoints = npoints
         self._lons = lons
         self._lats = lats
@@ -586,8 +585,8 @@ class sTriangulation(object):
                                       self.lst, self.lptr, self.lend)
 
         if ierr != 0:
-            print 'Warning some points may have errors - check error array\n'.format(ierr)
-            zi[zierr < 0] = float('NaN')
+            print('Warning some points may have errors - check error array\n'.format(ierr))
+            zi[zierr < 0] = np.nan
 
         return zi.reshape(shape), zierr.reshape(shape)
 
