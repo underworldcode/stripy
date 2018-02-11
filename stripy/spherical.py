@@ -148,7 +148,8 @@ class sTriangulation(object):
         if self.permute:
             p, ip = self._generate_permutation(npoints)
         else:
-            p, ip = slice(None), slice(None)
+            p = np.arange(0, npoints)
+            ip = p
             
 
         lons = lons[p]
@@ -233,7 +234,7 @@ class sTriangulation(object):
         return self._deshuffle_field(self._points)
     @property
     def simplices(self):
-        return self._deshuffle_simplices()
+        return self._deshuffle_simplices(self._simplices)
 
 
     def _shuffle_field(self, *args):
@@ -268,16 +269,12 @@ class sTriangulation(object):
         else:
             return fields
 
-    def _deshuffle_simplices(self):
+    def _deshuffle_simplices(self, simplices):
         """
         Return to original ordering
         """
-
-        if self.permute:
-            p = self._permutation
-            return p[self._simplices]
-        else:
-            return self._simplices
+        p = self._permutation
+        return p[simplices]
 
 
     def gradient_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False):
@@ -658,11 +655,8 @@ class sTriangulation(object):
 
         idx -= 1 # return to C ordering
 
-        if self.permute:
-            p = self._permutation
-            return p[idx], dist
-        else:
-            return idx, dist
+        return self._deshuffle_simplices(idx), dist
+
 
     def containing_triangle(self, lons, lats):
         """
@@ -695,10 +689,7 @@ class sTriangulation(object):
             t = _stripack.trfind(3, pt, self._x, self._y, self._z, self.lst, self.lptr, self.lend )
             tri = np.sort(t[3:6]) - 1
 
-            if self.permute:
-                triangles.append(np.where(np.all(p[sorted_simplices]==p[tri], axis=1))[0])
-            else:
-                triangles.append(np.where(np.all(sorted_simplices==tri, axis=1))[0])
+            triangles.append(np.where(np.all(p[sorted_simplices]==p[tri], axis=1))[0])
 
         return np.array(triangles).reshape(-1)
 
@@ -730,12 +721,7 @@ class sTriangulation(object):
 
         bcc /= bcc.sum(axis=1).reshape(-1,1)
 
-        if self.permute:
-            p = self._permutation
-            return bcc, p[tri]
-        else:
-            return bcc, tri
-
+        return bcc, self._deshuffle_simplices(tri)
 
 ##
 ##  Better not to have pyproj as dependency (and we assume a sphere in this module)
@@ -778,8 +764,7 @@ class sTriangulation(object):
         Find the neighbour-vertices in the triangulation for the given vertex
         (from the data structures of the triangulation)
         """
-        if self.permute:
-            vertex = self._permutation[vertex]
+        vertex = self._permutation[vertex]
         lpl = self.lend[vertex-1]
         lp = lpl
 
@@ -791,10 +776,7 @@ class sTriangulation(object):
             if (lp == lpl):
                 break
 
-        if self.permute:
-            return self._invpermutation[neighbours]
-        else:
-            return neighbours
+        return self._deshuffle_simplices(neighbours)
 
 
     def identify_vertex_triangles(self, vertices):
@@ -828,11 +810,8 @@ class sTriangulation(object):
         valid = np.where(segments_array[:,0] < segments_array[:,1])[0]
         segments = segments_array[valid,:]
 
-        if self.permute:
-            p = self._permutation
-            return p[segments]
-        else:
-            return segments
+        return self._deshuffle_simplices(segments)
+
 
     def segment_midpoints_by_vertices(self, vertices):
         """

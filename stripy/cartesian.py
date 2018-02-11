@@ -133,7 +133,8 @@ class Triangulation(object):
         if self.permute:
             p, ip = self._generate_permutation(npoints)
         else:
-            p, ip = slice(None), slice(None)
+            p = np.arange(0, npoints)
+            ip = p
             
 
         x = x[p]
@@ -203,7 +204,7 @@ class Triangulation(object):
         return self._deshuffle_field(self._points)
     @property
     def simplices(self):
-        return self._deshuffle_simplices()
+        return self._deshuffle_simplices(self._simplices)
 
 
     def _shuffle_field(self, *args):
@@ -238,16 +239,12 @@ class Triangulation(object):
         else:
             return fields
 
-    def _deshuffle_simplices(self):
+    def _deshuffle_simplices(self, simplices):
         """
         Return to original ordering
         """
-
-        if self.permute:
-            p = self._permutation
-            return p[self._simplices]
-        else:
-            return self._simplices
+        p = self._permutation
+        return p[simplices]
 
 
     def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
@@ -635,11 +632,7 @@ class Triangulation(object):
                                                 self.lst, self.lptr, self.lend)
         idx -= 1 # return to C ordering
 
-        if self.permute:
-            p = self._permutation
-            return p[idx], dist
-        else:
-            return idx, dist
+        return self._deshuffle_simplices(idx), dist
 
 
     def containing_triangle(self, xi, yi):
@@ -671,10 +664,7 @@ class Triangulation(object):
             t = _tripack.trfind(3, pt[0], pt[1], self._x, self._y, self.lst, self.lptr, self.lend)
             tri = np.sort(t) - 1
 
-            if self.permute:
-                triangles.extend(np.where(np.all(p[sorted_simplices]==p[tri], axis=1))[0])
-            else:
-                triangles.extend(np.where(np.all(sorted_simplices==tri, axis=1))[0])
+            triangles.extend(np.where(np.all(p[sorted_simplices]==p[tri], axis=1))[0])
 
         return np.array(triangles).ravel()
 
@@ -724,11 +714,8 @@ class Triangulation(object):
 
         bcc /= bcc.sum(axis=1).reshape(-1,1)
 
-        if self.permute:
-            p = self._permutation
-            return bcc, p[tri]
-        else:
-            return bcc, tri
+        return bcc, self._deshuffle_simplices(tri)
+
 
     def containing_simplex_and_bcc(self, xi, yi):
         """
@@ -784,11 +771,7 @@ class Triangulation(object):
 
         bcc /= bcc.sum(axis=1).reshape(-1,1)
 
-        if self.permute:
-            p = self._permutation
-            return bcc, p[tri]
-        else:
-            return bcc, tri
+        return bcc, self._deshuffle_simplices(tri)
 
 
     def identify_vertex_neighbours(self, vertex):
@@ -796,8 +779,7 @@ class Triangulation(object):
         Find the neighbour-vertices in the triangulation for the given vertex
         (from the data structures of the triangulation)
         """
-        if self.permute:
-            vertex = self._permutation[vertex]
+        vertex = self._permutation[vertex]
         lpl = self.lend[vertex-1]
         lp = lpl
 
@@ -809,10 +791,7 @@ class Triangulation(object):
             if (lp == lpl):
                 break
 
-        if self.permute:
-            return self._invpermutation[neighbours]
-        else:
-            return neighbours
+        return self._deshuffle_simplices(neighbours)
 
 
     def identify_vertex_triangles(self, vertices):
@@ -845,11 +824,7 @@ class Triangulation(object):
         b = np.ascontiguousarray(a).view(np.dtype((np.void, a.dtype.itemsize * a.shape[1])))
         segments = np.unique(b).view(a.dtype).reshape(-1, a.shape[1])
 
-        if self.permute:
-            p = self._permutation
-            return p[segments]
-        else:
-            return segments
+        return self._deshuffle_simplices(segments)
 
 
     def segment_midpoints_by_vertices(self, vertices):
