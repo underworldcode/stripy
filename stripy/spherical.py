@@ -1098,12 +1098,11 @@ class sTriangulation(object):
 
         # identify the segments
 
+        p = self._permutation
         segments = []
 
         for index in np.array(triangles).reshape(-1):
-            tri = self.simplices[index]
-            if self.permute:
-                tri = self._permutation[tri]
+            tri = p[self.simplices[index]]
             segments.append( min( tuple((tri[0], tri[1])), tuple((tri[0], tri[1]))) )
             segments.append( min( tuple((tri[1], tri[2])), tuple((tri[2], tri[1]))) )
             segments.append( min( tuple((tri[0], tri[2])), tuple((tri[2], tri[0]))) )
