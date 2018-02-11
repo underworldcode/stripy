@@ -325,8 +325,10 @@ class Triangulation(object):
         if f.size != self.npoints:
             raise ValueError('f should be the same size as mesh')
 
+        f = self._shuffle_field(f)
 
-        gradX, gradY, l = _srfpack.gradl(index + 1, self.x, self.y, f,\
+
+        gradX, gradY, l = _srfpack.gradl(index + 1, self._x, self._y, f,\
                                          self.lst, self.lptr, self.lend)
 
         return gradX, gradY
@@ -777,21 +779,14 @@ class Triangulation(object):
     def identify_vertex_neighbours(self, vertex):
         """
         Find the neighbour-vertices in the triangulation for the given vertex
-        (from the data structures of the triangulation)
+        Searches self.simplices for vertex entries and sorts neighbours
         """
-        vertex = self._permutation[vertex]
-        lpl = self.lend[vertex-1]
-        lp = lpl
+        simplices = self.simplices
+        ridx, cidx = np.where(simplices == vertex)
+        neighbour_array = np.unique(np.hstack([simplices[ridx]])).tolist()
+        neighbour_array.remove(vertex)
+        return neighbour_array
 
-        neighbours = []
-
-        while True:
-            lp = self.lptr[lp-1]
-            neighbours.append(self.lst[lp-1]-1)
-            if (lp == lpl):
-                break
-
-        return self._deshuffle_simplices(neighbours)
 
 
     def identify_vertex_triangles(self, vertices):

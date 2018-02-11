@@ -762,21 +762,13 @@ class sTriangulation(object):
     def identify_vertex_neighbours(self, vertex):
         """
         Find the neighbour-vertices in the triangulation for the given vertex
-        (from the data structures of the triangulation)
+        Searches self.simplices for vertex entries and sorts neighbours
         """
-        vertex = self._permutation[vertex]
-        lpl = self.lend[vertex-1]
-        lp = lpl
-
-        neighbours = []
-
-        while True:
-            lp = self.lptr[lp-1]
-            neighbours.append(self.lst[lp-1]-1)
-            if (lp == lpl):
-                break
-
-        return self._deshuffle_simplices(neighbours)
+        simplices = self.simplices
+        ridx, cidx = np.where(simplices == vertex)
+        neighbour_array = np.unique(np.hstack([simplices[ridx]])).tolist()
+        neighbour_array.remove(vertex)
+        return neighbour_array
 
 
     def identify_vertex_triangles(self, vertices):
