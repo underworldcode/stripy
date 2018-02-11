@@ -268,20 +268,20 @@ python module _tripack ! in
 !        end function swptst
 !        subroutine timestamp ! in :_tripack:tripack.f90
 !        end subroutine timestamp
-!        subroutine trfind(nst,px,py,n,x,y,list,lptr,lend,i1,i2,i3) ! in :_tripack:tripack.f90
-!            integer(kind=4) :: nst
-!            real(kind=8) :: px
-!            real(kind=8) :: py
-!            integer(kind=4), optional,check(len(x)>=n),depend(x) :: n=len(x)
-!            real(kind=8) dimension(n) :: x
-!            real(kind=8) dimension(n),depend(n) :: y
-!            integer(kind=4) dimension(*) :: list
-!            integer(kind=4) dimension(*) :: lptr
-!            integer(kind=4) dimension(n),depend(n) :: lend
-!            integer(kind=4) :: i1
-!            integer(kind=4) :: i2
-!            integer(kind=4) :: i3
-!        end subroutine trfind
+        subroutine trfind(nst,px,py,n,x,y,list,lptr,lend,i1,i2,i3) ! in :_tripack:tripack.f90
+            integer(kind=4) :: nst
+            real(kind=8) :: px
+            real(kind=8) :: py
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n) :: x
+            real(kind=8) dimension(n) :: y
+            integer(kind=4) dimension(6*n-12) :: list
+            integer(kind=4) dimension(6*n-12) :: lptr
+            integer(kind=4) dimension(n) :: lend
+            integer(kind=4), intent(out) :: i1
+            integer(kind=4), intent(out) :: i2
+            integer(kind=4), intent(out) :: i3
+        end subroutine trfind
         subroutine trlist(ncc,lcc,n,list,lptr,lend,nrow,nt,ltri,lct,ier) ! in :_tripack:tripack.f90
             integer(kind=4), optional :: ncc=0
             integer(kind=4) dimension(ncc+1), optional :: lcc=0

@@ -27,7 +27,7 @@ except: pass
 
 _ier_codes = {0:  "no errors were encountered.",
               -1: "N < 3 on input.",
-              -2: "the first three nodes are collinear.",
+              -2: "the first three nodes are collinear.\nSet permute to True or reorder nodes manually.",
               -3: "duplicate nodes were encountered.",
               -4: "an error flag was returned by a call to SWAP in ADDNOD.\n \
                    This is an internal error and should be reported to the programmer.",
@@ -35,7 +35,8 @@ _ier_codes = {0:  "no errors were encountered.",
                    The linked list represents a triangulation of nodes 1 to M-1 in this case.",
               1: "NCC, N, NROW, or an LCC entry is outside its valid range on input.",
               2: "the triangulation data structure (LIST,LPTR,LEND) is invalid.",
-              'K': 'NPTS(K) is not a valid index in the range 1 to N.'}
+              'K': 'NPTS(K) is not a valid index in the range 1 to N.',
+              9999: "Triangulation encountered duplicate nodes."}
 
 
 class sTriangulation(object):
@@ -52,8 +53,16 @@ class sTriangulation(object):
 
     Parameters
     ----------
-     lons : 1D array of longitudinal coordinates in radians
-     lats : 1D array of latitudinal coordinates in radians
+     lons    : 1D array of longitudinal coordinates in radians
+     lats    : 1D array of latitudinal coordinates in radians
+     refinement_levels
+             : refine the number of points in the triangulation
+               (see uniformly_refine_triangulation)
+     permute : randomises the order of lons and lats to improve
+               triangulation efficiency and eliminate colinearity
+               issues (see notes)
+     
+
 
     Attributes
     ----------
@@ -96,13 +105,16 @@ class sTriangulation(object):
      distributions.  Note, however, that the complexity may be
      as high as O(N**2) if, for example, the nodes are ordered
      on increasing latitude.
-    """
 
-    def __init__(self, lons=None, lats=None, refinement_levels=0, tree=False):
+     By default, lons and lats are randomised on input before
+     they are triangulated. The distribution of triangles will
+     differ between setting permute=True and permute=False,
+     however, the node ordering will remain identical.
+    """
+    def __init__(self, lons, lats, refinement_levels=0, permute=True, tree=False):
 
         # lons, lats = self._check_integrity(lons, lats)
-
-        self.tree = tree
+        self.permute = permute
 
         self._update_triangulation(lons, lats)
 
@@ -110,30 +122,79 @@ class sTriangulation(object):
             lons, lats = self.uniformly_refine_triangulation(faces=False, trisect=False)
             self._update_triangulation(lons,lats)
 
-
-
         return
+
+    def _generate_permutation(self, npoints):
+        i = np.arange(0, npoints)
+        p = np.random.permutation(npoints)
+        ip = np.empty_like(p)
+        ip[p[i]] = i
+        return p, ip
+
+    def _is_collinear(self, lons, lats):
+        """
+        Checks if first three points are collinear
+        """
+        x, y, z = lonlat2xyz(lons[:3], lats[:3])
+        pts = np.column_stack([x, y, z])
+        return np.linalg.det(pts.T) == 0.0
 
 
     def _update_triangulation(self, lons, lats):
 
-        npoints = lons.size
+        npoints = len(lons)
+
+        # Store permutation vectors to shuffle/deshuffle lons and lats
+        if self.permute:
+            p, ip = self._generate_permutation(npoints)
+        else:
+            p = np.arange(0, npoints)
+            ip = p
+            
+
+        lons = lons[p]
+        lats = lats[p]
+
+        # Deal with collinear issue
+        collinear = self._is_collinear(lons, lats)
+        if collinear:
+            if self.permute:
+                niter = 0
+                while collinear and niter < 5:
+                    p, ip = self._generate_permutation(npoints)
+                    lons = lons[p]
+                    lats = lats[p]
+                    collinear = self._is_collinear(lons, lats)
+                    niter += 1
+                if niter >= 5:
+                    raise ValueError(_ier_codes[-2])
+            else:
+                # collinear warning
+                raise ValueError(_ier_codes[-2])
+
+
+        self._permutation = p
+        self._invpermutation = ip
 
         # compute cartesian coords on unit sphere.
 
         x, y, z = _stripack.trans(lats, lons)
         lst, lptr, lend, ierr = _stripack.trmesh(x, y, z)
 
+        if ierr > 0:
+            raise ValueError('ierr={} in trmesh\n{}'.format(ierr, _ier_codes[9999]))
         if ierr != 0:
             raise ValueError('ierr={} in trmesh\n{}'.format(ierr, _ier_codes[ierr]))
 
         self.lons = lons
         self.lats = lats
         self.npoints = npoints
-        self.x = x
-        self.y = y
-        self.z = z
-        self.points = np.column_stack([x, y, z])
+        self._lons = lons
+        self._lats = lats
+        self._x = x
+        self._y = y
+        self._z = z
+        self._points = np.column_stack([x, y, z])
         self.lst = lst
         self.lptr = lptr
         self.lend = lend
@@ -147,7 +208,7 @@ class sTriangulation(object):
             raise ValueError('ierr={} in trlist2\n{}'.format(ierr, _ier_codes[ierr]))
 
         # extract triangle list and convert to zero-based ordering
-        self.simplices = ltri.T[:nt] - 1
+        self._simplices = ltri.T[:nt] - 1
         ## np.ndarray.sort(self.simplices, axis=1)
 
         ## If scipy is installed, build a KDtree to find neighbour points
@@ -155,7 +216,68 @@ class sTriangulation(object):
         if self.tree:
             self._build_cKDtree()
 
-        return
+    @property
+    def lons(self):
+        return self._deshuffle_field(self._lons)
+    @property
+    def lats(self):
+        return self._deshuffle_field(self._lats)
+    @property
+    def x(self):
+        return self._deshuffle_field(self._x)
+    @property
+    def y(self):
+        return self._deshuffle_field(self._y)
+    @property
+    def z(self):
+        return self._deshuffle_field(self._z)
+    @property
+    def points(self):
+        return self._deshuffle_field(self._points)
+    @property
+    def simplices(self):
+        return self._deshuffle_simplices(self._simplices)
+
+
+    def _shuffle_field(self, *args):
+        """
+        Permute field
+        """
+
+        p = self._permutation
+
+        fields = []
+        for arg in args:
+            fields.append( arg[p] )
+
+        if len(fields) == 1:
+            return fields[0]
+        else:
+            return fields
+
+    def _deshuffle_field(self, *args):
+        """
+        Return to original ordering
+        """
+
+        ip = self._invpermutation
+
+        fields = []
+        for arg in args:
+            fields.append( arg[ip] )
+
+        if len(fields) == 1:
+            return fields[0]
+        else:
+            return fields
+
+    def _deshuffle_simplices(self, simplices):
+        """
+        Return to original ordering
+        """
+        p = self._permutation
+        return p[simplices]
+
 
     def gradient_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False):
         """
@@ -204,6 +326,7 @@ class sTriangulation(object):
 
         dfxs, dfys, dfzs = self.gradient_xyz(data, nit=nit, tol=tol, guarantee_convergence=guarantee_convergence)
 
+        # get deshuffled versions
         lons = self.lons
         lats = self.lats
         z = self.z
@@ -216,7 +339,7 @@ class sTriangulation(object):
 
         dlon[valid] = dlon[valid] / corr[valid]
 
-        return dlon , dlat
+        return dlon, dlat
 
 
     def gradient_xyz(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
@@ -270,9 +393,11 @@ class sTriangulation(object):
         sigma = 0
         iflgs = 0
 
+        f = self._shuffle_field(f)
+
         ierr = 1
         while ierr == 1:
-            ierr = _ssrfpack.gradg(self.x, self.y, self.z, f, self.lst, self.lptr, self.lend,\
+            ierr = _ssrfpack.gradg(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
                                    iflgs, sigma, nit, tol, gradient)
             if not guarantee_convergence:
                 break
@@ -280,7 +405,7 @@ class sTriangulation(object):
         if ierr < 0:
             raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
 
-        return gradient[0], gradient[1], gradient[2]
+        return self._deshuffle_field(gradient[0], gradient[1], gradient[2])
 
 
 ##
@@ -367,11 +492,13 @@ class sTriangulation(object):
         if f.size != self.npoints or f.size != w.size:
             raise ValueError('f and w should be the same size as mesh')
 
+        f, w = self._shuffle_field(f, w)
+
         sigma = 0
         iflgs = 0
         prnt = -1
 
-        f_smooth, df, ierr = _ssrfpack.smsurf(self.x, self.y, self.z, f, self.lst, self.lptr, self.lend,\
+        f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol, prnt)
 
         if ierr < 0:
@@ -384,7 +511,7 @@ class sTriangulation(object):
             raise RuntimeWarning("if the constraint could not be satisfied to within SMTOL\
                   due to ill-conditioned linear systems.")
 
-        return f_smooth, (df[0], df[1], df[2])
+        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2])
 
 
 
@@ -411,6 +538,8 @@ class sTriangulation(object):
 
 
 
+
+
     def interpolate(self, lons, lats, zdata, order=1):
         """
         Base class to handle nearest neighbour, linear, and cubic interpolation.
@@ -421,17 +550,17 @@ class sTriangulation(object):
         Parameters
         ----------
          lons : float / array of floats, shape (l,)
-            longitudinal coordinate(s) on the sphere
+                longitudinal coordinate(s) on the sphere
          lats : float / array of floats, shape (l,)
-            latitudinal coordinate(s) on the sphere
+                latitudinal coordinate(s) on the sphere
          zdata : array of floats, shape (n,)
-            value at each point in the triangulation
-            must be the same size of the mesh
+                value at each point in the triangulation
+                must be the same size of the mesh
          order : int (default=1)
-            order of the interpolatory function used
-             0 = nearest-neighbour
-             1 = linear
-             3 = cubic
+                order of the interpolatory function used
+                 0 = nearest-neighbour
+                 1 = linear
+                 3 = cubic
 
         Returns
         -------
@@ -450,8 +579,10 @@ class sTriangulation(object):
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
+        zdata = self._shuffle_field(zdata)
+
         zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
-                                      self.x, self.y, self.z, zdata,\
+                                      self._x, self._y, self._z, zdata,\
                                       self.lst, self.lptr, self.lend)
 
         if ierr != 0:
@@ -512,7 +643,7 @@ class sTriangulation(object):
 
     def nearest_vertex(self, lons, lats):
         """
-        Locate the index of the nearest vertex to points (lons, lats)
+        Locate the index of the nearest vertex to points (lons,lats)
         and return the squared great circle distance between (lons,lats) and
         each nearest neighbour.
 
@@ -525,10 +656,9 @@ class sTriangulation(object):
 
         Returns
         -------
-
-         index: array of ints - the nearest vertex to each of the supplied points
-
-         distance: array of floats
+         index : array of ints
+            the nearest vertex to each of the supplied points
+         dist : array of floats
             great circle distance (angle) on the unit sphere to the closest
             vertex identified.
 
@@ -555,13 +685,14 @@ class sTriangulation(object):
 
             # i is the node at which we start the search
             # the closest x coordinate is a good place
-            i = ((self.x - xi0[0])**2).argmin() + 1
+            i = ((self._x - xi0[0])**2).argmin() + 1
 
-            idx0, d0 = _stripack.nearnd((xi0[0],xi0[1],xi0[2]), self.x, self.y, self.z, self.lst, self.lptr, self.lend, i)
-            idx[pt]  = idx0 - 1
-            dist[pt] = d0
+            idx[pt], dist[pt] = _stripack.nearnd((xi0[0],xi0[1],xi0[2]), self._x, self._y, self._z, self.lst, self.lptr, self.lend, i)
 
-        return idx, dist
+        idx -= 1 # return to C ordering
+
+        return self._deshuffle_simplices(idx), dist
+
 
     def containing_triangle(self, lons, lats):
         """
@@ -576,8 +707,7 @@ class sTriangulation(object):
 
         Returns
         -------
-
-         tri_indices: array of ints, shape (l,)
+         tri_indices : array of ints, shape (l,)
 
 
         Notes
@@ -585,19 +715,20 @@ class sTriangulation(object):
           The simplices are found as spherical.sTriangulation.simplices[tri_indices]
 
         """
-
+        p = self._permutation
         pts = np.array(lonlat2xyz(lons,lats)).T
 
-        sorted_simplices = np.sort(self.simplices, axis=1)
+        sorted_simplices = np.sort(self._simplices, axis=1)
 
         triangles = []
-        for p in pts:
-            t = _stripack.trfind(3, p, self.x, self.y, self.z, self.lst, self.lptr, self.lend )
-            tri = np.sort(t[3:6])-1
+        for pt in pts:
+            t = _stripack.trfind(3, pt, self._x, self._y, self._z, self.lst, self.lptr, self.lend )
+            tri = np.sort(t[3:6]) - 1
 
-            triangles.append(np.where(np.all(sorted_simplices==tri, axis=1))[0])
+            triangles.append(np.where(np.all(p[sorted_simplices]==p[tri], axis=1))[0])
 
         return np.array(triangles).reshape(-1)
+
 
     def containing_simplex_and_bcc(self, lons, lats):
         """
@@ -606,7 +737,7 @@ class sTriangulation(object):
 
         Notes:
         ------
-
+        
         That the ordering
         of the vertices may differ from that stored in the self.simplices
         array but will still be a loop around the simplex.
@@ -614,24 +745,19 @@ class sTriangulation(object):
 
         pts = np.array(lonlat2xyz(lons,lats)).T
 
-        simplices = []
-        bccs = []
+        tri = np.empty((pts.shape[0], 3), dtype=np.int) # simplices
+        bcc = np.empty_like(tri, dtype=np.float) # barycentric coords
 
-        for p in pts:
-            t = _stripack.trfind(3, p, self.x, self.y, self.z, self.lst, self.lptr, self.lend )
-            tri = t[3:6]
-            bcc = t[0:3]
+        for i, pt in enumerate(pts):
+            t = _stripack.trfind(3, pt, self._x, self._y, self._z, self.lst, self.lptr, self.lend )
+            tri[i] = t[3:6]
+            bcc[i] = t[0:3]
 
-            simplices.append(tri)
-            bccs.append(bcc)
+        tri -= 1 # return to C ordering
 
-        bcc_array = np.array(bccs)
-        bcc_array /= bcc_array.sum(axis=1).reshape(-1,1)
+        bcc /= bcc.sum(axis=1).reshape(-1,1)
 
-        simplices_array = np.array(simplices)-1
-
-        return bcc_array, simplices_array
-
+        return bcc, self._deshuffle_simplices(tri)
 
 ##
 ##  Better not to have pyproj as dependency (and we assume a sphere in this module)
@@ -672,21 +798,13 @@ class sTriangulation(object):
     def identify_vertex_neighbours(self, vertex):
         """
         Find the neighbour-vertices in the triangulation for the given vertex
-        (from the data structures of the triangulation)
+        Searches self.simplices for vertex entries and sorts neighbours
         """
-
-        lpl = self.lend[vertex-1]
-        lp = lpl
-
-        neighbours = []
-
-        while True:
-            lp = self.lptr[lp-1]
-            neighbours.append(self.lst[lp-1]-1)
-            if (lp == lpl):
-                break
-
-        return neighbours
+        simplices = self.simplices
+        ridx, cidx = np.where(simplices == vertex)
+        neighbour_array = np.unique(np.hstack([simplices[ridx]])).tolist()
+        neighbour_array.remove(vertex)
+        return neighbour_array
 
 
     def identify_vertex_triangles(self, vertices):
@@ -699,7 +817,7 @@ class sTriangulation(object):
         for vertex in np.array(vertices).reshape(-1):
             triangles.append(np.where(self.simplices == vertex)[0])
 
-        return  np.unique(np.concatenate(triangles))
+        return np.unique(np.concatenate(triangles))
 
 
 
@@ -720,7 +838,8 @@ class sTriangulation(object):
         valid = np.where(segments_array[:,0] < segments_array[:,1])[0]
         segments = segments_array[valid,:]
 
-        return segments
+        return self._deshuffle_simplices(segments)
+
 
     def segment_midpoints_by_vertices(self, vertices):
         """
@@ -771,8 +890,9 @@ class sTriangulation(object):
 
         if type(segments) == type(None):
             segments = self.identify_segments()
+        points = self.points
 
-        mids = (self.points[segments[:,0]] + self.points[segments[:,1]]) * 0.5
+        mids = (points[segments[:,0]] + points[segments[:,1]]) * 0.5
         mids /= np.sqrt(mids[:,0]**2 + mids[:,1]**2 + mids[:,2]**2 ).reshape(-1,1)
 
         lons, lats = xyz2lonlat(mids[:,0], mids[:,1], mids[:,2])
@@ -784,22 +904,13 @@ class sTriangulation(object):
         Identify the trisection points of every line segment in the triangulation
         """
 
-        lst  = self.lst
-        lend = self.lend
-        lptr = self.lptr
+        segments = self.identify_segments()
+        points = self.points
 
-
-        segments_array = np.empty((len(lptr),2),dtype=np.int)
-        segments_array[:,0] = lst[:] - 1
-        segments_array[:,1] = lst[lptr[:]-1] - 1
-
-        valid = np.where(segments_array[:,0] < segments_array[:,1])[0]
-        segments = segments_array[valid,:]
-
-        mids1 = ratio * self.points[segments[:,0]] + (1.0-ratio) * self.points[segments[:,1]]
+        mids1 = ratio * points[segments[:,0]] + (1.0-ratio) * points[segments[:,1]]
         mids1 /= np.sqrt(mids1[:,0]**2 + mids1[:,1]**2 + mids1[:,2]**2 ).reshape(-1,1)
 
-        mids2 = (1.0-ratio) *  self.points[segments[:,0]] + ratio * self.points[segments[:,1]]
+        mids2 = (1.0-ratio) *  points[segments[:,0]] + ratio * points[segments[:,1]]
         mids2 /= np.sqrt(mids2[:,0]**2 + mids2[:,1]**2 + mids2[:,2]**2 ).reshape(-1,1)
 
         mids = np.vstack((mids1,mids2))
@@ -908,6 +1019,8 @@ class sTriangulation(object):
 
 
 
+
+
     def _add_spherical_midpoints(self):
 
         midlon_array, midlat_array = self.segment_midpoints()
@@ -989,6 +1102,8 @@ class sTriangulation(object):
 
         for index in np.array(triangles).reshape(-1):
             tri = self.simplices[index]
+            if self.permute:
+                tri = self._permutation[tri]
             segments.append( min( tuple((tri[0], tri[1])), tuple((tri[0], tri[1]))) )
             segments.append( min( tuple((tri[1], tri[2])), tuple((tri[2], tri[1]))) )
             segments.append( min( tuple((tri[0], tri[2])), tuple((tri[2], tri[0]))) )
@@ -1178,26 +1293,4 @@ def dxyz2dlonlat(x,y,z, dfx, dfy, dfz):
 
     dlon[valid] = dlon[valid] / corr[valid]
 
-    return dlon , dlat
-
-def great_circle_points(start, finish, segments):
-    """
-    Return a set of points along a great circle between the given points.
-    start(lon, lat), finish(lon,lat) in radians.
-    Fails if start and end are on a diameter
-    """
-
-    xyz = np.array(lonlat2xyz(np.array((start[0], finish[0])), np.array((start[1], finish[1]))))
-
-    w = (np.linspace(1.0,0.0,segments))
-    vectors_xyz = np.empty((segments,3))
-
-    vectors_xyz[:,0] = xyz.T[0,0] * w[:] + xyz.T[1,0] * (1.0-w[:])
-    vectors_xyz[:,1] = xyz.T[0,1] * w[:] + xyz.T[1,1] * (1.0-w[:])
-    vectors_xyz[:,2] = xyz.T[0,2] * w[:] + xyz.T[1,2] * (1.0-w[:])
-
-    vectors_xyz[:,:] /= np.sqrt((vectors_xyz[:,:]**2).sum(axis=1)).reshape(-1,1)
-
-    lons, lats = xyz2lonlat(vectors_xyz[:,0], vectors_xyz[:,1],vectors_xyz[:,2])
-
-    return lons, lats
+    return dlon, dlat

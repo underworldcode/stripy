@@ -120,7 +120,7 @@ subroutine addnod ( nst, k, x, y, z, list, lptr, lend, lnew, ier )
     write ( *, '(a)' ) ' '
     write ( *, '(a)' ) 'ADDNOD - Fatal error!'
     write ( *, '(a)' ) '  K < 4.'
-    stop
+    return
   end if
 !
 !  Initialization:
@@ -149,7 +149,7 @@ subroutine addnod ( nst, k, x, y, z, list, lptr, lend, lnew, ier )
     write ( *, '(a)' ) ' '
     write ( *, '(a)' ) 'ADDNOD - Fatal error!'
     write ( *, '(a)' ) '  The nodes are coplanar.'
-    stop
+    return
   end if
 
   if ( i3 /= 0 ) then
@@ -161,7 +161,7 @@ subroutine addnod ( nst, k, x, y, z, list, lptr, lend, lnew, ier )
       write ( *, '(a)' ) ' '
       write ( *, '(a)' ) 'ADDNOD - Fatal error!'
       write ( *, '(a,i8,a,i8)' ) '  Node ', l, ' is equal to node ', k
-      stop
+      return
     end if
 
     l = i2
@@ -171,7 +171,7 @@ subroutine addnod ( nst, k, x, y, z, list, lptr, lend, lnew, ier )
       write ( *, '(a)' ) ' '
       write ( *, '(a)' ) 'ADDNOD - Fatal error!'
       write ( *, '(a,i8,a,i8)' ) '  Node ', l, ' is equal to node ', k
-      stop
+      return
     end if
 
     l = i3
@@ -180,7 +180,7 @@ subroutine addnod ( nst, k, x, y, z, list, lptr, lend, lnew, ier )
       write ( *, '(a)' ) ' '
       write ( *, '(a)' ) 'ADDNOD - Fatal error!'
       write ( *, '(a,i8,a,i8)' ) '  Node ', l, ' is equal to node ', k
-      stop
+      return
     end if
 
     call intadd ( kk, i1, i2, i3, list, lptr, lend, lnew )
@@ -5408,7 +5408,7 @@ subroutine trmesh ( n, x, y, z, list, lptr, lend, ier )
     write ( *, '(a)' ) 'TRMESH - Fatal error!'
     write ( *, '(a)' ) '  The first 3 nodes are collinear.'
     write ( *, '(a)' ) '  Try reordering the data.'
-    stop
+    return
 
   end if
 !
@@ -5486,7 +5486,7 @@ subroutine trmesh ( n, x, y, z, list, lptr, lend, ier )
       write ( *, '(a)' ) ' '
       write ( *, '(a)' ) 'TRMESH - Fatal error!'
       write ( *, '(a,i8)' ) '  ADDNOD returned error code IER = ', ier
-      stop
+      return
     end if
 !
 !  Remove K from the set of unprocessed nodes associated with NEAR(K).
