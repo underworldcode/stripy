@@ -1,4 +1,10 @@
 build
 *.so*
+*checkpoint.ipynb
+*.png
+
+
+
+
 
 swpcom.mod
