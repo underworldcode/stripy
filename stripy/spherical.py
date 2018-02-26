@@ -1194,7 +1194,7 @@ class sTriangulation(object):
 
     def nearest_vertices(self, lon, lat, k=1, max_distance=2.0 ):
 
-        if self.tree == None:
+        if self.tree == False or self.tree == None:
             return 0, 0
 
         lons = np.array(lon).reshape(-1,1)
