@@ -564,10 +564,12 @@ class sTriangulation(object):
         Returns
         -------
          zi : float / array of floats, shape (l,)
-            interpolates value(s) at (lons, lats)
+            interpolated value(s) at (lons, lats)
+         err : int / array of ints, shape (l,)
+            whether interpolation (0), extrapolation (1) or error (other)
+
         """
 
-        import warnings
 
         shape = lons.shape
 
@@ -600,45 +602,48 @@ class sTriangulation(object):
 
     def interpolate_linear(self, lons, lats, data):
         """
-        Interpolate using nearest-neighbour approximation
+        Interpolate using linear approximation
         Returns the same as interpolate(lons,lats,data,order=1)
         """
         return self.interpolate(lons, lats, data, order=1)
 
     def interpolate_cubic(self, lons, lats, data):
         """
-        Interpolate using nearest-neighbour approximation
+        Interpolate using cubic spline approximation
         Returns the same as interpolate(lons,lats,data,order=3)
         """
         return self.interpolate(lons, lats, data, order=3)
 
 
-    def nearest_neighbour(self, lon, lat):
-        """
-        Get the index of the nearest vertex to a given point (lon,lat)
-        and return the squared distance between (lon,lat) and
-        its nearest neighbour.
 
-        Notes
-        -----
-         Faster searches can be obtained using a KDTree.
-         Store all x,y and z coordinates in a (c)KDTree, then query
-         a set of points to find their nearest neighbours.
+    # Deprecated ?
 
-         The KDTree will fail if the Euclidian distance to some node is
-         shorter than the great circle distance to the near neighbour
-         on the surface. scipy's KDTree will also return the Euclidian
-         distance whereas this routine returns the great circle distance.
-        """
+    # def nearest_neighbour(self, lon, lat):
+    #     """
+    #     Get the index of the nearest vertex to a given point (lon,lat)
+    #     and return the squared distance between (lon,lat) and
+    #     its nearest neighbour. Uses the inbuilt 
 
-        # translate to unit sphere
-        xi, yi, zi = _stripack.trans(lat, lon)
+    #     Notes
+    #     -----
+    #      Faster searches can be obtained using a K-D Tree.
+    #      Store all x,y and z coordinates in a K-D Tree, then query
+    #      a set of points to find their nearest neighbours.
 
-        # i is the node at which we start the search
-        # the closest x coordinate is a good place
-        i = ((self.x - xi)**2).argmin() + 1
-        idx, d = _stripack.nearnd((xi,yi,zi), self.x, self.y, self.z, self.lst, self.lptr, self.lend, i)
-        return idx - 1, d
+    #      The K-D Tree will fail if the Euclidian distance to some node is
+    #      shorter than the great circle distance to the near neighbour
+    #      on the surface. scipy's KDTree will also return the Euclidian
+    #      distance whereas this routine returns the great circle distance.
+    #     """
+
+    #     # translate to unit sphere
+    #     xi, yi, zi = _stripack.trans(lat, lon)
+
+    #     # i is the node at which we start the search
+    #     # the closest x coordinate is a good place
+    #     i = ((self.x - xi)**2).argmin() + 1
+    #     idx, d = _stripack.nearnd((xi,yi,zi), self.x, self.y, self.z, self.lst, self.lptr, self.lend, i)
+    #     return idx - 1, d
 
     def nearest_vertex(self, lons, lats):
         """
@@ -664,17 +669,14 @@ class sTriangulation(object):
 
         Notes
         -----
-         Faster searches can be obtained using a KDTree.
-         Store all x,y and z coordinates in a (c)KDTree, then query
-         a set of points to find their nearest neighbours.
+         Faster searches can be obtained using a k-d tree.
+         See sTriangulation.nearest_vertices() for details. 
+         There is an additional overhead associated with building and storing the k-d tree. 
 
-         The KDTree will fail if the Euclidian distance to some node is
-         shorter than the great circle distance to the near neighbour
-         on the surface. scipy's KDTree will also return the Euclidian
-         distance whereas this routine returns the great circle distance.
         """
 
         # translate to unit sphere
+
         xi = np.array(_stripack.trans(lats, lons))
         idx = np.empty_like(xi[0,:], dtype=np.int)
         dist = np.empty_like(xi[0,:], dtype=np.float)
