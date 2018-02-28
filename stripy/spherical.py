@@ -111,7 +111,7 @@ class sTriangulation(object):
      differ between setting permute=True and permute=False,
      however, the node ordering will remain identical.
     """
-    def __init__(self, lons, lats, refinement_levels=0, permute=False, tree=False):
+    def __init__(self, lons, lats, refinement_levels=0, permute=True, tree=False):
 
         # lons, lats = self._check_integrity(lons, lats)
         self.permute = permute
@@ -153,46 +153,34 @@ class sTriangulation(object):
 
         npoints = len(lons)
 
-        # Store permutation vectors to shuffle/deshuffle lons and lats
+        # Deal with collinear issue
 
         if self.permute:
-            p, ip = self._generate_permutation(npoints)
+            # Store permutation vectors to shuffle/deshuffle lons and lats
+            niter = 0
+            ierr = -2
+            while ierr==-2 and niter < 5:
+                p, ip = self._generate_permutation(npoints)
+                lons = lons[p]
+                lats = lats[p]
+                # compute cartesian coords on unit sphere.
+                x, y, z = _stripack.trans(lats, lons)
+                lst, lptr, lend, ierr = _stripack.trmesh(x, y, z)
+                niter += 1
+
+            if niter >= 5:
+                raise ValueError(_ier_codes[-2])
         else:
             p = np.arange(0, npoints)
             ip = p
-            
-
-        lons = lons[p]
-        lats = lats[p]
-
-        # Deal with collinear issue
-
-        collinear = self._is_collinear(lons, lats)
-
-        if collinear:
-            if self.permute:
-                niter = 0
-                while collinear and niter < 5:
-                    p, ip = self._generate_permutation(npoints)
-                    lons = lons[p]
-                    lats = lats[p]
-                    collinear = self._is_collinear(lons, lats)
-                    niter += 1
-
-                if niter >= 5:
-                    raise ValueError(_ier_codes[-2])
-            else:
-                # collinear warning
-                raise ValueError(_ier_codes[-2])
+            # compute cartesian coords on unit sphere.
+            x, y, z = _stripack.trans(lats, lons)
+            lst, lptr, lend, ierr = _stripack.trmesh(x, y, z)
 
 
         self._permutation = p
         self._invpermutation = ip
 
-        # compute cartesian coords on unit sphere.
-
-        x, y, z = _stripack.trans(lats, lons)
-        lst, lptr, lend, ierr = _stripack.trmesh(x, y, z)
 
         if ierr > 0:
             raise ValueError('ierr={} in trmesh\n{}'.format(ierr, _ier_codes[9999]))
@@ -419,55 +407,6 @@ class sTriangulation(object):
         return self._deshuffle_field(gradient[0], gradient[1], gradient[2])
 
 
-##
-## This one is broken - derivatives have incorrect terms and implementation of the
-## gradient operator is not complete for the surface of a sphere.
-##
-
-    # def transform_to_spherical(self, dfdx, dfdy, dfdz):
-    #     """
-    #     Transform the Cartesian derivatives of f in the x,y,z directions into spherical
-    #     derivatives.
-    #
-    #     Arguments
-    #     ---------
-    #      dfdx : array of floats, shape (n,)
-    #         derivative of f in the x direction
-    #      dfdy : array of floats, shape (n,)
-    #         derivative of f in the y direction
-    #      dfdz : array of floats, shape (n,)
-    #         derivative of f in the z direction
-    #
-    #     Returns
-    #     -------
-    #      dfdlons : array of floats, shape (n,)
-    #         derivatives of f w.r.t. longitude
-    #      dfdlats : array of floats, shape (n,)
-    #         derivatives of f w.r.t. latitude
-    #
-    #     """
-    #     cos_lons = np.cos(self.lons)
-    #     sin_lons = np.sin(self.lons)
-    #
-    #     cos_lats = np.cos(self.lats)
-    #     sin_lats = np.sin(self.lats)
-    #
-    #     dxdlons = -sin_lons*sin_lats
-    #     dxdlats =  cos_lons*cos_lats
-    #
-    #     dydlons =  cos_lons*sin_lats
-    #     dydlats =  sin_lons*cos_lats
-    #
-    #     dzdlons = -sin_lons  # this seems wrong to me z and lat should be connected ?
-    #     dzdlats = 0.0
-    #
-    #     # chain rule
-    #     dfdlons = dfdx*dxdlons + dfdy*dydlons + dfdz*dzdlons
-    #     dfdlats = dfdx*dxdlats + dfdy*dydlats
-    #
-    #     return dfdlons, dfdlats
-
-
     def smoothing(self, f, w, sm, smtol, gstol):
         """
         Smooths a surface f by choosing nodal function values and gradients to
@@ -627,36 +566,6 @@ class sTriangulation(object):
         return self.interpolate(lons, lats, data, order=3)
 
 
-
-    # Deprecated ?
-
-    # def nearest_neighbour(self, lon, lat):
-    #     """
-    #     Get the index of the nearest vertex to a given point (lon,lat)
-    #     and return the squared distance between (lon,lat) and
-    #     its nearest neighbour. Uses the inbuilt 
-
-    #     Notes
-    #     -----
-    #      Faster searches can be obtained using a K-D Tree.
-    #      Store all x,y and z coordinates in a K-D Tree, then query
-    #      a set of points to find their nearest neighbours.
-
-    #      The K-D Tree will fail if the Euclidian distance to some node is
-    #      shorter than the great circle distance to the near neighbour
-    #      on the surface. scipy's KDTree will also return the Euclidian
-    #      distance whereas this routine returns the great circle distance.
-    #     """
-
-    #     # translate to unit sphere
-    #     xi, yi, zi = _stripack.trans(lat, lon)
-
-    #     # i is the node at which we start the search
-    #     # the closest x coordinate is a good place
-    #     i = ((self.x - xi)**2).argmin() + 1
-    #     idx, d = _stripack.nearnd((xi,yi,zi), self.x, self.y, self.z, self.lst, self.lptr, self.lend, i)
-    #     return idx - 1, d
-
     def nearest_vertex(self, lons, lats):
         """
         Locate the index of the nearest vertex to points (lons,lats)
@@ -772,52 +681,26 @@ class sTriangulation(object):
 
         return bcc, self._deshuffle_simplices(tri)
 
-##
-##  Better not to have pyproj as dependency (and we assume a sphere in this module)
-##
-    # def sTriangulation_midpoints_pyproj(self):
-    #
-    #     interpolator = self
-    #
-    #     import pyproj
-    #
-    #     lst  = interpolator.lst
-    #     lend = interpolator.lend
-    #     lptr = interpolator.lptr
-    #
-    #     g = pyproj.Geod(ellps='WGS84')
-    #
-    #     midlon_array = np.ones((len(lptr))) * -99999.0
-    #     midlat_array = np.ones((len(lptr))) * -99999.0
-    #
-    #     lonv1 = interpolator.lons
-    #     latv1 = interpolator.lats
-    #
-    #     for i in range(0,len(lptr),1):
-    #         n1 = lst[i]-1
-    #         n2 = lst[lptr[i]-1]-1
-    #         if n1 < n2:
-    #             midlonlat, = g.npts(lonv1[n1],latv1[n1],lonv1[n2],latv1[n2], 1 , radians=True )
-    #             midlon_array[i] = midlonlat[0]
-    #             midlat_array[i] = midlonlat[1]
-    #
-    #     valid_points =  np.where(midlon_array != -99999.0 )
-    #
-    #     midlon_array = midlon_array[valid_points[0]]
-    #     midlat_array = midlat_array[valid_points[0]]
-    #
-    #     return midlon_array, midlat_array
 
     def identify_vertex_neighbours(self, vertex):
         """
         Find the neighbour-vertices in the triangulation for the given vertex
-        Searches self.simplices for vertex entries and sorts neighbours
+        (from the data structures of the triangulation)
         """
-        simplices = self.simplices
-        ridx, cidx = np.where(simplices == vertex)
-        neighbour_array = np.unique(np.hstack([simplices[ridx]])).tolist()
-        neighbour_array.remove(vertex)
-        return neighbour_array
+        vertex = self._permutation[vertex]
+
+        lpl = self.lend[vertex-1]
+        lp = lpl
+
+        neighbours = []
+
+        while True:
+            lp = self.lptr[lp-1]
+            neighbours.append(self.lst[lp-1]-1)
+            if (lp == lpl):
+                break
+
+        return self._deshuffle_simplices(neighbours)
 
 
     def identify_vertex_triangles(self, vertices):
@@ -885,7 +768,7 @@ class sTriangulation(object):
             simplices = self.simplices
 
         mids = self.points[simplices].mean(axis=1)
-        mids /= np.sqrt(mids[:,0]**2 + mids[:,1]**2 + mids[:,2]**2 ).reshape(-1,1)
+        mids /= np.linalg.norm(mids, axis=1).reshape(-1,1)
 
         midlons, midlats = xyz2lonlat(mids[:,0], mids[:,1], mids[:,2])
 
@@ -906,7 +789,7 @@ class sTriangulation(object):
         points = self.points
 
         mids = (points[segments[:,0]] + points[segments[:,1]]) * 0.5
-        mids /= np.sqrt(mids[:,0]**2 + mids[:,1]**2 + mids[:,2]**2 ).reshape(-1,1)
+        mids /= np.linalg.norm(mids, axis=1).reshape(-1,1)
 
         lons, lats = xyz2lonlat(mids[:,0], mids[:,1], mids[:,2])
 
@@ -921,10 +804,10 @@ class sTriangulation(object):
         points = self.points
 
         mids1 = ratio * points[segments[:,0]] + (1.0-ratio) * points[segments[:,1]]
-        mids1 /= np.sqrt(mids1[:,0]**2 + mids1[:,1]**2 + mids1[:,2]**2 ).reshape(-1,1)
+        mids1 /= np.linalg.norm(mids1, axis=1).reshape(-1,1)
 
         mids2 = (1.0-ratio) *  points[segments[:,0]] + ratio * points[segments[:,1]]
-        mids2 /= np.sqrt(mids2[:,0]**2 + mids2[:,1]**2 + mids2[:,2]**2 ).reshape(-1,1)
+        mids2 /= np.linalg.norm(mids2, axis=1).reshape(-1,1)
 
         mids = np.vstack((mids1,mids2))
 
@@ -1112,11 +995,12 @@ class sTriangulation(object):
         # identify the segments
 
         p = self._permutation
+        simplices = self.simplices
         segments = []
 
         for index in np.array(triangles).reshape(-1):
-            tri = p[self.simplices[index]]
-            segments.append( min( tuple((tri[0], tri[1])), tuple((tri[0], tri[1]))) )
+            tri = simplices[index]
+            segments.append( min( tuple((tri[0], tri[1])), tuple((tri[1], tri[0]))) )
             segments.append( min( tuple((tri[1], tri[2])), tuple((tri[2], tri[1]))) )
             segments.append( min( tuple((tri[0], tri[2])), tuple((tri[2], tri[0]))) )
 
