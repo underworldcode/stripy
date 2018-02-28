@@ -12,4 +12,4 @@ cd $(dirname "$0")/../..
 
 echo `pwd`
 
-docker build -f Docker/Dockerfile -t lmoresi/stripy:1.05 .
+docker build -f Docker/Dockerfile -t lmoresi/stripy:0.30 .

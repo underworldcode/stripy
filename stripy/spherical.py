@@ -111,7 +111,7 @@ class sTriangulation(object):
      differ between setting permute=True and permute=False,
      however, the node ordering will remain identical.
     """
-    def __init__(self, lons, lats, refinement_levels=0, permute=True, tree=False):
+    def __init__(self, lons, lats, refinement_levels=0, permute=False, tree=False):
 
         # lons, lats = self._check_integrity(lons, lats)
         self.permute = permute
@@ -132,13 +132,21 @@ class sTriangulation(object):
         ip[p[i]] = i
         return p, ip
 
+
+
     def _is_collinear(self, lons, lats):
         """
-        Checks if first three points are collinear
+        Checks if first three points are collinear - in the spherical
+        case this corresponds to all points lying on a great circle
+        and, hence, all coordinate vectors being in a single plane. 
         """
+
         x, y, z = lonlat2xyz(lons[:3], lats[:3])
         pts = np.column_stack([x, y, z])
-        return np.linalg.det(pts.T) == 0.0
+
+        collinearity = (np.linalg.det(pts.T) == 0.0)
+
+        return collinearity
 
 
     def _update_triangulation(self, lons, lats):
@@ -146,6 +154,7 @@ class sTriangulation(object):
         npoints = len(lons)
 
         # Store permutation vectors to shuffle/deshuffle lons and lats
+
         if self.permute:
             p, ip = self._generate_permutation(npoints)
         else:
@@ -157,7 +166,9 @@ class sTriangulation(object):
         lats = lats[p]
 
         # Deal with collinear issue
+
         collinear = self._is_collinear(lons, lats)
+
         if collinear:
             if self.permute:
                 niter = 0
@@ -167,6 +178,7 @@ class sTriangulation(object):
                     lats = lats[p]
                     collinear = self._is_collinear(lons, lats)
                     niter += 1
+
                 if niter >= 5:
                     raise ValueError(_ier_codes[-2])
             else:

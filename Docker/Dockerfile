@@ -15,6 +15,7 @@ RUN apt-get update -qq && \
         xorg-dev \
         libfreetype6-dev \
         libpng-dev \
+        libtiff-dev \
         libxft-dev \
         xvfb \
         freeglut3 \
@@ -26,12 +27,18 @@ RUN apt-get update -qq && \
         swig && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* 
+
+# environment variable will internally run xvfb when glucifer is imported,
+# see /opt/underworld2/glucifer/__init__.py
+
+ENV GLUCIFER_USE_XVFB 1
     
 
 RUN mkdir /python_modules 
 WORKDIR /python_modules
 
 ADD src src
+ADD f77-src f77-src
 ADD stripy stripy
 ADD MANIFEST.in MANIFEST.in
 ADD setup.py setup.py
@@ -69,7 +76,11 @@ RUN pip install lavavu
 #       python setup.py install && \
 #       cd ../..
 
-## Update / build the site
+
+# script for xvfb-run.  all docker commands will effectively run under this via the entrypoint
+RUN printf "#\041/bin/sh \n rm -f /tmp/.X99-lock && xvfb-run -a -s '-screen 0 1600x1200x16' \$@" >> /usr/local/bin/xvfbrun.sh && \
+    chmod +x /usr/local/bin/xvfbrun.sh
+
 
 # Create a non-privileged user to run the notebooks and switch to this user for the server
 
@@ -97,7 +108,13 @@ ADD Docker/scripts/run-jupyter.py run-jupyter.py
 ADD Notebooks Notebooks
 
 EXPOSE 8080
-ENTRYPOINT ["/usr/local/bin/tini", "--"]
+
+
+
+ENTRYPOINT ["/usr/local/bin/tini", "--", "xvfbrun.sh"]
+
+
+# ENTRYPOINT ["/usr/local/bin/tini", "--"]
 
 
 CMD ./run-jupyter.py
@@ -105,8 +122,9 @@ CMD ./run-jupyter.py
 
 # # expose notebook port
 # EXPOSE 8888
-# # expose glucifer port
-# EXPOSE 9999
+
+# expose glucifer port
+EXPOSE 9999
 
 # # add default user jovyan and change permissions on NB_WORK
 # ENV NB_USER jovyan
