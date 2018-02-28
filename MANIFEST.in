@@ -3,6 +3,7 @@ include MANIFEST.in
 include COPYING
 include COPYING.LESSER
 include src/*
+include f77-src/*
 include stripy/__init__.py
 include stripy/cartesian.py
 include stripy/spherical.py
