@@ -30,12 +30,10 @@ RUN apt-get update -qq && \
 
 # environment variable will internally run xvfb when glucifer is imported,
 # see /opt/underworld2/glucifer/__init__.py
-
-ENV GLUCIFER_USE_XVFB 1
     
 
 RUN mkdir /python_modules 
-WORKDIR /python_modules
+WORKDIR   /python_modules
 
 ADD src src
 ADD f77-src f77-src
@@ -45,37 +43,15 @@ ADD setup.py setup.py
 
 RUN python setup.py build && python setup.py install
 
-## This is built entirely on stripy and is a useful learning tool / testing tool
-RUN pip install litho1pt0 
+## litho1pt0 is built entirely on stripy and is a useful learning tool / testing tool
+## but the notebooks are in the source code so should be installed from github as
+## above for stripy.  
+## RUN pip install litho1pt0 
+
+
+# Lavavu visualisation is used in the examples
+RUN pip install --upgrade pip
 RUN pip install lavavu
-
-## These are the build templates etc
-# ADD Data/Reference Data/Reference
-# ADD Data/Modules python_modules
-# ADD mkdocs.yml mkdocs.yml
-# ADD jupyter-server-theme jupyter-server-theme
-# ADD scripts scripts
-# ADD Documentation Documentation
-# ADD Notebooks Notebooks
-# ADD docs docs
-
-# Stripy / Litho1pt0
-
-# RUN cd python_modules && \
-#        tar -xzf litho1pt0.tar.gz && \
-#        tar -xzf stripy.tar.gz && \
-#        cd ..
-
-# RUN cd python_modules/litho1pt0 && \
-#        python setup.py build && \
-#        python setup.py install && \
-#        cd ../..
-
-# RUN cd python_modules/stripy && \
-#       python setup.py build && \
-#       python setup.py install && \
-#       cd ../..
-
 
 # script for xvfb-run.  all docker commands will effectively run under this via the entrypoint
 RUN printf "#\041/bin/sh \n rm -f /tmp/.X99-lock && xvfb-run -a -s '-screen 0 1600x1200x16' \$@" >> /usr/local/bin/xvfbrun.sh && \
@@ -89,6 +65,19 @@ RUN chown -R demon:demon /home/demonstration
 
 WORKDIR /home/demonstration
 
+ADD Docker/scripts/run-jupyter.py run-jupyter.py
+ADD Notebooks/SphericalTriangulations/*.ipynb Notebooks/SphericalTriangulations/
+ADD Notebooks/Data Notebooks/Data
+
+RUN chown -R demon:demon /home/demonstration
+
+# Persistent / Shared space outside the container
+VOLUME /home/demonstration/external
+
+EXPOSE 8080
+
+
+# Now switch to the default user for the container 
 
 USER demon
 ENV HOME=/home/demonstration
@@ -97,58 +86,9 @@ ENV USER=demon
 
 
 
-# Launch the notebook server from the Notebook directory
-# but perhaps there is something else that would do this.
-
-# Persistent / Shared space outside the container
-
-VOLUME /home/demonstration/external
-
-ADD Docker/scripts/run-jupyter.py run-jupyter.py
-ADD Notebooks Notebooks
-
-EXPOSE 8080
-
-
-
 ENTRYPOINT ["/usr/local/bin/tini", "--", "xvfbrun.sh"]
 
-
-# ENTRYPOINT ["/usr/local/bin/tini", "--"]
-
-
 CMD ./run-jupyter.py
-
-
-# # expose notebook port
-# EXPOSE 8888
-
-# expose glucifer port
-EXPOSE 9999
-
-# # add default user jovyan and change permissions on NB_WORK
-# ENV NB_USER jovyan
-# RUN useradd -m -s /bin/bash -N jovyan
-
-# # copy this file over so that no password is required
-# COPY jupyter_notebook_config.json /home/$NB_USER/.jupyter/jupyter_notebook_config.json
-
-# # update all permissions for user
-# RUN chown -R $NB_USER:users $NB_WORK $UW2_DIR /home/$NB_USER
-
-# # CHANGE USER
-# USER $NB_USER
-# ENV PYTHONPATH $PYTHONPATH:$UW2_DIR
-
-# # setup symlink for terminal convenience 
-# RUN ln -s $NB_WORK /home/$NB_USER/
-
-# # create a volume
-# VOLUME $NB_WORK/user_data
-# WORKDIR $NB_WORK
-
-# # launch notebook
-# CMD ["jupyter", "notebook", "--ip='*'", "--no-browser"]
 
 
 
