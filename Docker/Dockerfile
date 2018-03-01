@@ -28,10 +28,6 @@ RUN apt-get update -qq && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* 
 
-# environment variable will internally run xvfb when glucifer is imported,
-# see /opt/underworld2/glucifer/__init__.py
-    
-
 RUN mkdir /python_modules 
 WORKDIR   /python_modules
 
@@ -50,6 +46,7 @@ RUN python setup.py build && python setup.py install
 
 
 # Lavavu visualisation is used in the examples
+
 RUN pip install --upgrade pip
 RUN pip install lavavu
 
@@ -61,15 +58,14 @@ RUN printf "#\041/bin/sh \n rm -f /tmp/.X99-lock && xvfb-run -a -s '-screen 0 16
 # Create a non-privileged user to run the notebooks and switch to this user for the server
 
 RUN useradd --create-home --home-dir /home/demonstration --shell /bin/bash --user-group demon
-RUN chown -R demon:demon /home/demonstration
+RUN chown -R demon:demon /home/demonstration 
 
 WORKDIR /home/demonstration
 
-ADD Docker/scripts/run-jupyter.py run-jupyter.py
-ADD Notebooks/SphericalTriangulations/*.ipynb Notebooks/SphericalTriangulations/
-ADD Notebooks/Data Notebooks/Data
+ADD --chown=demon:demon Docker/scripts/run-jupyter.py run-jupyter.py
+ADD --chown=demon:demon Notebooks/SphericalTriangulations/*.ipynb Notebooks/SphericalTriangulations/
+ADD --chown=demon:demon Notebooks/Data Notebooks/Data
 
-RUN chown -R demon:demon /home/demonstration
 
 # Persistent / Shared space outside the container
 VOLUME /home/demonstration/external
@@ -83,8 +79,6 @@ USER demon
 ENV HOME=/home/demonstration
 ENV SHELL=/bin/bash
 ENV USER=demon
-
-
 
 ENTRYPOINT ["/usr/local/bin/tini", "--", "xvfbrun.sh"]
 

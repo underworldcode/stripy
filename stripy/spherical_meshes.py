@@ -18,13 +18,13 @@ along with Stripy.  If not, see <http://www.gnu.org/licenses/>.
 
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from . import spherical
+from . import spherical as _spherical
 import numpy as np
 
 
 
 
-class icosahedral_mesh(spherical.sTriangulation):
+class icosahedral_mesh(_spherical.sTriangulation):
     """
     An icosahedral triangulated mesh based on the sTriangulation class.
     """
@@ -62,7 +62,7 @@ class icosahedral_mesh(spherical.sTriangulation):
         return
 
 
-class octahedral_mesh(spherical.sTriangulation):
+class octahedral_mesh(_spherical.sTriangulation):
     """
     An octahedral triangulated mesh based on the sTriangulation class
     """
@@ -96,7 +96,7 @@ class octahedral_mesh(spherical.sTriangulation):
         return
 
 
-class triangulated_cube_mesh(spherical.sTriangulation):
+class triangulated_cube_mesh(_spherical.sTriangulation):
     """
     An cube-based triangulated mesh based on the sTriangulation class
     """
@@ -127,7 +127,7 @@ class triangulated_cube_mesh(spherical.sTriangulation):
         return
 
 
-class triangulated_soccerball_mesh(spherical.sTriangulation):
+class triangulated_soccerball_mesh(_spherical.sTriangulation):
     """
     This mesh is inspired by the C60 molecule and the soccerball - a truncated
     icosahedron with mid points added to all pentagon and hexagon faces to create
@@ -154,7 +154,7 @@ class triangulated_soccerball_mesh(spherical.sTriangulation):
 
         return
 
-class random_mesh(spherical.sTriangulation):
+class random_mesh(_spherical.sTriangulation):
     """
     A mesh of random points. Take care if you use this is parallel
     as the location of points will not be the same on all processors
@@ -165,14 +165,14 @@ class random_mesh(spherical.sTriangulation):
         xyz =  np.random.random((number_of_points,3)) * 2.0 - 1.0
         xyz /= np.sqrt(xyz[:,0]**2 + xyz[:,1]**2 + xyz[:,2]**2).reshape(-1,1)
 
-        lon,lat = spherical.xyz2lonlat(xyz[:,0], xyz[:,1], xyz[:,2])
+        lon,lat = _spherical.xyz2lonlat(xyz[:,0], xyz[:,1], xyz[:,2])
 
         super(random_mesh, self).__init__(lons=lon, lats=lat, permute=False, tree=tree)
 
         return
 
 
-class uniform_ring_mesh(spherical.sTriangulation):
+class uniform_ring_mesh(_spherical.sTriangulation):
     """
     A mesh of made of rings to create a roughly gridded, even spacing on
     the sphere. There is a small random component to prevent points lying along the

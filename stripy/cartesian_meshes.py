@@ -18,11 +18,11 @@ along with Stripy.  If not, see <http://www.gnu.org/licenses/>.
 
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from . import cartesian
+from . import cartesian as _cartesian
 import numpy as np
 
 
-class square_mesh(cartesian.Triangulation):
+class square_mesh(_cartesian.Triangulation):
     """
     A square mesh where points are uniformly populated
     along x and y directions defined by extent
@@ -57,7 +57,7 @@ class square_mesh(cartesian.Triangulation):
         return
 
 
-class elliptical_mesh(cartesian.Triangulation):
+class elliptical_mesh(_cartesian.Triangulation):
     """
     An elliptical mesh where points are populated at a radius
     of the midpoint defined by extent
@@ -102,7 +102,7 @@ class elliptical_mesh(cartesian.Triangulation):
         return
 
 
-class random_mesh(cartesian.Triangulation):
+class random_mesh(_cartesian.Triangulation):
     """
     A mesh of random points. Take care if you use this is parallel
     as the location of points will not be the same on all processors
