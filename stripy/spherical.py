@@ -829,8 +829,7 @@ class sTriangulation(object):
 
         return midlls
 
-
-
+ 
     def lons_map_to_wrapped(self, lon):
 
         lons = np.array(lon)
@@ -1169,6 +1168,23 @@ class sTriangulation(object):
 
 ## Helper functions for the module
 
+def remove_duplicate_lonlat(lon, lat):
+    """
+    remove duplicates from an array of lon / lat points
+    """
+
+ 
+     if not unique:
+        a = np.ascontiguousarray(np.vstack((lon, lat)).T)
+        unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
+        llunique = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
+
+        lon1 = llunique[:,0]
+        lat1 = llunique[:,1]
+
+    return lon1, lat1
+
+
 def lonlat2xyz(lon, lat):
     """
     Convert lon / lat (radians) for the spherical triangulation into x,y,z
@@ -1210,7 +1226,6 @@ def dxyz2dlonlat(x,y,z, dfx, dfy, dfz):
 
     Notes
 
-
     """
 
     xs = np.array(x)
@@ -1233,3 +1248,26 @@ def dxyz2dlonlat(x,y,z, dfx, dfy, dfz):
     dlon[valid] = dlon[valid] / corr[valid]
 
     return dlon, dlat
+
+
+def great_circle_Npoints(lonlat1r, lonlat2r, N):
+    """
+    N points along the line joining lonlat1 and lonlat2
+    """ 
+
+    ratio = np.linspace(0.0,1.0, N).reshape(-1,1)
+    
+    
+    xyz1 = stripy.spherical.lonlat2xyz(lonlat1r[0], lonlat1r[1])
+    xyz2 = stripy.spherical.lonlat2xyz(lonlat2r[0], lonlat2r[1])
+    
+    mids = ratio * xyz2 + (1.0-ratio) * xyz1
+    norm = (mids**2).sum(axis=1)
+    xyzN = mids / norm.reshape(-1,1)
+    
+    lonlatN = stripy.spherical.xyz2lonlat( xyzN[:,0], xyzN[:,1], xyzN[:,2])
+    
+    return lonlatN
+
+
+
