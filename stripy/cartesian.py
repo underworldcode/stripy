@@ -53,8 +53,16 @@ class Triangulation(object):
 
     Parameters
     ----------
-     x : 1D array of Cartesian x coordinates
-     y : 1D array of Cartesian y coordinates
+     x       : 1D array of Cartesian x coordinates
+     y       : 1D array of Cartesian y coordinates
+     refinement_levels (int)
+             : refine the number of points in the triangulation
+               (see uniformly_refine_triangulation)
+     permute : (bool) randomises the order of lons and lats to improve
+               triangulation efficiency and eliminate colinearity
+               issues (see notes)
+     tree    : (bool) construct a cKDtree for efficient nearest-
+               neighbour lookup
 
     Attributes
     ----------
@@ -92,14 +100,15 @@ class Triangulation(object):
      as high as O(N**2) if, for example, the nodes are ordered
      on increasing x.
 
-     By default, x and y are randomised on input before
+     If permute=True, x and y are randomised on input before
      they are triangulated. The distribution of triangles will
      differ between setting permute=True and permute=False,
      however, the node ordering will remain identical.
     """
-    def __init__(self, x, y, refinement_levels=0, permute=True):
+    def __init__(self, x, y, refinement_levels=0, permute=False, tree=False):
 
         self.permute = permute
+        self.tree = tree
 
         self._update_triangulation(x, y)
 
@@ -129,40 +138,29 @@ class Triangulation(object):
 
         npoints = len(x)
 
-        # Store permutation vectors to shuffle/deshuffle x and y
+        # Deal with collinear issue
+
         if self.permute:
-            p, ip = self._generate_permutation(npoints)
+            niter = 0
+            ierr = -2
+            while ierr == -2 and niter < 5:
+                p, ip = self._generate_permutation(npoints)
+                x = x[p]
+                y = y[p]
+                lst, lptr, lend, ierr = _tripack.trmesh(x, y)
+                niter += 1
+
+            if niter >= 5:
+                raise ValueError(_ier_codes[-2])
         else:
             p = np.arange(0, npoints)
             ip = p
-            
-
-        x = x[p]
-        y = y[p]
-
-        # Deal with collinear issue
-        collinear = self._is_collinear(x, y)
-        if collinear:
-            if self.permute:
-                niter = 0
-                while collinear and niter < 5:
-                    p, ip = self._generate_permutation(npoints)
-                    x = x[p]
-                    y = y[p]
-                    collinear = self._is_collinear(x, y)
-                    niter += 1
-                if niter >= 5:
-                    raise ValueError(_ier_codes[-2])
-            else:
-                # collinear warning
-                raise ValueError(_ier_codes[-2])
+            lst, lptr, lend, ierr = _tripack.trmesh(x, y)
 
 
         self._permutation = p
         self._invpermutation = ip
 
-
-        lst, lptr, lend, ierr = _tripack.trmesh(x, y)
 
         if ierr > 0:
             raise ValueError('ierr={} in trmesh\n{}'.format(ierr, _ier_codes[9999]))
@@ -187,6 +185,11 @@ class Triangulation(object):
 
         # extract triangle list and convert to zero-based ordering
         self._simplices = ltri.T[:nt] - 1
+
+        ## If scipy is installed, build a KDtree to find neighbour points
+
+        if self.tree:
+            self._build_cKDtree()
 
         return
 
@@ -671,54 +674,6 @@ class Triangulation(object):
         return np.array(triangles).ravel()
 
 
-    def containing_simplex_and_bcc_legacy(self, xi, yi):
-        """
-        Returns the simplices containing (xi,yi)
-        and the local barycentric, normalised coordinates.
-
-        Parameters
-        ----------
-         xi : float / array of floats, shape (l,)
-            Cartesian coordinates in the x direction
-         yi : float / array of floats, shape (l,)
-            Cartesian coordinates in the y direction
-
-        Returns
-        -------
-         bcc : normalised barycentric coordinates
-         tri : simplices containing (xi,yi)
-
-        Notes
-        -----
-         The ordering of the vertices may differ from that stored in
-         self.simplices array but will still be a loop around the simplex.
-        """
-
-        pts = np.column_stack([xi,yi])
-
-        tri = np.empty((pts.shape[0], 3), dtype=np.int) # simplices
-        bcc = np.empty_like(tri, dtype=np.float) # barycentric coords
-
-        M = np.ones((3,3))
-        rhs = np.ones(3)
-
-        for i, pt in enumerate(pts):
-            t = _tripack.trfind(3, pt[0], pt[1], self._x, self._y, self.lst, self.lptr, self.lend)
-            tri[i] = t
-
-            vert = self._points[tri[i] - 1]
-            M[:2] = vert.T
-            rhs[:2] = pt
-
-            bcc[i] = np.linalg.solve(M, rhs)
-
-        tri -= 1 # return to C ordering
-
-        bcc /= bcc.sum(axis=1).reshape(-1,1)
-
-        return bcc, self._deshuffle_simplices(tri)
-
-
     def containing_simplex_and_bcc(self, xi, yi):
         """
         Returns the simplices containing (xi,yi)
@@ -862,9 +817,12 @@ class Triangulation(object):
         """
         Identify the midpoints of every line segment in the triangulation.
         If an array of segments of shape (no_of_segments,2) is given,
-        then the midpoints of only those segments is returned. Note,
-        segments in the array must not be duplicates or the re-triangulation
-        will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).
+        then the midpoints of only those segments is returned.
+
+        Notes
+        -----
+         Segments in the array must not be duplicates or the re-triangulation
+         will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).
         """
 
         if type(segments) == type(None):
@@ -896,7 +854,7 @@ class Triangulation(object):
 
     def convex_hull(self):
         """
-        Find the Convex Hull of the set of x,y points.
+        Find the Convex Hull of the internal set of x,y points.
 
         Returns
         -------
@@ -904,7 +862,7 @@ class Triangulation(object):
             indices corresponding to points on the convex hull
         """
         bnodes, nb, na, nt = _tripack.bnodes(self.lst, self.lptr, self.lend, self.npoints)
-        return bnodes[:nb] - 1
+        return self._deshuffle_simplices(bnodes[:nb] - 1)
 
 
     def areas(self):
@@ -991,8 +949,12 @@ class Triangulation(object):
         """
         return points defining a refined triangulation obtained by bisection of all edges
         in the triangulation that are associated with the triangles in the list
-        of indices provided. Note that triangles are here represented as a single
-        index. The vertices of triangle i are given by self.simplices[i].
+        of indices provided.
+
+        Notes
+        -----
+         The triangles are here represented as a single index.
+         The vertices of triangle i are given by self.simplices[i].
         """
 
         ## Note there should be no duplicates in the list of triangles
@@ -1001,12 +963,11 @@ class Triangulation(object):
 
         # identify the segments
 
+        simplices = self.simplices
         segments = []
 
         for index in np.array(triangles).reshape(-1):
-            tri = self.simplices[index]
-            if self.permute:
-                tri = self._permutation[tri]
+            tri = simplices[index]
             segments.append( min( tuple((tri[0], tri[1])), tuple((tri[0], tri[1]))) )
             segments.append( min( tuple((tri[1], tri[2])), tuple((tri[2], tri[1]))) )
             segments.append( min( tuple((tri[0], tri[2])), tuple((tri[2], tri[0]))) )
@@ -1036,8 +997,11 @@ class Triangulation(object):
         """
         return points defining a refined triangulation obtained by bisection of all edges
         in the triangulation that are associated with the triangles in the list provided.
-        Note that triangles are here represented as a single
-        index. The vertices of triangle i are given by self.simplices[i].
+
+        Notes
+        -----
+         The triangles are here represented as a single index.
+         The vertices of triangle i are given by self.simplices[i].
         """
 
         # Remove duplicates from the list of triangles
@@ -1083,3 +1047,51 @@ class Triangulation(object):
             y_v1 = unique_coords[:,1]
 
         return x_v1, y_v1
+
+
+    def _build_cKDtree(self):
+
+        try:
+            import scipy.spatial
+            self._cKDtree = scipy.spatial._cKDtree(self.points)
+
+        except:
+            self._cKDtree = None
+
+
+    def nearest_vertices(self, x, y, k=1, max_distance=np.inf ):
+        """
+        Query the cKDtree for the nearest neighbours and Euclidean
+        distance from x,y points.
+
+        Returns 0, 0 if a cKDtree has not been constructed
+        (switch tree=True if you need this routine)
+
+        Parameters
+        ----------
+         x : 1D array of Cartesian x coordinates
+         y : 1D array of Cartesian y coordinates
+         k : number of nearest neighbours to return
+             (default: 1)
+         max_distance : maximum Euclidean distance to search
+                        for neighbours (default: inf)
+        
+        Returns
+        -------
+         d    : Euclidean distance between each point and their
+                nearest neighbour(s)
+         vert : vertices of the nearest neighbour(s)
+        """
+
+        if self.tree == False or self.tree == None:
+            return 0, 0
+
+        xy = np.column_stack([x, y])
+
+        dxy, vertices = self._cKDtree.query(xy, k=k, distance_upper_bound=max_distance)
+
+
+        if k == 1:   # force this to be a 2D array
+            vertices = np.reshape(vertices, (-1, 1))
+
+        return dxy, vertices

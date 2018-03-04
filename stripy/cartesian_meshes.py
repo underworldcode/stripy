@@ -48,7 +48,12 @@ class square_mesh(_cartesian.Triangulation):
         x += xscale * (0.5 - np.random.rand(x.size))
         y += yscale * (0.5 - np.random.rand(y.size))
 
-        super(square_mesh, self).__init__(x, y)
+        xy = np.column_stack([x, y])
+
+        ## Randomise the point order for triangulation efficiency
+        np.random.shuffle(xy)
+
+        super(square_mesh, self).__init__(xy[:,0], xy[:,1])
 
         for r in range(0, refinement_levels):
             x, y = self.uniformly_refine_triangulation(faces=False, trisect=False)

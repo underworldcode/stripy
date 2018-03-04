@@ -55,14 +55,14 @@ class sTriangulation(object):
     ----------
      lons    : 1D array of longitudinal coordinates in radians
      lats    : 1D array of latitudinal coordinates in radians
-     refinement_levels
+     refinement_levels (int)
              : refine the number of points in the triangulation
                (see uniformly_refine_triangulation)
-     permute : randomises the order of lons and lats to improve
+     permute : (bool) randomises the order of lons and lats to improve
                triangulation efficiency and eliminate colinearity
                issues (see notes)
-     
-
+     tree    : (bool) construct a cKDtree for efficient nearest-
+               neighbour lookup
 
     Attributes
     ----------
@@ -106,12 +106,12 @@ class sTriangulation(object):
      as high as O(N**2) if, for example, the nodes are ordered
      on increasing latitude.
 
-     By default, lons and lats are randomised on input before
+     if permute=True, lons and lats are randomised on input before
      they are triangulated. The distribution of triangles will
      differ between setting permute=True and permute=False,
      however, the node ordering will remain identical.
     """
-    def __init__(self, lons, lats, refinement_levels=0, permute=True, tree=False):
+    def __init__(self, lons, lats, refinement_levels=0, permute=False, tree=False):
 
         # lons, lats = self._check_integrity(lons, lats)
         self.permute = permute
@@ -126,9 +126,14 @@ class sTriangulation(object):
         return
 
     def _generate_permutation(self, npoints):
+        """
+        Create shuffle and deshuffle vectors
+        """
         i = np.arange(0, npoints)
+        # permutation
         p = np.random.permutation(npoints)
         ip = np.empty_like(p)
+        # inverse permutation
         ip[p[i]] = i
         return p, ip
 
@@ -654,15 +659,24 @@ class sTriangulation(object):
 
     def containing_simplex_and_bcc(self, lons, lats):
         """
-        Returns the simplices containing lons / lats
+        Returns the simplices containing (lons,lats)
         and the local barycentric, normalised coordinates.
 
-        Notes:
-        ------
-        
-        That the ordering
-        of the vertices may differ from that stored in the self.simplices
-        array but will still be a loop around the simplex.
+        Parameters
+        ----------
+         lons : 1D array of longitudinal coordinates in radians
+         lats : 1D array of latitudinal coordinates in radians
+
+        Returns
+        -------
+         bcc  : normalised barycentric coordinates
+         tri  : simplicies containing (lons,lats)
+
+        Notes
+        ----- 
+         That the ordering of the vertices may differ from
+         that stored in the self.simplices array but will
+         still be a loop around the simplex.
         """
 
         pts = np.array(lonlat2xyz(lons,lats)).T
@@ -984,8 +998,12 @@ class sTriangulation(object):
         """
         return points defining a refined triangulation obtained by bisection of all edges
         in the triangulation that are associated with the triangles in the list
-        of indices provided. Note that triangles are here represented as a single
-        index. The vertices of triangle i are given by self.simplices[i].
+        of indices provided.
+
+        Notes
+        -----
+         The triangles are here represented as a single index.
+         The vertices of triangle i are given by self.simplices[i].
         """
 
         ## Note there should be no duplicates in the list of triangles
@@ -994,7 +1012,6 @@ class sTriangulation(object):
 
         # identify the segments
 
-        p = self._permutation
         simplices = self.simplices
         segments = []
 
@@ -1030,8 +1047,11 @@ class sTriangulation(object):
         """
         return points defining a refined triangulation obtained by bisection of all edges
         in the triangulation that are associated with the triangles in the list provided.
-        Note that triangles are here represented as a single
-        index. The vertices of triangle i are given by self.simplices[i].
+
+        Notes
+        -----
+         The triangles are here represented as a single index.
+         The vertices of triangle i are given by self.simplices[i].
         """
 
         # Remove duplicates from the list of triangles
@@ -1091,6 +1111,29 @@ class sTriangulation(object):
 
 
     def nearest_vertices(self, lon, lat, k=1, max_distance=2.0 ):
+        """
+        Query the cKDtree for the nearest neighbours and Euclidean
+        distance from x,y points.
+
+        Returns 0, 0 if a cKDtree has not been constructed
+        (switch tree=True if you need this routine)
+
+        Parameters
+        ----------
+         lon : 1D array of longitudinal coordinates in radians
+         lat : 1D array of latitudinal coordinates in radians
+         k   : number of nearest neighbours to return
+             (default: 1)
+         max_distance
+             : maximum Euclidean distance to search
+               for neighbours (default: 2.0)
+        
+        Returns
+        -------
+         d    : Euclidean distance between each point and their
+                nearest neighbour(s)
+         vert : vertices of the nearest neighbour(s)
+        """
 
         if self.tree == False or self.tree == None:
             return 0, 0
