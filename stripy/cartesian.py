@@ -185,6 +185,8 @@ class Triangulation(object):
 
         # extract triangle list and convert to zero-based ordering
         self._simplices = ltri.T[:nt] - 1
+        area = self.areas()
+        self._simplices = self._simplices[area > 0.0]
 
         ## If scipy is installed, build a KDtree to find neighbour points
 
@@ -867,7 +869,7 @@ class Triangulation(object):
 
     def areas(self):
         """
-        Compute the area each triangle within the triangulation of points.
+        Compute the area of each triangle within the triangulation of points.
 
         Returns
         -------
@@ -926,7 +928,6 @@ class Triangulation(object):
                 x_v1, y_v1 = self._add_midpoints()
             else:
                 x_v1, y_v1 = self._add_tripoints(ratio=0.333333)
-
 
         return x_v1, y_v1
 
@@ -1095,3 +1096,14 @@ class Triangulation(object):
             vertices = np.reshape(vertices, (-1, 1))
 
         return dxy, vertices
+
+
+def remove_duplicates(vector_tuple):
+    """
+    Remove duplicates rows from N equally-sized arrays
+    """
+    array = np.column_stack(vector_tuple)
+    a = np.ascontiguousarray(array)
+    unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
+    b = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
+    return list(b.T)

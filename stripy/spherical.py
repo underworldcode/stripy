@@ -1173,8 +1173,8 @@ def remove_duplicate_lonlat(lon, lat):
     remove duplicates from an array of lon / lat points
     """
 
- 
-     if not unique:
+
+    if not unique:
         a = np.ascontiguousarray(np.vstack((lon, lat)).T)
         unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
         llunique = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
