@@ -885,6 +885,24 @@ class Triangulation(object):
         return area
 
 
+    def edge_lengths(self):
+        """
+        Compute the edge-lengths of each triangle in the triangulation.
+        """
+        simplex = self.simplices.T
+
+        # simplex is vectors a, b, c defining the corners
+        a = self.points[simplex[0]]
+        b = self.points[simplex[1]]
+        c = self.points[simplex[2]]
+        
+        # norm to calculate length
+        ab = np.linalg.norm(b - a, axis=1)
+        bc = np.linalg.norm(c - a, axis=1)
+        ac = np.linalg.norm(a - c, axis=1)
+
+        return ab, bc, ac
+
 
     def _add_midpoints(self):
 

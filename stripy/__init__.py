@@ -14,7 +14,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with Stripy.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from spherical import sTriangulation
-from cartesian import Triangulation
-import spherical_meshes
-import cartesian_meshes
+from .spherical import sTriangulation
+from .cartesian import Triangulation
+from . import spherical_meshes
+from . import cartesian_meshes
