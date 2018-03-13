@@ -416,10 +416,13 @@ class Triangulation(object):
         -------
          zi    : float / array of floats, shape (l,)
                 interpolates value(s) at (xi, yi)
+         err   : int / array of ints, shape (l,)
+                whether interpolation (0), extrapolation (1) or error (other)
         """
 
         if order == 0:
-            return self.interpolate_nearest(xi, yi, zdata)
+            zierr = np.zeros_like(xi, dtype=np.int)
+            return self.interpolate_nearest(xi, yi, zdata), zierr
         elif order == 1:
             return self.interpolate_linear(xi, yi, zdata)
         elif order == 3:
@@ -475,28 +478,30 @@ class Triangulation(object):
         -------
          zi : float / array of floats, shape (l,)
             interpolated value(s) of (xi,yi)
+         err : int / array of ints, shape (l,)
+            whether interpolation (0), extrapolation (1) or error (other)
         """
 
         if zdata.size != self.npoints:
             raise ValueError('zdata should be same size as mesh')
 
-        n  = np.array(xi).size
-        xi = np.array(xi).reshape(n)
-        yi = np.array(yi).reshape(n)
-        zi = np.empty(n)
+        xi = np.array(xi)
+        yi = np.array(yi)
+
+        size = xi.size
+
+        zi = np.empty(size)
+        zierr = np.empty(size, dtype=np.int)
 
         zdata = self._shuffle_field(zdata)
 
         # iterate
-        for i in range(0, n):
+        for i in range(0, size):
             ist = np.abs(self._x - xi[i]).argmin() + 1
-            zi[i], t = _srfpack.intrc0(xi[i], yi[i], self._x, self._y, zdata,\
+            zi[i], zierr[i] = _srfpack.intrc0(xi[i], yi[i], self._x, self._y, zdata,\
                                        self.lst, self.lptr, self.lend, ist)
 
-        if n > 1:
-            return zi
-        else:
-            return zi[0]
+        return zi, zierr
 
 
     def interpolate_cubic(self, xi, yi, zdata, gradz=None, derivatives=False):
@@ -524,6 +529,8 @@ class Triangulation(object):
         -------
          zi : float / array of floats, shape (l,)
             interpolated value(s) of (xi,yi)
+         err : int / array of ints, shape (l,)
+            whether interpolation (0), extrapolation (1) or error (other)
          dzx, dzy (optional) : float, array of floats, shape(l,)
             first partial derivatives in x and y direction at (xi,yi)
         """
@@ -543,33 +550,29 @@ class Triangulation(object):
         dflag = 1
         sigma = 0.0
 
-        n  = np.array(xi).size
-        xi = np.array(xi).reshape(n)
-        yi = np.array(yi).reshape(n)
-        zi = np.empty(n)
-        dzx = np.empty(n)
-        dzy = np.empty(n)
+        
+        xi = np.array(xi)
+        yi = np.array(yi)
+
+        size = xi.size
+
+        zi = np.empty(size)
+        dzx = np.empty(size)
+        dzy = np.empty(size)
+        zierr = np.empty(size, dtype=np.int)
 
         gradZ = np.vstack([gradX, gradY])
         zdata = self._shuffle_field(zdata)
 
-        for i in range(0, n):
+        for i in range(0, size):
             ist = np.abs(self._x - xi[i]).argmin() + 1
-            zi[i], dzx[i], dzy[i], ierr = _srfpack.intrc1(xi[i], yi[i], self._x, self._y, zdata,\
+            zi[i], dzx[i], dzy[i], zierr[i] = _srfpack.intrc1(xi[i], yi[i], self._x, self._y, zdata,\
                                self.lst, self.lptr, self.lend, iflgs, sigma, gradZ, dflag, ist)
 
-        if ierr < 0:
-            raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
-
-        if n == 1:
-            zi = zi[0]
-            dzx = dzx[0]
-            dzy = dzy[0]
-
         if derivatives:
-            return zi, (dzx, dzy)
+            return zi, zierr, (dzx, dzy)
         else:
-            return zi
+            return zi, zierr
 
 
     def neighbour_simplices(self):
@@ -1072,7 +1075,7 @@ class Triangulation(object):
 
         try:
             import scipy.spatial
-            self._cKDtree = scipy.spatial._cKDtree(self.points)
+            self._cKDtree = scipy.spatial.cKDTree(self.points)
 
         except:
             self._cKDtree = None

@@ -62,8 +62,8 @@ def test_interpolation(mesh):
 
     # Stripy
     zn1 = mesh.interpolate_nearest(xi, yi, Z)
-    zl1 = mesh.interpolate_linear(xi, yi, Z)
-    zc1 = mesh.interpolate_cubic(xi, yi, Z)
+    zl1, err = mesh.interpolate_linear(xi, yi, Z)
+    zc1, err = mesh.interpolate_cubic(xi, yi, Z)
 
     # cKDTree
     tree = interpolate.NearestNDInterpolator((x,y), Z)
