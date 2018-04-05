@@ -1,3 +1,4 @@
+from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
 
 # interface for Renka's algorithm 772 fortran code
@@ -19,6 +20,10 @@ if __name__ == "__main__":
           description       = "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere",
           ext_modules       = [ext1, ext2, ext3, ext4],
           packages          = ['stripy'],
+          package_data      = {'stripy': ['Notebooks/CartesianTriangulations/*ipynb',  # Worked Examples is not currently used
+                                          'Notebooks/SphericalTriangulations/*ipynb',
+                                          'Notebooks/Data/*'] },
+          include_package_data = True,
           classifiers       = ['Programming Language :: Python :: 2',
                                'Programming Language :: Python :: 2.6',
                                'Programming Language :: Python :: 2.7',
