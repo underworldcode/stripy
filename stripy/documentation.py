@@ -20,8 +20,12 @@ import pkg_resources as _pkg_resources
 from distutils import dir_util as _dir_util
 
 
-def install_documentation(path):
-    """Install the example notebooks for stripy at the location pointed to by the given Notebooks_Path
+def install_documentation(path="./Stripy-Notebooks"):
+    """Install the example notebooks for stripy in the given location
+
+    WARNING: If the path exists, the Notebook files will be written into the path
+    and will overwrite any existing files with which they collide. The default
+    path ("./Stripy-Notebooks") is chosen to make collision less likely / problematic
 
     The documentation for stripy is in the form of jupyter notebooks.
 
@@ -41,7 +45,7 @@ def install_documentation(path):
     ## Question - overwrite or not ? shutils fails if directory exists.
 
     Notebooks_Path = _pkg_resources.resource_filename('stripy', 'Notebooks')
-    
+
     ct = _dir_util.copy_tree(Notebooks_Path, path,preserve_mode=1, preserve_times=1, preserve_symlinks=1, update=0, verbose=1, dry_run=0)
 
     return

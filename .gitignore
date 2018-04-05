@@ -1,15 +1,12 @@
-build
+
 *.so*
 *checkpoint.ipynb
 *.png
 
-stripy.egg-info/*
-
-
 swpcom.mod
 
-dist/stripy-0.2.0.tar.gz
+build/*
+dist/*
 
-dist/stripy-0.3.0.tar.gz
-
+stripy.egg-info/*
 *.egg
