@@ -1221,6 +1221,9 @@
       ENDIF
       RETURN
       END
+
+
+
       SUBROUTINE GRADG (N,X,Y,Z,F,LIST,LPTR,LEND,IFLGS,&
      &                  SIGMA, NIT,DGMAX,GRAD, IER)
       INTEGER N, LIST(*), LPTR(*), LEND(N), IFLGS, NIT, IER

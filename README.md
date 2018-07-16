@@ -6,16 +6,16 @@ This package was inspired by Jeffrey Whittaker's [implementation](https://github
 
 ## Installation
 
-To install ([numpy](http://numpy.org) and fortran compiler, preferably 
+To install ([numpy](http://numpy.org) and fortran compiler, preferably
 [gfortran](https://gcc.gnu.org/wiki/GFortran), required):
 
 ```bash
 python setup.py build
 ```
-   - If you change the fortran compiler, you may have to add the 
+   - If you change the fortran compiler, you may have to add the
 flags `config_fc --fcompiler=<compiler name>` when setup.py is run
 (see docs for [numpy.distutils](http://docs.scipy.org/doc/numpy-dev/f2py/distutils.html)).
-```bash 
+```bash
 python setup.py install
 ```
 
@@ -32,8 +32,8 @@ Two classes are included as part of the Stripy package:
 - sTriangulation (Spherical coordinates)
 - Triangulation (Cartesian coordinates)
 
-These classes share similar methods and can be easily interchanged. 
-In addition, there are many helper functions provided for building 
+These classes share similar methods and can be easily interchanged.
+In addition, there are many helper functions provided for building
 
 A series of tests are located in the *tests* subdirectory.
 
@@ -41,7 +41,7 @@ A series of tests are located in the *tests* subdirectory.
 
 To build the dockerfile run the following from the home stripy directory
 
-```bash 
+```bash
 source ./Docker/scripts/build-base-dockerfile.sh`
 ```
 
@@ -51,7 +51,8 @@ Then either run this from the kitematic gui or using
 docker run -P -i lmoresi/stripy:0.30
 ```
 
-This will serve the jupyter notebook browser on a free port. Kitematic should provide a preview that can be clicked to open the demonstration notebooks in a browser.
+This will serve the jupyter notebook browser on a free port.
+Kitematic should provide a preview that can be clicked to open the demonstration notebooks in a browser.
 
 
 ## References

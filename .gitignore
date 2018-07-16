@@ -1,4 +1,6 @@
+*.pyc
 
+__pycache__
 *.so*
 *checkpoint.ipynb
 *.png
@@ -10,3 +12,6 @@ dist/*
 
 stripy.egg-info/*
 *.egg
+
+src/_*module.c
+src/_*wrappers.f

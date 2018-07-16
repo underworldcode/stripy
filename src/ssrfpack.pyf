@@ -1,7 +1,7 @@
 !    -*- f77 -*-
 ! Note: the context of this file is case sensitive.
 
-python module _ssrfpack ! in 
+python module _ssrfpack ! in
     interface  ! in :_ssrfpack
 !        subroutine aplyr(x,y,z,cx,sx,cy,sy,xp,yp,zp) ! in :_ssrfpack:ssrfpack.f
 !            real :: x
@@ -268,6 +268,10 @@ python module _ssrfpack ! in
 !            real dimension(3,n),depend(n) :: grad
 !            integer :: ier
 !        end subroutine smsgs
+
+
+
+
         subroutine smsurf(n,x,y,z,u,list,lptr,lend,iflgs,sigma,w,sm,smtol,gstol,lprnt,f,grad,ier) ! in :_ssrfpack:ssrfpack.f
             integer, depend(x), intent(hide) :: n=len(x)
             real dimension(n), intent(in) :: x
@@ -288,6 +292,9 @@ python module _ssrfpack ! in
             real dimension(3,n), intent(out) :: grad
             integer, intent(out) :: ier
         end subroutine smsurf
+
+
+        
 !        subroutine snhcsh(x,sinhm,coshm,coshmm) ! in :_ssrfpack:ssrfpack.f
 !            real :: x
 !            real :: sinhm
@@ -315,7 +322,7 @@ python module _ssrfpack ! in
 !            real dimension(nrow,nj),depend(nj) :: ff
 !            integer :: ier
 !        end subroutine unif
-    end interface 
+    end interface
 end python module _ssrfpack
 
 ! This file was auto-generated with f2py (version:2).

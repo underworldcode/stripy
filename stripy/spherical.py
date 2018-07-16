@@ -143,7 +143,7 @@ class sTriangulation(object):
         """
         Checks if first three points are collinear - in the spherical
         case this corresponds to all points lying on a great circle
-        and, hence, all coordinate vectors being in a single plane. 
+        and, hence, all coordinate vectors being in a single plane.
         """
 
         x, y, z = lonlat2xyz(lons[:3], lats[:3])
@@ -463,7 +463,7 @@ class sTriangulation(object):
                   F, FX, and FY are the values and partials of a linear function \
                   which minimizes Q2(F), and Q1 = 0.")
         if ierr == 2:
-            raise RuntimeWarning("if the constraint could not be satisfied to within SMTOL\
+            raise RuntimeWarning("The constraint could not be satisfied to within SMTOL\
                   due to ill-conditioned linear systems.")
 
         return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2])
@@ -596,8 +596,8 @@ class sTriangulation(object):
         Notes
         -----
          Faster searches can be obtained using a k-d tree.
-         See sTriangulation.nearest_vertices() for details. 
-         There is an additional overhead associated with building and storing the k-d tree. 
+         See sTriangulation.nearest_vertices() for details.
+         There is an additional overhead associated with building and storing the k-d tree.
 
         """
 
@@ -673,7 +673,7 @@ class sTriangulation(object):
          tri  : simplicies containing (lons,lats)
 
         Notes
-        ----- 
+        -----
          That the ordering of the vertices may differ from
          that stored in the self.simplices array but will
          still be a loop around the simplex.
@@ -829,7 +829,7 @@ class sTriangulation(object):
 
         return midlls
 
- 
+
     def lons_map_to_wrapped(self, lon):
 
         lons = np.array(lon)
@@ -907,28 +907,23 @@ class sTriangulation(object):
 
         return ab, bc, ac
 
-    def angular_separation(self, p1, p2):
+    def angular_separation(self, lonp1, latp1, lonp2, latp2):
         """
         Compute the angles between lon / lat points p1 and p2 given in radians.
         On the unit sphere, this also corresponds to the great circle distance.
         p1 and p2 can be numpy arrays of the same length.
         """
 
-        xp1 = lonlat2xyz(p1)
-        xp2 = lonlat2xyz(p2)
-
+        xp1, yp1, zp1 = lonlat2xyz(lonp1, latp1)
+        xp2, yp2, zp2 = lonlat2xyz(lonp2, latp2)
 
         ## dot products to obtain angles
 
-        angles = np.arccos((xp1 * xp2).sum(axis=1))
+        angles = np.arccos((xp1 * xp2 + yp1 * yp2 + zp1 * zp2))
 
         ## As this is a unit sphere, angle = length
 
         return angles
-
-
-
-
 
     def _add_spherical_midpoints(self):
 
@@ -1126,7 +1121,7 @@ class sTriangulation(object):
          max_distance
              : maximum Euclidean distance to search
                for neighbours (default: 2.0)
-        
+
         Returns
         -------
          d    : Euclidean distance between each point and their
@@ -1223,7 +1218,6 @@ def dxyz2dlonlat(x,y,z, dfx, dfy, dfz):
     Take stripack df/dx, df/dy, df/dz format and convert to
     surface gradients df/dlon, df/dlat
 
-
     Notes
 
     """
@@ -1253,21 +1247,18 @@ def dxyz2dlonlat(x,y,z, dfx, dfy, dfz):
 def great_circle_Npoints(lonlat1r, lonlat2r, N):
     """
     N points along the line joining lonlat1 and lonlat2
-    """ 
+    """
 
     ratio = np.linspace(0.0,1.0, N).reshape(-1,1)
-    
-    
-    xyz1 = stripy.spherical.lonlat2xyz(lonlat1r[0], lonlat1r[1])
-    xyz2 = stripy.spherical.lonlat2xyz(lonlat2r[0], lonlat2r[1])
-    
+
+
+    xyz1 = lonlat2xyz(lonlat1r[0], lonlat1r[1])
+    xyz2 = lonlat2xyz(lonlat2r[0], lonlat2r[1])
+
     mids = ratio * xyz2 + (1.0-ratio) * xyz1
     norm = (mids**2).sum(axis=1)
     xyzN = mids / norm.reshape(-1,1)
-    
-    lonlatN = stripy.spherical.xyz2lonlat( xyzN[:,0], xyzN[:,1], xyzN[:,2])
-    
+
+    lonlatN = xyz2lonlat( xyzN[:,0], xyzN[:,1], xyzN[:,2])
+
     return lonlatN
-
-
-

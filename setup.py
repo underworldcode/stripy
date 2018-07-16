@@ -1,3 +1,18 @@
+## To install locally: python setup.py build && python setup.py install
+## (If there are problems with installation of the documentation, it may be that
+##  the egg file is out of sync and will need to be manually deleted - see error message
+##  for details of the corrupted zip file. )
+##
+## To push a version through to pip.
+##  - Make sure it installs correctly locally as above
+##  - Update the version information in this file
+##  - python setup.py sdist upload -r pypitest  # for the test version
+##  - python setup.py sdist upload -r pypi      # for the real version
+##
+## (see http://peterdowns.com/posts/first-time-with-pypi.html)
+
+
+
 from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
 
@@ -16,7 +31,7 @@ if __name__ == "__main__":
           author            = "Louis Moresi",
           author_email      = "louis.moresi@unimelb.edu.au",
           url               = "https://github.com/University-of-Melbourne-Geodynamics/stripy",
-          version           = "0.3.0",
+          version           = "0.5.0",
           description       = "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere",
           ext_modules       = [ext1, ext2, ext3, ext4],
           packages          = ['stripy'],

@@ -48,7 +48,7 @@ class Triangulation(object):
     ---------
      R. J. Renka (1996), Algorithm 751; TRIPACK: a constrained two-
      dimensional Delaunay triangulation package,
-     ACM Trans. Math. Softw., 22(1), pp 1–8,
+     ACM Trans. Math. Softw., 22(1), pp 1-8,
      doi:10.1145/225545.225546.
 
     Parameters
@@ -550,7 +550,7 @@ class Triangulation(object):
         dflag = 1
         sigma = 0.0
 
-        
+
         xi = np.array(xi)
         yi = np.array(yi)
 
@@ -715,7 +715,7 @@ class Triangulation(object):
             v0 = vert[1] - vert[0]
             v1 = vert[2] - vert[0]
             v2 = pt - vert[0]
-            
+
             d00 = v0.dot(v0)
             d01 = v0.dot(v1)
             d11 = v1.dot(v1)
@@ -898,7 +898,7 @@ class Triangulation(object):
         a = self.points[simplex[0]]
         b = self.points[simplex[1]]
         c = self.points[simplex[2]]
-        
+
         # norm to calculate length
         ab = np.linalg.norm(b - a, axis=1)
         bc = np.linalg.norm(c - a, axis=1)
@@ -1097,7 +1097,7 @@ class Triangulation(object):
              (default: 1)
          max_distance : maximum Euclidean distance to search
                         for neighbours (default: inf)
-        
+
         Returns
         -------
          d    : Euclidean distance between each point and their

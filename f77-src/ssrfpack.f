@@ -4074,6 +4074,11 @@ C
    11 SIG2 = -1.
       RETURN
       END
+
+
+
+
+
       SUBROUTINE SMSGS (N,X,Y,Z,U,LIST,LPTR,LEND,IFLGS,
      .                  SIGMA,W,P, NIT,DFMAX,F,GRAD, IER)
       INTEGER N, LIST(*), LPTR(*), LEND(N), IFLGS, NIT, IER

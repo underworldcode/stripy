@@ -1,7 +1,7 @@
 FROM lmoresi/unimelb-debian-python:1.05
 
 ## =============================================================
-## 
+##
 ## Docker file to test / run stripy (including litho1pt0 that depends
 ## on stripy and can be used as a testing platform)
 ##
@@ -26,9 +26,9 @@ RUN apt-get update -qq && \
         python-tk \
         swig && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* 
+    rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /python_modules 
+RUN mkdir /python_modules
 WORKDIR   /python_modules
 
 ADD src src
@@ -41,8 +41,8 @@ RUN python setup.py build && python setup.py install
 
 ## litho1pt0 is built entirely on stripy and is a useful learning tool / testing tool
 ## but the notebooks are in the source code so should be installed from github as
-## above for stripy.  
-## RUN pip install litho1pt0 
+## above for stripy.
+## RUN pip install litho1pt0
 
 
 # Lavavu visualisation is used in the examples
@@ -58,7 +58,7 @@ RUN printf "#\041/bin/sh \n rm -f /tmp/.X99-lock && xvfb-run -a -s '-screen 0 16
 # Create a non-privileged user to run the notebooks and switch to this user for the server
 
 RUN useradd --create-home --home-dir /home/demonstration --shell /bin/bash --user-group demon
-RUN chown -R demon:demon /home/demonstration 
+RUN chown -R demon:demon /home/demonstration
 
 WORKDIR /home/demonstration
 
@@ -73,7 +73,7 @@ VOLUME /home/demonstration/external
 EXPOSE 8080
 
 
-# Now switch to the default user for the container 
+# Now switch to the default user for the container
 
 USER demon
 ENV HOME=/home/demonstration
@@ -83,11 +83,3 @@ ENV USER=demon
 ENTRYPOINT ["/usr/local/bin/tini", "--", "xvfbrun.sh"]
 
 CMD ./run-jupyter.py
-
-
-
-
-
-
-
-
