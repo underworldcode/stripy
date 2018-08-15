@@ -393,7 +393,7 @@ class sTriangulation(object):
         if f.size != self.npoints:
             raise ValueError('f should be the same size as mesh')
 
-        gradient = np.zeros((3,self.npoints), order='F', dtype=np.float32)
+        # gradient = np.zeros((3,self.npoints), order='F', dtype=np.float32)
         sigma = 0
         iflgs = 0
 
@@ -401,15 +401,15 @@ class sTriangulation(object):
 
         ierr = 1
         while ierr == 1:
-            ierr = _ssrfpack.gradg(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
-                                   iflgs, sigma, nit, tol, gradient)
+            grad, ierr = _ssrfpack.gradg(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
+                                   iflgs, sigma, nit, tol)
             if not guarantee_convergence:
                 break
 
         if ierr < 0:
             raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
 
-        return self._deshuffle_field(gradient[0], gradient[1], gradient[2])
+        return self._deshuffle_field(grad[0], grad[1], grad[2])
 
 
     def smoothing(self, f, w, sm, smtol, gstol):

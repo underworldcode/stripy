@@ -101,9 +101,9 @@ python module _ssrfpack ! in
             integer dimension(n) :: lend
             integer, intent(in) :: iflgs
             real dimension(*), intent(in) :: sigma
-            integer, intent(in,out) :: nit
-            real, intent(in,out) :: dgmax
-            real dimension(3,n), intent(in,out) :: grad
+            integer, intent(in) :: nit
+            real, intent(in) :: dgmax
+            real dimension(3,n), intent(out) :: grad
             integer, intent(out) :: ier
         end subroutine gradg
         subroutine gradl(n,k,x,y,z,w,list,lptr,lend,g,ier) ! in :_ssrfpack:ssrfpack.f
@@ -294,7 +294,7 @@ python module _ssrfpack ! in
         end subroutine smsurf
 
 
-        
+
 !        subroutine snhcsh(x,sinhm,coshm,coshmm) ! in :_ssrfpack:ssrfpack.f
 !            real :: x
 !            real :: sinhm

@@ -31,7 +31,7 @@ if __name__ == "__main__":
           author            = "Louis Moresi",
           author_email      = "louis.moresi@unimelb.edu.au",
           url               = "https://github.com/University-of-Melbourne-Geodynamics/stripy",
-          version           = "0.5.0",
+          version           = "0.5.1",
           description       = "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere",
           ext_modules       = [ext1, ext2, ext3, ext4],
           packages          = ['stripy'],
