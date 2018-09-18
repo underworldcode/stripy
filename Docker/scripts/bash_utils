@@ -1,0 +1,9 @@
+#! /usr/bin/env bash
+
+
+# Template file make these substitutions:
+
+# For some reason this messes with line endings
+
+envsubst '${IMAGENAME},${PROJ_NAME}' < /usr/local/files/bash_utils_template.sh > /usr/local/files/bash_utils.sh
+cat /usr/local/files/bash_utils.sh > /dev/stdout

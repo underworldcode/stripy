@@ -1,0 +1,4 @@
+include pycrust/__init__.py
+include pycrust/data/*.npz
+include Notebooks/Ex*.ipynb
+recursive-include tests *

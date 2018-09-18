@@ -1,0 +1,13 @@
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+litho1pt0/__init__.py
+litho1pt0/documentation.py
+litho1pt0.egg-info/PKG-INFO
+litho1pt0.egg-info/SOURCES.txt
+litho1pt0.egg-info/dependency_links.txt
+litho1pt0.egg-info/requires.txt
+litho1pt0.egg-info/top_level.txt
+litho1pt0/data/Crust1pt0-regionalisation.npz
+litho1pt0/data/litho_data.npz

@@ -10,8 +10,12 @@ swpcom.mod
 build/*
 dist/*
 
+
 stripy.egg-info/*
 *.egg
 
 src/_*module.c
 src/_*wrappers.f
+
+.local
+.ipython

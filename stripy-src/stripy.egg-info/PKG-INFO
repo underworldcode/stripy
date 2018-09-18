@@ -1,0 +1,18 @@
+Metadata-Version: 1.1
+Name: stripy
+Version: 0.5.1
+Summary: Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere
+Home-page: https://github.com/University-of-Melbourne-Geodynamics/stripy
+Author: Louis Moresi
+Author-email: louis.moresi@unimelb.edu.au
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6

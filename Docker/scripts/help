@@ -1,0 +1,6 @@
+#! /usr/bin/env bash
+
+## This is slightly prettier / easier than the markdown version
+
+envsubst '${IMAGENAME},${PROJ_NAME}' < /usr/local/files/help_template.txt > /usr/local/files/help.txt
+cat /usr/local/files/help.txt

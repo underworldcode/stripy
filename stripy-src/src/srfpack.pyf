@@ -1,0 +1,481 @@
+!    -*- f77 -*-
+! Note: the context of this file is case sensitive.
+
+python module _srfpack ! in 
+    interface  ! in :_srfpack
+!        subroutine arcint(b,x1,x2,y1,y2,h1,h2,hx1,hx2,hy1,hy2,sigma,dflag,hp,hxp,hyp,ier) ! in :_srfpack:srfpack.f
+!            real :: b
+!            real :: x1
+!            real :: x2
+!            real :: y1
+!            real :: y2
+!            real :: h1
+!            real :: h2
+!            real :: hx1
+!            real :: hx2
+!            real :: hy1
+!            real :: hy2
+!            real :: sigma
+!            logical :: dflag
+!            real :: hp
+!            real :: hxp
+!            real :: hyp
+!            integer :: ier
+!        end subroutine arcint
+!        subroutine cntour(nx,ny,x,y,z,cval,lc,ncmax,iwk,xc,yc,ilc,nc,ier) ! in :_srfpack:srfpack.f
+!            integer, optional,check(len(x)>=nx),depend(x) :: nx=len(x)
+!            integer, optional,check(len(y)>=ny),depend(y) :: ny=len(y)
+!            real dimension(nx) :: x
+!            real dimension(ny) :: y
+!            real dimension(nx,ny),depend(nx,ny) :: z
+!            real :: cval
+!            integer, optional,check(len(xc)>=lc),depend(xc) :: lc=len(xc)
+!            integer, optional,check(len(ilc)>=ncmax),depend(ilc) :: ncmax=len(ilc)
+!            integer dimension(nx,*),depend(nx) :: iwk
+!            real dimension(lc) :: xc
+!            real dimension(lc),depend(lc) :: yc
+!            integer dimension(ncmax) :: ilc
+!            integer :: nc
+!            integer :: ier
+!        end subroutine cntour
+!        subroutine coords(xp,yp,x1,x2,x3,y1,y2,y3,b1,b2,b3,ier) ! in :_srfpack:srfpack.f
+!            real :: xp
+!            real :: yp
+!            real :: x1
+!            real :: x2
+!            real :: x3
+!            real :: y1
+!            real :: y2
+!            real :: y3
+!            real :: b1
+!            real :: b2
+!            real :: b3
+!            integer :: ier
+!        end subroutine coords
+!        subroutine crplot(lun,pltsiz,nx,ny,px,py,pz,ncon,iwk,xc,yc,ier) ! in :_srfpack:srfpack.f
+!            integer :: lun
+!            real :: pltsiz
+!            integer, optional,check(len(px)>=nx),depend(px) :: nx=len(px)
+!            integer, optional,check(len(py)>=ny),depend(py) :: ny=len(py)
+!            real dimension(nx) :: px
+!            real dimension(ny) :: py
+!            real dimension(nx,ny),depend(nx,ny) :: pz
+!            integer :: ncon
+!            integer dimension(*) :: iwk
+!            real dimension(*) :: xc
+!            real dimension(*) :: yc
+!            integer :: ier
+!        end subroutine crplot
+!        subroutine fval(xp,yp,x1,x2,x3,y1,y2,y3,f1,f2,f3,fx1,fx2,fx3,fy1,fy2,fy3,sig1,sig2,sig3,fp,ier) ! in :_srfpack:srfpack.f
+!            real :: xp
+!            real :: yp
+!            real :: x1
+!            real :: x2
+!            real :: x3
+!            real :: y1
+!            real :: y2
+!            real :: y3
+!            real :: f1
+!            real :: f2
+!            real :: f3
+!            real :: fx1
+!            real :: fx2
+!            real :: fx3
+!            real :: fy1
+!            real :: fy2
+!            real :: fy3
+!            real :: sig1
+!            real :: sig2
+!            real :: sig3
+!            real :: fp
+!            integer :: ier
+!        end subroutine fval
+!        subroutine getsig(n,x,y,h,list,lptr,lend,hxhy,tol,sigma,dsmax,ier) ! in :_srfpack:srfpack.f
+!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real dimension(n) :: x
+!            real dimension(n),depend(n) :: y
+!            real dimension(n),depend(n) :: h
+!            integer dimension(*) :: list
+!            integer dimension(*) :: lptr
+!            integer dimension(n),depend(n) :: lend
+!            real dimension(2,n),depend(n) :: hxhy
+!            real :: tol
+!            real dimension(*) :: sigma
+!            real :: dsmax
+!            integer :: ier
+!        end subroutine getsig
+!        subroutine givens(a,b,c,s) ! in :_srfpack:srfpack.f
+!            real :: a
+!            real :: b
+!            real :: c
+!            real :: s
+!        end subroutine givens
+!        subroutine gradc(k,ncc,lcc,n,x,y,z,list,lptr,lend,dx,dy,dxx,dxy,dyy,ier) ! in :_srfpack:srfpack.f
+!            integer :: k
+!            integer :: ncc
+!            integer dimension(*) :: lcc
+!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real dimension(n) :: x
+!            real dimension(n),depend(n) :: y
+!            real dimension(n),depend(n) :: z
+!            integer dimension(*) :: list
+!            integer dimension(*) :: lptr
+!            integer dimension(n),depend(n) :: lend
+!            real :: dx
+!            real :: dy
+!            real :: dxx
+!            real :: dxy
+!            real :: dyy
+!            integer :: ier
+!        end subroutine gradc
+        subroutine gradg(ncc,lcc,n,x,y,z,list,lptr,lend,iflgs,sigma,nit,dgmax,grad,ier) ! in :_srfpack:srfpack.f
+            integer, optional :: ncc=0
+            integer dimension(ncc+1), optional :: lcc
+            integer, depend(x), intent(hide) :: n=len(x)
+            real dimension(n), intent(in) :: x
+            real dimension(n), intent(in) :: y
+            real dimension(n), intent(in) :: z
+            integer dimension(6*n-12), intent(in) :: list
+            integer dimension(6*n-12), intent(in) :: lptr
+            integer dimension(n), intent(in) :: lend
+            integer, intent(in) :: iflgs
+            real dimension(*), intent(in) :: sigma
+            integer, optional, intent(inout) :: nit=3
+            real, optional, intent(inout) :: dgmax=0.001
+            real dimension(2,n), depend(n), intent(inout) :: grad
+            integer, intent(out) :: ier
+        end subroutine gradg
+        subroutine gradl(k,ncc,lcc,n,x,y,z,list,lptr,lend,dx,dy,ier) ! in :_srfpack:srfpack.f
+            integer, intent(in) :: k
+            integer, optional :: ncc=0
+            integer dimension(ncc+1), optional :: lcc
+            integer, depend(x), intent(hide) :: n=len(x)
+            real dimension(n), intent(in), :: x
+            real dimension(n), intent(in), :: y
+            real dimension(n), intent(in), :: z
+            integer dimension(6*n-12), intent(in) :: list
+            integer dimension(6*n-12), intent(in) :: lptr
+            integer dimension(n), intent(in) :: lend
+            real, intent(out) :: dx
+            real, intent(out) :: dy
+            integer, intent(out) :: ier
+        end subroutine gradl
+!        subroutine grcoef(sigma,dcub,d,sd) ! in :_srfpack:srfpack.f
+!            real :: sigma
+!            real :: dcub
+!            real :: d
+!            real :: sd
+!        end subroutine grcoef
+        subroutine intrc0(px,py,ncc,lcc,n,x,y,z,list,lptr,lend,ist,pz,ier) ! in :_srfpack:srfpack.f
+            real, intent(in) :: px
+            real, intent(in) :: py
+            integer, optional :: ncc=0
+            integer dimension(ncc+1), optional :: lcc
+            integer, depend(x), intent(hide) :: n=len(x)
+            real dimension(n), intent(in) :: x
+            real dimension(n), intent(in) :: y
+            real dimension(n), intent(in) :: z
+            integer dimension(6*n-12), intent(in) :: list
+            integer dimension(6*n-12), intent(in) :: lptr
+            integer dimension(n), intent(in) :: lend
+            integer, intent(inout) :: ist
+            real, intent(out) :: pz
+            integer, intent(out) :: ier
+        end subroutine intrc0
+        subroutine intrc1(px,py,ncc,lcc,n,x,y,z,list,lptr,lend,iflgs,sigma,grad,dflag,ist,pz,pzx,pzy,ier) ! in :_srfpack:srfpack.f
+            real, intent(in) :: px
+            real, intent(in) :: py
+            integer, optional :: ncc=0
+            integer dimension(ncc+1), optional :: lcc
+            integer, depend(x), intent(hide) :: n=len(x)
+            real dimension(n), intent(in) :: x
+            real dimension(n), intent(in) :: y
+            real dimension(n), intent(in) :: z
+            integer dimension(6*n-12), intent(in) :: list
+            integer dimension(6*n-12), intent(in) :: lptr
+            integer dimension(n), intent(in) :: lend
+            integer, intent(in) :: iflgs
+            real dimension(*), intent(in) :: sigma
+            real dimension(2,n), depend(n), intent(in) :: grad
+            logical, intent(in) :: dflag
+            integer, intent(inout) :: ist
+            real, intent(out) :: pz
+            real, intent(out) :: pzx, pzy
+            integer, intent(out) :: ier
+        end subroutine intrc1
+!        subroutine rotate(n,c,s,x,y) ! in :_srfpack:srfpack.f
+!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real :: c
+!            real :: s
+!            real dimension(n) :: x
+!            real dimension(n),depend(n) :: y
+!        end subroutine rotate
+!        subroutine setro1(xk,yk,zk,xi,yi,zi,s1,s2,w,row) ! in :_srfpack:srfpack.f
+!            real :: xk
+!            real :: yk
+!            real :: zk
+!            real :: xi
+!            real :: yi
+!            real :: zi
+!            real :: s1
+!            real :: s2
+!            real :: w
+!            real dimension(6) :: row
+!        end subroutine setro1
+!        subroutine setro2(xk,yk,zk,xi,yi,zi,s1,s2,w,row) ! in :_srfpack:srfpack.f
+!            real :: xk
+!            real :: yk
+!            real :: zk
+!            real :: xi
+!            real :: yi
+!            real :: zi
+!            real :: s1
+!            real :: s2
+!            real :: w
+!            real dimension(7) :: row
+!        end subroutine setro2
+!        subroutine setro3(xk,yk,zk,xi,yi,zi,s1,s2,s3,w,row) ! in :_srfpack:srfpack.f
+!            real :: xk
+!            real :: yk
+!            real :: zk
+!            real :: xi
+!            real :: yi
+!            real :: zi
+!            real :: s1
+!            real :: s2
+!            real :: s3
+!            real :: w
+!            real dimension(10) :: row
+!        end subroutine setro3
+!        subroutine sgprnt(n,lunit,list,lptr,lend,sigma) ! in :_srfpack:srfpack.f
+!            integer, optional,check(len(lend)>=n),depend(lend) :: n=len(lend)
+!            integer :: lunit
+!            integer dimension(*) :: list
+!            integer dimension(*) :: lptr
+!            integer dimension(n) :: lend
+!            real dimension(*) :: sigma
+!        end subroutine sgprnt
+!        function sig0(n1,n2,n,x,y,h,list,lptr,lend,hxhy,iflgb,hbnd,tol,iflgs,sigma,ier) ! in :_srfpack:srfpack.f
+!            integer :: n1
+!            integer :: n2
+!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real dimension(n) :: x
+!            real dimension(n),depend(n) :: y
+!            real dimension(n),depend(n) :: h
+!            integer dimension(*) :: list
+!            integer dimension(*) :: lptr
+!            integer dimension(n),depend(n) :: lend
+!            real dimension(2,n),depend(n) :: hxhy
+!            integer :: iflgb
+!            real :: hbnd
+!            real :: tol
+!            integer :: iflgs
+!            real dimension(*) :: sigma
+!            integer :: ier
+!            real :: sig0
+!        end function sig0
+!        function sig1(n1,n2,n,x,y,h,list,lptr,lend,hxhy,iflgb,hpbnd,tol,iflgs,sigma,ier) ! in :_srfpack:srfpack.f
+!            integer :: n1
+!            integer :: n2
+!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real dimension(n) :: x
+!            real dimension(n),depend(n) :: y
+!            real dimension(n),depend(n) :: h
+!            integer dimension(*) :: list
+!            integer dimension(*) :: lptr
+!            integer dimension(n),depend(n) :: lend
+!            real dimension(2,n),depend(n) :: hxhy
+!            integer :: iflgb
+!            real :: hpbnd
+!            real :: tol
+!            integer :: iflgs
+!            real dimension(*) :: sigma
+!            integer :: ier
+!            real :: sig1
+!        end function sig1
+!        function sig2(n1,n2,n,x,y,h,list,lptr,lend,hxhy,tol,iflgs,sigma,ier) ! in :_srfpack:srfpack.f
+!            integer :: n1
+!            integer :: n2
+!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real dimension(n) :: x
+!            real dimension(n),depend(n) :: y
+!            real dimension(n),depend(n) :: h
+!            integer dimension(*) :: list
+!            integer dimension(*) :: lptr
+!            integer dimension(n),depend(n) :: lend
+!            real dimension(2,n),depend(n) :: hxhy
+!            real :: tol
+!            integer :: iflgs
+!            real dimension(*) :: sigma
+!            integer :: ier
+!            real :: sig2
+!        end function sig2
+!        subroutine smsgs(ncc,lcc,n,x,y,z,list,lptr,lend,iflgs,sigma,w,p,nit,dfmax,f,fxfy,ier) ! in :_srfpack:srfpack.f
+!            integer :: ncc
+!            integer dimension(*) :: lcc
+!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real dimension(n) :: x
+!            real dimension(n),depend(n) :: y
+!            real dimension(n),depend(n) :: z
+!            integer dimension(*) :: list
+!            integer dimension(*) :: lptr
+!            integer dimension(n),depend(n) :: lend
+!            integer :: iflgs
+!            real dimension(*) :: sigma
+!            real dimension(n),depend(n) :: w
+!            real :: p
+!            integer :: nit
+!            real :: dfmax
+!            real dimension(n),depend(n) :: f
+!            real dimension(2,n),depend(n) :: fxfy
+!            integer :: ier
+!        end subroutine smsgs
+        subroutine smsurf(ncc,lcc,n,x,y,z,list,lptr,lend,iflgs,sigma,w,sm,smtol,gstol,f,fxfy,ier) ! in :_srfpack:srfpack.f
+            integer, optional :: ncc=0
+            integer dimension(ncc+1), optional :: lcc
+            integer, depend(x), intent(hide) :: n=len(x)
+            real dimension(n), intent(in) :: x
+            real dimension(n), intent(in) :: y
+            real dimension(n), intent(in) :: z
+            integer dimension(6*n-12), intent(in) :: list
+            integer dimension(6*n-12), intent(in) :: lptr
+            integer dimension(n), intent(in) :: lend
+            integer, intent(in) :: iflgs
+            real dimension(*), intent(in) :: sigma
+            real dimension(n), intent(in) :: w
+            real, intent(in) :: sm
+            real, intent(in) :: smtol
+            real, intent(in) :: gstol
+            real dimension(n), intent(out) :: f
+            real dimension(2,n), intent(out) :: fxfy
+            integer, intent(out) :: ier
+        end subroutine smsurf
+!        subroutine snhcsh(x,sinhm,coshm,coshmm) ! in :_srfpack:srfpack.f
+!            real :: x
+!            real :: sinhm
+!            real :: coshm
+!            real :: coshmm
+!        end subroutine snhcsh
+!        function trvol(x1,x2,x3,y1,y2,y3,z1,z2,z3) ! in :_srfpack:srfpack.f
+!            real :: x1
+!            real :: x2
+!            real :: x3
+!            real :: y1
+!            real :: y2
+!            real :: y3
+!            real :: z1
+!            real :: z2
+!            real :: z3
+!            real :: trvol
+!        end function trvol
+!        subroutine tval(x,y,x1,x2,x3,y1,y2,y3,z1,z2,z3,zx1,zx2,zx3,zy1,zy2,zy3,dflag,f,fx,fy,ier) ! in :_srfpack:srfpack.f
+!            real :: x
+!            real :: y
+!            real :: x1
+!            real :: x2
+!            real :: x3
+!            real :: y1
+!            real :: y2
+!            real :: y3
+!            real :: z1
+!            real :: z2
+!            real :: z3
+!            real :: zx1
+!            real :: zx2
+!            real :: zx3
+!            real :: zy1
+!            real :: zy2
+!            real :: zy3
+!            logical :: dflag
+!            real :: f
+!            real :: fx
+!            real :: fy
+!            integer :: ier
+!        end subroutine tval
+!        subroutine unif(ncc,lcc,n,x,y,z,grad,list,lptr,lend,iflgs,sigma,nrow,nx,ny,px,py,sflag,sval,zz,ier) ! in :_srfpack:srfpack.f
+!            integer :: ncc
+!            integer dimension(*) :: lcc
+!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real dimension(n) :: x
+!            real dimension(n),depend(n) :: y
+!            real dimension(n),depend(n) :: z
+!            real dimension(2,n),depend(n) :: grad
+!            integer dimension(*) :: list
+!            integer dimension(*) :: lptr
+!            integer dimension(n),depend(n) :: lend
+!            integer :: iflgs
+!            real dimension(*) :: sigma
+!            integer, optional,check(shape(zz,0)==nrow),depend(zz) :: nrow=shape(zz,0)
+!            integer, optional,check(len(px)>=nx),depend(px) :: nx=len(px)
+!            integer, optional,check(len(py)>=ny),depend(py) :: ny=len(py)
+!            real dimension(nx) :: px
+!            real dimension(ny) :: py
+!            logical :: sflag
+!            real :: sval
+!            real dimension(nrow,ny),depend(ny) :: zz
+!            integer :: ier
+!        end subroutine unif
+!        function volume(ncc,lcc,n,x,y,z,list,lptr,lend) ! in :_srfpack:srfpack.f
+!            integer :: ncc
+!            integer dimension(*) :: lcc
+!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real dimension(n) :: x
+!            real dimension(n),depend(n) :: y
+!            real dimension(n),depend(n) :: z
+!            integer dimension(*) :: list
+!            integer dimension(*) :: lptr
+!            integer dimension(n),depend(n) :: lend
+!            real :: volume
+!        end function volume
+        subroutine zgradg(ncc,lcc,n,x,y,list,lptr,lend,iflgs,sigma,nit,dzmax,z,grad,ier) ! in :_srfpack:srfpack.f
+            integer, optional :: ncc=0
+            integer dimension(ncc+1), optional :: lcc
+            integer, depend(x), intent(hide) :: n=len(x)
+            real dimension(n), intent(in) :: x
+            real dimension(n), intent(in) :: y
+            integer dimension(6*n-12), intent(in) :: list
+            integer dimension(6*n-12), intent(in) :: lptr
+            integer dimension(n), intent(in) :: lend
+            integer, intent(in) :: iflgs
+            real dimension(*), intent(in) :: sigma
+            integer, optional, check(nit>0), intent(inout) :: nit=3
+            real, optional, intent(inout) :: dzmax=0.001
+            real dimension(n), intent(inout) :: z
+            real dimension(2,n), depend(n), intent(inout) :: grad
+            integer, intent(out) :: ier
+        end subroutine zgradg
+        subroutine zgradl(k,ncc,lcc,n,x,y,list,lptr,lend,ndv,z,npts,ds,dx,dy,ier) ! in :_srfpack:srfpack.f
+            integer, intent(in) :: k
+            integer, optional :: ncc=0
+            integer dimension(ncc+1), optional :: lcc
+            integer, depend(x), intent(hide) :: n=len(x)
+            real dimension(n), intent(in) :: x
+            real dimension(n), intent(in) :: y
+            integer dimension(6*n-12), intent(in) :: list
+            integer dimension(6*n-12), intent(in) :: lptr
+            integer dimension(n), intent(in) :: lend
+            integer, intent(inout) :: ndv
+            real dimension(n), intent(inout) :: z
+            integer dimension(len(npts)), intent(inout) :: npts
+            real dimension(len(npts)), intent(inout) :: ds
+            real, intent(out) :: dx
+            real, intent(out) :: dy
+            integer, intent(out) :: ier
+        end subroutine zgradl
+!        subroutine zinit(ncc,lcc,n,x,y,list,lptr,lend,z,ier) ! in :_srfpack:srfpack.f
+!            integer :: ncc
+!            integer dimension(*) :: lcc
+!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real dimension(n) :: x
+!            real dimension(n),depend(n) :: y
+!            integer dimension(*) :: list
+!            integer dimension(*) :: lptr
+!            integer dimension(n),depend(n) :: lend
+!            real dimension(n),depend(n) :: z
+!            integer :: ier
+!        end subroutine zinit
+    end interface 
+end python module _srfpack
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

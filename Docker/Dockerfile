@@ -1,85 +1,83 @@
-FROM lmoresi/unimelb-debian-python:1.05
+#################################################
+#  Short docker file to distribute some notebooks
+#################################################
 
-## =============================================================
-##
-## Docker file to test / run stripy (including litho1pt0 that depends
-## on stripy and can be used as a testing platform)
-##
-## =============================================================
+ARG FROMIMG_ARG
+FROM ${FROMIMG_ARG}
 
+##################################################
+# Non standard as the files come from the packages
 
-## Needed for lavavu
+USER root
 
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
-        xorg-dev \
-        libfreetype6-dev \
-        libpng-dev \
-        libtiff-dev \
-        libxft-dev \
-        xvfb \
-        freeglut3 \
-        freeglut3-dev \
-        libgl1-mesa-dri \
-        libgl1-mesa-glx \
-        xauth \
-        python-tk \
-        swig && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+## lavavu
+#RUN echo '#!/bin/sh \n rm -f /tmp/.X99-lock && xvfb-run -s "-screen 0 1600x1200x16" $@' > /usr/local/bin/xvfbrun.sh && \
+#                        chmod +x /usr/local/bin/xvfbrun.sh
 
-RUN mkdir /python_modules
-WORKDIR   /python_modules
+ENV MODULE_DIR="stripy-src"
+ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
+RUN   cd $MODULE_DIR && pip install --no-deps --upgrade .
 
-ADD src src
-ADD f77-src f77-src
-ADD stripy stripy
-ADD MANIFEST.in MANIFEST.in
-ADD setup.py setup.py
+ENV MODULE_DIR="pycrust-src"
+ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
+RUN   cd $MODULE_DIR && pip install --no-deps --upgrade .
 
-RUN python setup.py build && python setup.py install
+USER jovyan
 
-## litho1pt0 is built entirely on stripy and is a useful learning tool / testing tool
-## but the notebooks are in the source code so should be installed from github as
-## above for stripy.
-## RUN pip install litho1pt0
+RUN ipython -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
+
+ADD  --chown=jovyan:jovyan $NB_DIR/0-StartHere.ipynb Notebooks/0-StartHere.ipynb
+
+# This file is too big to bundle with the pip installation
+# ADD  --chown=jovyan:jovyan $MODULE_DIR/miller_alaskamoho_srl2018/Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif
 
 
-# Lavavu visualisation is used in the examples
+RUN ipython -c 'import pycrust; pycrust.documentation.install_documentation(path="Notebooks")'
 
-RUN pip install --upgrade pip
-RUN pip install lavavu
-
-# script for xvfb-run.  all docker commands will effectively run under this via the entrypoint
-RUN printf "#\041/bin/sh \n rm -f /tmp/.X99-lock && xvfb-run -a -s '-screen 0 1600x1200x16' \$@" >> /usr/local/bin/xvfbrun.sh && \
-    chmod +x /usr/local/bin/xvfbrun.sh
+# This file is too big to bundle with the pip installation
+# ADD  --chown=jovyan:jovyan $MODULE_DIR/miller_alaskamoho_srl2018/Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif
 
 
-# Create a non-privileged user to run the notebooks and switch to this user for the server
-
-RUN useradd --create-home --home-dir /home/demonstration --shell /bin/bash --user-group demon
-RUN chown -R demon:demon /home/demonstration
-
-WORKDIR /home/demonstration
-
-ADD --chown=demon:demon Docker/scripts/run-jupyter.py run-jupyter.py
-ADD --chown=demon:demon Notebooks/SphericalTriangulations/*.ipynb Notebooks/SphericalTriangulations/
-ADD --chown=demon:demon Notebooks/Data Notebooks/Data
+# Non standard as the files come from the packages
+##################################################
 
 
-# Persistent / Shared space outside the container
-VOLUME /home/demonstration/external
+## These are supplied by the build script
+## build-dockerfile.sh
 
-EXPOSE 8080
+ARG IMAGENAME_ARG
+ARG PROJ_NAME_ARG
+ARG NB_PORT_ARG
+ARG NB_PASSWD_ARG
+ARG NB_DIR_ARG
+ARG START_NB_ARG
+
+# The args need to go into the environment so they
+# can be picked up by commands/templates (defined previously)
+# when the container runs
+
+ENV IMAGENAME=$IMAGENAME_ARG
+ENV PROJ_NAME=$PROJ_NAME_ARG
+ENV NB_PORT=$NB_PORT_ARG
+ENV NB_PASSWD=$NB_PASSWD_ARG
+ENV NB_DIR=$NB_DIR_ARG
+ENV START_NB=$START_NB_ARG
 
 
-# Now switch to the default user for the container
+## NOW INSTALL NOTEBOOKS
 
-USER demon
-ENV HOME=/home/demonstration
-ENV SHELL=/bin/bash
-ENV USER=demon
+# (This is not standard - nothing to do here )
 
-ENTRYPOINT ["/usr/local/bin/tini", "--", "xvfbrun.sh"]
+## The notebooks (and other files we are serving up)
+## ADD --chown=jovyan:jovyan  $NB_DIR /home/jovyan/Notebooks
 
-CMD ./run-jupyter.py
+# Trust all notebooks
+# RUN find -name \*.ipynb  -print0 | xargs -0 jupyter trust
+
+# expose notebook port server port
+EXPOSE $NB_PORT
+
+# note we use xvfb which to mimic the X display for lavavu
+ENTRYPOINT ["/usr/local/bin/tini", "--", "/usr/local/bin/xvfbrun.sh"]
+
+CMD scripts/run-jupyter.sh

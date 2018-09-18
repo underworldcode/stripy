@@ -1,0 +1,32 @@
+
+=====================================================
+Help for $$IMAGENAME
+=====================================================
+
+To print this help message:
+
+   docker run --rm $IMAGENAME help
+
+To install the helper scripts for bash:
+
+   docker run --rm $IMAGENAME bash_utils > bash_utils.sh
+   source bash_utils.sh
+
+( you may find it helpful to move/rename this file and source it from
+  your bash profile at login time )
+
+The bash_utils.sh script installs the following functions:
+
+  $PROJ_NAME-help
+  $PROJ_NAME-sh
+  $PROJ_NAME-nb
+  $PROJ_NAME-browse
+  $PROJ_NAME-serve
+
+For more information on these functions, run
+
+  source bash_utils.sh
+  $PROJ_NAME-help
+
+
+--
