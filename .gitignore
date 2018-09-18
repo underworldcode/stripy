@@ -19,3 +19,6 @@ src/_*wrappers.f
 
 .local
 .ipython
+
+# Add this when building docker image or download it
+*ETOPO1_Ice_c_geotiff.tif

@@ -10,22 +10,24 @@ FROM ${FROMIMG_ARG}
 
 USER root
 
-## lavavu
-#RUN echo '#!/bin/sh \n rm -f /tmp/.X99-lock && xvfb-run -s "-screen 0 1600x1200x16" $@' > /usr/local/bin/xvfbrun.sh && \
-#                        chmod +x /usr/local/bin/xvfbrun.sh
+### Stripy - Notebooks
 
 ENV MODULE_DIR="stripy-src"
 ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
 RUN   cd $MODULE_DIR && pip install --no-deps --upgrade .
 
+### pycrust - Notebooks
+
 ENV MODULE_DIR="pycrust-src"
 ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
 RUN   cd $MODULE_DIR && pip install --no-deps --upgrade .
 
+# This file is too big to bundle with the pip installation
+ADD  --chown=jovyan:jovyan $MODULE_DIR/pycrust/Notebooks/pycrust/Data/*tif  Notebooks/Data/
+ADD  --chown=jovyan:jovyan $MODULE_DIR/pycrust/Notebooks/pycrust/Data/*npz  Notebooks/Data/
+
 USER jovyan
-
 RUN ipython -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
-
 ADD  --chown=jovyan:jovyan $NB_DIR/0-StartHere.ipynb Notebooks/0-StartHere.ipynb
 
 # This file is too big to bundle with the pip installation
