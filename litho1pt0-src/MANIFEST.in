@@ -1,4 +1,5 @@
 include litho1pt0/__init__.py
 include litho1pt0/data/*.npz
-include Notebooks/Ex*.ipynb
+include litho1pt0/Notebooks/litho1pt0/*.ipynb
+include litho1pt0/Notebooks/litho1pt0/Data/*.npz
 recursive-include tests *

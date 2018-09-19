@@ -7,11 +7,11 @@ __pycache__
 
 swpcom.mod
 
-stripy/build/*
-stripy/dist/*
+stripy-src/build/*
+stripy-src/dist/*
 
-pycrust/build
-pycrust/dist
+litho1pt0-src/build/*
+litho1pt0-src/dist/*
 
 stripy.egg-info/*
 *.egg
@@ -24,3 +24,6 @@ src/_*wrappers.f
 
 # Add this when building docker image or download it
 *ETOPO1_Ice_c_geotiff.tif
+litho1pt0-src/litho1pt0.egg-info/PKG-INFO
+litho1pt0-src/litho1pt0.egg-info/SOURCES.txt
+litho1pt0-src/litho1pt0.egg-info/SOURCES.txt
