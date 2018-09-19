@@ -7,9 +7,11 @@ __pycache__
 
 swpcom.mod
 
-build/*
-dist/*
+stripy/build/*
+stripy/dist/*
 
+pycrust/build
+pycrust/dist
 
 stripy.egg-info/*
 *.egg

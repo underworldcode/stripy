@@ -16,14 +16,14 @@ ENV MODULE_DIR="stripy-src"
 ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
 RUN   cd $MODULE_DIR && pip install --no-deps --upgrade .
 
-### pycrust - Notebooks
+### litho1pt0 - Notebooks
 
-ENV MODULE_DIR="pycrust-src"
+ENV MODULE_DIR="litho1pt0-src"
 ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
 RUN   cd $MODULE_DIR && pip install --no-deps --upgrade .
 
 # This file is too big to bundle with the pip installation
-ADD  --chown=jovyan:jovyan $MODULE_DIR/pycrust/Notebooks/pycrust/Data  Notebooks/Data
+ADD  --chown=jovyan:jovyan $MODULE_DIR/litho1pt0/Notebooks/litho1pt0/Data  Notebooks/Data
 
 USER jovyan
 RUN ipython -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
@@ -33,7 +33,7 @@ ADD  --chown=jovyan:jovyan $NB_DIR/0-StartHere.ipynb Notebooks/0-StartHere.ipynb
 # ADD  --chown=jovyan:jovyan $MODULE_DIR/miller_alaskamoho_srl2018/Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif
 
 
-RUN ipython -c 'import pycrust; pycrust.documentation.install_documentation(path="Notebooks")'
+RUN ipython -c 'import litho1pt0; litho1pt0.documentation.install_documentation(path="Notebooks")'
 
 # This file is too big to bundle with the pip installation
 # ADD  --chown=jovyan:jovyan $MODULE_DIR/miller_alaskamoho_srl2018/Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif
