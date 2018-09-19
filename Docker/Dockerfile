@@ -23,8 +23,7 @@ ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
 RUN   cd $MODULE_DIR && pip install --no-deps --upgrade .
 
 # This file is too big to bundle with the pip installation
-ADD  --chown=jovyan:jovyan $MODULE_DIR/pycrust/Notebooks/pycrust/Data/*tif  Notebooks/Data/
-ADD  --chown=jovyan:jovyan $MODULE_DIR/pycrust/Notebooks/pycrust/Data/*npz  Notebooks/Data/
+ADD  --chown=jovyan:jovyan $MODULE_DIR/pycrust/Notebooks/pycrust/Data  Notebooks/Data
 
 USER jovyan
 RUN ipython -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
