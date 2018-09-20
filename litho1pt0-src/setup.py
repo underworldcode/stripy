@@ -6,17 +6,17 @@
 ## To push a version through to pip.
 ##  - Make sure it installs correctly locally as above
 ##  - Update the version information in this file
-##  - python setup.py sdist upload -r pypitest  # for the test version
-##  - python setup.py sdist upload -r pypi      # for the real version
+##  - python setup.py sdist ; twine upload dist/*  # replace * with the actual tar file if network limited !
 ##
 ## (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
 
 from setuptools import setup, find_packages
 from os import path
+import io
 
 this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 if __name__ == "__main__":
@@ -25,7 +25,7 @@ if __name__ == "__main__":
           author_email      = "louis.moresi@unimelb.edu.au",
           url               = "https://github.com/University-of-Melbourne-Geodynamics/litho1pt0",
           download_url      = "",
-          version           = "0.6.2",
+          version           = "0.6.4",
           description       = "Python interface to Litho 1.0 dataset - needs stripy",
           long_description=long_description,
           long_description_content_type='text/markdown',

@@ -29,9 +29,6 @@ USER jovyan
 RUN ipython -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
 ADD  --chown=jovyan:jovyan $NB_DIR/0-StartHere.ipynb Notebooks/0-StartHere.ipynb
 
-# This file is too big to bundle with the pip installation
-# ADD  --chown=jovyan:jovyan $MODULE_DIR/miller_alaskamoho_srl2018/Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif
-
 
 RUN ipython -c 'import litho1pt0; litho1pt0.documentation.install_documentation(path="Notebooks")'
 

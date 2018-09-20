@@ -3,7 +3,7 @@
 # Don't forget to increment the version number if you want to keep the old stuff
 
 FROM_IMG="lmoresi/uom-py-lavavu-notebook-bundle:1.0.7"
-IMAGENAME=lmoresi/stripy:0.6
+IMAGENAME=lmoresi/stripy:0.7
 PROJ_NAME=stripy
 NB_PORT=8888
 NB_PASSWD=""

@@ -15,11 +15,12 @@
 
 from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
+from os import path
+import io
 
 this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
-
 
 # interface for Renka's algorithm 772 fortran code
 ext1 = Extension(name    = 'stripy._stripack',
@@ -36,7 +37,7 @@ if __name__ == "__main__":
           author            = "Louis Moresi",
           author_email      = "louis.moresi@unimelb.edu.au",
           url               = "https://github.com/University-of-Melbourne-Geodynamics/stripy",
-          version           = "0.6.1",
+          version           = "0.6.4",
           description       = "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere",
           long_description=long_description,
           long_description_content_type='text/markdown',
