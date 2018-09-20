@@ -1,4 +1,3 @@
-/usr/bin/xvfb-run: 183: /usr/bin/xvfb-run: bash_utils#!/bin/sh: not found
 #! /usr/bin/env bash
 
 # Template file make these substitutions:
@@ -65,7 +64,7 @@ stripy-docker-help(){
 stripy-docker-browse(){
   PORT=${1:-8899};
   echo "Navigate to http://localhost:$PORT to view the examples, ^\ when done";
-  docker run --rm -p $PORT:8888 -v ${PWD}:/home/jovyan/external --rm lmoresi/stripy:0.6;
+  docker run --rm -p $PORT:8888 -v ${PWD}:/home/jovyan/external --rm lmoresi/stripy:0.7;
 }
 
 # Open the default version of the docker to serve examples (persistent)
@@ -74,23 +73,23 @@ stripy-docker-serve(){
   PORT=${2:-8899};
   echo "Check status: docker ps | grep $NAME "
   echo "Manage:       docker stop/start/restart $NAME"
-  docker run -d --restart unless-stopped -v ${PWD}:/home/jovyan/external --name $NAME -p $PORT:8888 lmoresi/stripy:0.6;
+  docker run -d --restart unless-stopped -v ${PWD}:/home/jovyan/external --name $NAME -p $PORT:8888 lmoresi/stripy:0.7;
 }
 
 #
 stripy-docker-sh(){
-    docker run -v ${PWD}:/home/jovyan --rm lmoresi/stripy:0.6 $* ;
+    docker run -v ${PWD}:/home/jovyan --rm lmoresi/stripy:0.7 $* ;
 }
 
 #
 stripy-docker-terminal(){
-    docker run -it --rm lmoresi/stripy:0.6 bash ;
+    docker run -it --rm lmoresi/stripy:0.7 bash ;
 }
 
 stripy-docker-nb(){
     PORT=${2:-8899};  # default to 8899 if second argument not given
     echo "Navigate to http://localhost:$PORT to view, ^\ when done";
-    docker run -v ${PWD}:/home/jovyan -p $PORT:8888 --rm lmoresi/stripy:0.6 jupyter-notebook --no-browser --ip="*" --NotebookApp.token='' --NotebookApp.open_browser=False --NotebookApp.default_url=/tree/"$1";
+    docker run -v ${PWD}:/home/jovyan -p $PORT:8888 --rm lmoresi/stripy:0.7 jupyter-notebook --no-browser --ip="*" --NotebookApp.token='' --NotebookApp.open_browser=False --NotebookApp.default_url=/tree/"$1";
 }
 
 stripy-docker-help
