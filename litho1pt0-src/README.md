@@ -10,6 +10,12 @@ A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triang
 
 _Sample images created with `stripy` illustrating the meshing capability, the ability to refine meshes to match criteria such as data density, and the ability to create distance-weighted averages to meshes and continuous interpolating functions_
 
+#### binder
+
+Launch the demonstration at [mybinder.org](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/lmoresi/stripy-binder/master)
+
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/lmoresi/stripy-binder/master)
+
 
 ## Navigation / Notebooks
 

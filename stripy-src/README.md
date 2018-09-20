@@ -10,13 +10,17 @@ A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triang
 
 _Sample images created with `stripy` illustrating the meshing capability, the ability to refine meshes to match criteria such as data density, and the ability to create distance-weighted averages to meshes and continuous interpolating functions_
 
+#### binder
+
+Launch the demonstration at [mybinder.org](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/lmoresi/stripy-binder/master)
+
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/lmoresi/stripy-binder/master)
 
 
 ## Navigation / Notebooks
 
 
 There are two matching sets of `stripy` notebooks - one set for [Cartesian Triangulations](#Cartesian) and one for [Spherical Triangulations](#Spherical). For most geographical applications, the spherical triangulations are the natural choice as they expect longitude and latitude coordinates (admittedly in radians).
-
 
 Note: the Cartesian and Spherical notebooks can be obtained / installed from `stripy` itself as follows:
 
