@@ -1,8 +1,14 @@
-# litho1pt0 
+# litho1pt0
 
 A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives (Renka 1996a,b and 1997a,b).
 
 `stripy` is bundled with `litho1pt0` which is a python interface to the _crust 1.0_ dataset and the lithospheric part of the _litho 1.0_ dataset (Laske et al, 2013 and Pasyanos et al, 2014) which both requires and demonstrates the triangulation / searching and interpolation on the sphere that is provided by `stripy`.
+
+
+![Examples](https://github.com/University-of-Melbourne-Geodynamics/stripy/blob/master/Notebooks/Images/Examples.png?raw=true)
+
+
+_Sample images created with `stripy` illustrating the meshing capability, the ability to refine meshes to match criteria such as data density, and the ability to create distance-weighted averages to meshes and continuous interpolating functions_
 
 
 ## Navigation / Notebooks
@@ -100,14 +106,14 @@ A more straightforward installation which does not depend on specific compilers 
 To install the docker image and test it is working:
 
 ```bash
-   docker pull lmoresi/stripy:0.6
-   docker run --rm lmoresi/stripy:0.6 help
+   docker pull lmoresi/stripy:latest
+   docker run --rm lmoresi/stripy:latest help
 ```
 
 To install the helper scripts for bash:
 
 ```bash
-   docker run --rm lmoresi/stripy:0.6 bash_utils > bash_utils.sh
+   docker run --rm lmoresi/stripy:latest bash_utils > bash_utils.sh
    source bash_utils.sh
 ```
 
