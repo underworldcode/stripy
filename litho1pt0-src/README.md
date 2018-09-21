@@ -12,7 +12,7 @@ _Sample images created with `stripy` illustrating the meshing capability, the ab
 
 #### binder
 
-Launch the demonstration at [mybinder.org](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/lmoresi/stripy-binder/master)
+Launch the demonstration at [mybinder.org](https://mybinder.org/v2/gh/lmoresi/stripy-binder/master)
 
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/lmoresi/stripy-binder/master)
 
