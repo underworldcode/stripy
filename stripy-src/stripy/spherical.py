@@ -1075,7 +1075,7 @@ class sTriangulation(object):
     def join(self, t2, unique=False):
         """
         Join this triangulation with another. If the points are known to have no duplicates, then
-        set unique=False to skip the testing and duplicate removal
+        set unique=True to skip the testing and duplicate removal
         """
 
         lonv1 = np.concatenate((self.lons, t2.lons), axis=0)
@@ -1256,7 +1256,7 @@ def great_circle_Npoints(lonlat1r, lonlat2r, N):
     xyz2 = lonlat2xyz(lonlat2r[0], lonlat2r[1])
 
     mids = ratio * xyz2 + (1.0-ratio) * xyz1
-    norm = (mids**2).sum(axis=1)
+    norm = np.sqrt((mids**2).sum(axis=1))
     xyzN = mids / norm.reshape(-1,1)
 
     lonlatN = xyz2lonlat( xyzN[:,0], xyzN[:,1], xyzN[:,2])
