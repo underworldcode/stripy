@@ -44,11 +44,12 @@ It is an object-oriented package and includes routines from SRFPACK and SSRFPACK
 - Smoothing operations.
 - Mesh refinement on line segments / triangle centroids.
 
-The evaluation of derivatives and interpolation is significant within the geosciences where rates of change can be easily evaluated and interpolated to other datasets.
-``Stipy`` is bundled with ``litho1pt0``, a Python interface to the _crust 1.0_ dataset and the lithospheric part of the _litho 1.0_ dataset [@Laske2013; @Pasyanos2014], which both requires and demonstrates the triangulation, searching, and interpolation on the sphere that is provided by ``Stripy``. The demonstrations operate in the Jupyter notebook environment for two matching sets of notebooks: one set for Cartesian triangulations, and one for spherical triangulations.
+These features are significant within Geographic Information Systems (GIS) where unstructured data can be triangulated, in projected or geographic coordinates, and interpolated to other datasets.
+To that end, ``Stripy`` is bundled with ``litho1pt0``, a Python interface to the _crust 1.0_ dataset and the lithospheric part of the _litho 1.0_ dataset [@Laske2013; @Pasyanos2014], which both requires and demonstrates the triangulation, searching, and interpolation on the sphere that is provided by ``Stripy``.
+The demonstrations operate in the Jupyter notebook environment for two matching sets of notebooks: one set for Cartesian triangulations, and one for spherical triangulations.
 
 # Acknowledgements
 
-Development of Stripy was financially supported by AuScope as part of the Simulation Analysis Modelling platform.
+Development of ``Stripy`` was financially supported by AuScope as part of the Simulation Analysis Modelling platform.
 
 # References
