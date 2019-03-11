@@ -64,14 +64,15 @@ RUN python3 -m pip install --no-cache-dir setuptools wheel && \
     cartopy \
     obspy \
     seaborn \
-    pandas \
-    stripy \
-    litho1pt0 \
-    lavavu && \
+    pandas && \
     USE_SETUPCFG=0 \
     HDF5_INCDIR=/usr/include/hdf5/serial \
     HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial \
-    python3 -m pip install --no-cache-dir git+https://github.com/Unidata/netcdf4-python
+    python3 -m pip install --no-cache-dir git+https://github.com/Unidata/netcdf4-python && \
+    python3 -m pip install --no-cache-dir \
+    stripy \
+    litho1pt0 \
+    lavavu
 
 
 # Jovyan user / group
@@ -79,11 +80,6 @@ RUN python3 -m pip install --no-cache-dir setuptools wheel && \
 ENV NB_USER jovyan
 ENV NB_UID 1000
 ENV HOME /home/${NB_USER}
-
-RUN adduser --disabled-password \
-    --gecos "Default user" \
-    --uid ${NB_UID} \
-    ${NB_USER} || true  # dont worry about the error ... keep building
 
 RUN addgroup jovyan  || true
 RUN usermod -a -G jovyan jovyan || true
