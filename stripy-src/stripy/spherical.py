@@ -1039,8 +1039,8 @@ class sTriangulation(object):
 
     def centroid_refine_triangulation_by_triangles(self, triangles):
         """
-        return points defining a refined triangulation obtained by bisection of all edges
-        in the triangulation that are associated with the triangles in the list provided.
+        return points defining a refined triangulation obtained by adding the
+        face centroids of the triangles in the list of indices provided.
 
         Notes
         -----
@@ -1062,8 +1062,9 @@ class sTriangulation(object):
 
     def centroid_refine_triangulation_by_vertices(self, vertices):
         """
-        return points defining a refined triangulation obtained by bisection of all edges
-        in the triangulation connected to any of the vertices in the list provided
+        return points defining a refined triangulation obtained by adding the
+        face centroids in the triangulation connected to any of the vertices in
+        the list provided
         """
 
         triangles = self.identify_vertex_triangles(vertices)
