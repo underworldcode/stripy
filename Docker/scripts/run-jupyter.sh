@@ -6,7 +6,7 @@ PORT=${NB_PORT:-8888}
 
 cd /home/jovyan/Notebooks
 
-jupyter-notebook --port=$NB_PORT --ip='*' --no-browser \
+jupyter-notebook --port=$NB_PORT --ip='0.0.0.0' --no-browser \
        --NotebookApp.token=$NB_PASSWD --NotebookApp.default_url=/tree/$OPEN
 
 # Don't exit

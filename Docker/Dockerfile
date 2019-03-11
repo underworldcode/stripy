@@ -2,7 +2,7 @@
 #  Short docker file to distribute some notebooks
 #################################################
 
-ARG FROMIMG_ARG
+ARG FROMIMG_ARG=underworldcode/py3-lavavu-notebook-bundle:0.9
 FROM ${FROMIMG_ARG}
 
 ##################################################
@@ -14,23 +14,23 @@ USER root
 
 ENV MODULE_DIR="stripy-src"
 ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
-RUN   cd $MODULE_DIR && pip install --no-cache-dir --no-deps --upgrade .
+RUN   cd $MODULE_DIR && python3 -m pip install --no-cache-dir --no-deps --upgrade .
 
 ### litho1pt0 - Notebooks
 
 ENV MODULE_DIR="litho1pt0-src"
 ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
-RUN   cd $MODULE_DIR && pip install --no-cache-dir --no-deps --upgrade .
+RUN   cd $MODULE_DIR && python3 -m pip install --no-cache-dir --no-deps --upgrade .
 
 # This file is too big to bundle with the pip installation
 ADD  --chown=jovyan:jovyan $MODULE_DIR/litho1pt0/Notebooks/litho1pt0/Data  Notebooks/Data
 
-USER jovyan
-RUN ipython -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
-ADD  --chown=jovyan:jovyan $NB_DIR/0-StartHere.ipynb Notebooks/0-StartHere.ipynb
+
+RUN ipython3 -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
+ADD  --chown=jovyan:jovyan Notebooks/0-StartHere.ipynb Notebooks/0-StartHere.ipynb
 
 
-RUN ipython -c 'import litho1pt0; litho1pt0.documentation.install_documentation(path="Notebooks")'
+RUN ipython3 -c 'import litho1pt0; litho1pt0.documentation.install_documentation(path="Notebooks")'
 
 # This file is too big to bundle with the pip installation
 # ADD  --chown=jovyan:jovyan $MODULE_DIR/miller_alaskamoho_srl2018/Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif Notebooks/ShadedRelief/GRAY_HR_SR_OB.tif
@@ -49,11 +49,11 @@ USER jovyan
 ## build-dockerfile.sh
 
 ARG IMAGENAME_ARG
-ARG PROJ_NAME_ARG
-ARG NB_PORT_ARG
-ARG NB_PASSWD_ARG
-ARG NB_DIR_ARG
-ARG START_NB_ARG
+ARG PROJ_NAME_ARG=stripy
+ARG NB_PORT_ARG=8888
+ARG NB_PASSWD_ARG=""
+ARG NB_DIR_ARG="Notebooks"
+ARG START_NB_ARG="0-StartHere.ipynb"
 
 # The args need to go into the environment so they
 # can be picked up by commands/templates (defined previously)
@@ -86,4 +86,5 @@ VOLUME /home/jovyan/$NB_DIR/user_data
 ENTRYPOINT ["/usr/local/bin/tini", "--", "/usr/local/bin/xvfbrun.sh"]
 
 # launch notebook
+ADD --chown=jovyan:jovyan Docker/scripts/run-jupyter.sh scripts/run-jupyter.sh
 CMD scripts/run-jupyter.sh
