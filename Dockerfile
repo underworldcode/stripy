@@ -2,13 +2,14 @@
 #  Short docker file to distribute some notebooks
 #################################################
 
-ARG FROMIMG_ARG=underworldcode/py3-lavavu-notebook-bundle:0.9
+ARG FROMIMG_ARG=lmoresi/lmoresi-debian-python:1.0.8
 FROM ${FROMIMG_ARG}
 
 ##################################################
 # Non standard as the files come from the packages
 
 USER root
+WORKDIR /home/jovyan
 
 ### Stripy - Notebooks
 
