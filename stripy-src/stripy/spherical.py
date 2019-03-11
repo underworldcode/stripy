@@ -910,18 +910,14 @@ class sTriangulation(object):
         Compute the angles between lon / lat points p1 and p2 given in radians.
         On the unit sphere, this also corresponds to the great circle distance.
         p1 and p2 can be numpy arrays of the same length.
+
+        This method simply calls the module-level function of the same name.
+        Consider using the module function instead, as this method may be
+        deprecated in favor of that function. For now, this method is
+        retained to avoid issues with the Jupyter notebooks.
         """
-
-        xp1, yp1, zp1 = lonlat2xyz(lonp1, latp1)
-        xp2, yp2, zp2 = lonlat2xyz(lonp2, latp2)
-
-        ## dot products to obtain angles
-
-        angles = np.arccos((xp1 * xp2 + yp1 * yp2 + zp1 * zp2))
-
-        ## As this is a unit sphere, angle = length
-
-        return angles
+        # Call the module-level function
+        return angular_separation(lonp1, latp1, lonp2, latp2)
 
     def _add_spherical_midpoints(self):
 
@@ -1261,3 +1257,23 @@ def great_circle_Npoints(lonlat1r, lonlat2r, N):
     lonlatN = xyz2lonlat( xyzN[:,0], xyzN[:,1], xyzN[:,2])
 
     return lonlatN
+
+
+def angular_separation(lonp1, latp1, lonp2, latp2):
+    """
+    Compute the angles between lon / lat points p1 and p2 given in radians.
+    On the unit sphere, this also corresponds to the great circle distance.
+    p1 and p2 can be numpy arrays of the same length.
+    """
+
+    xp1, yp1, zp1 = lonlat2xyz(lonp1, latp1)
+    xp2, yp2, zp2 = lonlat2xyz(lonp2, latp2)
+
+    ## dot products to obtain angles
+
+    angles = np.arccos((xp1 * xp2 + yp1 * yp2 + zp1 * zp2))
+
+    ## As this is a unit sphere, angle = length
+
+    return angles
+
