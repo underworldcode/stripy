@@ -1,5 +1,8 @@
 # Stripy
 
+![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/underworldcode/stripy.svg)
+![PyPI](https://img.shields.io/pypi/v/stripy.svg)
+
 A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives (Renka 1996a,b and 1997a,b).
 
 `stripy` is bundled with `litho1pt0` which is a python interface to the _crust 1.0_ dataset and the lithospheric part of the _litho 1.0_ dataset (Laske et al, 2013 and Pasyanos et al, 2014) which both requires and demonstrates the triangulation / searching and interpolation on the sphere that is provided by `stripy`.
@@ -12,9 +15,9 @@ _Sample images created with `stripy` illustrating the meshing capability, the ab
 
 #### binder
 
-Launch the demonstration at [mybinder.org](https://mybinder.org/v2/gh/lmoresi/stripy-binder/master)
+Launch the demonstration at [mybinder.org](https://mybinder.org/v2/gh/underworldcode/stripy-binder/master)
 
-[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/lmoresi/stripy-binder/master)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/underworldcode/stripy/master?filepath=Notebooks%2F0-StartHere.ipynb)
 
 
 ## Navigation / Notebooks
@@ -30,23 +33,23 @@ Note: the Cartesian and Spherical notebooks can be obtained / installed from `st
 
 ### Cartesian
 
-  - [Ex1-Cartesian-Triangulations.ipynb](CartesianTriangulations/Ex1-Cartesian-Triangulations.ipynb)
-  - [Ex2-CartesianGrids.ipynb](CartesianTriangulations/Ex2-CartesianGrids.ipynb)
-  - [Ex3-Interpolation.ipynb](CartesianTriangulations/Ex3-Interpolation.ipynb)
-  - [Ex4-Gradients.ipynb](CartesianTriangulations/Ex4-Gradients.ipynb)
-  - [Ex5-Smoothing.ipynb](CartesianTriangulations/Ex5-Smoothing.ipynb)
-  - [Ex6-Scattered-Data.ipynb](CartesianTriangulations/Ex6-Scattered-Data.ipynb)
-  - [Ex7-Refinement-of-Triangulations.ipynb](CartesianTriangulations/Ex7-Refinement-of-Triangulations.ipynb)
+  - [Ex1-Cartesian-Triangulations.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex1-Cartesian-Triangulations.ipynb)
+  - [Ex2-CartesianGrids.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex2-CartesianGrids.ipynb)
+  - [Ex3-Interpolation.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex3-Interpolation.ipynb)
+  - [Ex4-Gradients.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex4-Gradients.ipynb)
+  - [Ex5-Smoothing.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex5-Smoothing.ipynb)
+  - [Ex6-Scattered-Data.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex6-Scattered-Data.ipynb)
+  - [Ex7-Refinement-of-Triangulations.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex7-Refinement-of-Triangulations.ipynb)
 
 ### Spherical
 
-  - [Ex1-Spherical-Triangulations.ipynb](SphericalTriangulations/Ex1-Spherical-Triangulations.ipynb)
-  - [Ex2-SphericalGrids.ipynb](SphericalTriangulations/Ex2-SphericalGrids.ipynb)
-  - [Ex3-Interpolation.ipynb](SphericalTriangulations/Ex3-Interpolation.ipynb)
-  - [Ex4-Gradients.ipynb](SphericalTriangulations/Ex4-Gradients.ipynb)
-  - [Ex5-Smoothing.ipynb](SphericalTriangulations/Ex5-Smoothing.ipynb)
-  - [Ex6-Scattered-Data.ipynb](SphericalTriangulations/Ex6-Scattered-Data.ipynb)
-  - [Ex7-Refinement-of-Triangulations.ipynb](SphericalTriangulations/Ex7-Refinement-of-Triangulations.ipynb)
+  - [Ex1-Spherical-Triangulations.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex1-Spherical-Triangulations.ipynb)
+  - [Ex2-SphericalGrids.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex2-SphericalGrids.ipynb)
+  - [Ex3-Interpolation.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex3-Interpolation.ipynb)
+  - [Ex4-Gradients.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex4-Gradients.ipynb)
+  - [Ex5-Smoothing.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex5-Smoothing.ipynb)
+  - [Ex6-Scattered-Data.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex6-Scattered-Data.ipynb)
+  - [Ex7-Refinement-of-Triangulations.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex7-Refinement-of-Triangulations.ipynb)
 
 
 ### Examples
@@ -61,11 +64,11 @@ package itself:
 The first three notebooks are an introduction to `litho1pt0` that does not explicitly mention `stripy` but
 the next two worked examples show how to search, interpolate and plot with the help of `stripy` routines.
 
-  - [Ex1-Litho1Layers.ipynb](litho1pt0/Ex1-Litho1Layers.ipynb)
-  - [Ex2-Litho1Properties.ipynb](litho1pt0/Ex2-Litho1Properties.ipynb)
-  - [Ex3-CrustalRegionalisation.ipynb](litho1pt0/Ex3-CrustalRegionalisation.ipynb)
-  - [WorkEx1-CratonAverageProperties.ipynb](litho1pt0/WorkEx1-CratonAverageProperties.ipynb)
-  - [WorkEx2-OceanDepthAge.ipynb](litho1pt0/WorkEx2-OceanDepthAge.ipynb)
+  - [Ex1-Litho1Layers.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Ex1-Litho1Layers.ipynb)
+  - [Ex2-Litho1Properties.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Ex2-Litho1Properties.ipynb)
+  - [Ex3-CrustalRegionalisation.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Ex3-CrustalRegionalisation.ipynb)
+  - [WorkEx1-CratonAverageProperties.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/WorkEx1-CratonAverageProperties.ipynb)
+  - [WorkEx2-OceanDepthAge.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/WorkEx2-OceanDepthAge.ipynb)
 
 
 
@@ -111,14 +114,14 @@ A more straightforward installation which does not depend on specific compilers 
 To install the docker image and test it is working:
 
 ```bash
-   docker pull lmoresi/stripy:latest
-   docker run --rm lmoresi/stripy:latest help
+   docker pull underworldcode/stripy:latest
+   docker run --rm underworldcode/stripy:latest help
 ```
 
 To install the helper scripts for bash:
 
 ```bash
-   docker run --rm lmoresi/stripy:latest bash_utils > bash_utils.sh
+   docker run --rm underworldcode/stripy:latest bash_utils > bash_utils.sh
    source bash_utils.sh
 ```
 
