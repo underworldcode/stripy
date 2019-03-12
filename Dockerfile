@@ -82,11 +82,11 @@ RUN find -name \*.ipynb  -print0 | xargs -0 jupyter trust
 EXPOSE $NB_PORT
 
 VOLUME /home/jovyan/$NB_DIR/user_data
-WORKDIR /home/jovyan/$NB_DIR
+WORKDIR /home/jovyan/Notebooks
 
 # note we use xvfb which to mimic the X display for lavavu
 ENTRYPOINT ["/usr/local/bin/xvfbrun.sh"]
 
 # launch notebook
 ADD --chown=jovyan:jovyan Docker/scripts/run-jupyter.sh scripts/run-jupyter.sh
-CMD ["jupyter", "notebook", "--ip=0.0.0.0","--allow-root", "--NotebookApp.token=''", "--NotebookApp.default_url=/tree/0-StartHere.ipynb"]
+CMD ["jupyter", "lab", "--ip=0.0.0.0","--allow-root", "--NotebookApp.token=''", "--NotebookApp.default_url=/notebooks/0-StartHere.ipynb"]
