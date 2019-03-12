@@ -80,6 +80,8 @@ RUN find -name \*.ipynb  -print0 | xargs -0 jupyter trust
 
 # expose notebook port server port
 EXPOSE $NB_PORT
+EXPOSE 8080
+RUN python3 -m pip install --no-cache-dir jupyter-server-proxy
 
 VOLUME /home/jovyan/$NB_DIR/user_data
 WORKDIR /home/jovyan/Notebooks
@@ -89,4 +91,4 @@ ENTRYPOINT ["/usr/local/bin/xvfbrun.sh"]
 
 # launch notebook
 ADD --chown=jovyan:jovyan Docker/scripts/run-jupyter.sh scripts/run-jupyter.sh
-CMD ["jupyter", "lab", "--ip=0.0.0.0","--allow-root", "--NotebookApp.token=''", "--NotebookApp.default_url=/notebooks/0-StartHere.ipynb"]
+CMD ["jupyter", "lab", "--ip=0.0.0.0","--allow-root", "--NotebookApp.token=''", "--NotebookApp.default_url=/tree/0-StartHere.ipynb"]
