@@ -31,18 +31,19 @@ class icosahedral_mesh(_spherical.sTriangulation):
 
     def __init__(self, refinement_levels=0, include_face_points=False, trisection=False, tree=False):
 
+        mid_lat = np.degrees(np.arctan(0.5)) # 26.56505117707799 degrees
         vertices_LatLonDeg = np.array(
                                        [[ 90,         0.0 ],
-                                        [ 26.57,      0.0 ],
-                                        [-26.57,     36.0 ],
-                                        [ 26.57,     72.0 ],
-                                        [-26.57,    108.0 ],
-                                        [ 26.57,    144.0 ],
-                                        [-26.57,    180.0 ],
-                                        [ 26.57,    360.0-72.0 ],
-                                        [-26.57,    360.0-36.0 ],
-                                        [ 26.57,    360.0-144.0 ],
-                                        [-26.57,    360.0-108.0 ],
+                                        [ mid_lat,    0.0 ],
+                                        [-mid_lat,   36.0 ],
+                                        [ mid_lat,   72.0 ],
+                                        [-mid_lat,  108.0 ],
+                                        [ mid_lat,  144.0 ],
+                                        [-mid_lat,  180.0 ],
+                                        [ mid_lat,  360.0-72.0 ],
+                                        [-mid_lat,  360.0-36.0 ],
+                                        [ mid_lat,  360.0-144.0 ],
+                                        [-mid_lat,  360.0-108.0 ],
                                         [-90,         0.0 ]])
 
 
@@ -103,15 +104,16 @@ class triangulated_cube_mesh(_spherical.sTriangulation):
 
     def __init__(self, refinement_levels=0, tree=False):
 
+        mid_lat = np.degrees(np.arctan(np.sqrt(0.5))) # 35.264389682754654 degrees
         vertices_LatLonDeg = np.array(
-                                         [[  35.26 , 0.0],
-                                          [ -35.26,  0.0],
-                                          [  35.26 , 90.0],
-                                          [ -35.26,  90.0],
-                                          [  35.26 , 180.0],
-                                          [ -35.26,  180.0],
-                                          [  35.26 , -90.0],
-                                          [ -35.26,  -90.0]   ]
+                                         [[  mid_lat,   0.0],
+                                          [ -mid_lat,   0.0],
+                                          [  mid_lat,  90.0],
+                                          [ -mid_lat,  90.0],
+                                          [  mid_lat, 180.0],
+                                          [ -mid_lat, 180.0],
+                                          [  mid_lat, -90.0],
+                                          [ -mid_lat, -90.0]   ]
                                     )
 
 

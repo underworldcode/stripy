@@ -67,7 +67,7 @@ RUN python3 -m pip install --no-cache-dir setuptools wheel && \
     pandas \
     stripy \
     litho1pt0 \
-    lavavu && \
+    lavavu==1.2.52 && \
     USE_SETUPCFG=0 \
     HDF5_INCDIR=/usr/include/hdf5/serial \
     HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial \

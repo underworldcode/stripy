@@ -757,15 +757,13 @@ class sTriangulation(object):
         list / array provided.
         """
 
-        segments = []
+        segments = set()
 
         for vertex in vertices:
             neighbours = self.identify_vertex_neighbours(vertex)
+            segments.update( min( tuple((vertex, n1)), tuple((n1, vertex))) for n1 in neighbours )
 
-            for n1 in neighbours:
-                segments.append( min( tuple((vertex, n1)), tuple((n1, vertex))) )
-
-        segs = np.array(list(set(segments)))
+        segs = np.array(segments)
 
         new_midpoint_lonlats = self.segment_midpoints(segments=segs)
 
@@ -912,18 +910,14 @@ class sTriangulation(object):
         Compute the angles between lon / lat points p1 and p2 given in radians.
         On the unit sphere, this also corresponds to the great circle distance.
         p1 and p2 can be numpy arrays of the same length.
+
+        This method simply calls the module-level function of the same name.
+        Consider using the module function instead, as this method may be
+        deprecated in favor of that function. For now, this method is
+        retained to avoid issues with the Jupyter notebooks.
         """
-
-        xp1, yp1, zp1 = lonlat2xyz(lonp1, latp1)
-        xp2, yp2, zp2 = lonlat2xyz(lonp2, latp2)
-
-        ## dot products to obtain angles
-
-        angles = np.arccos((xp1 * xp2 + yp1 * yp2 + zp1 * zp2))
-
-        ## As this is a unit sphere, angle = length
-
-        return angles
+        # Call the module-level function
+        return angular_separation(lonp1, latp1, lonp2, latp2)
 
     def _add_spherical_midpoints(self):
 
@@ -1007,15 +1001,15 @@ class sTriangulation(object):
         # identify the segments
 
         simplices = self.simplices
-        segments = []
+        segments = set()
 
         for index in np.array(triangles).reshape(-1):
             tri = simplices[index]
-            segments.append( min( tuple((tri[0], tri[1])), tuple((tri[1], tri[0]))) )
-            segments.append( min( tuple((tri[1], tri[2])), tuple((tri[2], tri[1]))) )
-            segments.append( min( tuple((tri[0], tri[2])), tuple((tri[2], tri[0]))) )
+            segments.add( min( tuple((tri[0], tri[1])), tuple((tri[1], tri[0]))) )
+            segments.add( min( tuple((tri[1], tri[2])), tuple((tri[2], tri[1]))) )
+            segments.add( min( tuple((tri[0], tri[2])), tuple((tri[2], tri[0]))) )
 
-        segs = np.array(list(set(segments)))
+        segs = np.array(segments)
 
         mlons, mlats = self.segment_midpoints(segs)
 
@@ -1262,3 +1256,23 @@ def great_circle_Npoints(lonlat1r, lonlat2r, N):
     lonlatN = xyz2lonlat( xyzN[:,0], xyzN[:,1], xyzN[:,2])
 
     return lonlatN
+
+
+def angular_separation(lonp1, latp1, lonp2, latp2):
+    """
+    Compute the angles between lon / lat points p1 and p2 given in radians.
+    On the unit sphere, this also corresponds to the great circle distance.
+    p1 and p2 can be numpy arrays of the same length.
+    """
+
+    xp1, yp1, zp1 = lonlat2xyz(lonp1, latp1)
+    xp2, yp2, zp2 = lonlat2xyz(lonp2, latp2)
+
+    ## dot products to obtain angles
+
+    angles = np.arccos((xp1 * xp2 + yp1 * yp2 + zp1 * zp2))
+
+    ## As this is a unit sphere, angle = length
+
+    return angles
+
