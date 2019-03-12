@@ -1,7 +1,7 @@
 # Stripy
 
-![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/underworldcode/stripy.svg)
-![PyPI](https://img.shields.io/pypi/v/stripy.svg)
+[![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/underworldcode/stripy.svg)](https://hub.docker.com/r/underworldcode/stripy)
+[![PyPI](https://img.shields.io/pypi/v/stripy.svg)](https://pypi.org/project/stripy/)
 
 A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives (Renka 1996a,b and 1997a,b).
 
@@ -13,9 +13,9 @@ A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triang
 
 _Sample images created with `stripy` illustrating the meshing capability, the ability to refine meshes to match criteria such as data density, and the ability to create distance-weighted averages to meshes and continuous interpolating functions_
 
-#### binder
+#### Binder
 
-Launch the demonstration at [mybinder.org](https://mybinder.org/v2/gh/underworldcode/stripy-binder/master)
+Launch the demonstration at [mybinder.org](https://mybinder.org/v2/gh/underworldcode/stripy/master?filepath=Notebooks%2F0-StartHere.ipynb)
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/underworldcode/stripy/master?filepath=Notebooks%2F0-StartHere.ipynb)
 
@@ -98,11 +98,11 @@ pip install [--user] stripy
 
 Two classes are included as part of the Stripy package:
 
-- sTriangulation (Spherical coordinates)
-- Triangulation (Cartesian coordinates)
+- `sTriangulation` (Spherical coordinates)
+- `Triangulation` (Cartesian coordinates)
 
 These classes share similar methods and can be easily interchanged.
-In addition, there are many helper functions provided for building
+In addition, there are many helper functions provided for building meshes.
 
 A series of tests are located in the *tests* subdirectory.
 
