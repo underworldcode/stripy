@@ -2,7 +2,7 @@
 #  Short docker file to distribute some notebooks
 #################################################
 
-ARG FROMIMG_ARG=lmoresi/lmoresi-debian-python:1.0.8
+ARG FROMIMG_ARG=brmather/py3-lavavu-notebook-bundle:0.9.1-jupyterhub
 FROM ${FROMIMG_ARG}
 
 ##################################################
@@ -82,10 +82,11 @@ RUN find -name \*.ipynb  -print0 | xargs -0 jupyter trust
 EXPOSE $NB_PORT
 
 VOLUME /home/jovyan/$NB_DIR/user_data
+WORKDIR /home/jovyan/$NB_DIR
 
 # note we use xvfb which to mimic the X display for lavavu
 ENTRYPOINT ["/usr/local/bin/xvfbrun.sh"]
 
 # launch notebook
 ADD --chown=jovyan:jovyan Docker/scripts/run-jupyter.sh scripts/run-jupyter.sh
-CMD ["jupyter", "notebook", "--ip=0.0.0.0","--allow-root", "--NotebookApp.token=''" ]
+CMD ["jupyter", "notebook", "--ip=0.0.0.0","--allow-root", "--NotebookApp.token=''", "--NotebookApp.default_url=/tree/0-StartHere.ipynb"]
