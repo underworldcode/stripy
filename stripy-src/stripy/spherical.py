@@ -757,15 +757,13 @@ class sTriangulation(object):
         list / array provided.
         """
 
-        segments = []
+        segments = set()
 
         for vertex in vertices:
             neighbours = self.identify_vertex_neighbours(vertex)
+            segments.update( min( tuple((vertex, n1)), tuple((n1, vertex))) for n1 in neighbours )
 
-            for n1 in neighbours:
-                segments.append( min( tuple((vertex, n1)), tuple((n1, vertex))) )
-
-        segs = np.array(list(set(segments)))
+        segs = np.array(segments)
 
         new_midpoint_lonlats = self.segment_midpoints(segments=segs)
 
@@ -1003,15 +1001,15 @@ class sTriangulation(object):
         # identify the segments
 
         simplices = self.simplices
-        segments = []
+        segments = set()
 
         for index in np.array(triangles).reshape(-1):
             tri = simplices[index]
-            segments.append( min( tuple((tri[0], tri[1])), tuple((tri[1], tri[0]))) )
-            segments.append( min( tuple((tri[1], tri[2])), tuple((tri[2], tri[1]))) )
-            segments.append( min( tuple((tri[0], tri[2])), tuple((tri[2], tri[0]))) )
+            segments.add( min( tuple((tri[0], tri[1])), tuple((tri[1], tri[0]))) )
+            segments.add( min( tuple((tri[1], tri[2])), tuple((tri[2], tri[1]))) )
+            segments.add( min( tuple((tri[0], tri[2])), tuple((tri[2], tri[0]))) )
 
-        segs = np.array(list(set(segments)))
+        segs = np.array(segments)
 
         mlons, mlats = self.segment_midpoints(segs)
 
