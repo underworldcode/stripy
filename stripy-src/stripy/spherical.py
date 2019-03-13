@@ -763,7 +763,7 @@ class sTriangulation(object):
             neighbours = self.identify_vertex_neighbours(vertex)
             segments.update( min( tuple((vertex, n1)), tuple((n1, vertex))) for n1 in neighbours )
 
-        segs = np.array(segments)
+        segs = np.array(list(segments))
 
         new_midpoint_lonlats = self.segment_midpoints(segments=segs)
 
@@ -1009,7 +1009,7 @@ class sTriangulation(object):
             segments.add( min( tuple((tri[1], tri[2])), tuple((tri[2], tri[1]))) )
             segments.add( min( tuple((tri[0], tri[2])), tuple((tri[2], tri[0]))) )
 
-        segs = np.array(segments)
+        segs = np.array(list(segments))
 
         mlons, mlats = self.segment_midpoints(segs)
 
