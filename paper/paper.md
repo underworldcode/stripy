@@ -47,9 +47,8 @@ Our package, `stripy`, is a python, `numpy`-based interface to the TRIPACK and S
 - Evaluation of derivatives.
 - Smoothing operations.
 - Mesh refinement on line segments / triangle centroids.
+- Fast point location with k-d tree interface with angular separation metric on the sphere.
 
-<!--
-These features are significant within Geographic Information Systems (GIS) where unstructured data can be triangulated, in projected or geographic coordinates, and interpolated to other datasets. -->
 
 ## Documentation
 
@@ -71,7 +70,7 @@ All documentation can be accessed from within the module via a python function t
 
 ## Installation, Dependencies and Usage
 
-`stripy` requires `numpy` and a fortran compiler such as gfortran to compile the fortran90 versions of the (S)TRIPACK and (S)SRFPACK routines that are included with the distribution. The documentation is supplied in the form of jupyter notebooks (the jupyter system is a dependency) which also have optional dependencies for the `cartopy` mapping package and the `lavavu` embedded, 3D visualisation package. `stripy` and all python dependencies can be installed through the pypi.org `pip` package. However, the fortran compiler, and several of the dependencies for `cartopy` and `lavavu` may cause problems for inexperienced users. We therefore provided a fully build docker image and a deployment of the documentation / examples on  [mybinder.org](https://mybinder.org/v2/gh/underworldcode/stripy/master?filepath=Notebooks%2F0-StartHere.ipynb)
+`stripy` requires `numpy` and a fortran compiler such as gfortran to compile the fortran90 versions of the (S)TRIPACK and (S)SRFPACK routines that are included with the distribution. The optional k-d tree methods on the meshes require the `scipy.spatial` module. The documentation is supplied in the form of jupyter notebooks (the jupyter system is a dependency) which also have optional dependencies for the `cartopy` mapping package and the `lavavu` embedded, 3D visualisation package. `stripy` and all python dependencies can be installed through the pypi.org `pip` package. However, the fortran compiler, and several of the dependencies for `cartopy` and `lavavu` may cause problems for inexperienced users. We therefore provided a fully build docker image and a deployment of the documentation / examples on  [mybinder.org](https://mybinder.org/v2/gh/underworldcode/stripy/master?filepath=Notebooks%2F0-StartHere.ipynb)
 
 # Acknowledgements
 
