@@ -2,7 +2,7 @@
 #  Short docker file to distribute some notebooks
 #################################################
 
-ARG FROMIMG_ARG=brmather/py3-lavavu-notebook-bundle:0.9.2-debian
+ARG FROMIMG_ARG=brmather/py3-lavavu-notebook-bundle:0.9.2-alpine
 FROM ${FROMIMG_ARG}
 
 ##################################################
@@ -83,7 +83,7 @@ EXPOSE $NB_PORT
 VOLUME /home/jovyan/$NB_DIR/user_data
 
 # note we use xvfb which to mimic the X display for lavavu
-ENTRYPOINT ["/usr/local/bin/tini", "--", "/usr/local/bin/xvfbrun.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/xvfbrun.sh"]
 
 # launch notebook
 ADD --chown=jovyan:jovyan Docker/scripts/run-jupyter.sh scripts/run-jupyter.sh
