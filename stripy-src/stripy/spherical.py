@@ -1078,12 +1078,7 @@ class sTriangulation(object):
         ## remove any duplicates
 
         if not unique:
-            a = np.ascontiguousarray(np.vstack((lonv1, latv1)).T)
-            unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
-            llunique = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
-
-            lonv1 = llunique[:,0]
-            latv1 = llunique[:,1]
+            lonv1, latv1 = remove_duplicate_lonlat(lonv1, latv1)
 
         return lonv1, latv1
 
@@ -1162,14 +1157,12 @@ def remove_duplicate_lonlat(lon, lat):
     remove duplicates from an array of lon / lat points
     """
 
+    a = np.ascontiguousarray(np.vstack((lon, lat)).T)
+    unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
+    llunique = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
 
-    if not unique:
-        a = np.ascontiguousarray(np.vstack((lon, lat)).T)
-        unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
-        llunique = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
-
-        lon1 = llunique[:,0]
-        lat1 = llunique[:,1]
+    lon1 = llunique[:,0]
+    lat1 = llunique[:,1]
 
     return lon1, lat1
 
