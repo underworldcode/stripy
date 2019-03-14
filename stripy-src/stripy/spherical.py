@@ -763,7 +763,7 @@ class sTriangulation(object):
             neighbours = self.identify_vertex_neighbours(vertex)
             segments.update( min( tuple((vertex, n1)), tuple((n1, vertex))) for n1 in neighbours )
 
-        segs = np.array(segments)
+        segs = np.array(list(segments))
 
         new_midpoint_lonlats = self.segment_midpoints(segments=segs)
 
@@ -1009,7 +1009,7 @@ class sTriangulation(object):
             segments.add( min( tuple((tri[1], tri[2])), tuple((tri[2], tri[1]))) )
             segments.add( min( tuple((tri[0], tri[2])), tuple((tri[2], tri[0]))) )
 
-        segs = np.array(segments)
+        segs = np.array(list(segments))
 
         mlons, mlats = self.segment_midpoints(segs)
 
@@ -1078,12 +1078,7 @@ class sTriangulation(object):
         ## remove any duplicates
 
         if not unique:
-            a = np.ascontiguousarray(np.vstack((lonv1, latv1)).T)
-            unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
-            llunique = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
-
-            lonv1 = llunique[:,0]
-            latv1 = llunique[:,1]
+            lonv1, latv1 = remove_duplicate_lonlat(lonv1, latv1)
 
         return lonv1, latv1
 
@@ -1162,14 +1157,12 @@ def remove_duplicate_lonlat(lon, lat):
     remove duplicates from an array of lon / lat points
     """
 
+    a = np.ascontiguousarray(np.vstack((lon, lat)).T)
+    unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
+    llunique = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
 
-    if not unique:
-        a = np.ascontiguousarray(np.vstack((lon, lat)).T)
-        unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
-        llunique = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
-
-        lon1 = llunique[:,0]
-        lat1 = llunique[:,1]
+    lon1 = llunique[:,0]
+    lat1 = llunique[:,1]
 
     return lon1, lat1
 
