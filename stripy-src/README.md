@@ -71,8 +71,6 @@ the next two worked examples show how to search, interpolate and plot with the h
   - [WorkEx2-OceanDepthAge.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/WorkEx2-OceanDepthAge.ipynb)
 
 
-
-
 ## Installation
 
 To install ([numpy](http://numpy.org) and fortran compiler, preferably
@@ -163,7 +161,13 @@ To use the docker version to run a script
    stripy-docker-sh my_python_script.py
 ```
 
+To build the dockerfile locally, we provide a script. First ensure you have checked out the source code from github and then run the script in the Docker directory. If you modify the dockerfile and want to push the image to make it publicly available, it will need to be retagged to upload somewhere other than the underworldcode repository.
 
+```bash
+git checkout https://github.com/underworldcode/stripy.git
+cd stripy
+source Docker/build-dockerfile.sh
+```
 
 ## References
 
