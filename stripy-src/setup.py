@@ -43,6 +43,7 @@ if __name__ == "__main__":
           long_description_content_type='text/markdown',
           ext_modules       = [ext1, ext2, ext3, ext4],
           packages          = ['stripy'],
+          install_requires = ['numpy'],
           package_data      = {'stripy': ['Notebooks/CartesianTriangulations/*ipynb',  # Worked Examples is not currently used
                                           'Notebooks/SphericalTriangulations/*ipynb',
                                           'Notebooks/Data/*'] },
