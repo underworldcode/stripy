@@ -27,7 +27,7 @@ bibliography: paper.bib
 
 ![Figure](figure.png)
 
-_Figure 1. Samples meshes on the sphere produced by `stripy` based on the octahedron with added points at the face centroids (far left), and the icosahedron with with face points (left). An icosahedron grid with refinement in regions where ocean age-grid information is available [@MullerEtAl.20XX], and an icosahedral mesh refined to create a smooth heat-map of seismic activity and average earthquake depth from a global catalogue of earthquakes of magnitude > 6_
+**Figure 1.** Samples meshes on the sphere produced by `stripy` based on the octahedron with added points at the face centroids (far left), and the icosahedron with with face points (left). An icosahedron grid with refinement in regions where ocean age-grid information is available [@MullerEtAl2008], and an icosahedral mesh refined to create a smooth heat-map of seismic activity and average earthquake depth from a global catalogue of earthquakes of magnitude > 5.5 since 1990 from the IRIS online catalogue
 
 # Summary
 
@@ -67,14 +67,11 @@ Particularly for the spherical notebooks, global geographical examples are appro
 
 We also provide some worked examples where we mix data that come with very different gridding strategies. The _crust 1.0_ dataset [@Laske2013] is supplied as cell-centred values on a 1x1 degree grid of points (i.e. equally spaced in longitude and latitude) with no depth information, whereas the related _litho 1.0_ dataset [@Pasyanos2014] is supplied as columns of depth-values at points that are distributed on a seven-times-refined icosahedral mesh. The mixing and matching of these datasets in global maps was the original use-case for `stripy` [@CooperEtAl2016].
 
-
-All documentation can be accessed from within the module via a function that installs the notebooks at a location specified by the user at run time.
-
-<!--The demonstrations operate in the Jupyter notebook environment for two matching sets of notebooks: one set for Cartesian triangulations, and one for spherical triangulations. -->
+All documentation can be accessed from within the module via a python function that installs the notebooks at a filesystem location specified by the user at run time.
 
 ## Installation, Dependencies and Usage
 
-`stripy` requires `numpy` and a fortran compiler such as gfortran to compile the fortran90 versions of the (S)TRIPACK and (S)SRFPACK routines. The documentation is supplied as jupyter notebooks which have optional dependencies for the `cartopy` mapping package and the `lavavu` embedded, 3D visualisation package. `stripy` and all python dependencies can be installed through the pypi.org `pip` package. However, the fortran compiler, and several of the dependencies for `cartopy` and `lavavu` may cause problems for inexperienced users. We therefore provided a fully build docker image and a deployment on mybinder.org.
+`stripy` requires `numpy` and a fortran compiler such as gfortran to compile the fortran90 versions of the (S)TRIPACK and (S)SRFPACK routines that are included with the distribution. The documentation is supplied in the form of jupyter notebooks (the jupyter system is a dependency) which also have optional dependencies for the `cartopy` mapping package and the `lavavu` embedded, 3D visualisation package. `stripy` and all python dependencies can be installed through the pypi.org `pip` package. However, the fortran compiler, and several of the dependencies for `cartopy` and `lavavu` may cause problems for inexperienced users. We therefore provided a fully build docker image and a deployment of the documentation / examples on  [mybinder.org](https://mybinder.org/v2/gh/underworldcode/stripy/master?filepath=Notebooks%2F0-StartHere.ipynb)
 
 # Acknowledgements
 
