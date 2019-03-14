@@ -8,16 +8,16 @@ A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triang
 `stripy` is bundled with `litho1pt0` which is a python interface to the _crust 1.0_ dataset and the lithospheric part of the _litho 1.0_ dataset (Laske et al, 2013 and Pasyanos et al, 2014) which both requires and demonstrates the triangulation / searching and interpolation on the sphere that is provided by `stripy`.
 
 
-![Examples](https://github.com/University-of-Melbourne-Geodynamics/stripy/blob/master/Notebooks/Images/Examples.png?raw=true)
+![Examples](https://github.com/underworldcode/stripy/blob/master/Notebooks/Images/Examples.png?raw=true)
 
 
 _Sample images created with `stripy` illustrating the meshing capability, the ability to refine meshes to match criteria such as data density, and the ability to create distance-weighted averages to meshes and continuous interpolating functions_
 
 #### Binder
 
-Launch the demonstration at [mybinder.org](https://mybinder.org/v2/gh/underworldcode/stripy/master?filepath=Notebooks%2F0-StartHere.ipynb)
+Launch the demonstration at [mybinder.org](https://mybinder.org/v2/gh/underworldcode/stripy/binder?filepath=Notebooks%2F0-StartHere.ipynb)
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/underworldcode/stripy/master?filepath=Notebooks%2F0-StartHere.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/underworldcode/stripy/binder?filepath=Notebooks%2F0-StartHere.ipynb)
 
 
 ## Navigation / Notebooks
@@ -69,8 +69,6 @@ the next two worked examples show how to search, interpolate and plot with the h
   - [Ex3-CrustalRegionalisation.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Ex3-CrustalRegionalisation.ipynb)
   - [WorkEx1-CratonAverageProperties.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/WorkEx1-CratonAverageProperties.ipynb)
   - [WorkEx2-OceanDepthAge.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/WorkEx2-OceanDepthAge.ipynb)
-
-
 
 
 ## Installation
@@ -163,7 +161,13 @@ To use the docker version to run a script
    stripy-docker-sh my_python_script.py
 ```
 
+To build the dockerfile locally, we provide a script. First ensure you have checked out the source code from github and then run the script in the Docker directory. If you modify the dockerfile and want to push the image to make it publicly available, it will need to be retagged to upload somewhere other than the underworldcode repository.
 
+```bash
+git checkout https://github.com/underworldcode/stripy.git
+cd stripy
+source Docker/build-dockerfile.sh
+```
 
 ## References
 
