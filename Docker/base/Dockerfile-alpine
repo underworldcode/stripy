@@ -52,7 +52,6 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     jupyter \
     jupyterlab \
     pyepsg \
-    lavavu \
     tornado \
     selenium \
     pyvirtualdisplay \
@@ -60,6 +59,10 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir matplotlib && \
     python3 -m pip install --no-cache-dir --upgrade --ignore-installed pyzmq
 
+
+# LavaVu 1.3 should fix Binder issues
+RUN apk add --no-cache git && \
+    python3 -m pip install --no-cache-dir git+https://github.com/OKaluza/LavaVu.git
 
 
 # Compile mesa from source
