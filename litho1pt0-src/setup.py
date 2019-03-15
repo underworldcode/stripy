@@ -25,7 +25,7 @@ if __name__ == "__main__":
           author_email      = "louis.moresi@unimelb.edu.au",
           url               = "https://github.com/University-of-Melbourne-Geodynamics/litho1pt0",
           download_url      = "",
-          version           = "0.6.5",
+          version           = "0.7.0",
           description       = "Python interface to Litho 1.0 dataset - needs stripy",
           long_description=long_description,
           long_description_content_type='text/markdown',
