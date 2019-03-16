@@ -19,7 +19,7 @@ affiliations:
    index: 1
  - name: School of Geoscience, The University of Sydney
    index: 2
- - name: Research School of Earth Science, Australian National University
+ - name: Research School of Earth Sciences, Australian National University
    index: 3
 date: 7 March 2019
 bibliography: paper.bib
@@ -64,7 +64,7 @@ Our package, `stripy`, is a python, `numpy`-based interface to the TRIPACK and S
 
 Particularly for the spherical notebooks, global geographical examples are appropriate and we use the familiar pattern of global coastlines when we plot the global distributions of vertices and edges.
 
-We also provide some worked examples where we mix data that come with very different gridding strategies. The _crust 1.0_ dataset [@Laske2013] is supplied as cell-centred values on a 1x1 degree grid of points (i.e. equally spaced in longitude and latitude) with no depth information, whereas the related _litho 1.0_ dataset [@Pasyanos2014] is supplied as columns of depth-values at points that are distributed on a seven-times-refined icosahedral mesh. The mixing and matching of these datasets in global maps was the original use-case for `stripy` [@CooperEtAl2016].
+We also provide some worked examples where we mix data that come with very different gridding strategies. The _Crust 1.0_ dataset [@Laske2013] is supplied as cell-centred values on a 1x1 degree grid of points (i.e. equally spaced in longitude and latitude) with no depth information, whereas the related _litho 1.0_ dataset [@Pasyanos2014] is supplied as columns of depth-values at points that are distributed on a seven-times-refined icosahedral mesh. The mixing and matching of these datasets in global maps was the original use-case for `stripy` [@CooperEtAl2016].
 
 All documentation can be accessed from within the module via a python function that installs the notebooks at a filesystem location specified by the user at run time.
 
@@ -75,8 +75,6 @@ All documentation can be accessed from within the module via a python function t
 # Acknowledgements
 
 Louis Moresi would like to acknowledge the support of the CIDER 2016 summer program (NSF grant EAR-1135452) during which this project was conceived.
-Development of ``stripy`` was financially supported by AuScope which is funded by the Australian Government through the National Collaborative Research Infrastructure Strategy.
+Development of ``stripy`` was financially supported by AuScope (www.auscope.org.au) which is funded by the Australian Government through the National Collaborative Research Infrastructure Strategy.
 
 # References
-
-<!-- Note we need to add a reference to the age grid used in the figure and to the Earthquake data used in the heat map. Do we need to cite numpy, lavavu and cartopy ? -->
