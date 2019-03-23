@@ -1177,9 +1177,7 @@ def lonlat2xyz(lon, lat):
     lons = np.array(lon)
     lats = np.array(lat)
 
-    xs = np.cos(lats) * np.cos(lons)
-    ys = np.cos(lats) * np.sin(lons)
-    zs = np.sin(lats)
+    xs,ys,zs = _stripack.trans(lats, lons)
 
     return xs, ys, zs
 
