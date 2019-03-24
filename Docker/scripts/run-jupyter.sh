@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 PASS=${NB_PASSWD:-""}
 OPEN=${START_NB:-""}

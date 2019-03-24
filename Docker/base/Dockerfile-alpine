@@ -1,0 +1,143 @@
+FROM alpine:edge
+
+LABEL maintainer="brmather1@gmail.com"
+LABEL repo="https://github.com/underworldcode/stripy"
+
+# Install things
+RUN apk add --update --no-cache \
+    gcc \
+    g++ \
+    gfortran \
+    build-base \
+    linux-headers \
+    python3-dev \
+    py3-pip \
+    py3-zmq \
+    cmake \
+    curl \
+    wget \
+    libzmq \
+    zlib-dev \
+    musl-dev \
+    make \
+    xvfb \
+    tini \
+    xorg-server-dev \
+    freetype-dev \
+    libpng-dev \
+    libxml2-dev \
+    openblas-dev
+
+# Install from special repo for Geos and Proj4
+RUN echo "http://mirror.leaseweb.com/alpine/edge/testing" >> /etc/apk/repositories
+RUN apk add --no-cache \
+    geos-dev \
+    proj4-dev
+
+# Install from special repo for GDAL
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
+RUN apk add --update --no-cache \
+    libressl2.7-libcrypto \
+    gdal-dev
+
+
+# Install all python3 dependencies using pip
+RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
+RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+    python3 -m pip install --no-cache-dir --upgrade numpy scipy && \
+    python3 -m pip install --no-cache-dir setuptools wheel Cython && \
+    python3 -m pip install --no-cache-dir \
+    packaging \
+    gdal \
+    jupyter \
+    jupyterlab \
+    pyepsg \
+    tornado \
+    selenium \
+    pyvirtualdisplay \
+    cartopy && \
+    python3 -m pip install --no-cache-dir matplotlib && \
+    python3 -m pip install --no-cache-dir --upgrade --ignore-installed pyzmq
+
+
+# LavaVu 1.3 should fix Binder issues
+RUN apk add --no-cache git && \
+    python3 -m pip install --no-cache-dir git+https://github.com/OKaluza/LavaVu.git
+
+
+# Compile mesa from source
+# https://github.com/utensils/docker-opengl/blob/master/Dockerfile
+RUN apk add --no-cache expat-dev llvm-dev python2 && \
+    mkdir -p /var/tmp/build && \
+    cd /var/tmp/build && \
+    wget "https://mesa.freedesktop.org/archive/mesa-18.0.1.tar.gz" && \
+    tar xfv mesa-18.0.1.tar.gz && \
+    rm mesa-18.0.1.tar.gz && \
+    cd mesa-18.0.1 && \
+    ./configure CFLAGS="-g -O3" CXXFLAGS="-g -O3" \
+        --enable-glx=gallium-xlib \
+        --with-gallium-drivers=swrast,swr \
+        --disable-dri \
+        --disable-gbm \
+        --disable-egl \
+        --enable-gallium \
+        --prefix=/usr/local && \
+    make -j$(nproc) && \
+    make install && \
+    cd ..  && \
+    rm -rf mesa-18.0.1 && \
+    apk del expat-dev llvm-dev python2
+
+# # Setup our environment variables.
+ENV XVFB_WHD="1920x1080x24"\
+    DISPLAY=":99" \
+    LIBGL_ALWAYS_SOFTWARE="1" \
+    GALLIUM_DRIVER="llvmpipe" \
+    LP_NO_RAST="false" \
+    LP_DEBUG="" \
+    LP_PERF="" \
+    LP_NUM_THREADS=""
+
+#Dirty hack to fix error with mesa GL and musl libc
+#(_glapi_tls_Dispatch: initial-exec TLS resolves to dynamic definition in /usr/local/lib/libglapi.so.0)
+ENV LD_PRELOAD=/usr/local/lib/libGL.so.1
+
+
+# helper file for xvfb (for LavaVu)
+ADD Docker/scripts/xvfb-run /usr/bin/
+RUN chmod +x /usr/bin/xvfb-run
+#ADD scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+# script for xvfb-run.  all docker commands will effectively run under this via the entrypoint
+RUN printf "#\041/bin/sh \n rm -f /tmp/.X99-lock && xvfb-run -s '-screen 0 1600x1200x16' \$@" >> /usr/local/bin/xvfbrun.sh && \
+chmod +x /usr/local/bin/xvfbrun.sh
+
+
+# environment variable will internally run xvfb when glucifer is imported
+# see /opt/underworld2/glucifer/__init__.py
+ENV GLUCIFER_USE_XVFB 1
+
+# add a notebook profile
+RUN mkdir -p -m 700 /root/.jupyter/ && \
+    echo "c.NotebookApp.ip = '0.0.0.0'" >> /root/.jupyter/jupyter_notebook_config.py && \
+    echo "c.NotebookApp.token = ''" >> /root/.jupyter/jupyter_notebook_config.py
+
+
+RUN addgroup jovyan && \
+    adduser -D jovyan -G jovyan
+
+WORKDIR /home/jovyan
+RUN chown -R jovyan:jovyan /home/jovyan
+USER jovyan
+
+
+
+## Temporary commands for Owen
+VOLUME /home/jovyan/$NB_DIR/user_data
+
+# note we use xvfb which to mimic the X display for lavavu
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/xvfbrun.sh"]
+
+# launch notebook
+# CMD scripts/run-jupyter.sh
+CMD ["jupyter", "notebook", "--ip='0.0.0.0'", "--NotebookApp.token='' ", "--no-browser"]
