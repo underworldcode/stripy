@@ -1,0 +1,30 @@
+*.pyc
+
+__pycache__
+*.so*
+*checkpoint.ipynb
+*.png
+
+stripy-src/swpcom.mod
+
+stripy-src/build/*
+stripy-src/dist/*
+
+litho1pt0-src/build/*
+litho1pt0-src/dist/*
+
+*.egg
+
+src/_*module.c
+src/_*wrappers.f
+
+.local
+.ipython
+
+# Add this when building docker image or download it
+*ETOPO1_Ice_c_geotiff.tif
+
+litho1pt0-src/litho1pt0.egg-info/*
+stripy-src/stripy.egg-info/*
+# litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Data/ETOPO1_Ice_g_geotiff.tif
+litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Data/ETOPO1_Ice_g_geotiff.tif.zip
