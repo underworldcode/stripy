@@ -23,10 +23,14 @@ if __name__ == "__main__":
     setup(name = 'litho1pt0',
           author            = "LM",
           author_email      = "louis.moresi@unimelb.edu.au",
-          url               = "https://github.com/University-of-Melbourne-Geodynamics/litho1pt0",
+          url               = "https://github.com/underworldcode/litho1pt0",
           download_url      = "",
           version           = "0.7.0",
+<<<<<<< HEAD
           description       = "Python interface to Litho 1.0 dataset - needs stripy",
+=======
+          description       = "Python interface to Litho 1.0 dataset - based on stripy",
+>>>>>>> master
           long_description=long_description,
           long_description_content_type='text/markdown',
           packages          = ['litho1pt0'],

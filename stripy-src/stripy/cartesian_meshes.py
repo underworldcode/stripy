@@ -30,7 +30,7 @@ class square_border(_cartesian.Triangulation):
     def __init__(self, extent, spacingX, spacingY, refinement_levels=0, tree=False):
 
         xmin, xmax, ymin, ymax = extent
-        
+
         nx = int((xmax - xmin)/spacingX)
         ny = int((ymax - ymin)/spacingY)
 
@@ -63,8 +63,6 @@ class square_border(_cartesian.Triangulation):
             self._update_triangulation(X, Y)
 
         return
-
-
 
 
 class square_mesh(_cartesian.Triangulation):
@@ -145,12 +143,12 @@ class elliptical_mesh(_cartesian.Triangulation):
 
             x_ring = originX + np.cos(2.0*np.pi/lin_samples*ind)*r
             y_ring = originY + np.sin(2.0*np.pi/lin_samples*ind)*r * aspect
-            
+
             x.append(x_ring)
             y.append(y_ring)
 
         boundary_size = len(x[-1])
-        
+
         x = np.concatenate(x, axis=0)
         y = np.concatenate(y, axis=0)
 
@@ -198,7 +196,7 @@ class random_mesh(_cartesian.Triangulation):
         base_mesh = square_border(extent, spacingX, spacingY)
 
         xy = np.random.random((number_of_points - base_mesh.npoints,2))
-        
+
         # scale to extent leaving some buffer space
         x = xmin + 0.5*spacingX + xy[:,0]*(deltaX - 0.5*spacingX)
         y = ymin + 0.5*spacingY + xy[:,1]*(deltaY - 0.5*spacingY)
