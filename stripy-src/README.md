@@ -73,39 +73,32 @@ the next two worked examples show how to search, interpolate and plot with the h
 
 ## Installation
 
-To install ([numpy](http://numpy.org) and fortran compiler, preferably
-[gfortran](https://gcc.gnu.org/wiki/GFortran), required):
+### Dependencies
 
-```bash
-python setup.py build
-```
-   - If you change the fortran compiler, you may have to add the
-flags `config_fc --fcompiler=<compiler name>` when setup.py is run
-(see docs for [numpy.distutils](http://docs.scipy.org/doc/numpy-dev/f2py/distutils.html)).
-```bash
-python setup.py install
-```
+You will need **Python 3.5 or greater**.
+Also, the following packages are required:
 
-Alternatively install using pip:
+ - [`gfortran`](https://www.fatiando.org/verde/latest/install.html) (or any Fortran compiler)
+ - [`numpy`](http://numpy.org)
+
+### Installing using pip
+
+You can install `stripy` using the
+[`pip package manager`](https://pypi.org/project/pip/):
 
 ```bash
 pip install [--user] stripy
 ```
 
-## Usage
+All the dependencies will be automatically installed by `pip`, except for `gfortran`
+(or any Fortran compiler). It must be installed in your system before installing
+`stripy` with `pip`.
 
-Two classes are included as part of the Stripy package:
+If you change the Fortran compiler, you may have to add the
+flags `config_fc --fcompiler=<compiler name>` when `setup.py` is run
+(see docs for [numpy.distutils](http://docs.scipy.org/doc/numpy-dev/f2py/distutils.html)).
 
-- `sTriangulation` (Spherical coordinates)
-- `Triangulation` (Cartesian coordinates)
-
-These classes share similar methods and can be easily interchanged.
-In addition, there are many helper functions provided for building meshes.
-
-A series of tests are located in the *tests* subdirectory.
-
-
-## Docker
+### Installing using Docker
 
 A more straightforward installation which does not depend on specific compilers relies on the [docker](http://www.docker.com) virtualisation system.
 
@@ -168,6 +161,20 @@ git checkout https://github.com/underworldcode/stripy.git
 cd stripy
 source Docker/build-dockerfile.sh
 ```
+
+
+## Usage
+
+Two classes are included as part of the Stripy package:
+
+- `sTriangulation` (Spherical coordinates)
+- `Triangulation` (Cartesian coordinates)
+
+These classes share similar methods and can be easily interchanged.
+In addition, there are many helper functions provided for building meshes.
+
+A series of tests are located in the *tests* subdirectory.
+
 
 ## References
 
