@@ -2,7 +2,7 @@
 #  Short docker file to distribute some notebooks
 #################################################
 
-ARG FROMIMG_ARG=underworldcode/py3-lavavu-notebook-bundle:latest
+ARG FROMIMG_ARG=underworldcode/py3-lavavu-notebook-bundle:0.9.3-alpine
 FROM ${FROMIMG_ARG}
 
 ##################################################
