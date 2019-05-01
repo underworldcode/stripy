@@ -63,18 +63,27 @@ def test_area(mesh):
 def test_derivative(mesh):
     from scipy import interpolate
 
+    def analytic(lons, lats, k1, k2):
+        return np.cos(k1*lons) * np.sin(k2*lats)
+
+    def analytic_ddlon(lons, lats, k1, k2):
+        return -k1 * np.sin(k1*lons) * np.sin(k2*lats) / np.cos(lats)
+
+    def analytic_ddlat(lons, lats, k1, k2):
+        return k2 * np.cos(k1*lons) * np.cos(k2*lats) 
+
     # Create a field to test derivatives
     lons, lats = mesh.lons, mesh.lats + np.pi/2
-    Z = np.exp(-lons**2 - lats**2)
-    Zlons = -2*lons*Z
-    Zlats = -2*lats*Z
+
+    Z     = analytic(lons, lats, 5.0, 2.0)
+    Zlons = analytic_ddlon(lons, lats, 5.0, 2.0)
+    Zlats = analytic_ddlat(lons, lats, 5.0, 2.0)
     gradZ = np.hypot(Zlons, Zlats)
 
     # Stripy
     t = clock()
-    Zx, Zy, Zz = mesh.gradient(Z, nit=10, tol=1e-10)
+    Zlons1, Zlats1 = mesh.gradient_lonlat(Z, nit=10, tol=1e-10)
     t1 = clock() - t
-    Zlons1, Zlats1 = mesh.transform_to_spherical(Zx, Zy, Zz)
     gradZ1 = np.hypot(Zlons1, Zlats1)
 
     # Spline

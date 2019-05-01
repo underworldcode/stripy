@@ -1,5 +1,7 @@
 import numpy as np
 import stripy
+from stripy import cartesian_meshes
+from stripy import spherical_meshes
 from time import clock
 
 # global variables
@@ -24,6 +26,7 @@ np.random.seed(0)
 x = np.random.random(npoints)
 y = np.random.random(npoints)
 
+# interpolation data
 xi = np.random.random(100)
 yi = np.random.random(100)
 rint = np.random.randint(0, len(xi), len(xi))
@@ -59,17 +62,20 @@ np.random.seed(0)
 lons = 2.*np.pi*np.random.random(npoints)
 lats = np.arccos(2.*np.random.random(npoints) - 1.) - np.pi/2
 
+# interpolation data
 lon = 2.*np.pi*np.random.random(100)
 lat = np.arccos(2.*np.random.random(100) - 1.) - np.pi/2
 rint = np.random.randint(0, len(lon), len(lon))
 
-stri = stripy.sTriangulation(lons, lats)
+# stri = stripy.sTriangulation(lons, lats)
+stri = stripy.spherical_meshes.octahedral_mesh(include_face_points=True, refinement_levels=6)
+stri = stripy.sTriangulation(stri.lons, stri.lats)
 
 for refine in range(max_refinements):
     print("\nrefinement = {}\n".format(refine))
-    time_routine(stri.__init__, lons, lats)
+    time_routine(stri.__init__, stri.lons, stri.lats, refine, permute)
 
-    Z = np.exp(-stri.lons**2 - stri.lats**2)
+    Z = np.cos(5.0*stri.lons) * np.sin(2.0*stri.lats)
 
     time_routine(stri.areas)
     time_routine(stri.gradient_lonlat, Z)
