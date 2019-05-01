@@ -7,7 +7,7 @@ IMAGENAME=lmoresi/stripy-khub:v0.7.5b
 PROJ_NAME=stripy
 NB_PORT=8888
 NB_PASSWD=""
-NB_DIR=Notebooks
+NB_DIR=STRIPY/Notebooks
 START_NB="0-StartHere.ipynb"
 
 docker build -t $IMAGENAME \
