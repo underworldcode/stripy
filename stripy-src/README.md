@@ -15,9 +15,8 @@ _Sample images created with `stripy` illustrating the meshing capability, the ab
 
 #### Binder
 
-Launch the demonstration at [mybinder.org](https://mybinder.org/v2/gh/underworldcode/stripy/paper?filepath=Notebooks%2F0-StartHere.ipynb)
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/underworldcode/stripy/paper?filepath=Notebooks%2F0-StartHere.ipynb)
+Launch the demonstration at [links.underworldcode.org/stripy-live (mybinder.org)](http://links.underworldcode.org/stripy-live)
+[![Binder](https://mybinder.org/badge_logo.svg)](http://links.underworldcode.org/stripy-live)
 
 
 ## Navigation / Notebooks
