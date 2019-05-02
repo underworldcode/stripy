@@ -10,7 +10,7 @@ from __future__ import print_function
 ## the docker image though
 
 print("STRIPY test_imports.py ")
-
+ 
 ## ==========================
 
 print("\tDependency: numpy")
