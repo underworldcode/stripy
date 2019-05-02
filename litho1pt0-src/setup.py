@@ -26,7 +26,11 @@ if __name__ == "__main__":
           url               = "https://github.com/underworldcode/litho1pt0",
           download_url      = "",
           version           = "0.7.0",
+<<<<<<< HEAD
+          description       = "Python interface to Litho 1.0 dataset - needs stripy",
+=======
           description       = "Python interface to Litho 1.0 dataset - based on stripy",
+>>>>>>> master
           long_description=long_description,
           long_description_content_type='text/markdown',
           packages          = ['litho1pt0'],
