@@ -2,7 +2,7 @@ import numpy as np
 import stripy
 from stripy import cartesian_meshes
 from stripy import spherical_meshes
-from time import clock
+from time import time
 
 # global variables
 permute = False
@@ -11,10 +11,10 @@ npoints = 100000
 
 
 def time_routine(routine, *args):
-    t = clock()
+    t = time()
     routine(*args)
     str_fmt = "- {:30} completed in  {:1.6f} seconds"
-    print(str_fmt.format(str(routine.__name__), clock()-t))
+    print(str_fmt.format(str(routine.__name__), time()-t))
 
 """
 Test Triangulation routines

@@ -2,7 +2,7 @@ import numpy as np
 import stripy
 
 from scipy import spatial
-from time import clock
+from time import time
 
 try: range = xrange
 except: pass
@@ -19,25 +19,25 @@ def test_derivative(mesh):
     gradZ = np.hypot(Zx, Zy)
 
     # Stripy
-    t = clock()
+    t = time()
     Zx1, Zy1 = mesh.gradient(Z, nit=10, tol=1e-10)
-    t1 = clock() - t
+    t1 = time() - t
     gradZ1 = np.hypot(Zx1, Zy1)
 
     # Spline
     spl = interpolate.SmoothBivariateSpline(x, y, Z)
-    t = clock()
+    t = time()
     Zx2 = spl.ev(x, y, dx=1)
     Zy2 = spl.ev(x, y, dy=1)
-    t2 = clock() - t
+    t2 = time() - t
     gradZ2 = np.hypot(Zx2, Zy2)
 
     # Clough Tocher
     # This one is most similar to what is used in stripy
-    t = clock()
+    t = time()
     cti = interpolate.CloughTocher2DInterpolator(np.column_stack([x,y]),\
                                                  Z, tol=1e-10, maxiter=20)
-    t3 = clock() - t
+    t3 = time() - t
     Zx3 = cti.grad[:,:,0].ravel()
     Zy3 = cti.grad[:,:,1].ravel()
     gradZ3 = np.hypot(Zx3, Zy3)

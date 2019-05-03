@@ -2,7 +2,7 @@ import numpy as np
 import stripy
 
 from scipy import spatial
-from time import clock
+from time import time
 
 try: range = xrange
 except: pass
@@ -40,7 +40,7 @@ def test_area(mesh):
 
     area1 = np.empty(nt)
 
-    t = clock()
+    t = time()
     for i in range(0,nt):
         tr = mesh.simplices[i]
         xi = mesh.x[tr]
@@ -48,10 +48,10 @@ def test_area(mesh):
         zi = mesh.z[tr]
 
         area1[i] = compute_area(xi, yi, zi)
-    t1 = clock() - t
-    t = clock()
+    t1 = time() - t
+    t = time()
     area2 = mesh.areas()
-    t2 = clock() - t
+    t2 = time() - t
 
     res = ((area1 - area2)**2).max()
     print("squared error in area calculation = {}\n  \
@@ -81,17 +81,17 @@ def test_derivative(mesh):
     gradZ = np.hypot(Zlons, Zlats)
 
     # Stripy
-    t = clock()
+    t = time()
     Zlons1, Zlats1 = mesh.gradient_lonlat(Z, nit=10, tol=1e-10)
-    t1 = clock() - t
+    t1 = time() - t
     gradZ1 = np.hypot(Zlons1, Zlats1)
 
     # Spline
     spl = interpolate.SmoothSphereBivariateSpline(lats, lons, Z, s=1)
-    t = clock()
+    t = time()
     Zlons2 = spl.ev(lats, lons, dtheta=1)
     Zlats2 = spl.ev(lats, lons, dphi=1)
-    t2 = clock() - t
+    t2 = time() - t
     gradZ2 = np.hypot(Zlons2, Zlats2)
 
     res1 = ((gradZ1 - gradZ)**2).max()
