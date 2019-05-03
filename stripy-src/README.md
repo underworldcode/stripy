@@ -74,19 +74,21 @@ the next two worked examples show how to search, interpolate and plot with the h
 
 ### Dependencies
 
-You will need **Python 3.5 or greater**.
+You will need **Python 2.7 or 3.5+**.
 Also, the following packages are required:
 
  - [`gfortran`](https://www.fatiando.org/verde/latest/install.html) (or any Fortran compiler)
  - [`numpy`](http://numpy.org)
+ - [`scipy`](https://scipy.org)
 
 ### Installing using pip
 
 You can install `stripy` using the
-[`pip package manager`](https://pypi.org/project/pip/):
+[`pip package manager`](https://pypi.org/project/pip/) with either version of Python:
 
 ```bash
-pip install [--user] stripy
+python2 -m pip install stripy
+python3 -m pip install stripy
 ```
 
 All the dependencies will be automatically installed by `pip`, except for `gfortran`
