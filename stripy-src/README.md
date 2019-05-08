@@ -16,6 +16,7 @@ _Sample images created with `stripy` illustrating the meshing capability, the ab
 #### Binder
 
 Launch the demonstration at [links.underworldcode.org/stripy-live (mybinder.org)](http://links.underworldcode.org/stripy-live)
+
 [![Binder](https://mybinder.org/badge_logo.svg)](http://links.underworldcode.org/stripy-live)
 
 

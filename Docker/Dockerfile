@@ -37,6 +37,10 @@ ADD  --chown=jovyan:jovyan Notebooks/0-StartHere.ipynb Notebooks/0-StartHere.ipy
 
 RUN ipython3 -c 'import litho1pt0; litho1pt0.documentation.install_documentation(path="Notebooks")'
 
+RUN python3 -m pip install --no-cache-dir --upgrade \
+    jupyterhub \
+    git+https://github.com/OKaluza/LavaVu.git@afa8cd24e6dae7ffbacf9735db8e1affd85fd3df
+
 # This file is too big to bundle with the pip installation
 
 RUN mkdir -p /usr/local/files && chown -R jovyan:jovyan /usr/local/files

@@ -35,8 +35,9 @@ ADD  --chown=jovyan:jovyan Notebooks/0-StartHere.ipynb Notebooks/0-StartHere.ipy
 
 RUN ipython3 -c 'import litho1pt0; litho1pt0.documentation.install_documentation(path="Notebooks")'
 
-RUN python3 -m pip install jupyterhub
-RUN python3 -m pip install lavavu==1.2.55
+RUN python3 -m pip install --no-cache-dir --upgrade \
+    jupyterhub \
+    git+https://github.com/OKaluza/LavaVu.git@afa8cd24e6dae7ffbacf9735db8e1affd85fd3df
 
 
 # Find a place to keep /home/jovyan in the container for khub
