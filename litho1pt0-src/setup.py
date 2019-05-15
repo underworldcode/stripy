@@ -33,7 +33,7 @@ if __name__ == "__main__":
           package_dir       = {'litho1pt0': 'litho1pt0'},
           package_data      = {'litho1pt0': ['data/*.npz', 'Notebooks/litho1pt0/*ipynb', 'Notebooks/litho1pt0/Data/*npz'] },
           include_package_data = True,
-          install_requires=['stripy'],
+          install_requires  = ['stripy'],
 
 
 
