@@ -13,6 +13,7 @@
 
 
 
+from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
 from os import path
 import io
@@ -27,9 +28,9 @@ ext1 = Extension(name    = 'stripy._stripack',
 ext2 = Extension(name    = 'stripy._tripack',
                  sources = ['src/tripack.pyf', 'src/tripack.f90'])
 ext3 = Extension(name    = 'stripy._srfpack',
-                 sources = ['src/srfpack.pyf', 'src/f77/srfpack.f'])
+                 sources = ['src/srfpack.pyf', 'f77-src/srfpack.f'])
 ext4 = Extension(name    = 'stripy._ssrfpack',
-                 sources = ['src/ssrfpack.pyf', 'src/f77/ssrfpack.f'])
+                 sources = ['src/ssrfpack.pyf', 'f77-src/ssrfpack.f'])
 
 if __name__ == "__main__":
     setup(name = 'stripy',
@@ -41,13 +42,14 @@ if __name__ == "__main__":
           long_description  = long_description,
           long_description_content_type='text/markdown',
           ext_modules       = [ext1, ext2, ext3, ext4],
-          packages          = ['stripy'],
           install_requires  = ['numpy', 'scipy>=0.15.0'],
           python_requires   = '>=2.7, >=3.5',
+          setup_requires    = ["pytest-runner", 'webdav'],
+          tests_require     = ["pytest", 'webdav'],
+          packages          = ['stripy'],     d
           package_data      = {'stripy': ['Notebooks/CartesianTriangulations/*ipynb',  # Worked Examples is not currently used
                                           'Notebooks/SphericalTriangulations/*ipynb',
-                                          'Notebooks/Data/*',
-                                          'Notebooks/0-StartHere.ipynb'] },
+                                          'Notebooks/Data/*'] },
           include_package_data = True,
           classifiers       = ['Programming Language :: Python :: 2',
                                'Programming Language :: Python :: 2.6',
@@ -57,5 +59,6 @@ if __name__ == "__main__":
                                'Programming Language :: Python :: 3.4',
                                'Programming Language :: Python :: 3.5',
                                'Programming Language :: Python :: 3.6',
-                               'Programming Language :: Python :: 3.7']
+                               'Programming Language :: Python :: 3.7'
+                               ]
           )
