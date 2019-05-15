@@ -6,9 +6,16 @@ from time import time
 
 try: range = xrange
 except: pass
-    
 
-def test_derivative(mesh):
+np.random.seed(0)
+x = np.random.random(500)
+y = np.random.random(500)
+
+# triangulation
+mesh = stripy.Triangulation(x, y)
+
+
+def test_derivative():
     from scipy import interpolate
 
     # Create a field to test derivatives
@@ -51,7 +58,7 @@ def test_derivative(mesh):
            - cloughtocher = {} took {}s".format(res1, t1, res2, t2, res3, t3))
 
 
-def test_interpolation(mesh):
+def test_interpolation():
     from scipy import interpolate
 
     x, y = mesh.x, mesh.y
@@ -99,18 +106,5 @@ def test_interpolation(mesh):
                                       ((zc1 - zc4)**2).max(),) )
 
 
-def test_smoothing(mesh):
+def test_smoothing():
     pass
-
-if __name__ == "__main__":
-    
-    # Create some (semi) random points
-    np.random.seed(0)
-    x = np.random.random(500)
-    y = np.random.random(500)
-
-    # triangulation
-    mesh = stripy.Triangulation(x, y)
-
-    test_derivative(mesh)
-    test_interpolation(mesh)

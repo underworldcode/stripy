@@ -8,7 +8,10 @@ try: range = xrange
 except: pass
 
 
-def test_area(mesh):
+mesh = stripy.spherical_meshes.octahedral_mesh(include_face_points=True, refinement_levels=3)
+
+
+def test_area():
 
     def compute_area(v1, v2, v3):
         """ manually compute area on unit sphere """
@@ -54,13 +57,12 @@ def test_area(mesh):
     t2 = time() - t
 
     res = ((area1 - area2)**2).max()
-    print("squared error in area calculation = {}\n  \
-     - numpy took {}\n  \
-     - stripy took {}".format(res, t1, t2))
+    assert res < 1.0e-5
 
-    
+    return
 
-def test_derivative(mesh):
+
+def test_derivative():
     from scipy import interpolate
 
     def analytic(lons, lats, k1, k2):
@@ -70,7 +72,7 @@ def test_derivative(mesh):
         return -k1 * np.sin(k1*lons) * np.sin(k2*lats) / np.cos(lats)
 
     def analytic_ddlat(lons, lats, k1, k2):
-        return k2 * np.cos(k1*lons) * np.cos(k2*lats) 
+        return k2 * np.cos(k1*lons) * np.cos(k2*lats)
 
     # Create a field to test derivatives
     lons, lats = mesh.lons, mesh.lats + np.pi/2
@@ -96,12 +98,10 @@ def test_derivative(mesh):
 
     res1 = ((gradZ1 - gradZ)**2).max()
     res2 = ((gradZ2 - gradZ)**2).max()
-    print("squared error in first derivative\n  \
-     - stripy = {} took {}s\n  \
-     - spline = {} took {}s".format(res1, t1, res2, t2))
 
+    return
 
-def test_interpolation(mesh):
+def test_interpolation():
     from scipy import interpolate
 
     lons, lats = mesh.lons, mesh.lats
@@ -134,18 +134,5 @@ def test_interpolation(mesh):
                            ((zl1 - zl2)**2).max(), \
                            ((zc1 - zc2)**2).max()))
 
-def test_smoothing(mesh):
+def test_smoothing():
     pass
-
-if __name__ == "__main__":
-    
-    # Create some (semi) random points
-    np.random.seed(0)
-    lons = 2.*np.pi*np.random.random(500)
-    lats = np.arccos(2.*np.random.random(500) - 1.)
-
-    # triangulation
-    mesh = stripy.sTriangulation(lons, lats - np.pi/2)
-    test_area(mesh)
-    test_derivative(mesh)
-    test_interpolation(mesh)
