@@ -196,7 +196,7 @@ class uniform_ring_mesh(_spherical.sTriangulation):
 
         for lat in lat_values:
             length = np.fabs(np.cos(lat)) * 2 * np.pi
-            samples = length // spacing
+            samples = int(length // spacing)
             offset = (2.0 * lat / samples)
 
             lons = offset + np.linspace(0.0, 2.0*np.pi, samples, endpoint=False)

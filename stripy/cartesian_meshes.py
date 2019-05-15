@@ -45,6 +45,8 @@ class square_border(_cartesian.Triangulation):
         x = np.concatenate([xcoords[1:], xcoords[:-1], vx*xmin, vx*xmax], axis=0)
         y = np.concatenate([vy*ymin, vy*ymax, ycoords[:-1], ycoords[1:]], axis=0)
 
+        print (x.shape, y.shape)
+
         xy = np.column_stack([x, y])
 
         n2 = x.size//2
