@@ -7,7 +7,7 @@ from time import time
 # global variables
 permute = False
 max_refinements = 2
-npoints = 100000
+npoints = 10000
 
 
 def time_routine(routine, *args):
@@ -66,7 +66,7 @@ def test_spherical_triangulation():
     lat = np.arccos(2.*np.random.random(100) - 1.) - np.pi/2
 
     # stri = stripy.sTriangulation(lons, lats)
-    stri = stripy.spherical_meshes.octahedral_mesh(include_face_points=True, refinement_levels=6)
+    stri = stripy.spherical_meshes.octahedral_mesh(include_face_points=True, refinement_levels=3)
     stri = stripy.sTriangulation(stri.lons, stri.lats)
 
     return(stri, stri.lons, stri.lats, lon, lat)
