@@ -1,0 +1,390 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module _tripack ! in 
+    interface  ! in :_tripack
+        subroutine addcst(ncc,lcc,n,x,y,lwk,iwk,list,lptr,lend,ier) ! in :_tripack:tripack.f90
+            integer(kind=4), intent(in) :: ncc
+            integer(kind=4) dimension(ncc), intent(in) :: lcc
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n), intent(in) :: x
+            real(kind=8) dimension(n), intent(in) :: y
+            integer(kind=4), intent(in,out) :: lwk
+            integer(kind=4) dimension(lwk), intent(out) :: iwk
+            integer(kind=4) dimension(6*n-12), intent(in,out) :: list
+            integer(kind=4) dimension(6*n-12), intent(in,out) :: lptr
+            integer(kind=4) dimension(n), intent(in,out) :: lend
+            integer(kind=4), intent(out) :: ier
+        end subroutine addcst
+        subroutine addnod(k,xk,yk,ist,ncc,lcc,n,x,y,list,lptr,lend,lnew,ier) ! in :_tripack:tripack.f90
+            integer(kind=4), intent(in) :: k
+            real(kind=8), intent(in) :: xk
+            real(kind=8), intent(in) :: yk
+            integer(kind=4), optional :: ist=0
+            integer(kind=4), intent(in) :: ncc
+            integer(kind=4) dimension(ncc), intent(in) :: lcc
+            integer(kind=4), intent(hide), depend(x) :: n=len(x)-1
+            real(kind=8) dimension(n+1), intent(in) :: x
+            real(kind=8) dimension(n+1), intent(in) :: y
+            integer(kind=4) dimension(6*(n+1)-12), intent(in,out) :: list
+            integer(kind=4) dimension(6*(n+1)-12), intent(in,out) :: lptr
+            integer(kind=4) dimension(n+1), intent(in,out) :: lend
+            integer(kind=4), intent(in,out) :: lnew
+            integer(kind=4), intent(in,out) :: ier
+        end subroutine addnod
+        function areap(x,y,nb,nodes) ! in :_tripack:tripack.f90
+            real(kind=8) dimension(*) :: x
+            real(kind=8) dimension(*) :: y
+            integer(kind=4), depend(nodes), intent(hide) :: nb=len(nodes)
+            integer(kind=4) dimension(nb), intent(in) :: nodes
+            real(kind=8), intent(out) :: areap
+        end function areap
+!        subroutine bdyadd(kk,i1,i2,list,lptr,lend,lnew) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: kk
+!            integer(kind=4) :: i1
+!            integer(kind=4) :: i2
+!            integer(kind=4) dimension(*) :: list
+!            integer(kind=4) dimension(*) :: lptr
+!            integer(kind=4) dimension(*) :: lend
+!            integer(kind=4) :: lnew
+!        end subroutine bdyadd
+        subroutine bnodes(n,list,lptr,lend,nodes,nb,na,nt) ! in :_tripack:tripack.f90
+            integer(kind=4), depend(lend), intent(hide) :: n=len(lend)
+            integer(kind=4) dimension(6*n-12), intent(in) :: list
+            integer(kind=4) dimension(6*n-12), intent(in) :: lptr
+            integer(kind=4) dimension(n), intent(in) :: lend
+            integer(kind=4) dimension(nb), intent(out) :: nodes
+            integer(kind=4), intent(in,out) :: nb
+            integer(kind=4), intent(out) :: na
+            integer(kind=4), intent(out) :: nt
+        end subroutine bnodes
+        subroutine circum(x1,y1,x2,y2,x3,y3,ratio,xc,yc,cr,sa,ar) ! in :_tripack:tripack.f90
+            real(kind=8), intent(in) :: x1
+            real(kind=8), intent(in) :: y1
+            real(kind=8), intent(in) :: x2
+            real(kind=8), intent(in) :: y2
+            real(kind=8), intent(in) :: x3
+            real(kind=8), intent(in) :: y3
+            logical, intent(in) :: ratio
+            real(kind=8), intent(out) :: xc
+            real(kind=8), intent(out) :: yc
+            real(kind=8), intent(out) :: cr
+            real(kind=8), intent(out) :: sa
+            real(kind=8), intent(out) :: ar
+        end subroutine circum
+!        function crtri(ncc,lcc,i1,i2,i3) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: ncc
+!            integer(kind=4) dimension(*) :: lcc
+!            integer(kind=4) :: i1
+!            integer(kind=4) :: i2
+!            integer(kind=4) :: i3
+!            logical :: crtri
+!        end function crtri
+        subroutine delarc(n,io1,io2,list,lptr,lend,lnew,ier) ! in :_tripack:tripack.f90
+            integer(kind=4), depend(lend), intent(hide) :: n=len(lend)
+            integer(kind=4), intent(in) :: io1
+            integer(kind=4), intent(in) :: io2
+            integer(kind=4) dimension(6*n-12), intent(in,out) :: list
+            integer(kind=4) dimension(6*n-12), intent(in,out) :: lptr
+            integer(kind=4) dimension(n), intent(in,out) :: lend
+            integer(kind=4), intent(in,out) :: lnew
+            integer(kind=4), intent(out) :: ier
+        end subroutine delarc
+!        subroutine delnb(n0,nb,n,list,lptr,lend,lnew,lph) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: n0
+!            integer(kind=4) :: nb
+!            integer(kind=4), optional,check(len(lend)>=n),depend(lend) :: n=len(lend)
+!            integer(kind=4) dimension(*) :: list
+!            integer(kind=4) dimension(*) :: lptr
+!            integer(kind=4) dimension(n) :: lend
+!            integer(kind=4) :: lnew
+!            integer(kind=4) :: lph
+!        end subroutine delnb
+        subroutine delnod(k,ncc,lcc,n,x,y,list,lptr,lend,lnew,lwk,iwk,ier) ! in :_tripack:tripack.f90
+            integer(kind=4) :: k
+            integer(kind=4) :: ncc
+            integer(kind=4) dimension(ncc), intent(in,out) :: lcc
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n), intent(in,out) :: x
+            real(kind=8) dimension(n), intent(in,out) :: y
+            integer(kind=4) dimension(6*n-12), intent(in,out) :: list
+            integer(kind=4) dimension(6*n-12), intent(in,out) :: lptr
+            integer(kind=4) dimension(n), intent(in,out) :: lend
+            integer(kind=4), intent(in,out) :: lnew
+            integer(kind=4), intent(in,out) :: lwk
+            integer(kind=4) dimension(2,lwk), intent(out) :: iwk
+            integer(kind=4), intent(out) :: ier
+        end subroutine delnod
+        subroutine edge(in1,in2,x,y,lwk,iwk,list,lptr,lend,ier) ! in :_tripack:tripack.f90
+            integer(kind=4), intent(in) :: in1
+            integer(kind=4), intent(in) :: in2
+            real(kind=8) dimension(len(lend)), intent(in) :: x
+            real(kind=8) dimension(len(lend)), intent(in) :: y
+            integer(kind=4), intent(in,out) :: lwk
+            integer(kind=4) dimension(2,lwk), intent(out) :: iwk
+            integer(kind=4) dimension(6*len(x)-12), intent(in) :: list
+            integer(kind=4) dimension(6*len(x)-12), intent(in) :: lptr
+            integer(kind=4) dimension(len(x)), intent(in) :: lend
+            integer(kind=4), intent(out) :: ier
+        end subroutine edge
+        subroutine getnp(ncc,lcc,n,x,y,list,lptr,lend,l,npts,ds,ier) ! in :_tripack:tripack.f90
+            integer(kind=4) :: ncc
+            integer(kind=4) dimension(ncc) :: lcc
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n), intent(in) :: x
+            real(kind=8) dimension(n), intent(in) :: y
+            integer(kind=4) dimension(6*n-12), intent(in) :: list
+            integer(kind=4) dimension(6*n-12), intent(in) :: lptr
+            integer(kind=4) dimension(n), intent(in) :: lend
+            integer(kind=4), depend(npts), intent(hide) :: l=len(npts)
+            integer(kind=4) dimension(l), intent(in,out) :: npts
+            real(kind=8) dimension(l), depend(l), intent(in,out) :: ds
+            integer(kind=4), intent(out) :: ier
+        end subroutine getnp
+!        function indxcc(ncc,lcc,n,list,lend) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: ncc
+!            integer(kind=4) dimension(*) :: lcc
+!            integer(kind=4), optional,check(len(lend)>=n),depend(lend) :: n=len(lend)
+!            integer(kind=4) dimension(*) :: list
+!            integer(kind=4) dimension(n) :: lend
+!            integer(kind=4) :: indxcc
+!        end function indxcc
+!        subroutine insert(k,lp,list,lptr,lnew) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: k
+!            integer(kind=4) :: lp
+!            integer(kind=4) dimension(*) :: list
+!            integer(kind=4) dimension(*) :: lptr
+!            integer(kind=4) :: lnew
+!        end subroutine insert
+!        subroutine intadd(kk,i1,i2,i3,list,lptr,lend,lnew) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: kk
+!            integer(kind=4) :: i1
+!            integer(kind=4) :: i2
+!            integer(kind=4) :: i3
+!            integer(kind=4) dimension(*) :: list
+!            integer(kind=4) dimension(*) :: lptr
+!            integer(kind=4) dimension(*) :: lend
+!            integer(kind=4) :: lnew
+!        end subroutine intadd
+!        function intsec(x1,y1,x2,y2,x3,y3,x4,y4) ! in :_tripack:tripack.f90
+!            real(kind=8) :: x1
+!            real(kind=8) :: y1
+!            real(kind=8) :: x2
+!            real(kind=8) :: y2
+!            real(kind=8) :: x3
+!            real(kind=8) :: y3
+!            real(kind=8) :: x4
+!            real(kind=8) :: y4
+!            logical :: intsec
+!        end function intsec
+!        function jrand(n,ix,iy,iz) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: n
+!            integer(kind=4) :: ix
+!            integer(kind=4) :: iy
+!            integer(kind=4) :: iz
+!            integer(kind=4) :: jrand
+!        end function jrand
+!        function left(x1,y1,x2,y2,x0,y0) ! in :_tripack:tripack.f90
+!            real(kind=8) :: x1
+!            real(kind=8) :: y1
+!            real(kind=8) :: x2
+!            real(kind=8) :: y2
+!            real(kind=8) :: x0
+!            real(kind=8) :: y0
+!            logical :: left
+!        end function left
+!        function lstptr(lpl,nb,list,lptr) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: lpl
+!            integer(kind=4) :: nb
+!            integer(kind=4) dimension(*) :: list
+!            integer(kind=4) dimension(*) :: lptr
+!            integer(kind=4) :: lstptr
+!        end function lstptr
+!        function nbcnt(lpl,lptr) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: lpl
+!            integer(kind=4) dimension(*) :: lptr
+!            integer(kind=4) :: nbcnt
+!        end function nbcnt
+        function nearnd(xp,yp,ist,n,x,y,list,lptr,lend,dsq) ! in :_tripack:tripack.f90
+            real(kind=8), intent(in) :: xp
+            real(kind=8), intent(in) :: yp
+            integer(kind=4), intent(in) :: ist
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n), intent(in) :: x
+            real(kind=8) dimension(n), intent(in) :: y
+            integer(kind=4) dimension(6*n-12), intent(in) :: list
+            integer(kind=4) dimension(6*n-12), intent(in) :: lptr
+            integer(kind=4) dimension(n), intent(in) :: lend
+            real(kind=8), intent(out) :: dsq
+            integer(kind=4), intent(out) :: nearnd
+        end function nearnd
+        subroutine nearnds(l,xp,yp,ist,n,x,y,list,lptr,lend,dsqs) ! in :_tripack:tripack.f90
+            integer(kind=4), depend(xp), intent(hide) :: l=len(xp)
+            real(kind=8) dimension(l) :: xp
+            real(kind=8) dimension(l) :: yp
+            integer(kind=4) dimension(l), intent(in,out) :: ist
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n), intent(in) :: x,y
+            integer(kind=4) dimension(6*n-12), intent(in) :: list,lptr
+            integer(kind=4) dimension(n), intent(in) :: lend
+            real(kind=8) dimension(l), intent(out) :: dsqs
+        end subroutine nearnds
+!        subroutine optim(x,y,na,list,lptr,lend,nit,iwk,ier) ! in :_tripack:tripack.f90
+!            real(kind=8) dimension(*) :: x
+!            real(kind=8) dimension(*) :: y
+!            integer(kind=4), optional,check(shape(iwk,1)==na),depend(iwk) :: na=shape(iwk,1)
+!            integer(kind=4) dimension(*) :: list
+!            integer(kind=4) dimension(*) :: lptr
+!            integer(kind=4) dimension(*) :: lend
+!            integer(kind=4) :: nit
+!            integer(kind=4) dimension(2,na) :: iwk
+!            integer(kind=4) :: ier
+!        end subroutine optim
+!        function store(x) ! in :_tripack:tripack.f90
+!            real(kind=8) :: x
+!            real(kind=8) :: y
+!            real(kind=8) :: store
+!            common /stcom/ y
+!        end function store
+!        subroutine swap(in1,in2,io1,io2,list,lptr,lend,lp21) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: in1
+!            integer(kind=4) :: in2
+!            integer(kind=4) :: io1
+!            integer(kind=4) :: io2
+!            integer(kind=4) dimension(*) :: list
+!            integer(kind=4) dimension(*) :: lptr
+!            integer(kind=4) dimension(*) :: lend
+!            integer(kind=4) :: lp21
+!        end subroutine swap
+!        function swptst(in1,in2,io1,io2,x,y) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: in1
+!            integer(kind=4) :: in2
+!            integer(kind=4) :: io1
+!            integer(kind=4) :: io2
+!            real(kind=8) dimension(*) :: x
+!            real(kind=8) dimension(*) :: y
+!            real(kind=8) :: swtol
+!            logical :: swptst
+!        end function swptst
+!        subroutine timestamp ! in :_tripack:tripack.f90
+!        end subroutine timestamp
+        subroutine trfind(nst,px,py,n,x,y,list,lptr,lend,i1,i2,i3) ! in :_tripack:tripack.f90
+            integer(kind=4) :: nst
+            real(kind=8) :: px
+            real(kind=8) :: py
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n) :: x
+            real(kind=8) dimension(n) :: y
+            integer(kind=4) dimension(6*n-12) :: list
+            integer(kind=4) dimension(6*n-12) :: lptr
+            integer(kind=4) dimension(n) :: lend
+            integer(kind=4), intent(out) :: i1
+            integer(kind=4), intent(out) :: i2
+            integer(kind=4), intent(out) :: i3
+        end subroutine trfind
+        subroutine trlist(ncc,lcc,n,list,lptr,lend,nrow,nt,ltri,lct,ier) ! in :_tripack:tripack.f90
+            integer(kind=4), optional :: ncc=0
+            integer(kind=4) dimension(ncc+1), optional :: lcc=0
+            integer(kind=4), depend(lend), intent(hide) :: n=len(lend)
+            integer(kind=4) dimension(6*n-12), intent(in) :: list
+            integer(kind=4) dimension(6*n-12), intent(in) :: lptr
+            integer(kind=4) dimension(n), intent(in) :: lend
+            integer(kind=4), optional :: nrow=6
+!            integer(kind=4), optional,check(shape(ltri,0)==nrow),depend(ltri) :: nrow=shape(ltri,0)
+            integer(kind=4), intent(out) :: nt
+            integer(kind=4) dimension(nrow,2*n-4), intent(out) :: ltri
+            integer(kind=4) dimension(ncc+1), intent(out) :: lct
+            integer(kind=4), intent(out) :: ier
+        end subroutine trlist
+        subroutine trlist2(n,list,lptr,lend, nt, ltri, ier) ! in :_tripack:tripack.f90
+            integer(kind=4), depend(lend), intent(hide) :: n=len(lend)
+            integer(kind=4)  dimension(6*n-12), intent(in) :: list
+            integer(kind=4)  dimension(6*n-12), intent(in) :: lptr
+            integer(kind=4)  dimension(n), intent(in) :: lend
+            integer(kind=4), intent(out) :: nt
+            integer(kind=4)  dimension(3,2*n-4), intent(out) :: ltri
+            integer(kind=4), intent(out) :: ier
+        end subroutine trlist2
+        subroutine trlprt(ncc,lct,n,x,y,nrow,nt,ltri,prntx) ! in :_tripack:tripack.f90
+            integer(kind=4) :: ncc
+            integer(kind=4) dimension(*) :: lct
+            integer(kind=4), optional,check(len(x)>=n),depend(x) :: n=len(x)
+            real(kind=8) dimension(n) :: x
+            real(kind=8) dimension(n),depend(n) :: y
+            integer(kind=4), optional,check(shape(ltri,0)==nrow),depend(ltri) :: nrow=shape(ltri,0)
+            integer(kind=4), optional,check(shape(ltri,1)==nt),depend(ltri) :: nt=shape(ltri,1)
+            integer(kind=4) dimension(nrow,nt) :: ltri
+            logical :: prntx
+        end subroutine trlprt
+        subroutine trmesh(n,x,y,list,lptr,lend,lnew,near,next,dist,ier) ! in :_tripack:tripack.f90
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n), intent(in) :: x
+            real(kind=8) dimension(n), intent(in) :: y
+            integer(kind=4) dimension(6*n-12), intent(out) :: list,lptr
+            integer(kind=4) dimension(n), intent(out) :: lend
+            integer(kind=4), intent(hide) :: lnew
+            integer(kind=4) dimension(n), depend(n), intent(hide) :: near,next
+            real(kind=8) dimension(n), depend(n), intent(hide) :: dist
+            integer(kind=4), intent(out) :: ier
+            real(kind=8), intent(hide) :: swtol
+        end subroutine trmesh
+        subroutine trmshr(n,nx,x,y,nit,list,lptr,lend,lnew,ier) ! in :_tripack:tripack.f90
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            integer(kind=4), intent(in) :: nx
+            real(kind=8) dimension(n), intent(in) :: x
+            real(kind=8) dimension(n), intent(in) :: y
+            integer(kind=4), optional :: nit=1
+            integer(kind=4) dimension(6*n-12), intent(out) :: list
+            integer(kind=4) dimension(6*n-12), intent(out) :: lptr
+            integer(kind=4) dimension(n), intent(out) :: lend
+            integer(kind=4), intent(hide) :: lnew
+            integer(kind=4), intent(out) :: ier
+            real(kind=8), intent(hide) :: swtol
+        end subroutine trmshr
+!        subroutine trmtst(n,x,y,list,lptr,lend,lnew,tol,armax,ier) ! in :_tripack:tripack.f90
+!            integer(kind=4), optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real(kind=8) dimension(n) :: x
+!            real(kind=8) dimension(n),depend(n) :: y
+!            integer(kind=4) dimension(*) :: list
+!            integer(kind=4) dimension(*) :: lptr
+!            integer(kind=4) dimension(n),depend(n) :: lend
+!            integer(kind=4) :: lnew
+!            real(kind=8) :: tol
+!            real(kind=8) :: armax
+!            integer(kind=4) :: ier
+!        end subroutine trmtst
+!        subroutine trplot(lun,pltsiz,wx1,wx2,wy1,wy2,ncc,lcc,n,x,y,list,lptr,lend,title,numbr,ier) ! in :_tripack:tripack.f90
+!            integer(kind=4) :: lun
+!            real(kind=8) :: pltsiz
+!            real(kind=8) :: wx1
+!            real(kind=8) :: wx2
+!            real(kind=8) :: wy1
+!            real(kind=8) :: wy2
+!            integer(kind=4) :: ncc
+!            integer(kind=4) dimension(*) :: lcc
+!            integer(kind=4), optional,check(len(x)>=n),depend(x) :: n=len(x)
+!            real(kind=8) dimension(n) :: x
+!            real(kind=8) dimension(n),depend(n) :: y
+!            integer(kind=4) dimension(*) :: list
+!            integer(kind=4) dimension(*) :: lptr
+!            integer(kind=4) dimension(n),depend(n) :: lend
+!            character*(*) :: title
+!            logical :: numbr
+!            integer(kind=4) :: ier
+!        end subroutine trplot
+        subroutine trprnt(ncc,lcc,n,x,y,list,lptr,lend,prntx) ! in :_tripack:tripack.f90
+            integer(kind=4) :: ncc
+            integer(kind=4) dimension(ncc) :: lcc
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n), intent(in) :: x
+            real(kind=8) dimension(n), intent(in) :: y
+            integer(kind=4) dimension(6*n-12), intent(in) :: list
+            integer(kind=4) dimension(6*n-12), intent(in) :: lptr
+            integer(kind=4) dimension(n), intent(in) :: lend
+            logical, optional :: prntx=1
+        end subroutine trprnt
+    end interface 
+end python module _tripack
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

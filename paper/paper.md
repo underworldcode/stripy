@@ -82,7 +82,6 @@ the `scipy.spatial` module. The documentation is supplied in the form of jupyter
 
 # Acknowledgements
 
-Louis Moresi would like to acknowledge the support of the CIDER 2016 summer program (NSF grant EAR-1135452) during which this project was conceived.
-Development of ``stripy`` was financially supported by AuScope (www.auscope.org.au) which is funded by the Australian Government through the National Collaborative Research Infrastructure Strategy.
+Louis Moresi would like to acknowledge the support of the CIDER 2016 summer program (NSF grant EAR-1135452) during which this project was conceived. Development of ``stripy`` was financially supported by AuScope (www.auscope.org.au) which is funded by the Australian Government through the National Collaborative Research Infrastructure Strategy.
 
 # References
