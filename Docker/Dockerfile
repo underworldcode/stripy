@@ -18,24 +18,14 @@ RUN apt-get update -qq && \
 ### Stripy - Notebooks
 
 ENV MODULE_DIR="stripy-src"
-ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
+ADD --chown=jovyan:jovyan . / stripy-src/
 RUN   cd $MODULE_DIR && python3 -m pip install --no-cache-dir --no-deps --upgrade .
 
-### litho1pt0 - Notebooks
 
-ENV MODULE_DIR="litho1pt0-src"
-ADD --chown=jovyan:jovyan $MODULE_DIR $MODULE_DIR
-RUN   cd $MODULE_DIR && python3 -m pip install --no-cache-dir --no-deps --upgrade .
-
-# This file is too big to bundle with the pip installation
-ADD  --chown=jovyan:jovyan $MODULE_DIR/litho1pt0/Notebooks/litho1pt0/Data  Notebooks/Data
-
+# This should overwrite any existing Notebooks directory
 
 RUN ipython3 -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
-ADD  --chown=jovyan:jovyan Notebooks/0-StartHere.ipynb Notebooks/0-StartHere.ipynb
 
-
-RUN ipython3 -c 'import litho1pt0; litho1pt0.documentation.install_documentation(path="Notebooks")'
 
 RUN python3 -m pip install --no-cache-dir --upgrade \
     jupyterhub \
