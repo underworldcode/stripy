@@ -211,9 +211,22 @@ class random_mesh(_cartesian.Triangulation):
 
 
 
+## The following are cartesian meshes warped into 3D
+## such that the original x,y directions provide a natural means
+## of navigating the surface.
+##
+## These are useful for wrapping textures on surfaces
+##
+## Sphere (with x/y -> lon/lat) and singular at the poles
+## which cannot be meshed with sTriangulation
+##
+## Currently: XX,YY,ZZ are the R3 coords of the points
+##            SS, TT are the normalised coordinates on the manifold
+##            x,y are the original point locations
+##            areas etc all refer to the undistorted mesh ( ... )
 
 
-class hybrid_latlon_sphere(_cartesian.Triangulation):
+class warped_xy_mesh_sphere(_cartesian.Triangulation):
     """
     A lon/lat mesh on the sphere which, due to the poles, cannot be
     meshed directly with sTriangulation routines.
@@ -244,7 +257,7 @@ class hybrid_latlon_sphere(_cartesian.Triangulation):
         SS = lons / (2.0*np.pi)
         TT = lats / np.pi
 
-        super(hybrid_latlon_sphere, self).__init__(x=SS, y=TT, permute=True, tree=False)
+        super(warped_xy_mesh_sphere, self).__init__(x=SS, y=TT, permute=True, tree=False)
 
         self.XX = XX
         self.YY = YY
@@ -252,3 +265,5 @@ class hybrid_latlon_sphere(_cartesian.Triangulation):
 
         self.SS = SS
         self.TT = TT
+
+        ## how should we re-define things like self.areas, self.tree ??
