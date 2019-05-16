@@ -11,5 +11,3 @@ import stripy
 def test_hybrid_latlon_mesh():
 
     mesh = stripy.cartesian_meshes.hybrid_latlon_sphere(res_lon=93, res_lat=28, epsilon=0.001)
-
-    
