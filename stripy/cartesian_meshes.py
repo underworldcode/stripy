@@ -209,3 +209,47 @@ class random_mesh(_cartesian.Triangulation):
         super(random_mesh, self).__init__(x, y, permute=False, tree=tree)
 
         return
+
+
+
+
+
+class hybrid_latlon_sphere(_cartesian.Triangulation):
+    """
+    A lon/lat mesh on the sphere which, due to the poles, cannot be
+    meshed directly with sTriangulation routines.
+
+    This is a hybrid mesh which is calculated in a flat projection
+    that corresponds to cartopy.crs.PlateCarree() but has associated
+    (x,y,z) coordinates.
+
+    The primary use case is visualisation with texture maps where the
+    (s,t) coordinate system that is required on the surface has to map
+    correctly for an (x,y) array of pixels.
+    """
+
+    def __init__(self, res_lon, res_lat, epsilon=0.001):
+
+        import numpy as np
+
+        lon = np.linspace(0.0, 2.0*np.pi, res_lon, endpoint=True)
+        lat = np.linspace(epsilon,  np.pi-epsilon,  res_lat, endpoint=True)
+        lons, lats = np.meshgrid(lon, lat)
+        lons = lons.reshape(-1)
+        lats = lats.reshape(-1)
+
+        XX = np.cos(lons) * np.sin(lats)
+        YY = np.sin(lons) * np.sin(lats)
+        ZZ = np.cos(lats)
+
+        SS = lons / (2.0*np.pi)
+        TT = lats / np.pi
+
+        super(hybrid_latlon_sphere, self).__init__(x=SS, y=TT, permute=True, tree=False)
+
+        self.XX = XX
+        self.YY = YY
+        self.ZZ = ZZ
+
+        self.SS = SS
+        self.TT = TT
