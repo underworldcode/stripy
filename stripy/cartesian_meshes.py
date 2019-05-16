@@ -31,36 +31,35 @@ class square_border(_cartesian.Triangulation):
 
         xmin, xmax, ymin, ymax = extent
 
-        nx = int((xmax - xmin)/spacingX)
-        ny = int((ymax - ymin)/spacingY)
+        for r in range(0, refinement_levels):
+            spacingX = 0.5*spacingX
+            spacingY = 0.5*spacingY
 
-        xcoords = np.linspace(xmin, xmax, nx)
-        ycoords = np.linspace(ymin, ymax, ny)
+        xcoords = np.arange(xmin, xmax+spacingX, spacingX)
+        ycoords = np.arange(ymin, ymax+spacingY, spacingY)
 
         nx, ny = xcoords.size, ycoords.size
 
-        vx = np.ones(nx-1)
-        vy = np.ones(ny-1)
+        vx = np.ones(nx-2)
+        vy = np.ones(ny-2)
 
-        x = np.concatenate([xcoords[1:], xcoords[:-1], vx*xmin, vx*xmax], axis=0)
-        y = np.concatenate([vy*ymin, vy*ymax, ycoords[:-1], ycoords[1:]], axis=0)
+        x = np.concatenate([xcoords[1:-1], xcoords[1:-1], vy*xmin, vy*xmax], axis=0)
+        y = np.concatenate([vx*ymin, vx*ymax, ycoords[1:-1], ycoords[1:-1]], axis=0)
 
         xy = np.column_stack([x, y])
 
-        n2 = x.size//2
-
-        # ensure first 3 points are not collinear
-        # xy[0], xy[-1] = xy[-1].copy(), xy[0].copy()
-        # xy[2], xy[n2] = xy[n2].copy(), xy[2].copy()
-
-        ## Randomise the point order for triangulation efficiency
+        # Randomise the point order for triangulation efficiency
         np.random.shuffle(xy)
 
-        super(square_border, self).__init__(xy[:,0], xy[:,1], permute=False, tree=tree)
+        # make sure the first points are not collinear
+        xy0 = np.array([[xcoords[0] , ycoords[0] ], \
+                        [xcoords[-1], ycoords[-1]], \
+                        [xcoords[-1], ycoords[0] ], \
+                        [xcoords[0] , ycoords[-1]]])
 
-        for r in range(0, refinement_levels):
-            X, Y = self.uniformly_refine_triangulation(faces=False, trisect=False)
-            self._update_triangulation(X, Y)
+        xy = np.vstack([xy0, xy])
+
+        super(square_border, self).__init__(xy[:,0], xy[:,1], permute=False, tree=tree)
 
         return
 
