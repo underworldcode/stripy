@@ -31,4 +31,4 @@ python setup.py test
 
 The existing tests should be passing before you start coding (help us out with an issue if that is not the case !) and when you have finished. Any new functionality should also have tests that we can use to verify the code. It is important that you make it clear if the original tests have had to change to accomodate new code / functionality.
 
-<a name="footnote1">*</a>: Small changes are our favorites as they make it much easier to quickly merge into the existing code. Proofreading typos, bug fixes, ... the little stuff is especially welcome. 
+<a name="footnote1">*</a> _Small changes are our favorites as they make it much easier to quickly merge into the existing code. Proofreading typos, bug fixes, ... the little stuff is especially welcome._
