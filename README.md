@@ -82,6 +82,13 @@ Also, the following packages are required:
  - [`numpy`](http://numpy.org)
  - [`scipy`](https://scipy.org)
 
+**Recommended Packages** for running the notebooks:
+
+ - [`gdal`](https://www.gdal.org/)
+ - [`cartopy`](https://scitools.org.uk/cartopy/docs/latest/)
+ - [`pyproj`](https://github.com/pyproj4/pyproj)
+ - [`lavavu`](https://github.com/OKaluza/LavaVu/)
+
 ### Installing using pip
 
 You can install `stripy` using the
