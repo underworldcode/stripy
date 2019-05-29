@@ -527,7 +527,7 @@ class sTriangulation(object):
         """
 
 
-        shape = lons.shape
+        shape = np.array(lons).shape
 
         lons, lats = self._check_integrity(lons, lats)
 

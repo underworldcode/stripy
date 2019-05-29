@@ -456,7 +456,7 @@ class Triangulation(object):
         ist = np.ones_like(xi, dtype=np.int32)
         ist, dist = _tripack.nearnds(xi, yi, ist, self._x, self._y,
                                      self.lst, self.lptr, self.lend)
-        return zdata[ist - 1]
+        return zdata[ist - 1], ist*0
 
 
     def interpolate_linear(self, xi, yi, zdata):
@@ -485,8 +485,8 @@ class Triangulation(object):
         if zdata.size != self.npoints:
             raise ValueError('zdata should be same size as mesh')
 
-        xi = np.array(xi)
-        yi = np.array(yi)
+        xi = np.atleast_1d(xi)
+        yi = np.atleast_1d(yi)
 
         size = xi.size
 
@@ -501,7 +501,7 @@ class Triangulation(object):
             zi[i], zierr[i] = _srfpack.intrc0(xi[i], yi[i], self._x, self._y, zdata,\
                                        self.lst, self.lptr, self.lend, ist)
 
-        return zi, zierr
+        return np.squeeze(zi), zierr
 
 
     def interpolate_cubic(self, xi, yi, zdata, gradz=None, derivatives=False):
@@ -551,8 +551,8 @@ class Triangulation(object):
         sigma = 0.0
 
 
-        xi = np.array(xi)
-        yi = np.array(yi)
+        xi = np.atleast_1d(xi)
+        yi = np.atleast_1d(yi)
 
         size = xi.size
 
@@ -570,9 +570,9 @@ class Triangulation(object):
                                self.lst, self.lptr, self.lend, iflgs, sigma, gradZ, dflag, ist)
 
         if derivatives:
-            return zi, zierr, (dzx, dzy)
+            return np.squeeze(zi), zierr, (dzx, dzy)
         else:
-            return zi, zierr
+            return np.squeeze(zi), zierr
 
 
     def neighbour_simplices(self):

@@ -1,110 +1,125 @@
-import numpy as np
+import pytest
 import stripy
-
-from scipy import spatial
-from time import time
-
-try: range = xrange
-except: pass
-
-np.random.seed(0)
-x = np.random.random(500)
-y = np.random.random(500)
-
-# triangulation
-mesh = stripy.Triangulation(x, y)
-
+import numpy as np
 
 def test_derivative():
-    from scipy import interpolate
+    def analytic(x, y, k1, k2):
+        return np.cos(k1*x) * np.sin(k2*y)
 
-    # Create a field to test derivatives
-    x, y = mesh.x, mesh.y
-    Z = np.exp(-x**2 - y**2)
-    Zx = -2*x*Z
-    Zy = -2*y*Z
-    gradZ = np.hypot(Zx, Zy)
+    def analytic_dx(x, y, k1, k2):
+        return -k1 * np.sin(k1*x) * np.sin(k2*y)
 
-    # Stripy
-    t = time()
-    Zx1, Zy1 = mesh.gradient(Z, nit=10, tol=1e-10)
-    t1 = time() - t
-    gradZ1 = np.hypot(Zx1, Zy1)
-
-    # Spline
-    spl = interpolate.SmoothBivariateSpline(x, y, Z)
-    t = time()
-    Zx2 = spl.ev(x, y, dx=1)
-    Zy2 = spl.ev(x, y, dy=1)
-    t2 = time() - t
-    gradZ2 = np.hypot(Zx2, Zy2)
-
-    # Clough Tocher
-    # This one is most similar to what is used in stripy
-    t = time()
-    cti = interpolate.CloughTocher2DInterpolator(np.column_stack([x,y]),\
-                                                 Z, tol=1e-10, maxiter=20)
-    t3 = time() - t
-    Zx3 = cti.grad[:,:,0].ravel()
-    Zy3 = cti.grad[:,:,1].ravel()
-    gradZ3 = np.hypot(Zx3, Zy3)
-
-    res1 = ((gradZ1 - gradZ)**2).max()
-    res2 = ((gradZ2 - gradZ)**2).max()
-    res3 = ((gradZ3 - gradZ)**2).max()
-    print("squared error in first derivative\n  \
-           - stripy = {} took {}s\n  \
-           - spline = {} took {}s\n  \
-           - cloughtocher = {} took {}s".format(res1, t1, res2, t2, res3, t3))
+    def analytic_dy(x, y, k1, k2):
+        return k2 * np.cos(k1*x) * np.cos(k2*y)
 
 
-def test_interpolation():
-    from scipy import interpolate
+    extent = [0.0, 1.0, 0.0, 1.0]
+    mesh = stripy.cartesian_meshes.square_mesh(extent, spacingX=0.05, spacingY=0.05, refinement_levels=1)
+    
+    Z = analytic(mesh.x, mesh.y, 5.0, 2.0)
+    dZx, dZy = mesh.gradient(Z, nit=10, tol=1e-12)
 
-    x, y = mesh.x, mesh.y
-    Z = np.exp(-x**2 - y**2)
-    # We ensure interpolation points are within convex hull
-    xi = np.random.uniform(0.1, 0.9, 10)
-    yi = np.random.uniform(0.1, 0.9, 10)
+    dZx_analytic = analytic_dx(mesh.x, mesh.y, 5.0, 2.0)
+    dZy_analytic = analytic_dy(mesh.x, mesh.y, 5.0, 2.0)    
 
-    # Stripy
-    zn1 = mesh.interpolate_nearest(xi, yi, Z)
-    zl1, err = mesh.interpolate_linear(xi, yi, Z)
-    zc1, err = mesh.interpolate_cubic(xi, yi, Z)
+    if np.isclose(dZx, dZx_analytic, 1.,1.).all() and \
+       np.isclose(dZy, dZy_analytic, 1.,1.).all():
+        print("PASS! (Derivatives)")
+    else:
+        assert False, "FAIL! (Derivatives)"
 
-    # cKDTree
-    tree = interpolate.NearestNDInterpolator((x,y), Z)
-    zn2 = tree(xi, yi)
 
-    # Qhull
-    tri = interpolate.LinearNDInterpolator((x,y), Z, 0.0)
-    zl2 = tri((xi, yi))
+def test_nearest_nd_interpolation():
+    
+    coords = np.array([[0.0, 0.0], \
+                       [0.0, 1.0], \
+                       [1.0, 0.0], \
+                       [1.0, 1.0]])
 
-    # Clough Tocher
-    cti = interpolate.CloughTocher2DInterpolator(np.column_stack([x,y]),\
-                                                 Z, tol=1e-10, maxiter=20)
-    zc2 = cti((xi, yi))
-    zc2[np.isnan(zc2)] = 0.0
+    x, y = coords[:,0], coords[:,1]
+    mesh = stripy.Triangulation(x, y)
 
-    # Spline
-    spl = interpolate.SmoothBivariateSpline(x, y, Z)
-    zc3 = spl.ev(xi,yi)
+    Z = mesh.x + mesh.y
 
-    # Radial basis function
-    rbf = interpolate.Rbf(x, y, Z)
-    zc4 = rbf(xi, yi)
+    Zi, ierr = mesh.interpolate_nearest(0.9, 0.9, Z)
+    
+    if Zi == 2.0:
+        print("PASS! (Interpolation - nearest neighbour)")
+    else:
+        assert False, "FAIL! (Interpolation - nearest neighbour)"
 
-    print("squared residual in interpolation\n  \
-           - nearest neighbour = {}\n  \
-           - linear = {}\n  \
-           - cubic (clough-tocher) = {}\n  \
-           - cubic (spline) = {}\n  \
-           - cubic (rbf) = {}".format(((zn1 - zn2)**2).max(), \
-                                      ((zl1 - zl2)**2).max(), \
-                                      ((zc1 - zc2)**2).max(), \
-                                      ((zc1 - zc3)**2).max(), \
-                                      ((zc1 - zc4)**2).max(),) )
+
+def test_linear_interpolation():
+
+    coords = np.array([[0.0, 0.0], \
+                       [0.0, 1.0], \
+                       [1.0, 0.0], \
+                       [1.0, 1.0]])
+
+    x, y = coords[:,0], coords[:,1]
+    mesh = stripy.Triangulation(x, y)
+
+    Z = mesh.x + mesh.y
+
+    Zi, ierr = mesh.interpolate_linear(0.5, 0.5, Z)
+
+    if np.isclose(Zi, 1.0, 0.001):
+        print("PASS! (Interpolation - linear")
+    else:
+        assert False, "FAIL! (Interpolation - linear)"
+
+
+def test_cubic_interpolation():
+
+    # we need more points for cubic interpolation
+    coords = np.array([[0.0, 0.0], \
+                       [0.0, 1.0], \
+                       [1.0, 0.0], \
+                       [1.0, 1.0], \
+                       [0.1, 0.1], \
+                       [0.1, 0.9], \
+                       [0.9, 0.1], \
+                       [0.9, 0.9]])
+
+    x, y = coords[:,0], coords[:,1]
+    mesh = stripy.Triangulation(x, y)
+
+    Z = mesh.x + mesh.y
+
+    Zi, ierr = mesh.interpolate_cubic(0.5, 0.5, Z)
+
+    if np.isclose(Zi, 1.0, 0.001):
+        print("PASS! (Interpolation - cubic")
+    else:
+        assert False, "FAIL! (Interpolation - cubic)"
 
 
 def test_smoothing():
-    pass
+
+    coords = np.array([[0.0, 0.0], \
+                       [0.0, 1.0], \
+                       [1.0, 0.0], \
+                       [1.0, 1.0], \
+                       [0.5, 0.5]])
+
+    x, y = coords[:,0], coords[:,1]
+    mesh = stripy.Triangulation(x, y)
+
+    Z = np.ones_like(x)
+    Z[-1] = 0.0
+
+    weights = np.ones_like(x)
+    f_smooth, ierr = mesh.smoothing(Z, weights, 0.05, 1e-2, 1e-5)
+
+    if (f_smooth.max() - f_smooth.min()) < 1.0:
+        print("PASS! (Smoothing)")
+    else:
+        assert False, "FAIL! (Smoothing)"
+
+
+if __name__ == "__main__":
+    test_derivative()
+    test_nearest_nd_interpolation()
+    test_linear_interpolation()
+    test_cubic_interpolation()
+    test_smoothing()
