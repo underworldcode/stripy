@@ -70,3 +70,14 @@ def weighted_average_to_nodes(x1, x2, data, interpolator ):
     grid[np.where(norm > 0.0)] /= norm[np.where(norm > 0.0)]
 
     return grid, norm, count
+
+
+def remove_duplicate_points(vector_tuple):
+    """
+    Remove duplicates rows from N equally-sized arrays
+    """
+    array = np.column_stack(vector_tuple)
+    a = np.ascontiguousarray(array)
+    unique_a = np.unique(a.view([('', a.dtype)]*a.shape[1]))
+    b = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
+    return list(b.T)
