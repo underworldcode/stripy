@@ -10,6 +10,8 @@ pdoc --html stripy --force -o docs
 mv docs/stripy/*.html docs
 ```
 
+This is included in the `build_pdocs.sh` script !
+
 ### Documentation site
 
 ![www.underworldcode.org/stripy](http://www.underworldcode.org/stripy/)
