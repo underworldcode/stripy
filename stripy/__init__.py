@@ -13,7 +13,7 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with Stripy.  If not, see <http://www.gnu.org/licenses/>.
 
-Stripy source code is available ![on github](https://github.com/underworldcode/stripy)
+Stripy source code is available [on github](https://github.com/underworldcode/stripy)
 
 """
 
