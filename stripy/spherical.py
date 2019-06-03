@@ -1,5 +1,5 @@
 """
-Copyright 2017 Louis Moresi, Ben Mather
+Copyright 2017-2019 Louis Moresi, Ben Mather
 
 This file is part of Stripy.
 
@@ -44,72 +44,70 @@ class sTriangulation(object):
     Define a Delaunay triangulation for given points on a sphere
     where lons and lats are 1D numpy arrays of equal length.
 
-    Algorithm
-    ---------
-     R. J. Renka (1997), Algorithm 772; STRIPACK: Delaunay triangulation
-     and Voronoi diagram on the surface of a sphere"
-     ACM Trans. Math. Softw., Vol. 23, No. 3, pp 416-434
-     doi:10.1145/275323.275329
+    Algorithm:
+        R. J. Renka (1997), Algorithm 772; STRIPACK: Delaunay triangulation
+        and Voronoi diagram on the surface of a sphere"
+        ACM Trans. Math. Softw., Vol. 23, No. 3, pp 416-434
+        doi:10.1145/275323.275329
 
-    Parameters
-    ----------
-     lons    : 1D array of longitudinal coordinates in radians
-     lats    : 1D array of latitudinal coordinates in radians
-     refinement_levels (int)
-             : refine the number of points in the triangulation
-               (see uniformly_refine_triangulation)
-     permute : (bool) randomises the order of lons and lats to improve
-               triangulation efficiency and eliminate colinearity
-               issues (see notes)
-     tree    : (bool) construct a cKDtree for efficient nearest-
-               neighbour lookup
+    Args:
+        lons : 1D array
+            longitudinal coordinates in radians
+        lats : 1D array
+            latitudinal coordinates in radians
+        refinement_levels : int
+            refine the number of points in the triangulation
+            (see uniformly_refine_triangulation)
+        permute : bool
+            randomises the order of lons and lats to improve
+            triangulation efficiency and eliminate colinearity issues (see notes)
+        tree : bool
+            construct a cKDtree for efficient nearest-neighbour lookup
 
-    Attributes
-    ----------
-     lons : array of floats, shape (n,)
-        stored longitudinal coordinates on a sphere
-     lats : array of floats, shape (n,)
-        stored latitudinal coordinates on a sphere
-     x : array of floats, shape (n,)
-        stored Cartesian x coordinates from input
-     y : array of floats, shape (n,)
-        stored Cartesian y coordinates from input
-     z : array of floats, shape (n,)
-        stored Cartesian z coordinates from input
-     simplices : array of ints, shape (nsimplex, 3)
-        indices of the points forming the simplices in the triangulation
-        points are ordered anticlockwise
-     lst : array of ints, shape (6n-12,)
-        nodal indices with lptr and lend, define the triangulation as a set of N
-        adjacency lists; counterclockwise-ordered sequences of neighboring nodes
-        such that the first and last neighbors of a boundary node are boundary
-        nodes (the first neighbor of an interior node is arbitrary).  In order to
-        distinguish between interior and boundary nodes, the last neighbor of
-        each boundary node is represented by the negative of its index.
-        The indices are 1-based (as in Fortran), not zero based (as in python).
-     lptr : array of ints, shape (6n-12),)
-        set of pointers in one-to-one correspondence with the elements of lst.
-        lst(lptr(i)) indexes the node which follows lst(i) in cyclical
-        counterclockwise order (the first neighbor follows the last neighbor).
-        The indices are 1-based (as in Fortran), not zero based (as in python).
-     lend : array of ints, shape (n,)
-        N pointers to adjacency lists.
-        lend(k) points to the last neighbor of node K.
-        lst(lend(K)) < 0 if and only if K is a boundary node.
-        The indices are 1-based (as in Fortran), not zero based (as in python).
+    Attributes:
+        lons : array of floats, shape (n,)
+            stored longitudinal coordinates on a sphere
+        lats : array of floats, shape (n,)
+            stored latitudinal coordinates on a sphere
+        x : array of floats, shape (n,)
+            stored Cartesian x coordinates from input
+        y : array of floats, shape (n,)
+            stored Cartesian y coordinates from input
+        z : array of floats, shape (n,)
+            stored Cartesian z coordinates from input
+        simplices : array of ints, shape (nsimplex, 3)
+            indices of the points forming the simplices in the triangulation
+            points are ordered anticlockwise
+        lst : array of ints, shape (6n-12,)
+            nodal indices with lptr and lend, define the triangulation as a set of N
+            adjacency lists; counterclockwise-ordered sequences of neighboring nodes
+            such that the first and last neighbors of a boundary node are boundary
+            nodes (the first neighbor of an interior node is arbitrary).  In order to
+            distinguish between interior and boundary nodes, the last neighbor of
+            each boundary node is represented by the negative of its index.
+            The indices are 1-based (as in Fortran), not zero based (as in python).
+        lptr : array of ints, shape (6n-12),)
+            set of pointers in one-to-one correspondence with the elements of lst.
+            lst(lptr(i)) indexes the node which follows lst(i) in cyclical
+            counterclockwise order (the first neighbor follows the last neighbor).
+            The indices are 1-based (as in Fortran), not zero based (as in python).
+        lend : array of ints, shape (n,)
+            N pointers to adjacency lists.
+            lend(k) points to the last neighbor of node K.
+            lst(lend(K)) < 0 if and only if K is a boundary node.
+            The indices are 1-based (as in Fortran), not zero based (as in python).
 
-    Notes
-    -----
-     Provided the nodes are randomly ordered, the algorithm
-     has expected time complexity O(N*log(N)) for most nodal
-     distributions.  Note, however, that the complexity may be
-     as high as O(N**2) if, for example, the nodes are ordered
-     on increasing latitude.
+    Notes:
+        Provided the nodes are randomly ordered, the algorithm
+        has expected time complexity O(N*log(N)) for most nodal
+        distributions.  Note, however, that the complexity may be
+        as high as O(N**2) if, for example, the nodes are ordered
+        on increasing latitude.
 
-     if permute=True, lons and lats are randomised on input before
-     they are triangulated. The distribution of triangles will
-     differ between setting permute=True and permute=False,
-     however, the node ordering will remain identical.
+        if permute=True, lons and lats are randomised on input before
+        they are triangulated. The distribution of triangles will
+        differ between setting permute=True and permute=False,
+        however, the node ordering will remain identical.
     """
     def __init__(self, lons, lats, refinement_levels=0, permute=False, tree=False):
 
@@ -222,24 +220,32 @@ class sTriangulation(object):
 
     @property
     def lons(self):
+        """ Longitudinal coordinates on a sphere """
         return self._deshuffle_field(self._lons)
     @property
     def lats(self):
+        """ Latitudinal coordinates on a sphere """
         return self._deshuffle_field(self._lats)
     @property
     def x(self):
+        """ Stored Cartesian x coordinates from triangulation """
         return self._deshuffle_field(self._x)
     @property
     def y(self):
+        """ Stored Cartesian y coordinates from triangulation """
         return self._deshuffle_field(self._y)
     @property
     def z(self):
+        """ Stored Cartesian x coordinates from triangulation """
         return self._deshuffle_field(self._z)
     @property
     def points(self):
+        """ Stored Cartesian xyz coordinates from triangulation """
         return self._deshuffle_field(self._points)
     @property
     def simplices(self):
+        """ Indices of the points forming the simplices in the triangulation.
+        Points are ordered anticlockwise """
         return self._deshuffle_simplices(self._simplices)
 
 
@@ -288,44 +294,39 @@ class sTriangulation(object):
         Return the lon / lat components of the gradient
         of a scalar field on the surface of the sphere.
 
-
         The method consists of minimizing a quadratic functional Q(G) over
         gradient vectors, where Q is an approximation to the linearized
         curvature over the triangulation of a C-1 bivariate function F(x,y)
         which interpolates the nodal values and gradients.
 
-        Parameters
-        ----------
-         data : array of floats, shape (n,)
-            field over which to evaluate the gradient
-         nit: int (default: 3)
-            number of iterations to reach a convergence tolerance, tol
-            nit >= 1
-         tol: float (default: 1e-3)
-            maximum change in gradient between iterations.
-            convergence is reached when this condition is met.
+        Args:
+            data : array of floats, shape (n,)
+                field over which to evaluate the gradient
+            nit : int (default: 3)
+                number of iterations to reach a convergence tolerance, tol
+                nit >= 1
+            tol : float (default: 1e-3)
+                maximum change in gradient between iterations.
+                convergence is reached when this condition is met.
 
-        Returns
-        -------
-         dfdlon : array of floats, shape (n,)
-            derivative of f in the longitudinal direction
-         dfdlat : array of floats, shape (n,)
-            derivative of f in the lattitudinal direction
+        Returns:
+            dfdlon : array of floats, shape (n,)
+                derivative of f in the longitudinal direction
+            dfdlat : array of floats, shape (n,)
+                derivative of f in the lattitudinal direction
 
-        Notes
-        -----
+        Notes:
+            The gradient is computed via the Cartesian components using
+            `spherical.sTriangulation.gradient_xyz` and the iteration parameters
+            controling the spline interpolation are passed directly to this
+            routine (See notes for `gradient_xyz` for more details).
 
-        The gradient is computed via the Cartesian components using
-        spherical.sTriangulation.gradient_xyz and the iteration parameters
-        controling the spline interpolation are passed directly to this
-        routine (See notes for gradient_xyz for more details).
+            The gradient operator in this geometry is not well defined at the poles
+            even if the scalar field is smooth and the Cartesian gradient is well defined.
 
-        The gradient operator in this geometry is not well defined at the poles
-        even if the scalar field is smooth and the Cartesian gradient is well defined.
-
-        The routine spherical.dxyz2dlonlat is available to convert the Cartesian
-        to lon/lat coordinates at any point on the unit sphere. This is helpful
-        to avoid recalculation if you need both forms.
+            The routine spherical.dxyz2dlonlat is available to convert the Cartesian
+            to lon/lat coordinates at any point on the unit sphere. This is helpful
+            to avoid recalculation if you need both forms.
         """
 
         dfxs, dfys, dfzs = self.gradient_xyz(data, nit=nit, tol=tol, guarantee_convergence=guarantee_convergence)
@@ -356,38 +357,35 @@ class sTriangulation(object):
         curvature over the triangulation of a C-1 bivariate function F(x,y)
         which interpolates the nodal values and gradients.
 
-        Parameters
-        ----------
-         f : array of floats, shape (n,)
-            field over which to evaluate the gradient
-         nit: int (default: 3)
-            number of iterations to reach a convergence tolerance, tol
-            nit >= 1
-         tol: float (default: 1e-3)
-            maximum change in gradient between iterations.
-            convergence is reached when this condition is met.
+        Args:
+            f : array of floats, shape (n,)
+                field over which to evaluate the gradient
+            nit : int (default: 3)
+                number of iterations to reach a convergence tolerance, tol
+                nit >= 1
+            tol : float (default: 1e-3)
+                maximum change in gradient between iterations.
+                convergence is reached when this condition is met.
 
-        Returns
-        -------
-         dfdx : array of floats, shape (n,)
-            derivative of f in the x direction
-         dfdy : array of floats, shape (n,)
-            derivative of f in the y direction
-         dfdz : array of floats, shape (n,)
-            derivative of f in the z direction
+        Returns:
+            dfdx : array of floats, shape (n,)
+                derivative of f in the x direction
+            dfdy : array of floats, shape (n,)
+                derivative of f in the y direction
+            dfdz : array of floats, shape (n,)
+                derivative of f in the z direction
 
-        Notes
-        -----
-         For SIGMA = 0, optimal efficiency was achieved in testing with
-         tol = 0, and nit = 3 or 4.
+        Notes:
+            For SIGMA = 0, optimal efficiency was achieved in testing with
+            tol = 0, and nit = 3 or 4.
 
-         The restriction of F to an arc of the triangulation is taken to be
-         the Hermite interpolatory tension spline defined by the data values
-         and tangential gradient components at the endpoints of the arc, and
-         Q is the sum over the triangulation arcs, excluding interior
-         constraint arcs, of the linearized curvatures of F along the arcs --
-         the integrals over the arcs of D2F(T)**2, where D2F(T) is the second
-         derivative of F with respect to distance T along the arc.
+            The restriction of F to an arc of the triangulation is taken to be
+            the Hermite interpolatory tension spline defined by the data values
+            and tangential gradient components at the endpoints of the arc, and
+            Q is the sum over the triangulation arcs, excluding interior
+            constraint arcs, of the linearized curvatures of F along the arcs --
+            the integrals over the arcs of D2F(T)**2, where D2F(T) is the second
+            derivative of F with respect to distance T along the arc.
         """
 
         if f.size != self.npoints:
@@ -419,29 +417,28 @@ class sTriangulation(object):
         deviation from the data values. This is more appropriate than interpolation
         when significant errors are present in the data.
 
-        Parameters
-        ----------
-         f : array of floats, shape (n,)
-            field to apply smoothing on
-         w : array of floats, shape (n,)
-            weights associated with data value in f
-            w[i] = 1/sigma_f^2 is a good rule of thumb.
-         sm : float
-            positive parameter specifying an upper bound on Q2(f).
-            generally n-sqrt(2n) <= sm <= n+sqrt(2n)
-         smtol : float
-            specifies relative error in satisfying the constraint
-            sm(1-smtol) <= Q2 <= sm(1+smtol) between 0 and 1.
-         gstol : float
-            tolerance for convergence.
-            gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
+        Args:
+            f : array of floats, shape (n,)
+                field to apply smoothing on
+            w : array of floats, shape (n,)
+                weights associated with data value in f
+                w[i] = 1/sigma_f^2 is a good rule of thumb.
+            sm : float
+                positive parameter specifying an upper bound on Q2(f).
+                generally n-sqrt(2n) <= sm <= n+sqrt(2n)
+            smtol : float
+                specifies relative error in satisfying the constraint
+                sm(1-smtol) <= Q2 <= sm(1+smtol) between 0 and 1.
+            gstol : float
+                tolerance for convergence.
+                gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
 
-        Returns
-        -------
-         f_smooth : array of floats, shape (n,)
-            smoothed version of f
-         (dfdx, dfdy, dfdz) : tuple of floats, tuple of 3 shape (n,) arrays
-            first derivatives of f_smooth in the x, y, and z directions
+        Returns:
+            f_smooth : array of floats, shape (n,)
+                smoothed version of f
+            derivatives : tuple of floats, shape (n,3)
+                (dfdx, dfdy, dfdz) first derivatives of f_smooth in the
+                x, y, and z directions
         """
 
         if f.size != self.npoints or f.size != w.size:
@@ -502,28 +499,25 @@ class sTriangulation(object):
         values at the nodes, this method interpolates (or extrapolates) the value
         at a given longitude and latitude.
 
-        Parameters
-        ----------
-         lons : float / array of floats, shape (l,)
+        Args:
+            lons : float / array of floats, shape (l,)
                 longitudinal coordinate(s) on the sphere
-         lats : float / array of floats, shape (l,)
+            lats : float / array of floats, shape (l,)
                 latitudinal coordinate(s) on the sphere
-         zdata : array of floats, shape (n,)
+            zdata : array of floats, shape (n,)
                 value at each point in the triangulation
                 must be the same size of the mesh
-         order : int (default=1)
+            order : int (default=1)
                 order of the interpolatory function used
-                 0 = nearest-neighbour
-                 1 = linear
-                 3 = cubic
+                    0 = nearest-neighbour
+                    1 = linear
+                    3 = cubic
 
-        Returns
-        -------
-         zi : float / array of floats, shape (l,)
-            interpolated value(s) at (lons, lats)
-         err : int / array of ints, shape (l,)
-            whether interpolation (0), extrapolation (1) or error (other)
-
+        Returns:
+            zi : float / array of floats, shape (l,)
+                interpolated value(s) at (lons, lats)
+            err : int / array of ints, shape (l,)
+                whether interpolation (0), extrapolation (1) or error (other)
         """
 
 
@@ -552,21 +546,21 @@ class sTriangulation(object):
     def interpolate_nearest(self, lons, lats, data):
         """
         Interpolate using nearest-neighbour approximation
-        Returns the same as interpolate(lons,lats,data,order=0)
+        Returns the same as `interpolate(lons,lats,data,order=0)`
         """
         return self.interpolate(lons, lats, data, order=0)
 
     def interpolate_linear(self, lons, lats, data):
         """
         Interpolate using linear approximation
-        Returns the same as interpolate(lons,lats,data,order=1)
+        Returns the same as `interpolate(lons,lats,data,order=1)`
         """
         return self.interpolate(lons, lats, data, order=1)
 
     def interpolate_cubic(self, lons, lats, data):
         """
         Interpolate using cubic spline approximation
-        Returns the same as interpolate(lons,lats,data,order=3)
+        Returns the same as `interpolate(lons,lats,data,order=3)`
         """
         return self.interpolate(lons, lats, data, order=3)
 
@@ -577,27 +571,23 @@ class sTriangulation(object):
         and return the squared great circle distance between (lons,lats) and
         each nearest neighbour.
 
-        Parameters
-        ----------
-         lons : float / array of floats, shape (l,)
-            longitudinal coordinate(s) on the sphere
-         lats : float / array of floats, shape (l,)
-            latitudinal coordinate(s) on the sphere
+        Args:
+            lons : float / array of floats, shape (l,)
+                longitudinal coordinate(s) on the sphere
+            lats : float / array of floats, shape (l,)
+                latitudinal coordinate(s) on the sphere
 
-        Returns
-        -------
-         index : array of ints
-            the nearest vertex to each of the supplied points
-         dist : array of floats
-            great circle distance (angle) on the unit sphere to the closest
-            vertex identified.
+        Returns:
+            index : array of ints
+                the nearest vertex to each of the supplied points
+            dist : array of floats
+                great circle distance (angle) on the unit sphere to the closest
+                vertex identified.
 
-
-        Notes
-        -----
-         Faster searches can be obtained using a k-d tree.
-         See sTriangulation.nearest_vertices() for details.
-         There is an additional overhead associated with building and storing the k-d tree.
+        Notes:
+            Faster searches can be obtained using a k-d tree.
+            See `sTriangulation.nearest_vertices()` for details.
+            There is an additional overhead associated with building and storing the k-d tree.
 
         """
 
@@ -625,21 +615,19 @@ class sTriangulation(object):
         """
         Returns indices of the triangles containing lons / lats.
 
-        Parameters
-        ----------
-         lons : float / array of floats, shape (l,)
-            longitudinal coordinate(s) on the sphere
-         lats : float / array of floats, shape (l,)
-            latitudinal coordinate(s) on the sphere
+        Args:
+            lons : float / array of floats, shape (l,)
+                longitudinal coordinate(s) on the sphere
+            lats : float / array of floats, shape (l,)
+                latitudinal coordinate(s) on the sphere
 
-        Returns
-        -------
-         tri_indices : array of ints, shape (l,)
+        Returns:
+            tri_indices : array of ints, shape (l,)
+                indices of containing triangle
 
 
-        Notes
-        -----
-          The simplices are found as spherical.sTriangulation.simplices[tri_indices]
+        Notes:
+            The simplices are found as `spherical.sTriangulation.simplices[tri_indices]`
 
         """
         p = self._permutation
@@ -662,21 +650,20 @@ class sTriangulation(object):
         Returns the simplices containing (lons,lats)
         and the local barycentric, normalised coordinates.
 
-        Parameters
-        ----------
-         lons : 1D array of longitudinal coordinates in radians
-         lats : 1D array of latitudinal coordinates in radians
+        Args:
+            lons : float / array of floats, shape(l,)
+                longitudinal coordinates in radians
+            lats :  float / array of floats, shape(l,)
+                latitudinal coordinates in radians
 
-        Returns
-        -------
-         bcc  : normalised barycentric coordinates
-         tri  : simplicies containing (lons,lats)
+        Returns:
+            bcc  : normalised barycentric coordinates
+            tri  : simplicies containing (lons,lats)
 
-        Notes
-        -----
-         That the ordering of the vertices may differ from
-         that stored in the self.simplices array but will
-         still be a loop around the simplex.
+        Notes:
+            That the ordering of the vertices may differ from
+            that stored in the self.simplices array but will
+            still be a loop around the simplex.
         """
 
         pts = np.array(lonlat2xyz(lons,lats)).T
@@ -839,17 +826,15 @@ class sTriangulation(object):
         """
         Calculate the area enclosed by 3 points on the unit sphere.
 
-        Parameters
-        ----------
-         lons : array of floats, shape (3)
-            longitudinal coordinates in radians
-         lats : array of floats, shape (3)
-            latitudinal coordinates in radians
+        Args:
+            lons : array of floats, shape (3)
+                longitudinal coordinates in radians
+            lats : array of floats, shape (3)
+                latitudinal coordinates in radians
 
-        Returns
-        -------
-         area : float
-            area of triangle on the unit sphere
+        Returns:
+            area : float
+                area of triangle on the unit sphere
 
         """
         lons, lats = self._check_integrity(lons, lats)
@@ -869,16 +854,14 @@ class sTriangulation(object):
         Compute the area each triangle within the triangulation of points
         on the unit sphere.
 
-        Returns
-        -------
-         area : array of floats, shape (nt,)
-            area of each triangle in self.simplices where nt
-            is the number of triangles.
+        Returns:
+            area : array of floats, shape (nt,)
+                area of each triangle in self.simplices where nt
+                is the number of triangles.
 
-        Notes
-        -----
-         This uses a Fortran 90 subroutine that wraps the AREA function
-         to iterate over many points.
+        Notes:
+            This uses a Fortran 90 subroutine that wraps the AREA function
+            to iterate over many points.
         """
 
         return _stripack.triareas(self.x, self.y, self.z, self.simplices.T+1)
@@ -988,10 +971,9 @@ class sTriangulation(object):
         in the triangulation that are associated with the triangles in the list
         of indices provided.
 
-        Notes
-        -----
-         The triangles are here represented as a single index.
-         The vertices of triangle i are given by self.simplices[i].
+        Notes:
+            The triangles are here represented as a single index.
+            The vertices of triangle `i` are given by `self.simplices[i].`
         """
 
         ## Note there should be no duplicates in the list of triangles
@@ -1036,10 +1018,9 @@ class sTriangulation(object):
         return points defining a refined triangulation obtained by bisection of all edges
         in the triangulation that are associated with the triangles in the list provided.
 
-        Notes
-        -----
-         The triangles are here represented as a single index.
-         The vertices of triangle i are given by self.simplices[i].
+        Notes:
+            The triangles are here represented as a single index.
+            The vertices of triangle `i` are given by `self.simplices[i]`.
         """
 
         # Remove duplicates from the list of triangles
@@ -1099,23 +1080,24 @@ class sTriangulation(object):
         distance from x,y points.
 
         Returns 0, 0 if a cKDtree has not been constructed
-        (switch tree=True if you need this routine)
+        (switch `tree=True` if you need this routine)
 
-        Parameters
-        ----------
-         lon : 1D array of longitudinal coordinates in radians
-         lat : 1D array of latitudinal coordinates in radians
-         k   : number of nearest neighbours to return
-             (default: 1)
-         max_distance
-             : maximum Euclidean distance to search
-               for neighbours (default: 2.0)
+        Args:
+            lon : 1D array
+                longitudinal coordinates in radians
+            lat : 1D array
+                latitudinal coordinates in radians
+            k : int (default: 1)
+                number of nearest neighbours to return
+            max_distance : float (default: 2.0)
+                maximum Euclidean distance to search for neighbours
 
-        Returns
-        -------
-         d    : Euclidean distance between each point and their
+        Returns:
+            d : array of floats
+                Euclidean distance between each point and their
                 nearest neighbour(s)
-         vert : vertices of the nearest neighbour(s)
+            vert : array of ints
+                vertices of the nearest neighbour(s)
         """
 
         if self.tree == False or self.tree == None:
@@ -1187,7 +1169,8 @@ def xyz2lonlat(x,y,z):
     Convert x,y,z representation of points *on the unit sphere* of the
     spherical triangulation to lon / lat (radians).
 
-    Note - no check is made here that (x,y,z) are unit vectors
+    Notes:
+        no check is made here that (x,y,z) are unit vectors
     """
 
     xs = np.array(x)
@@ -1204,9 +1187,6 @@ def dxyz2dlonlat(x,y,z, dfx, dfy, dfz):
     """
     Take stripack df/dx, df/dy, df/dz format and convert to
     surface gradients df/dlon, df/dlat
-
-    Notes
-
     """
 
     xs = np.array(x)
