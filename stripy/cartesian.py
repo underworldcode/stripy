@@ -1,5 +1,5 @@
 """
-Copyright 2017 Louis Moresi, Ben Mather
+Copyright 2017-2019 Louis Moresi, Ben Mather
 
 This file is part of Stripy.
 
@@ -44,66 +44,65 @@ class Triangulation(object):
     Define a Delaunay triangulation for given Cartesian mesh points (x, y)
     where x and y vectors are 1D numpy arrays of equal length.
 
-    Algorithm
-    ---------
-     R. J. Renka (1996), Algorithm 751; TRIPACK: a constrained two-
-     dimensional Delaunay triangulation package,
-     ACM Trans. Math. Softw., 22(1), pp 1-8,
-     doi:10.1145/225545.225546.
+    Algorithm:
+        R. J. Renka (1996), Algorithm 751; TRIPACK: a constrained two-
+        dimensional Delaunay triangulation package,
+        ACM Trans. Math. Softw., 22(1), pp 1-8,
+        doi:10.1145/225545.225546.
 
-    Parameters
-    ----------
-     x       : 1D array of Cartesian x coordinates
-     y       : 1D array of Cartesian y coordinates
-     refinement_levels (int)
-             : refine the number of points in the triangulation
-               (see uniformly_refine_triangulation)
-     permute : (bool) randomises the order of lons and lats to improve
-               triangulation efficiency and eliminate colinearity
-               issues (see notes)
-     tree    : (bool) construct a cKDtree for efficient nearest-
-               neighbour lookup
+    Args:
+        x : 1D array
+            Cartesian x coordinates
+        y : 1D array
+            Cartesian y coordinates
+        refinement_levels : int
+            refine the number of points in the triangulation
+            (see uniformly_refine_triangulation)
+        permute : bool
+            randomises the order of lons and lats to improve
+            triangulation efficiency and eliminate colinearity
+            issues (see notes)
+        tree : bool
+            construct a cKDtree for efficient nearest-neighbour lookup
 
-    Attributes
-    ----------
-     x : array of floats, shape (n,)
-        stored Cartesian x coordinates from input
-     y : array of floats, shape (n,)
-        stored Cartesian y coordinates from input
-     simplices : array of ints, shape (nsimplex, 3)
-        indices of the points forming the simplices in the triangulation
-        points are ordered anticlockwise
-     lst : array of ints, shape (6n-12,)
-        nodal indices with lptr and lend, define the triangulation as a set of N
-        adjacency lists; counterclockwise-ordered sequences of neighboring nodes
-        such that the first and last neighbors of a boundary node are boundary
-        nodes (the first neighbor of an interior node is arbitrary).  In order to
-        distinguish between interior and boundary nodes, the last neighbor of
-        each boundary node is represented by the negative of its index.
-        The indices are 1-based (as in Fortran), not zero based (as in python).
-     lptr : array of ints, shape (6n-12),)
-        set of pointers in one-to-one correspondence with the elements of lst.
-        lst(lptr(i)) indexes the node which follows lst(i) in cyclical
-        counterclockwise order (the first neighbor follows the last neighbor).
-        The indices are 1-based (as in Fortran), not zero based (as in python).
-     lend : array of ints, shape (n,)
-        N pointers to adjacency lists.
-        lend(k) points to the last neighbor of node K.
-        lst(lend(K)) < 0 if and only if K is a boundary node.
-        The indices are 1-based (as in Fortran), not zero based (as in python).
+    Attributes:
+        x : array of floats, shape (n,)
+            stored Cartesian x coordinates from input
+        y : array of floats, shape (n,)
+            stored Cartesian y coordinates from input
+        simplices : array of ints, shape (nsimplex, 3)
+            indices of the points forming the simplices in the triangulation
+            points are ordered anticlockwise
+        lst : array of ints, shape (6n-12,)
+            nodal indices with lptr and lend, define the triangulation as a set of N
+            adjacency lists; counterclockwise-ordered sequences of neighboring nodes
+            such that the first and last neighbors of a boundary node are boundary
+            nodes (the first neighbor of an interior node is arbitrary).  In order to
+            distinguish between interior and boundary nodes, the last neighbor of
+            each boundary node is represented by the negative of its index.
+            The indices are 1-based (as in Fortran), not zero based (as in python).
+        lptr : array of ints, shape (6n-12),)
+            set of pointers in one-to-one correspondence with the elements of lst.
+            lst(lptr(i)) indexes the node which follows lst(i) in cyclical
+            counterclockwise order (the first neighbor follows the last neighbor).
+            The indices are 1-based (as in Fortran), not zero based (as in python).
+        lend : array of ints, shape (n,)
+            N pointers to adjacency lists.
+            lend(k) points to the last neighbor of node K.
+            lst(lend(K)) < 0 if and only if K is a boundary node.
+            The indices are 1-based (as in Fortran), not zero based (as in python).
 
-    Notes
-    -----
-     Provided the nodes are randomly ordered, the algorithm
-     has expected time complexity O(N*log(N)) for most nodal
-     distributions.  Note, however, that the complexity may be
-     as high as O(N**2) if, for example, the nodes are ordered
-     on increasing x.
+    Notes:
+        Provided the nodes are randomly ordered, the algorithm
+        has expected time complexity O(N*log(N)) for most nodal
+        distributions.  Note, however, that the complexity may be
+        as high as O(N**2) if, for example, the nodes are ordered
+        on increasing x.
 
-     If permute=True, x and y are randomised on input before
-     they are triangulated. The distribution of triangles will
-     differ between setting permute=True and permute=False,
-     however, the node ordering will remain identical.
+        If permute=True, x and y are randomised on input before
+        they are triangulated. The distribution of triangles will
+        differ between setting permute=True and permute=False,
+        however, the node ordering will remain identical.
     """
     def __init__(self, x, y, refinement_levels=0, permute=False, tree=False):
 
@@ -200,15 +199,20 @@ class Triangulation(object):
 
     @property
     def x(self):
+        """ Stored Cartesian x coordinates from triangulation """
         return self._deshuffle_field(self._x)
     @property
     def y(self):
+        """ Stored Cartesian y coordinates from triangulation """
         return self._deshuffle_field(self._y)
     @property
     def points(self):
+        """ Stored Cartesian xy coordinates from triangulation """
         return self._deshuffle_field(self._points)
     @property
     def simplices(self):
+        """ Indices of the points forming the simplices in the triangulation.
+        Points are ordered anticlockwise """
         return self._deshuffle_simplices(self._simplices)
 
 
@@ -261,36 +265,33 @@ class Triangulation(object):
         to the linearized curvature over the triangulation of a C-1 bivariate
         function F(x,y) which interpolates the nodal values and gradients.
 
-        Parameters
-        ----------
-         f : array of floats, shape (n,)
-            field over which to evaluate the gradient
-         nit: int (default: 3)
-            number of iterations to reach a convergence tolerance, tol
-            nit >= 1
-         tol: float (default: 1e-3)
-            maximum change in gradient between iterations.
-            convergence is reached when this condition is met.
+        Args:
+            f : array of floats, shape (n,)
+                field over which to evaluate the gradient
+            nit : int (default: 3)
+                number of iterations to reach a convergence tolerance,
+                tol nit >= 1
+            tol: float (default: 1e-3)
+                maximum change in gradient between iterations.
+                convergence is reached when this condition is met.
 
-        Returns
-        -------
-         dfdx : array of floats, shape (n,)
-            derivative of f in the x direction
-         dfdy : array of floats, shape (n,)
-            derivative of f in the y direction
+        Returns:
+            dfdx : array of floats, shape (n,)
+                derivative of f in the x direction
+            dfdy : array of floats, shape (n,)
+                derivative of f in the y direction
 
-        Notes
-        -----
-         For SIGMA = 0, optimal efficiency was achieved in testing with
-         tol = 0, and nit = 3 or 4.
+        Notes:
+            For SIGMA = 0, optimal efficiency was achieved in testing with
+            tol = 0, and nit = 3 or 4.
 
-         The restriction of F to an arc of the triangulation is taken to be
-         the Hermite interpolatory tension spline defined by the data values
-         and tangential gradient components at the endpoints of the arc, and
-         Q is the sum over the triangulation arcs, excluding interior
-         constraint arcs, of the linearized curvatures of F along the arcs --
-         the integrals over the arcs of D2F(T)**2, where D2F(T) is the second
-         derivative of F with respect to distance T along the arc.
+            The restriction of F to an arc of the triangulation is taken to be
+            the Hermite interpolatory tension spline defined by the data values
+            and tangential gradient components at the endpoints of the arc, and
+            Q is the sum over the triangulation arcs, excluding interior
+            constraint arcs, of the linearized curvatures of F along the arcs --
+            the integrals over the arcs of D2F(T)**2, where D2F(T) is the second
+            derivative of F with respect to distance T along the arc.
         """
         if f.size != self.npoints:
             raise ValueError('f should be the same size as mesh')
@@ -323,9 +324,6 @@ class Triangulation(object):
 
         gradient_local() is more efficient than gradient() only if it is unnecessary
         to compute gradients at all of the nodes. Both routines have similar accuracy.
-
-        Parameters
-        ----------
         """
         if f.size != self.npoints:
             raise ValueError('f should be the same size as mesh')
@@ -346,29 +344,28 @@ class Triangulation(object):
         deviation from the data values. This is more appropriate than interpolation
         when significant errors are present in the data.
 
-        Parameters
-        ----------
-         f : array of floats, shape (n,)
-            field to apply smoothing on
-         w : array of floats, shape (n,)
-            weights associated with data value in f
-            w[i] = 1/sigma_f^2 is a good rule of thumb.
-         sm : float
-            positive parameter specifying an upper bound on Q2(f).
-            generally n-sqrt(2n) <= sm <= n+sqrt(2n)
-         smtol : float
-            specifies relative error in satisfying the constraint
-            sm(1-smtol) <= Q2 <= sm(1+smtol) between 0 and 1.
-         gstol : float
-            tolerance for convergence.
-            gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
+        Args:
+            f : array of floats, shape (n,)
+                field to apply smoothing on
+            w : array of floats, shape (n,)
+                weights associated with data value in f
+                w[i] = 1/sigma_f^2 is a good rule of thumb.
+            sm : float
+                positive parameter specifying an upper bound on Q2(f).
+                generally n-sqrt(2n) <= sm <= n+sqrt(2n)
+            smtol : float
+                specifies relative error in satisfying the constraint
+                sm(1-smtol) <= Q2 <= sm(1+smtol) between 0 and 1.
+            gstol : float
+                tolerance for convergence.
+                gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
 
-        Returns
-        -------
-         f_smooth : array of floats, shape (n,)
-            smoothed version of f
-         (dfdx, dfdy) : tuple of floats, tuple of 2 shape (n,) arrays
-            first derivatives of f_smooth in the x and y directions
+        Returns:
+            f_smooth : array of floats, shape (n,)
+                smoothed version of f
+            derivatives : tuple of floats, shape (n,3)
+                (dfdx, dfdy) first derivatives of f_smooth in the
+                x and y directions
         """
         if f.size != self.npoints or f.size != w.size:
             raise ValueError('f and w should be the same size as mesh')
@@ -397,26 +394,24 @@ class Triangulation(object):
         Given a triangulation of a set of nodes and values at the nodes,
         this method interpolates the value at the given xi,yi coordinates.
 
-        Parameters
-        ----------
-         xi    : float / array of floats, shape (l,)
-                 x Cartesian coordinate(s)
-         yi    : float / array of floats, shape (l,)
-                 y Cartesian coordinate(s)
-         zdata : array of floats, shape (n,)
-                 value at each point in the triangulation
-                 must be the same size of the mesh
-         order : int (default=1)
-                 order of the interpolatory function used
-                  0 = nearest-neighbour
-                  1 = linear
-                  3 = cubic
+        Args:
+            xi : float / array of floats, shape (l,)
+                x Cartesian coordinate(s)
+            yi : float / array of floats, shape (l,)
+                y Cartesian coordinate(s)
+            zdata : array of floats, shape (n,)
+                value at each point in the triangulation
+                must be the same size of the mesh
+            order : int (default=1)
+                order of the interpolatory function used
+                    0 = nearest-neighbour
+                    1 = linear
+                    3 = cubic
 
-        Returns
-        -------
-         zi    : float / array of floats, shape (l,)
+        Returns:
+            zi : float / array of floats, shape (l,)
                 interpolates value(s) at (xi, yi)
-         err   : int / array of ints, shape (l,)
+            err : int / array of ints, shape (l,)
                 whether interpolation (0), extrapolation (1) or error (other)
         """
 
@@ -436,17 +431,15 @@ class Triangulation(object):
         Nearest-neighbour interpolation.
         Calls nearnd to find the index of the closest neighbours to xi,yi
 
-        Parameters
-        ----------
-         xi : float / array of floats, shape (l,)
-            x coordinates on the Cartesian plane
-         yi : float / array of floats, shape (l,)
-            y coordinates on the Cartesian plane
+        Args:
+            xi : float / array of floats, shape (l,)
+                x coordinates on the Cartesian plane
+            yi : float / array of floats, shape (l,)
+                y coordinates on the Cartesian plane
 
-        Returns
-        -------
-         zi : float / array of floats, shape (l,)
-            nearest-neighbour interpolated value(s) of (xi,yi)
+        Returns:
+            zi : float / array of floats, shape (l,)
+                nearest-neighbour interpolated value(s) of (xi,yi)
         """
         if zdata.size != self.npoints:
             raise ValueError('zdata should be same size as mesh')
@@ -464,22 +457,20 @@ class Triangulation(object):
         Piecewise linear interpolation/extrapolation to arbitrary point(s).
         The method is fast, but has only C^0 continuity.
 
-        Parameters
-        ----------
-         xi : float / array of floats, shape (l,)
-            x coordinates on the Cartesian plane
-         yi : float / array of floats, shape (l,)
-            y coordinates on the Cartesian plane
-         zdata : array of floats, shape (n,)
-            value at each point in the triangulation
-            must be the same size of the mesh
+        Args:
+            xi : float / array of floats, shape (l,)
+                x coordinates on the Cartesian plane
+            yi : float / array of floats, shape (l,)
+                y coordinates on the Cartesian plane
+            zdata : array of floats, shape (n,)
+                value at each point in the triangulation
+                must be the same size of the mesh
 
-        Returns
-        -------
-         zi : float / array of floats, shape (l,)
-            interpolated value(s) of (xi,yi)
-         err : int / array of ints, shape (l,)
-            whether interpolation (0), extrapolation (1) or error (other)
+        Returns:
+            zi : float / array of floats, shape (l,)
+                interpolated value(s) of (xi,yi)
+            err : int / array of ints, shape (l,)
+                whether interpolation (0), extrapolation (1) or error (other)
         """
 
         if zdata.size != self.npoints:
@@ -509,30 +500,29 @@ class Triangulation(object):
         Cubic spline interpolation/extrapolation to arbirary point(s).
         This method has C^1 continuity.
 
-        Parameters
-        ----------
-         xi : float / array of floats, shape (l,)
-            x coordinates on the Cartesian plane
-         yi : float / array of floats, shape (l,)
-            y coordinates on the Cartesian plane
-         zdata : array of floats, shape (n,)
-            value at each point in the triangulation
-            must be the same size of the mesh
-         gradz (optional) : array of floats, shape (2,n)
-            derivative at each point in the triangulation in the
-            x-direction (first row), y-direction (second row)
-            if not supplied it is evaluated using self.gradient
-         derivatives (optional) : bool (default: False)
-            optionally returns the first derivatives at point(s) (xi,yi)
+        Args:
+            xi : float / array of floats, shape (l,)
+                x coordinates on the Cartesian plane
+            yi : float / array of floats, shape (l,)
+                y coordinates on the Cartesian plane
+            zdata : array of floats, shape (n,)
+                value at each point in the triangulation
+                must be the same size of the mesh
+            gradz : array of floats, shape (2,n) (optional)
+                derivative at each point in the triangulation in the
+                x-direction (first row),
+                y-direction (second row)
+                if not supplied it is evaluated using self.gradient
+            derivatives : bool (default: False)
+                optionally returns the first derivatives at point(s) (xi,yi)
 
-        Returns
-        -------
-         zi : float / array of floats, shape (l,)
-            interpolated value(s) of (xi,yi)
-         err : int / array of ints, shape (l,)
-            whether interpolation (0), extrapolation (1) or error (other)
-         dzx, dzy (optional) : float, array of floats, shape(l,)
-            first partial derivatives in x and y direction at (xi,yi)
+        Returns:
+            zi : float / array of floats, shape (l,)
+                interpolated value(s) of (xi,yi)
+            err : int / array of ints, shape (l,)
+                whether interpolation (0), extrapolation (1) or error (other)
+            dzx, dzy (optional) : float, array of floats, shape(l,)
+                first partial derivatives in x and y direction at (xi,yi)
         """
 
         if zdata.size != self.npoints:
@@ -606,25 +596,22 @@ class Triangulation(object):
         and return the squared distance between (xi,yi) and
         each nearest neighbour.
 
-        Parameters
-        ----------
-         xi : array of floats, shape (l,)
-            Cartesian coordinates in the x direction
-         yi : array of floats, shape (l,)
-            Cartesian coordinates in the y direction
+        Args:
+            xi : array of floats, shape (l,)
+                Cartesian coordinates in the x direction
+            yi : array of floats, shape (l,)
+                Cartesian coordinates in the y direction
 
-        Returns
-        -------
-         index : array of ints
-            the nearest vertex to each of the supplied points
-         dist : array of floats
-            squared distance to the closest vertex identified
+        Returns:
+            index : array of ints
+                the nearest vertex to each of the supplied points
+            dist : array of floats
+                squared distance to the closest vertex identified
 
-        Notes
-        -----
-         Faster searches can be obtained using a KDTree.
-         Store all x and y coordinates in a (c)KDTree, then query
-         a set of points to find their nearest neighbours.
+        Notes:
+            Faster searches can be obtained using a KDTree.
+            Store all x and y coordinates in a (c)KDTree, then query
+            a set of points to find their nearest neighbours.
         """
         n = np.array(xi).size
         xi = np.array(xi).reshape(n)
@@ -649,20 +636,17 @@ class Triangulation(object):
         """
         Returns indices of the triangles containing xi yi
 
-        Parameters
-        ----------
-         xi : float / array of floats, shape (l,)
-            Cartesian coordinates in the x direction
-         yi : float / array of floats, shape (l,)
-            Cartesian coordinates in the y direction
+        Args:
+            xi : float / array of floats, shape (l,)
+                Cartesian coordinates in the x direction
+            yi : float / array of floats, shape (l,)
+                Cartesian coordinates in the y direction
 
-        Returns
-        -------
-         tri_indices: array of ints, shape (l,)
+        Returns:
+            tri_indices: array of ints, shape (l,)
 
-        Notes
-        -----
-          The simplices are found as cartesian.Triangulation.simplices[tri_indices]
+        Notes:
+            The simplices are found as cartesian.Triangulation.simplices[tri_indices]
         """
         p = self._permutation
         pts = np.column_stack([xi, yi])
@@ -684,22 +668,19 @@ class Triangulation(object):
         Returns the simplices containing (xi,yi)
         and the local barycentric, normalised coordinates.
 
-        Parameters
-        ----------
-         xi : float / array of floats, shape (l,)
-            Cartesian coordinates in the x direction
-         yi : float / array of floats, shape (l,)
-            Cartesian coordinates in the y direction
+        Args:
+            xi : float / array of floats, shape (l,)
+               Cartesian coordinates in the x direction
+            yi : float / array of floats, shape (l,)
+               Cartesian coordinates in the y direction
 
-        Returns
-        -------
-         bcc : normalised barycentric coordinates
-         tri : simplices containing (xi,yi)
+        Returns:
+            bcc : normalised barycentric coordinates
+            tri : simplices containing (xi,yi)
 
-        Notes
-        -----
-         The ordering of the vertices may differ from that stored in
-         self.simplices array but will still be a loop around the simplex.
+        Notes:
+            The ordering of the vertices may differ from that stored in
+            `self.simplices` array but will still be a loop around the simplex.
         """
 
         pts = np.column_stack([xi,yi])
@@ -739,7 +720,7 @@ class Triangulation(object):
     def identify_vertex_neighbours(self, vertex):
         """
         Find the neighbour-vertices in the triangulation for the given vertex
-        Searches self.simplices for vertex entries and sorts neighbours
+        Searches `self.simplices` for vertex entries and sorts neighbours
         """
         simplices = self.simplices
         ridx, cidx = np.where(simplices == vertex)
@@ -822,10 +803,9 @@ class Triangulation(object):
         If an array of segments of shape (no_of_segments,2) is given,
         then the midpoints of only those segments is returned.
 
-        Notes
-        -----
-         Segments in the array must not be duplicates or the re-triangulation
-         will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).
+        Notes:
+            Segments in the array must not be duplicates or the re-triangulation
+            will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).
         """
 
         if type(segments) == type(None):
@@ -859,10 +839,9 @@ class Triangulation(object):
         """
         Find the Convex Hull of the internal set of x,y points.
 
-        Returns
-        -------
-         bnodes : array of ints
-            indices corresponding to points on the convex hull
+        Returns:
+            bnodes : array of ints
+                indices corresponding to points on the convex hull
         """
         bnodes, nb, na, nt = _tripack.bnodes(self.lst, self.lptr, self.lend, self.npoints)
         return self._deshuffle_simplices(bnodes[:nb] - 1)
@@ -872,11 +851,10 @@ class Triangulation(object):
         """
         Compute the area of each triangle within the triangulation of points.
 
-        Returns
-        -------
-         area : array of floats, shape (nt,)
-            area of each triangle in self.simplices where nt
-            is the number of triangles.
+        Returns:
+            area : array of floats, shape (nt,)
+                area of each triangle in `self.simplices` where nt
+                is the number of triangles.
 
         """
         v1 = self.points[self.simplices[:,1]] - self.points[self.simplices[:,0]]
@@ -971,10 +949,9 @@ class Triangulation(object):
         in the triangulation that are associated with the triangles in the list
         of indices provided.
 
-        Notes
-        -----
-         The triangles are here represented as a single index.
-         The vertices of triangle i are given by self.simplices[i].
+        Notes:
+            The triangles are here represented as a single index.
+            The vertices of triangle `i` are given by `self.simplices[i]`.
         """
 
         ## Note there should be no duplicates in the list of triangles
@@ -1018,10 +995,9 @@ class Triangulation(object):
         return points defining a refined triangulation obtained by bisection of all edges
         in the triangulation that are associated with the triangles in the list provided.
 
-        Notes
-        -----
-         The triangles are here represented as a single index.
-         The vertices of triangle i are given by self.simplices[i].
+        Notes:
+            The triangles are here represented as a single index.
+            The vertices of triangle `i` are given by `self.simplices[i]`.
         """
 
         # Remove duplicates from the list of triangles
@@ -1085,22 +1061,22 @@ class Triangulation(object):
         distance from x,y points.
 
         Returns 0, 0 if a cKDtree has not been constructed
-        (switch tree=True if you need this routine)
+        (switch `tree=True` if you need this routine)
 
-        Parameters
-        ----------
-         x : 1D array of Cartesian x coordinates
-         y : 1D array of Cartesian y coordinates
-         k : number of nearest neighbours to return
-             (default: 1)
-         max_distance : maximum Euclidean distance to search
-                        for neighbours (default: inf)
+        Args:
+            x : 1D array of Cartesian x coordinates
+            y : 1D array of Cartesian y coordinates
+            k : int (defaul=1)
+                number of nearest neighbours to return
+            max_distance : float (default: inf)
+                maximum Euclidean distance to search for neighbours
 
-        Returns
-        -------
-         d    : Euclidean distance between each point and their
+        Returns:
+            d : array of floats
+                Euclidean distance between each point and their
                 nearest neighbour(s)
-         vert : vertices of the nearest neighbour(s)
+            vert : array of ints
+                vertices of the nearest neighbour(s)
         """
 
         if self.tree == False or self.tree == None:
