@@ -28,7 +28,7 @@ There are two matching sets of `stripy` notebooks - one set for [Cartesian Trian
 Note: the Cartesian and Spherical notebooks can be obtained / installed from `stripy` itself as follows:
 
 ```bash
-   python -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'   
+   python -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
 ```
 
 ### Cartesian
@@ -85,6 +85,8 @@ Also, the following packages are required:
 **Recommended Packages** for running the notebooks:
 
  - [`gdal`](https://www.gdal.org/)
+ - [`matplotlib`](https://matplotlib.org/)
+ - [`imageio`](https://imageio.github.io/)
  - [`cartopy`](https://scitools.org.uk/cartopy/docs/latest/)
  - [`pyproj`](https://github.com/pyproj4/pyproj)
  - [`lavavu`](https://github.com/OKaluza/LavaVu/)
