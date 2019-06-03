@@ -28,7 +28,7 @@ There are two matching sets of `stripy` notebooks - one set for [Cartesian Trian
 Note: the Cartesian and Spherical notebooks can be obtained / installed from `stripy` itself as follows:
 
 ```bash
-   python -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'   
+   python -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
 ```
 
 ### Cartesian
@@ -183,7 +183,13 @@ These classes share similar methods and can be easily interchanged.
 In addition, there are many helper functions provided for building meshes.
 
 A series of tests are located in the *tests* subdirectory.
+In order to perform these tests clone the repository and run `pytest`:
 
+```bash
+git checkout https://github.com/underworldcode/stripy.git
+cd stripy
+pytest -v
+```
 
 ## References
 
