@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>stripy.cartesian_meshes API documentation</title>
+<meta name="description" content="Copyright 2017 Louis Moresi, Ben Mather …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>stripy.cartesian_meshes</code></h1>
+</header>
+<section id="section-intro">
+<p>Copyright 2017 Louis Moresi, Ben Mather</p>
+<p>This file is part of Stripy.</p>
+<p>Stripy is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or any later version.</p>
+<p>Stripy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with Stripy.
+If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">&#34;&#34;&#34;
+Copyright 2017 Louis Moresi, Ben Mather
+
+This file is part of Stripy.
+
+Stripy is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or any later version.
+
+Stripy is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with Stripy.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+&#34;&#34;&#34;
+
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from . import cartesian as _cartesian
+import numpy as np
+
+
+class square_border(_cartesian.Triangulation):
+    &#34;&#34;&#34;
+    Square border to add to any mesh.
+    Creates a set of points around the extent of the domain.
+    &#34;&#34;&#34;
+    def __init__(self, extent, spacingX, spacingY, refinement_levels=0, tree=False):
+
+        xmin, xmax, ymin, ymax = extent
+
+        for r in range(0, refinement_levels):
+            spacingX = 0.5*spacingX
+            spacingY = 0.5*spacingY
+
+        xcoords = np.arange(xmin, xmax+spacingX, spacingX)
+        ycoords = np.arange(ymin, ymax+spacingY, spacingY)
+
+        nx, ny = xcoords.size, ycoords.size
+
+        vx = np.ones(nx-2)
+        vy = np.ones(ny-2)
+
+        x = np.concatenate([xcoords[1:-1], xcoords[1:-1], vy*xmin, vy*xmax], axis=0)
+        y = np.concatenate([vx*ymin, vx*ymax, ycoords[1:-1], ycoords[1:-1]], axis=0)
+
+        xy = np.column_stack([x, y])
+
+        # Randomise the point order for triangulation efficiency
+        np.random.shuffle(xy)
+
+        # make sure the first points are not collinear
+        xy0 = np.array([[xcoords[0] , ycoords[0] ], \
+                        [xcoords[-1], ycoords[-1]], \
+                        [xcoords[-1], ycoords[0] ], \
+                        [xcoords[0] , ycoords[-1]]])
+
+        xy = np.vstack([xy0, xy])
+
+        super(square_border, self).__init__(xy[:,0], xy[:,1], permute=False, tree=tree)
+
+        return
+
+
+class square_mesh(_cartesian.Triangulation):
+    &#34;&#34;&#34;
+    A square mesh where points are uniformly populated
+    along x and y directions defined by extent.
+    &#34;&#34;&#34;
+    def __init__(self, extent, spacingX, spacingY, random_scale=0.0, refinement_levels=0, tree=False):
+
+        xmin, xmax, ymin, ymax = extent
+
+        xcoords = np.arange(xmin, xmax+spacingX, spacingX)
+        ycoords = np.arange(ymin, ymax+spacingY, spacingY)
+
+        x, y = np.meshgrid(xcoords, ycoords)
+
+        interior_mask = np.zeros(x.shape, dtype=bool)
+        interior_mask[1:-1,1:-1] = True
+        interior_mask = interior_mask.ravel()
+
+        x = x.ravel()
+        y = y.ravel()
+
+        nsamples = interior_mask.sum()
+        xscale = random_scale*spacingX
+        yscale = random_scale*spacingY
+
+        x[interior_mask] += xscale * (0.5 - np.random.rand(nsamples))
+        y[interior_mask] += yscale * (0.5 - np.random.rand(nsamples))
+
+        xy = np.column_stack([x, y])
+
+        n2 = x.size//2
+
+        # ensure first 3 points are not collinear
+        # xy[0], xy[-1] = xy[-1].copy(), xy[0].copy()
+        # xy[2], xy[n2] = xy[n2].copy(), xy[2].copy()
+
+        ## Randomise the point order for triangulation efficiency
+        np.random.shuffle(xy)
+
+        super(square_mesh, self).__init__(xy[:,0], xy[:,1], permute=False, tree=tree)
+
+        for r in range(0, refinement_levels):
+            X, Y = self.uniformly_refine_triangulation(faces=False, trisect=False)
+            self._update_triangulation(X, Y)
+
+        return
+
+
+class elliptical_mesh(_cartesian.Triangulation):
+    &#34;&#34;&#34;
+    An elliptical mesh where points are successively populated at an
+    increasing radius from the midpoint of the extent.
+    &#34;&#34;&#34;
+    def __init__(self, extent, spacingX, spacingY, random_scale=0.0, refinement_levels=0, tree=False):
+
+        xmin, xmax, ymin, ymax = extent
+
+        originX = 0.5*(xmax + xmin)
+        originY = 0.5*(ymax + ymin)
+        radiusX = 0.5*(xmax - xmin)
+        radiusY = 0.5*(ymax - ymin)
+        aspect  = 0.5*(ymax - ymin)/radiusX
+
+        spacingXY = np.hypot(spacingX, spacingY)
+        radiusXY = np.hypot(radiusX, radiusY)
+
+        radius = np.arange(spacingXY, radiusXY, spacingXY)
+
+        x = []
+        y = []
+        for r in radius:
+            # nsamples must be &gt;= 3
+            nsamples = max(2.0*r/spacingXY, 3.0)
+            lin_samples = int(nsamples)
+            ind = np.arange(0, lin_samples)
+
+            x_ring = originX + np.cos(2.0*np.pi/lin_samples*ind)*r
+            y_ring = originY + np.sin(2.0*np.pi/lin_samples*ind)*r * aspect
+
+            x.append(x_ring)
+            y.append(y_ring)
+
+        boundary_size = len(x[-1])
+
+        x = np.concatenate(x, axis=0)
+        y = np.concatenate(y, axis=0)
+
+        interior_mask = np.ones(x.size, dtype=bool)
+        interior_mask[-boundary_size:] = False
+
+        nsamples = interior_mask.sum()
+        xscale = random_scale*spacingX
+        yscale = random_scale*spacingY
+
+        x[interior_mask] += xscale * (0.5 - np.random.rand(nsamples))
+        y[interior_mask] += yscale * (0.5 - np.random.rand(nsamples))
+
+        super(elliptical_mesh, self).__init__(x, y, permute=False, tree=tree)
+
+        for r in range(0, refinement_levels):
+            X, Y = self.uniformly_refine_triangulation(faces=True, trisect=False)
+            self._update_triangulation(X, Y)
+
+        return
+
+
+class random_mesh(_cartesian.Triangulation):
+    &#34;&#34;&#34;
+    A mesh of random points. Take care if you use this is parallel
+    as the location of points will not be the same on all processors.
+
+
+    &#34;&#34;&#34;
+    def __init__(self, extent, number_of_points=5000, tree=False):
+
+        xmin, xmax, ymin, ymax = extent
+
+        deltaX = xmax - xmin
+        deltaY = ymax - ymin
+
+        samples = np.sqrt(number_of_points)
+        samples_x = int(samples*deltaX/deltaY)
+        samples_y = int(samples*deltaY/deltaX)
+
+        spacingX = deltaX/samples_x
+        spacingY = deltaY/samples_y
+
+        # boundary nodes
+        base_mesh = square_border(extent, spacingX, spacingY)
+
+        xy = np.random.random((number_of_points - base_mesh.npoints,2))
+
+        # scale to extent leaving some buffer space
+        x = xmin + 0.5*spacingX + xy[:,0]*(deltaX - 0.5*spacingX)
+        y = ymin + 0.5*spacingY + xy[:,1]*(deltaY - 0.5*spacingY)
+
+        x = np.concatenate([base_mesh.x, x], axis=0)
+        y = np.concatenate([base_mesh.y, y], axis=0)
+
+        super(random_mesh, self).__init__(x, y, permute=False, tree=tree)
+
+        return</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="stripy.cartesian_meshes.elliptical_mesh"><code class="flex name class">
+<span>class <span class="ident">elliptical_mesh</span></span>
+<span>(</span><span>extent, spacingX, spacingY, random_scale=0.0, refinement_levels=0, tree=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>An elliptical mesh where points are successively populated at an
+increasing radius from the midpoint of the extent.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class elliptical_mesh(_cartesian.Triangulation):
+    &#34;&#34;&#34;
+    An elliptical mesh where points are successively populated at an
+    increasing radius from the midpoint of the extent.
+    &#34;&#34;&#34;
+    def __init__(self, extent, spacingX, spacingY, random_scale=0.0, refinement_levels=0, tree=False):
+
+        xmin, xmax, ymin, ymax = extent
+
+        originX = 0.5*(xmax + xmin)
+        originY = 0.5*(ymax + ymin)
+        radiusX = 0.5*(xmax - xmin)
+        radiusY = 0.5*(ymax - ymin)
+        aspect  = 0.5*(ymax - ymin)/radiusX
+
+        spacingXY = np.hypot(spacingX, spacingY)
+        radiusXY = np.hypot(radiusX, radiusY)
+
+        radius = np.arange(spacingXY, radiusXY, spacingXY)
+
+        x = []
+        y = []
+        for r in radius:
+            # nsamples must be &gt;= 3
+            nsamples = max(2.0*r/spacingXY, 3.0)
+            lin_samples = int(nsamples)
+            ind = np.arange(0, lin_samples)
+
+            x_ring = originX + np.cos(2.0*np.pi/lin_samples*ind)*r
+            y_ring = originY + np.sin(2.0*np.pi/lin_samples*ind)*r * aspect
+
+            x.append(x_ring)
+            y.append(y_ring)
+
+        boundary_size = len(x[-1])
+
+        x = np.concatenate(x, axis=0)
+        y = np.concatenate(y, axis=0)
+
+        interior_mask = np.ones(x.size, dtype=bool)
+        interior_mask[-boundary_size:] = False
+
+        nsamples = interior_mask.sum()
+        xscale = random_scale*spacingX
+        yscale = random_scale*spacingY
+
+        x[interior_mask] += xscale * (0.5 - np.random.rand(nsamples))
+        y[interior_mask] += yscale * (0.5 - np.random.rand(nsamples))
+
+        super(elliptical_mesh, self).__init__(x, y, permute=False, tree=tree)
+
+        for r in range(0, refinement_levels):
+            X, Y = self.uniformly_refine_triangulation(faces=True, trisect=False)
+            self._update_triangulation(X, Y)
+
+        return</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></b></code>:
+<ul class="hlist">
+<li><code><a title="stripy.cartesian.Triangulation.areas" href="cartesian.html#stripy.cartesian.Triangulation.areas">areas</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.centroid_refine_triangulation_by_triangles" href="cartesian.html#stripy.cartesian.Triangulation.centroid_refine_triangulation_by_triangles">centroid_refine_triangulation_by_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.centroid_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.centroid_refine_triangulation_by_vertices">centroid_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.containing_simplex_and_bcc" href="cartesian.html#stripy.cartesian.Triangulation.containing_simplex_and_bcc">containing_simplex_and_bcc</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.containing_triangle" href="cartesian.html#stripy.cartesian.Triangulation.containing_triangle">containing_triangle</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.convex_hull" href="cartesian.html#stripy.cartesian.Triangulation.convex_hull">convex_hull</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_lengths" href="cartesian.html#stripy.cartesian.Triangulation.edge_lengths">edge_lengths</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles" href="cartesian.html#stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles">edge_refine_triangulation_by_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices">edge_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.face_midpoints" href="cartesian.html#stripy.cartesian.Triangulation.face_midpoints">face_midpoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.gradient" href="cartesian.html#stripy.cartesian.Triangulation.gradient">gradient</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.gradient_local" href="cartesian.html#stripy.cartesian.Triangulation.gradient_local">gradient_local</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_segments" href="cartesian.html#stripy.cartesian.Triangulation.identify_segments">identify_segments</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_vertex_neighbours" href="cartesian.html#stripy.cartesian.Triangulation.identify_vertex_neighbours">identify_vertex_neighbours</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_vertex_triangles" href="cartesian.html#stripy.cartesian.Triangulation.identify_vertex_triangles">identify_vertex_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate" href="cartesian.html#stripy.cartesian.Triangulation.interpolate">interpolate</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_cubic" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_cubic">interpolate_cubic</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_linear" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_linear">interpolate_linear</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_nearest" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.join" href="cartesian.html#stripy.cartesian.Triangulation.join">join</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.nearest_vertex" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertex">nearest_vertex</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.nearest_vertices" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertices">nearest_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.neighbour_and_arc_simplices" href="cartesian.html#stripy.cartesian.Triangulation.neighbour_and_arc_simplices">neighbour_and_arc_simplices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.neighbour_simplices" href="cartesian.html#stripy.cartesian.Triangulation.neighbour_simplices">neighbour_simplices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_midpoints" href="cartesian.html#stripy.cartesian.Triangulation.segment_midpoints">segment_midpoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_midpoints_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_tripoints" href="cartesian.html#stripy.cartesian.Triangulation.segment_tripoints">segment_tripoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.smoothing" href="cartesian.html#stripy.cartesian.Triangulation.smoothing">smoothing</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.uniformly_refine_triangulation" href="cartesian.html#stripy.cartesian.Triangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="stripy.cartesian_meshes.random_mesh"><code class="flex name class">
+<span>class <span class="ident">random_mesh</span></span>
+<span>(</span><span>extent, number_of_points=5000, tree=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A mesh of random points. Take care if you use this is parallel
+as the location of points will not be the same on all processors.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class random_mesh(_cartesian.Triangulation):
+    &#34;&#34;&#34;
+    A mesh of random points. Take care if you use this is parallel
+    as the location of points will not be the same on all processors.
+
+
+    &#34;&#34;&#34;
+    def __init__(self, extent, number_of_points=5000, tree=False):
+
+        xmin, xmax, ymin, ymax = extent
+
+        deltaX = xmax - xmin
+        deltaY = ymax - ymin
+
+        samples = np.sqrt(number_of_points)
+        samples_x = int(samples*deltaX/deltaY)
+        samples_y = int(samples*deltaY/deltaX)
+
+        spacingX = deltaX/samples_x
+        spacingY = deltaY/samples_y
+
+        # boundary nodes
+        base_mesh = square_border(extent, spacingX, spacingY)
+
+        xy = np.random.random((number_of_points - base_mesh.npoints,2))
+
+        # scale to extent leaving some buffer space
+        x = xmin + 0.5*spacingX + xy[:,0]*(deltaX - 0.5*spacingX)
+        y = ymin + 0.5*spacingY + xy[:,1]*(deltaY - 0.5*spacingY)
+
+        x = np.concatenate([base_mesh.x, x], axis=0)
+        y = np.concatenate([base_mesh.y, y], axis=0)
+
+        super(random_mesh, self).__init__(x, y, permute=False, tree=tree)
+
+        return</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></b></code>:
+<ul class="hlist">
+<li><code><a title="stripy.cartesian.Triangulation.areas" href="cartesian.html#stripy.cartesian.Triangulation.areas">areas</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.centroid_refine_triangulation_by_triangles" href="cartesian.html#stripy.cartesian.Triangulation.centroid_refine_triangulation_by_triangles">centroid_refine_triangulation_by_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.centroid_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.centroid_refine_triangulation_by_vertices">centroid_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.containing_simplex_and_bcc" href="cartesian.html#stripy.cartesian.Triangulation.containing_simplex_and_bcc">containing_simplex_and_bcc</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.containing_triangle" href="cartesian.html#stripy.cartesian.Triangulation.containing_triangle">containing_triangle</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.convex_hull" href="cartesian.html#stripy.cartesian.Triangulation.convex_hull">convex_hull</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_lengths" href="cartesian.html#stripy.cartesian.Triangulation.edge_lengths">edge_lengths</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles" href="cartesian.html#stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles">edge_refine_triangulation_by_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices">edge_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.face_midpoints" href="cartesian.html#stripy.cartesian.Triangulation.face_midpoints">face_midpoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.gradient" href="cartesian.html#stripy.cartesian.Triangulation.gradient">gradient</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.gradient_local" href="cartesian.html#stripy.cartesian.Triangulation.gradient_local">gradient_local</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_segments" href="cartesian.html#stripy.cartesian.Triangulation.identify_segments">identify_segments</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_vertex_neighbours" href="cartesian.html#stripy.cartesian.Triangulation.identify_vertex_neighbours">identify_vertex_neighbours</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_vertex_triangles" href="cartesian.html#stripy.cartesian.Triangulation.identify_vertex_triangles">identify_vertex_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate" href="cartesian.html#stripy.cartesian.Triangulation.interpolate">interpolate</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_cubic" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_cubic">interpolate_cubic</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_linear" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_linear">interpolate_linear</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_nearest" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.join" href="cartesian.html#stripy.cartesian.Triangulation.join">join</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.nearest_vertex" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertex">nearest_vertex</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.nearest_vertices" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertices">nearest_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.neighbour_and_arc_simplices" href="cartesian.html#stripy.cartesian.Triangulation.neighbour_and_arc_simplices">neighbour_and_arc_simplices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.neighbour_simplices" href="cartesian.html#stripy.cartesian.Triangulation.neighbour_simplices">neighbour_simplices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_midpoints" href="cartesian.html#stripy.cartesian.Triangulation.segment_midpoints">segment_midpoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_midpoints_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_tripoints" href="cartesian.html#stripy.cartesian.Triangulation.segment_tripoints">segment_tripoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.smoothing" href="cartesian.html#stripy.cartesian.Triangulation.smoothing">smoothing</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.uniformly_refine_triangulation" href="cartesian.html#stripy.cartesian.Triangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="stripy.cartesian_meshes.square_border"><code class="flex name class">
+<span>class <span class="ident">square_border</span></span>
+<span>(</span><span>extent, spacingX, spacingY, refinement_levels=0, tree=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Square border to add to any mesh.
+Creates a set of points around the extent of the domain.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class square_border(_cartesian.Triangulation):
+    &#34;&#34;&#34;
+    Square border to add to any mesh.
+    Creates a set of points around the extent of the domain.
+    &#34;&#34;&#34;
+    def __init__(self, extent, spacingX, spacingY, refinement_levels=0, tree=False):
+
+        xmin, xmax, ymin, ymax = extent
+
+        for r in range(0, refinement_levels):
+            spacingX = 0.5*spacingX
+            spacingY = 0.5*spacingY
+
+        xcoords = np.arange(xmin, xmax+spacingX, spacingX)
+        ycoords = np.arange(ymin, ymax+spacingY, spacingY)
+
+        nx, ny = xcoords.size, ycoords.size
+
+        vx = np.ones(nx-2)
+        vy = np.ones(ny-2)
+
+        x = np.concatenate([xcoords[1:-1], xcoords[1:-1], vy*xmin, vy*xmax], axis=0)
+        y = np.concatenate([vx*ymin, vx*ymax, ycoords[1:-1], ycoords[1:-1]], axis=0)
+
+        xy = np.column_stack([x, y])
+
+        # Randomise the point order for triangulation efficiency
+        np.random.shuffle(xy)
+
+        # make sure the first points are not collinear
+        xy0 = np.array([[xcoords[0] , ycoords[0] ], \
+                        [xcoords[-1], ycoords[-1]], \
+                        [xcoords[-1], ycoords[0] ], \
+                        [xcoords[0] , ycoords[-1]]])
+
+        xy = np.vstack([xy0, xy])
+
+        super(square_border, self).__init__(xy[:,0], xy[:,1], permute=False, tree=tree)
+
+        return</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></b></code>:
+<ul class="hlist">
+<li><code><a title="stripy.cartesian.Triangulation.areas" href="cartesian.html#stripy.cartesian.Triangulation.areas">areas</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.centroid_refine_triangulation_by_triangles" href="cartesian.html#stripy.cartesian.Triangulation.centroid_refine_triangulation_by_triangles">centroid_refine_triangulation_by_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.centroid_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.centroid_refine_triangulation_by_vertices">centroid_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.containing_simplex_and_bcc" href="cartesian.html#stripy.cartesian.Triangulation.containing_simplex_and_bcc">containing_simplex_and_bcc</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.containing_triangle" href="cartesian.html#stripy.cartesian.Triangulation.containing_triangle">containing_triangle</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.convex_hull" href="cartesian.html#stripy.cartesian.Triangulation.convex_hull">convex_hull</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_lengths" href="cartesian.html#stripy.cartesian.Triangulation.edge_lengths">edge_lengths</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles" href="cartesian.html#stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles">edge_refine_triangulation_by_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices">edge_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.face_midpoints" href="cartesian.html#stripy.cartesian.Triangulation.face_midpoints">face_midpoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.gradient" href="cartesian.html#stripy.cartesian.Triangulation.gradient">gradient</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.gradient_local" href="cartesian.html#stripy.cartesian.Triangulation.gradient_local">gradient_local</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_segments" href="cartesian.html#stripy.cartesian.Triangulation.identify_segments">identify_segments</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_vertex_neighbours" href="cartesian.html#stripy.cartesian.Triangulation.identify_vertex_neighbours">identify_vertex_neighbours</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_vertex_triangles" href="cartesian.html#stripy.cartesian.Triangulation.identify_vertex_triangles">identify_vertex_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate" href="cartesian.html#stripy.cartesian.Triangulation.interpolate">interpolate</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_cubic" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_cubic">interpolate_cubic</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_linear" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_linear">interpolate_linear</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_nearest" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.join" href="cartesian.html#stripy.cartesian.Triangulation.join">join</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.nearest_vertex" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertex">nearest_vertex</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.nearest_vertices" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertices">nearest_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.neighbour_and_arc_simplices" href="cartesian.html#stripy.cartesian.Triangulation.neighbour_and_arc_simplices">neighbour_and_arc_simplices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.neighbour_simplices" href="cartesian.html#stripy.cartesian.Triangulation.neighbour_simplices">neighbour_simplices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_midpoints" href="cartesian.html#stripy.cartesian.Triangulation.segment_midpoints">segment_midpoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_midpoints_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_tripoints" href="cartesian.html#stripy.cartesian.Triangulation.segment_tripoints">segment_tripoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.smoothing" href="cartesian.html#stripy.cartesian.Triangulation.smoothing">smoothing</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.uniformly_refine_triangulation" href="cartesian.html#stripy.cartesian.Triangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="stripy.cartesian_meshes.square_mesh"><code class="flex name class">
+<span>class <span class="ident">square_mesh</span></span>
+<span>(</span><span>extent, spacingX, spacingY, random_scale=0.0, refinement_levels=0, tree=False)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>A square mesh where points are uniformly populated
+along x and y directions defined by extent.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class square_mesh(_cartesian.Triangulation):
+    &#34;&#34;&#34;
+    A square mesh where points are uniformly populated
+    along x and y directions defined by extent.
+    &#34;&#34;&#34;
+    def __init__(self, extent, spacingX, spacingY, random_scale=0.0, refinement_levels=0, tree=False):
+
+        xmin, xmax, ymin, ymax = extent
+
+        xcoords = np.arange(xmin, xmax+spacingX, spacingX)
+        ycoords = np.arange(ymin, ymax+spacingY, spacingY)
+
+        x, y = np.meshgrid(xcoords, ycoords)
+
+        interior_mask = np.zeros(x.shape, dtype=bool)
+        interior_mask[1:-1,1:-1] = True
+        interior_mask = interior_mask.ravel()
+
+        x = x.ravel()
+        y = y.ravel()
+
+        nsamples = interior_mask.sum()
+        xscale = random_scale*spacingX
+        yscale = random_scale*spacingY
+
+        x[interior_mask] += xscale * (0.5 - np.random.rand(nsamples))
+        y[interior_mask] += yscale * (0.5 - np.random.rand(nsamples))
+
+        xy = np.column_stack([x, y])
+
+        n2 = x.size//2
+
+        # ensure first 3 points are not collinear
+        # xy[0], xy[-1] = xy[-1].copy(), xy[0].copy()
+        # xy[2], xy[n2] = xy[n2].copy(), xy[2].copy()
+
+        ## Randomise the point order for triangulation efficiency
+        np.random.shuffle(xy)
+
+        super(square_mesh, self).__init__(xy[:,0], xy[:,1], permute=False, tree=tree)
+
+        for r in range(0, refinement_levels):
+            X, Y = self.uniformly_refine_triangulation(faces=False, trisect=False)
+            self._update_triangulation(X, Y)
+
+        return</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></b></code>:
+<ul class="hlist">
+<li><code><a title="stripy.cartesian.Triangulation.areas" href="cartesian.html#stripy.cartesian.Triangulation.areas">areas</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.centroid_refine_triangulation_by_triangles" href="cartesian.html#stripy.cartesian.Triangulation.centroid_refine_triangulation_by_triangles">centroid_refine_triangulation_by_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.centroid_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.centroid_refine_triangulation_by_vertices">centroid_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.containing_simplex_and_bcc" href="cartesian.html#stripy.cartesian.Triangulation.containing_simplex_and_bcc">containing_simplex_and_bcc</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.containing_triangle" href="cartesian.html#stripy.cartesian.Triangulation.containing_triangle">containing_triangle</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.convex_hull" href="cartesian.html#stripy.cartesian.Triangulation.convex_hull">convex_hull</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_lengths" href="cartesian.html#stripy.cartesian.Triangulation.edge_lengths">edge_lengths</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles" href="cartesian.html#stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles">edge_refine_triangulation_by_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices">edge_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.face_midpoints" href="cartesian.html#stripy.cartesian.Triangulation.face_midpoints">face_midpoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.gradient" href="cartesian.html#stripy.cartesian.Triangulation.gradient">gradient</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.gradient_local" href="cartesian.html#stripy.cartesian.Triangulation.gradient_local">gradient_local</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_segments" href="cartesian.html#stripy.cartesian.Triangulation.identify_segments">identify_segments</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_vertex_neighbours" href="cartesian.html#stripy.cartesian.Triangulation.identify_vertex_neighbours">identify_vertex_neighbours</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.identify_vertex_triangles" href="cartesian.html#stripy.cartesian.Triangulation.identify_vertex_triangles">identify_vertex_triangles</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate" href="cartesian.html#stripy.cartesian.Triangulation.interpolate">interpolate</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_cubic" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_cubic">interpolate_cubic</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_linear" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_linear">interpolate_linear</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_nearest" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.join" href="cartesian.html#stripy.cartesian.Triangulation.join">join</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.nearest_vertex" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertex">nearest_vertex</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.nearest_vertices" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertices">nearest_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.neighbour_and_arc_simplices" href="cartesian.html#stripy.cartesian.Triangulation.neighbour_and_arc_simplices">neighbour_and_arc_simplices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.neighbour_simplices" href="cartesian.html#stripy.cartesian.Triangulation.neighbour_simplices">neighbour_simplices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_midpoints" href="cartesian.html#stripy.cartesian.Triangulation.segment_midpoints">segment_midpoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_midpoints_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.segment_tripoints" href="cartesian.html#stripy.cartesian.Triangulation.segment_tripoints">segment_tripoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.smoothing" href="cartesian.html#stripy.cartesian.Triangulation.smoothing">smoothing</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.uniformly_refine_triangulation" href="cartesian.html#stripy.cartesian.Triangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="stripy" href="index.html">stripy</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="stripy.cartesian_meshes.elliptical_mesh" href="#stripy.cartesian_meshes.elliptical_mesh">elliptical_mesh</a></code></h4>
+</li>
+<li>
+<h4><code><a title="stripy.cartesian_meshes.random_mesh" href="#stripy.cartesian_meshes.random_mesh">random_mesh</a></code></h4>
+</li>
+<li>
+<h4><code><a title="stripy.cartesian_meshes.square_border" href="#stripy.cartesian_meshes.square_border">square_border</a></code></h4>
+</li>
+<li>
+<h4><code><a title="stripy.cartesian_meshes.square_mesh" href="#stripy.cartesian_meshes.square_mesh">square_mesh</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
