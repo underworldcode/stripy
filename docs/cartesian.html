@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.2" />
+<meta name="generator" content="pdoc 0.6.3.dev0+g35bcce2.d20190604" />
 <title>stripy.cartesian API documentation</title>
 <meta name="description" content="Copyright 2017-2019 Louis Moresi, Ben Mather …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -151,11 +151,7 @@ class Triangulation(object):
         Provided the nodes are randomly ordered, the algorithm
         has expected time complexity O(N*log(N)) for most nodal
         distributions.  Note, however, that the complexity may be
-<<<<<<< HEAD
         as high as \\(O(N^2)\\) if, for example, the nodes are ordered
-=======
-        as high as O(N**2) if, for example, the nodes are ordered
->>>>>>> 7679e4100b9584f0ddcdf4dab543b694a14f1915
         on increasing x.
 
         If permute=True, x and y are randomised on input before
@@ -349,12 +345,8 @@ class Triangulation(object):
             and tangential gradient components at the endpoints of the arc, and
             Q is the sum over the triangulation arcs, excluding interior
             constraint arcs, of the linearized curvatures of F along the arcs --
-<<<<<<< HEAD
-            the integrals over the arcs of \\( (D^2 F / DT^2)^2\\), where \\( D^2 F / DT^2\\)is the second
-=======
-            the integrals over the arcs of D2F(T)**2, where D2F(T) is the second
->>>>>>> 7679e4100b9584f0ddcdf4dab543b694a14f1915
-            derivative of F with respect to distance T along the arc.
+            the integrals over the arcs of \\( (d^2 F / dT^2)^2\\), where \\( d^2 F / dT^2\\)is the second
+            derivative of \\(F\\) with respect to distance \\(T\\) along the arc.
         &#34;&#34;&#34;
         if f.size != self.npoints:
             raise ValueError(&#39;f should be the same size as mesh&#39;)
@@ -1324,11 +1316,7 @@ however, the node ordering will remain identical.</p></section>
         Provided the nodes are randomly ordered, the algorithm
         has expected time complexity O(N*log(N)) for most nodal
         distributions.  Note, however, that the complexity may be
-<<<<<<< HEAD
         as high as \\(O(N^2)\\) if, for example, the nodes are ordered
-=======
-        as high as O(N**2) if, for example, the nodes are ordered
->>>>>>> 7679e4100b9584f0ddcdf4dab543b694a14f1915
         on increasing x.
 
         If permute=True, x and y are randomised on input before
@@ -1522,12 +1510,8 @@ however, the node ordering will remain identical.</p></section>
             and tangential gradient components at the endpoints of the arc, and
             Q is the sum over the triangulation arcs, excluding interior
             constraint arcs, of the linearized curvatures of F along the arcs --
-<<<<<<< HEAD
-            the integrals over the arcs of \\( (D^2 F / DT^2)^2\\), where \\( D^2 F / DT^2\\)is the second
-=======
-            the integrals over the arcs of D2F(T)**2, where D2F(T) is the second
->>>>>>> 7679e4100b9584f0ddcdf4dab543b694a14f1915
-            derivative of F with respect to distance T along the arc.
+            the integrals over the arcs of \\( (d^2 F / dT^2)^2\\), where \\( d^2 F / dT^2\\)is the second
+            derivative of \\(F\\) with respect to distance \\(T\\) along the arc.
         &#34;&#34;&#34;
         if f.size != self.npoints:
             raise ValueError(&#39;f should be the same size as mesh&#39;)
@@ -2777,8 +2761,8 @@ the Hermite interpolatory tension spline defined by the data values
 and tangential gradient components at the endpoints of the arc, and
 Q is the sum over the triangulation arcs, excluding interior
 constraint arcs, of the linearized curvatures of F along the arcs &ndash;
-the integrals over the arcs of <script type="math/tex"> (D^2 F / DT^2)^2</script>, where <script type="math/tex"> D^2 F / DT^2</script>is the second
-derivative of F with respect to distance T along the arc.</p></section>
+the integrals over the arcs of <script type="math/tex"> (d^2 F / dT^2)^2</script>, where <script type="math/tex"> d^2 F / dT^2</script>is the second
+derivative of <script type="math/tex">F</script> with respect to distance <script type="math/tex">T</script> along the arc.</p></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
@@ -2815,12 +2799,8 @@ derivative of F with respect to distance T along the arc.</p></section>
         and tangential gradient components at the endpoints of the arc, and
         Q is the sum over the triangulation arcs, excluding interior
         constraint arcs, of the linearized curvatures of F along the arcs --
-<<<<<<< HEAD
-        the integrals over the arcs of \\( (D^2 F / DT^2)^2\\), where \\( D^2 F / DT^2\\)is the second
-=======
-        the integrals over the arcs of D2F(T)**2, where D2F(T) is the second
->>>>>>> 7679e4100b9584f0ddcdf4dab543b694a14f1915
-        derivative of F with respect to distance T along the arc.
+        the integrals over the arcs of \\( (d^2 F / dT^2)^2\\), where \\( d^2 F / dT^2\\)is the second
+        derivative of \\(F\\) with respect to distance \\(T\\) along the arc.
     &#34;&#34;&#34;
     if f.size != self.npoints:
         raise ValueError(&#39;f should be the same size as mesh&#39;)
@@ -3727,7 +3707,7 @@ in the triangulation</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.3.dev0+g35bcce2.d20190604</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
