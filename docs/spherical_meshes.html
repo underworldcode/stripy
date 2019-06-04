@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.3.dev0+g35bcce2.d20190604" />
+<meta name="generator" content="pdoc 0.6.2" />
 <title>stripy.spherical_meshes API documentation</title>
-<meta name="description" content="Copyright 2017 Louis Moresi, Ben Mather …" />
+<meta name="description" content="Copyright 2017-2019 Louis Moresi, Ben Mather …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -20,7 +20,7 @@
 <h1 class="title">Module <code>stripy.spherical_meshes</code></h1>
 </header>
 <section id="section-intro">
-<p>Copyright 2017 Louis Moresi, Ben Mather</p>
+<p>Copyright 2017-2019 Louis Moresi, Ben Mather</p>
 <p>This file is part of Stripy.</p>
 <p>Stripy is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -36,7 +36,7 @@ If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/<
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">&#34;&#34;&#34;
-Copyright 2017 Louis Moresi, Ben Mather
+Copyright 2017-2019 Louis Moresi, Ben Mather
 
 This file is part of Stripy.
 
@@ -344,15 +344,22 @@ class uniform_ring_mesh(_spherical.sTriangulation):
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertex" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertex">nearest_vertex</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertices" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertices">nearest_vertices</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.points" href="spherical.html#stripy.spherical.sTriangulation.points">points</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints">segment_midpoints</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_tripoints" href="spherical.html#stripy.spherical.sTriangulation.segment_tripoints">segment_tripoints</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.simplices" href="spherical.html#stripy.spherical.sTriangulation.simplices">simplices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
 </ul>
 </li>
 </ul>
@@ -426,15 +433,22 @@ class uniform_ring_mesh(_spherical.sTriangulation):
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertex" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertex">nearest_vertex</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertices" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertices">nearest_vertices</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.points" href="spherical.html#stripy.spherical.sTriangulation.points">points</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints">segment_midpoints</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_tripoints" href="spherical.html#stripy.spherical.sTriangulation.segment_tripoints">segment_tripoints</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.simplices" href="spherical.html#stripy.spherical.sTriangulation.simplices">simplices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
 </ul>
 </li>
 </ul>
@@ -493,15 +507,22 @@ as the location of points will not be the same on all processors</p></section>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertex" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertex">nearest_vertex</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertices" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertices">nearest_vertices</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.points" href="spherical.html#stripy.spherical.sTriangulation.points">points</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints">segment_midpoints</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_tripoints" href="spherical.html#stripy.spherical.sTriangulation.segment_tripoints">segment_tripoints</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.simplices" href="spherical.html#stripy.spherical.sTriangulation.simplices">simplices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
 </ul>
 </li>
 </ul>
@@ -573,15 +594,22 @@ as the location of points will not be the same on all processors</p></section>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertex" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertex">nearest_vertex</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertices" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertices">nearest_vertices</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.points" href="spherical.html#stripy.spherical.sTriangulation.points">points</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints">segment_midpoints</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_tripoints" href="spherical.html#stripy.spherical.sTriangulation.segment_tripoints">segment_tripoints</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.simplices" href="spherical.html#stripy.spherical.sTriangulation.simplices">simplices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
 </ul>
 </li>
 </ul>
@@ -651,15 +679,22 @@ a uniform triangulation.</p></section>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertex" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertex">nearest_vertex</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertices" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertices">nearest_vertices</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.points" href="spherical.html#stripy.spherical.sTriangulation.points">points</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints">segment_midpoints</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_tripoints" href="spherical.html#stripy.spherical.sTriangulation.segment_tripoints">segment_tripoints</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.simplices" href="spherical.html#stripy.spherical.sTriangulation.simplices">simplices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
 </ul>
 </li>
 </ul>
@@ -751,15 +786,22 @@ prime meridian so this mesh should be used with caution in parallel</p></section
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertex" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertex">nearest_vertex</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.nearest_vertices" href="spherical.html#stripy.spherical.sTriangulation.nearest_vertices">nearest_vertices</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.points" href="spherical.html#stripy.spherical.sTriangulation.points">points</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints">segment_midpoints</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_midpoints_by_vertices" href="spherical.html#stripy.spherical.sTriangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.segment_tripoints" href="spherical.html#stripy.spherical.sTriangulation.segment_tripoints">segment_tripoints</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.simplices" href="spherical.html#stripy.spherical.sTriangulation.simplices">simplices</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
 </ul>
 </li>
 </ul>
@@ -804,7 +846,7 @@ prime meridian so this mesh should be used with caution in parallel</p></section
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.3.dev0+g35bcce2.d20190604</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

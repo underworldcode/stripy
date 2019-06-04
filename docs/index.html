@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.3.dev0+g35bcce2.d20190604" />
+<meta name="generator" content="pdoc 0.6.2" />
 <title>stripy API documentation</title>
-<meta name="description" content="Copyright 2017 Louis Moresi, Ben Mather …" />
+<meta name="description" content="Copyright 2017-2019 Louis Moresi, Ben Mather …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
@@ -20,7 +20,7 @@
 <h1 class="title">Module <code>stripy</code></h1>
 </header>
 <section id="section-intro">
-<p>Copyright 2017 Louis Moresi, Ben Mather</p>
+<p>Copyright 2017-2019 Louis Moresi, Ben Mather</p>
 <p>Stripy is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
 the Free Software Foundation, either version 3 of the License, or any later version.</p>
@@ -36,7 +36,7 @@ If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/<
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">&#34;&#34;&#34;
-Copyright 2017 Louis Moresi, Ben Mather
+Copyright 2017-2019 Louis Moresi, Ben Mather
 
 Stripy is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -63,23 +63,29 @@ from . import documentation
 ## The following functions are general across sTriangulations and Triangulations
 
 def weighted_average_to_nodes(x1, x2, data, interpolator ):
-    &#34;&#34;&#34; Weighted average of scattered data to the nodal points
+    &#34;&#34;&#34;
+    Weighted average of scattered data to the nodal points
     of a triangulation using the barycentric coordinates as
     weightings.
 
-    Parameters
-    ----------
-     x1, x2 : 1D arrays arrays of x,y or lon, lat (radians)
-     data :   1D array of data to be lumped to the node locations
-     interpolator : a stripy.Triangulation or stripy.sTriangulation object
-     which defines the node locations and their triangulation
+    Args:
+        x1 : 1D array
+            x,y or lon, lat (radians)
+        x2 : 1D array
+            x,y or lon, lat (radians)
+        data : 1D array
+            1D array of data to be lumped to the node locations
+        interpolator : object
+            a `stripy.Triangulation` or `stripy.sTriangulation` object
+            which defines the node locations and their triangulation
 
-    Returns
-    -------
-     grid  : 1D array containing the results of the weighted average
-     norm  : 1D array of the normalisation used to compute `grid`
-     count : 1D int array of number of points that contribute anything to a given node
-
+    Returns:
+        grid  : 1D array
+            contains the results of the weighted average
+        norm  : 1D array
+            normalisation used to compute `grid`
+        count : 1D int array
+            number of points that contribute anything to a given node
     &#34;&#34;&#34;
 
     import numpy as np
@@ -109,7 +115,18 @@ def weighted_average_to_nodes(x1, x2, data, interpolator ):
 
     grid[np.where(norm &gt; 0.0)] /= norm[np.where(norm &gt; 0.0)]
 
-    return grid, norm, count</code></pre>
+    return grid, norm, count
+
+
+def remove_duplicate_points(vector_tuple):
+    &#34;&#34;&#34;
+    Remove duplicates rows from N equally-sized arrays
+    &#34;&#34;&#34;
+    array = np.column_stack(vector_tuple)
+    a = np.ascontiguousarray(array)
+    unique_a = np.unique(a.view([(&#39;&#39;, a.dtype)]*a.shape[1]))
+    b = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
+    return list(b.T)</code></pre>
 </details>
 </section>
 <section>
@@ -117,23 +134,23 @@ def weighted_average_to_nodes(x1, x2, data, interpolator ):
 <dl>
 <dt><code class="name"><a title="stripy.cartesian" href="cartesian.html">stripy.cartesian</a></code></dt>
 <dd>
-<section class="desc"><p>Copyright 2017 Louis Moresi, Ben Mather …</p></section>
+<section class="desc"><p>Copyright 2017-2019 Louis Moresi, Ben Mather …</p></section>
 </dd>
 <dt><code class="name"><a title="stripy.cartesian_meshes" href="cartesian_meshes.html">stripy.cartesian_meshes</a></code></dt>
 <dd>
-<section class="desc"><p>Copyright 2017 Louis Moresi, Ben Mather …</p></section>
+<section class="desc"><p>Copyright 2017-2019 Louis Moresi, Ben Mather …</p></section>
 </dd>
 <dt><code class="name"><a title="stripy.documentation" href="documentation.html">stripy.documentation</a></code></dt>
 <dd>
-<section class="desc"><p>Copyright 2017 Louis Moresi, Ben Mather …</p></section>
+<section class="desc"><p>Copyright 2017-2019 Louis Moresi, Ben Mather …</p></section>
 </dd>
 <dt><code class="name"><a title="stripy.spherical" href="spherical.html">stripy.spherical</a></code></dt>
 <dd>
-<section class="desc"><p>Copyright 2017 Louis Moresi, Ben Mather …</p></section>
+<section class="desc"><p>Copyright 2017-2019 Louis Moresi, Ben Mather …</p></section>
 </dd>
 <dt><code class="name"><a title="stripy.spherical_meshes" href="spherical_meshes.html">stripy.spherical_meshes</a></code></dt>
 <dd>
-<section class="desc"><p>Copyright 2017 Louis Moresi, Ben Mather …</p></section>
+<section class="desc"><p>Copyright 2017-2019 Louis Moresi, Ben Mather …</p></section>
 </dd>
 </dl>
 </section>
@@ -142,6 +159,24 @@ def weighted_average_to_nodes(x1, x2, data, interpolator ):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="stripy.remove_duplicate_points"><code class="name flex">
+<span>def <span class="ident">remove_duplicate_points</span></span>(<span>vector_tuple)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Remove duplicates rows from N equally-sized arrays</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def remove_duplicate_points(vector_tuple):
+    &#34;&#34;&#34;
+    Remove duplicates rows from N equally-sized arrays
+    &#34;&#34;&#34;
+    array = np.column_stack(vector_tuple)
+    a = np.ascontiguousarray(array)
+    unique_a = np.unique(a.view([(&#39;&#39;, a.dtype)]*a.shape[1]))
+    b = unique_a.view(a.dtype).reshape((unique_a.shape[0], a.shape[1]))
+    return list(b.T)</code></pre>
+</details>
+</dd>
 <dt id="stripy.weighted_average_to_nodes"><code class="name flex">
 <span>def <span class="ident">weighted_average_to_nodes</span></span>(<span>x1, x2, data, interpolator)</span>
 </code></dt>
@@ -149,38 +184,55 @@ def weighted_average_to_nodes(x1, x2, data, interpolator ):
 <section class="desc"><p>Weighted average of scattered data to the nodal points
 of a triangulation using the barycentric coordinates as
 weightings.</p>
-<h2 id="parameters">Parameters</h2>
-<p>x1, x2 : 1D arrays arrays of x,y or lon, lat (radians)
-data :
-1D array of data to be lumped to the node locations
-interpolator : a stripy.Triangulation or stripy.sTriangulation object
-which defines the node locations and their triangulation</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x1</code></strong> :&ensp;<code>1D</code> <code>array</code></dt>
+<dd>x,y or lon, lat (radians)</dd>
+<dt><strong><code>x2</code></strong> :&ensp;<code>1D</code> <code>array</code></dt>
+<dd>x,y or lon, lat (radians)</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>1D</code> <code>array</code></dt>
+<dd>1D array of data to be lumped to the node locations</dd>
+<dt><strong><code>interpolator</code></strong> :&ensp;<code>object</code></dt>
+<dd>a <code>stripy.Triangulation</code> or <code>stripy.sTriangulation</code> object
+which defines the node locations and their triangulation</dd>
+</dl>
 <h2 id="returns">Returns</h2>
-<p>grid
-: 1D array containing the results of the weighted average
-norm
-: 1D array of the normalisation used to compute <code>grid</code>
-count : 1D int array of number of points that contribute anything to a given node</p></section>
+<dl>
+<dt><code>grid</code>
+: <code>1D</code> <code>array</code></dt>
+<dd>contains the results of the weighted average</dd>
+<dt><code>norm</code>
+: <code>1D</code> <code>array</code></dt>
+<dd>normalisation used to compute <code>grid</code></dd>
+<dt><strong><code>count</code></strong> :&ensp;<code>1D</code> <code>int</code> <code>array</code></dt>
+<dd>number of points that contribute anything to a given node</dd>
+</dl></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def weighted_average_to_nodes(x1, x2, data, interpolator ):
-    &#34;&#34;&#34; Weighted average of scattered data to the nodal points
+    &#34;&#34;&#34;
+    Weighted average of scattered data to the nodal points
     of a triangulation using the barycentric coordinates as
     weightings.
 
-    Parameters
-    ----------
-     x1, x2 : 1D arrays arrays of x,y or lon, lat (radians)
-     data :   1D array of data to be lumped to the node locations
-     interpolator : a stripy.Triangulation or stripy.sTriangulation object
-     which defines the node locations and their triangulation
+    Args:
+        x1 : 1D array
+            x,y or lon, lat (radians)
+        x2 : 1D array
+            x,y or lon, lat (radians)
+        data : 1D array
+            1D array of data to be lumped to the node locations
+        interpolator : object
+            a `stripy.Triangulation` or `stripy.sTriangulation` object
+            which defines the node locations and their triangulation
 
-    Returns
-    -------
-     grid  : 1D array containing the results of the weighted average
-     norm  : 1D array of the normalisation used to compute `grid`
-     count : 1D int array of number of points that contribute anything to a given node
-
+    Returns:
+        grid  : 1D array
+            contains the results of the weighted average
+        norm  : 1D array
+            normalisation used to compute `grid`
+        count : 1D int array
+            number of points that contribute anything to a given node
     &#34;&#34;&#34;
 
     import numpy as np
@@ -235,6 +287,7 @@ count : 1D int array of number of points that contribute anything to a given nod
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="stripy.remove_duplicate_points" href="#stripy.remove_duplicate_points">remove_duplicate_points</a></code></li>
 <li><code><a title="stripy.weighted_average_to_nodes" href="#stripy.weighted_average_to_nodes">weighted_average_to_nodes</a></code></li>
 </ul>
 </li>
@@ -242,7 +295,7 @@ count : 1D int array of number of points that contribute anything to a given nod
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.3.dev0+g35bcce2.d20190604</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

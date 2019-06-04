@@ -26,23 +26,29 @@ from . import documentation
 ## The following functions are general across sTriangulations and Triangulations
 
 def weighted_average_to_nodes(x1, x2, data, interpolator ):
-    """ Weighted average of scattered data to the nodal points
+    """
+    Weighted average of scattered data to the nodal points
     of a triangulation using the barycentric coordinates as
     weightings.
 
-    Parameters
-    ----------
-     x1, x2 : 1D arrays arrays of x,y or lon, lat (radians)
-     data :   1D array of data to be lumped to the node locations
-     interpolator : a stripy.Triangulation or stripy.sTriangulation object
-     which defines the node locations and their triangulation
+    Args:
+        x1 : 1D array
+            x,y or lon, lat (radians)
+        x2 : 1D array
+            x,y or lon, lat (radians)
+        data : 1D array
+            1D array of data to be lumped to the node locations
+        interpolator : object
+            a `stripy.Triangulation` or `stripy.sTriangulation` object
+            which defines the node locations and their triangulation
 
-    Returns
-    -------
-     grid  : 1D array containing the results of the weighted average
-     norm  : 1D array of the normalisation used to compute `grid`
-     count : 1D int array of number of points that contribute anything to a given node
-
+    Returns:
+        grid  : 1D array
+            contains the results of the weighted average
+        norm  : 1D array
+            normalisation used to compute `grid`
+        count : 1D int array
+            number of points that contribute anything to a given node
     """
 
     import numpy as np
