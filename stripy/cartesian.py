@@ -94,14 +94,14 @@ class Triangulation(object):
 
     Notes:
         Provided the nodes are randomly ordered, the algorithm
-        has expected time complexity O(N*log(N)) for most nodal
+        has expected time complexity \\(O(N*log(N)\\) for most nodal
         distributions.  Note, however, that the complexity may be
         as high as \\(O(N^2)\\) if, for example, the nodes are ordered
         on increasing x.
 
-        If permute=True, x and y are randomised on input before
+        If `permute=True`, x and y are randomised on input before
         they are triangulated. The distribution of triangles will
-        differ between setting permute=True and permute=False,
+        differ between setting `permute=True` and `permute=False`,
         however, the node ordering will remain identical.
     """
     def __init__(self, x, y, refinement_levels=0, permute=False, tree=False):
@@ -263,7 +263,7 @@ class Triangulation(object):
         The method consists of minimizing a quadratic functional Q(G) over
         gradient vectors (in x and y directions), where Q is an approximation
         to the linearized curvature over the triangulation of a C-1 bivariate
-        function F(x,y) which interpolates the nodal values and gradients.
+        function \\(F(x,y)\\) which interpolates the nodal values and gradients.
 
         Args:
             f : array of floats, shape (n,)
@@ -321,8 +321,8 @@ class Triangulation(object):
 
         This routine employs a local method, in which values depend only on nearby
         data points, to compute an estimated gradient at a node.
-
-        gradient_local() is more efficient than gradient() only if it is unnecessary
+        
+        `gradient_local()` is more efficient than `gradient()` only if it is unnecessary
         to compute gradients at all of the nodes. Both routines have similar accuracy.
         """
         if f.size != self.npoints:
@@ -339,7 +339,7 @@ class Triangulation(object):
 
     def smoothing(self, f, w, sm, smtol, gstol):
         """
-        Smooths a surface f by choosing nodal function values and gradients to
+        Smooths a surface `f` by choosing nodal function values and gradients to
         minimize the linearized curvature of F subject to a bound on the
         deviation from the data values. This is more appropriate than interpolation
         when significant errors are present in the data.
@@ -348,24 +348,24 @@ class Triangulation(object):
             f : array of floats, shape (n,)
                 field to apply smoothing on
             w : array of floats, shape (n,)
-                weights associated with data value in f
-                w[i] = 1/sigma_f^2 is a good rule of thumb.
+                weights associated with data value in `f`
+                `w[i] = 1/sigma_f**2` is a good rule of thumb.
             sm : float
                 positive parameter specifying an upper bound on Q2(f).
-                generally n-sqrt(2n) <= sm <= n+sqrt(2n)
-            smtol : float
+                generally `n-sqrt(2n) <= sm <= n+sqrt(2n)`
+            smtol : float [0,1]
                 specifies relative error in satisfying the constraint
-                sm(1-smtol) <= Q2 <= sm(1+smtol) between 0 and 1.
+                `sm(1-smtol) <= Q2 <= sm(1+smtol)` between 0 and 1.
             gstol : float
                 tolerance for convergence.
-                gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
+                `gstol = 0.05*mean(sigma_f)**2` is a good rule of thumb.
 
         Returns:
             f_smooth : array of floats, shape (n,)
                 smoothed version of f
             derivatives : tuple of floats, shape (n,3)
-                (dfdx, dfdy) first derivatives of f_smooth in the
-                x and y directions
+                \\( \\frac{df}{dx} , \\frac{df}{dy} \\) first derivatives
+                of `f_smooth` in the x and y directions
         """
         if f.size != self.npoints or f.size != w.size:
             raise ValueError('f and w should be the same size as mesh')
@@ -403,9 +403,9 @@ class Triangulation(object):
                 value at each point in the triangulation
                 must be the same size of the mesh
             order : int (default=1)
-                order of the interpolatory function used
-                    0 = nearest-neighbour
-                    1 = linear
+                order of the interpolatory function used:
+                    0 = nearest-neighbour,
+                    1 = linear,
                     3 = cubic
 
         Returns:
@@ -454,8 +454,8 @@ class Triangulation(object):
 
     def interpolate_linear(self, xi, yi, zdata):
         """
-        Piecewise linear interpolation/extrapolation to arbitrary point(s).
-        The method is fast, but has only C^0 continuity.
+        Piecewise linear interpolation / extrapolation to arbitrary point(s).
+        The method is fast, but has only \\(C^0\\) continuity.
 
         Args:
             xi : float / array of floats, shape (l,)
@@ -497,8 +497,8 @@ class Triangulation(object):
 
     def interpolate_cubic(self, xi, yi, zdata, gradz=None, derivatives=False):
         """
-        Cubic spline interpolation/extrapolation to arbirary point(s).
-        This method has C^1 continuity.
+        Cubic spline interpolation / extrapolation to arbirary point(s).
+        This method has \\(C^1\\) continuity.
 
         Args:
             xi : float / array of floats, shape (l,)
@@ -510,11 +510,12 @@ class Triangulation(object):
                 must be the same size of the mesh
             gradz : array of floats, shape (2,n) (optional)
                 derivative at each point in the triangulation in the
-                x-direction (first row),
-                y-direction (second row)
-                if not supplied it is evaluated using self.gradient
-            derivatives : bool (default: False)
-                optionally returns the first derivatives at point(s) (xi,yi)
+                - x-direction (first row),
+                - y-direction (second row)
+                if not supplied it is evaluated using `gradient()`
+            derivatives : bool (default=False)
+                optionally returns \\( \\frac{df}{dx} , \\frac{df}{dy} \\)
+                the first derivatives at point(s) (xi,yi)
 
         Returns:
             zi : float / array of floats, shape (l,)
@@ -522,7 +523,8 @@ class Triangulation(object):
             err : int / array of ints, shape (l,)
                 whether interpolation (0), extrapolation (1) or error (other)
             dzx, dzy (optional) : float, array of floats, shape(l,)
-                first partial derivatives in x and y direction at (xi,yi)
+                first partial derivatives \\( \\frac{df}{dx} , \\frac{df}{dy} \\)
+                at (xi,yi)
         """
 
         if zdata.size != self.npoints:
@@ -646,7 +648,7 @@ class Triangulation(object):
             tri_indices: array of ints, shape (l,)
 
         Notes:
-            The simplices are found as cartesian.Triangulation.simplices[tri_indices]
+            The simplices are found as `cartesian.Triangulation.simplices[tri_indices]`
         """
         p = self._permutation
         pts = np.column_stack([xi, yi])
