@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.3.dev0+g35bcce2.d20190604" />
+<meta name="generator" content="pdoc 0.6.2" />
 <title>stripy API documentation</title>
 <meta name="description" content="Copyright 2017-2019 Louis Moresi, Ben Mather …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -81,23 +81,33 @@ from . import documentation
 ## The following functions are general across sTriangulations and Triangulations
 
 def weighted_average_to_nodes(x1, x2, data, interpolator ):
+<<<<<<< HEAD
     r&#34;&#34;&#34; Weighted average of scattered data to the nodal points
+=======
+    &#34;&#34;&#34;
+    Weighted average of scattered data to the nodal points
+>>>>>>> 7679e4100b9584f0ddcdf4dab543b694a14f1915
     of a triangulation using the barycentric coordinates as
     weightings.
 
-    Parameters
-    ----------
-     x1, x2 : 1D arrays arrays of x,y or lon, lat (radians)
-     data :   1D array of data to be lumped to the node locations
-     interpolator : a stripy.Triangulation or stripy.sTriangulation object
-     which defines the node locations and their triangulation
+    Args:
+        x1 : 1D array
+            x,y or lon, lat (radians)
+        x2 : 1D array
+            x,y or lon, lat (radians)
+        data : 1D array
+            1D array of data to be lumped to the node locations
+        interpolator : object
+            a `stripy.Triangulation` or `stripy.sTriangulation` object
+            which defines the node locations and their triangulation
 
-    Returns
-    -------
-     grid  : 1D array containing the results of the weighted average
-     norm  : 1D array of the normalisation used to compute `grid`
-     count : 1D int array of number of points that contribute anything to a given node
-
+    Returns:
+        grid  : 1D array
+            contains the results of the weighted average
+        norm  : 1D array
+            normalisation used to compute `grid`
+        count : 1D int array
+            number of points that contribute anything to a given node
     &#34;&#34;&#34;
 
     import numpy as np
@@ -196,38 +206,59 @@ def remove_duplicate_points(vector_tuple):
 <section class="desc"><p>Weighted average of scattered data to the nodal points
 of a triangulation using the barycentric coordinates as
 weightings.</p>
-<h2 id="parameters">Parameters</h2>
-<p>x1, x2 : 1D arrays arrays of x,y or lon, lat (radians)
-data :
-1D array of data to be lumped to the node locations
-interpolator : a stripy.Triangulation or stripy.sTriangulation object
-which defines the node locations and their triangulation</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x1</code></strong> :&ensp;<code>1D</code> <code>array</code></dt>
+<dd>x,y or lon, lat (radians)</dd>
+<dt><strong><code>x2</code></strong> :&ensp;<code>1D</code> <code>array</code></dt>
+<dd>x,y or lon, lat (radians)</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>1D</code> <code>array</code></dt>
+<dd>1D array of data to be lumped to the node locations</dd>
+<dt><strong><code>interpolator</code></strong> :&ensp;<code>object</code></dt>
+<dd>a <code>stripy.Triangulation</code> or <code>stripy.sTriangulation</code> object
+which defines the node locations and their triangulation</dd>
+</dl>
 <h2 id="returns">Returns</h2>
-<p>grid
-: 1D array containing the results of the weighted average
-norm
-: 1D array of the normalisation used to compute <code>grid</code>
-count : 1D int array of number of points that contribute anything to a given node</p></section>
+<dl>
+<dt><code>grid</code>
+: <code>1D</code> <code>array</code></dt>
+<dd>contains the results of the weighted average</dd>
+<dt><code>norm</code>
+: <code>1D</code> <code>array</code></dt>
+<dd>normalisation used to compute <code>grid</code></dd>
+<dt><strong><code>count</code></strong> :&ensp;<code>1D</code> <code>int</code> <code>array</code></dt>
+<dd>number of points that contribute anything to a given node</dd>
+</dl></section>
 <details class="source">
 <summary>Source code</summary>
 <pre><code class="python">def weighted_average_to_nodes(x1, x2, data, interpolator ):
+<<<<<<< HEAD
     r&#34;&#34;&#34; Weighted average of scattered data to the nodal points
+=======
+    &#34;&#34;&#34;
+    Weighted average of scattered data to the nodal points
+>>>>>>> 7679e4100b9584f0ddcdf4dab543b694a14f1915
     of a triangulation using the barycentric coordinates as
     weightings.
 
-    Parameters
-    ----------
-     x1, x2 : 1D arrays arrays of x,y or lon, lat (radians)
-     data :   1D array of data to be lumped to the node locations
-     interpolator : a stripy.Triangulation or stripy.sTriangulation object
-     which defines the node locations and their triangulation
+    Args:
+        x1 : 1D array
+            x,y or lon, lat (radians)
+        x2 : 1D array
+            x,y or lon, lat (radians)
+        data : 1D array
+            1D array of data to be lumped to the node locations
+        interpolator : object
+            a `stripy.Triangulation` or `stripy.sTriangulation` object
+            which defines the node locations and their triangulation
 
-    Returns
-    -------
-     grid  : 1D array containing the results of the weighted average
-     norm  : 1D array of the normalisation used to compute `grid`
-     count : 1D int array of number of points that contribute anything to a given node
-
+    Returns:
+        grid  : 1D array
+            contains the results of the weighted average
+        norm  : 1D array
+            normalisation used to compute `grid`
+        count : 1D int array
+            number of points that contribute anything to a given node
     &#34;&#34;&#34;
 
     import numpy as np
@@ -290,7 +321,7 @@ count : 1D int array of number of points that contribute anything to a given nod
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.3.dev0+g35bcce2.d20190604</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
