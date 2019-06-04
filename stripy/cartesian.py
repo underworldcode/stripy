@@ -96,7 +96,7 @@ class Triangulation(object):
         Provided the nodes are randomly ordered, the algorithm
         has expected time complexity O(N*log(N)) for most nodal
         distributions.  Note, however, that the complexity may be
-        as high as O(N**2) if, for example, the nodes are ordered
+        as high as \\(O(N^2)\\) if, for example, the nodes are ordered
         on increasing x.
 
         If permute=True, x and y are randomised on input before
@@ -290,8 +290,8 @@ class Triangulation(object):
             and tangential gradient components at the endpoints of the arc, and
             Q is the sum over the triangulation arcs, excluding interior
             constraint arcs, of the linearized curvatures of F along the arcs --
-            the integrals over the arcs of D2F(T)**2, where D2F(T) is the second
-            derivative of F with respect to distance T along the arc.
+            the integrals over the arcs of \\( (d^2 F / dT^2)^2\\), where \\( d^2 F / dT^2\\)is the second
+            derivative of \\(F\\) with respect to distance \\(T\\) along the arc.
         """
         if f.size != self.npoints:
             raise ValueError('f should be the same size as mesh')

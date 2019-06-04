@@ -26,7 +26,7 @@ from . import documentation
 ## The following functions are general across sTriangulations and Triangulations
 
 def weighted_average_to_nodes(x1, x2, data, interpolator ):
-    """ Weighted average of scattered data to the nodal points
+    r""" Weighted average of scattered data to the nodal points
     of a triangulation using the barycentric coordinates as
     weightings.
 
