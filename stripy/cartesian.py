@@ -94,7 +94,7 @@ class Triangulation(object):
 
     Notes:
         Provided the nodes are randomly ordered, the algorithm
-        has expected time complexity \\(O(N*log(N)\\) for most nodal
+        has expected time complexity \\(O(N \\log (N)\\) for most nodal
         distributions.  Note, however, that the complexity may be
         as high as \\(O(N^2)\\) if, for example, the nodes are ordered
         on increasing x.
