@@ -2,33 +2,6 @@ import pytest
 import stripy
 import numpy as np
 
-def test_derivative():
-    def analytic(x, y, k1, k2):
-        return np.cos(k1*x) * np.sin(k2*y)
-
-    def analytic_dx(x, y, k1, k2):
-        return -k1 * np.sin(k1*x) * np.sin(k2*y)
-
-    def analytic_dy(x, y, k1, k2):
-        return k2 * np.cos(k1*x) * np.cos(k2*y)
-
-
-    extent = [0.0, 1.0, 0.0, 1.0]
-    mesh = stripy.cartesian_meshes.square_mesh(extent, spacingX=0.05, spacingY=0.05, refinement_levels=1)
-    
-    Z = analytic(mesh.x, mesh.y, 5.0, 2.0)
-    dZx, dZy = mesh.gradient(Z, nit=10, tol=1e-12)
-
-    dZx_analytic = analytic_dx(mesh.x, mesh.y, 5.0, 2.0)
-    dZy_analytic = analytic_dy(mesh.x, mesh.y, 5.0, 2.0)    
-
-    if np.isclose(dZx, dZx_analytic, 1.,1.).all() and \
-       np.isclose(dZy, dZy_analytic, 1.,1.).all():
-        print("PASS! (Derivatives)")
-    else:
-        assert False, "FAIL! (Derivatives)"
-
-
 def test_nearest_nd_interpolation():
     
     coords = np.array([[0.0, 0.0], \
@@ -39,11 +12,14 @@ def test_nearest_nd_interpolation():
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y)
 
-    Z = mesh.x + mesh.y
+    Z = np.linspace(0.0, 10.0, mesh.npoints)
 
-    Zi, ierr = mesh.interpolate_nearest(0.9, 0.9, Z)
+    ix = x[0] + 0.001
+    iy = y[0] + 0.001
+
+    Zi, ierr = mesh.interpolate_nearest(ix, iy, Z)
     
-    if Zi == 2.0:
+    if Zi == Z[0]:
         print("PASS! (Interpolation - nearest neighbour)")
     else:
         assert False, "FAIL! (Interpolation - nearest neighbour)"
@@ -54,16 +30,28 @@ def test_linear_interpolation():
     coords = np.array([[0.0, 0.0], \
                        [0.0, 1.0], \
                        [1.0, 0.0], \
-                       [1.0, 1.0]])
+                       [1.0, 1.0], \
+                       [0.5, 0.5]])
 
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y)
 
-    Z = mesh.x + mesh.y
+    Z = mesh.x
 
-    Zi, ierr = mesh.interpolate_linear(0.5, 0.5, Z)
+    npts = 5
+    ix = np.linspace(0.0, 1.0, npts)
+    iy = np.zeros(npts)
 
-    if np.isclose(Zi, 1.0, 0.001):
+    Zi, ierr = mesh.interpolate_linear(ix, iy, Z)
+
+    # this should be true
+    # but machine precision may differ so we don't test it
+    # print((Zi == ix).all())
+
+    bounded = Zi[0] == ix[0] and Zi[-1] == ix[-1]
+    ascending = ( np.diff(Zi) > 0 ).all()
+
+    if bounded and ascending:
         print("PASS! (Interpolation - linear")
     else:
         assert False, "FAIL! (Interpolation - linear)"
@@ -84,14 +72,66 @@ def test_cubic_interpolation():
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y)
 
-    Z = mesh.x + mesh.y
+    Z = mesh.x**2
 
-    Zi, ierr = mesh.interpolate_cubic(0.5, 0.5, Z)
+    npts = 7
+    ilons = np.linspace(0.0, 1.0, npts)
+    ilats = np.zeros(npts)
 
-    if np.isclose(Zi, 1.0, 0.001):
+    Zi_linear, ierr = mesh.interpolate_linear(ilons, ilats, Z)
+    Zi_cubic,  ierr = mesh.interpolate_cubic(ilons, ilats, Z)
+
+    diff_linear = np.abs(Zi_linear - ilons**2).sum()
+    diff_cubic  = np.abs(Zi_cubic  - ilons**2).sum()
+
+    # check if cubic interpolation is more accurate than linear
+    if diff_cubic < diff_linear:
         print("PASS! (Interpolation - cubic")
     else:
         assert False, "FAIL! (Interpolation - cubic)"
+
+
+def test_derivative():
+    
+    p0 = 0.0
+    p1 = 1.0
+    p2 = 2.0
+
+    coords = np.array([[p0 , -p2], \
+                       [-p2,  p0], \
+                       [p0 ,  p2], \
+                       [p2 ,  p0], \
+                       [p0 , -p1], \
+                       [-p1,  p0], \
+                       [p0 ,  p1], \
+                       [p1 ,  p0], \
+                       [-p1, -p1], \
+                       [-p1,  p1], \
+                       [p1 ,  p1], \
+                       [p1 , -p1], \
+                       [p0 ,  p0]])
+    
+    x, y = coords[:,0], coords[:,1]
+    mesh = stripy.Triangulation(x, y)
+
+    # create a soup bowl
+    Z = mesh.x**2 + mesh.y**2
+
+    # derivatives will have a constant gradient
+    dZdx, dZdy = mesh.gradient(Z, nit=10, tol=1e-12)
+
+    # interpolate onto a straight line
+    ipts = np.linspace(-p2, p2, 5)
+    dZdx_interp, ierr = mesh.interpolate_linear(ipts, ipts*0, dZdx)
+    dZdy_interp, ierr = mesh.interpolate_linear(ipts*0, ipts, dZdy)
+
+    ascending_lon = ( np.diff(dZdx_interp) > 0 ).all()
+    ascending_lat = ( np.diff(dZdy_interp) > 0 ).all()
+
+    if ascending_lon and ascending_lat:
+        print("PASS! (Derivatives)")
+    else:
+        assert False, "FAIL! (Derivatives)"
 
 
 def test_smoothing():

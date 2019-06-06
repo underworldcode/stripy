@@ -364,7 +364,7 @@ class Triangulation(object):
             f_smooth : array of floats, shape (n,)
                 smoothed version of f
             derivatives : tuple of floats, shape (n,3)
-                \\( \\frac{df}{dx} , \\frac{df}{dy} \\) first derivatives
+                \\( \\partial f \\partial y , \\partial f \\partial y \\) first derivatives
                 of `f_smooth` in the x and y directions
         """
         if f.size != self.npoints or f.size != w.size:
