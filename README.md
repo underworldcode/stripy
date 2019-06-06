@@ -84,6 +84,7 @@ Also, the following packages are required:
 
 **Recommended Packages** for running the notebooks:
 
+ - [`litho1pt0`](https://pypi.org/project/litho1pt0/)
  - [`gdal`](https://www.gdal.org/)
  - [`matplotlib`](https://matplotlib.org/)
  - [`imageio`](https://imageio.github.io/)
