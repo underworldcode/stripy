@@ -183,7 +183,7 @@ These classes share similar methods and can be easily interchanged.
 In addition, there are many helper functions provided for building meshes.
 
 A series of tests are located in the *tests* subdirectory.
-In order to perform these tests clone the repository and run `pytest`:
+In order to perform these tests clone the repository and run [`pytest`](https://pypi.org/project/pytest/):
 
 ```bash
 git checkout https://github.com/underworldcode/stripy.git
