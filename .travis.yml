@@ -15,8 +15,8 @@ script:
   - mkdir docs
   - cd docs 
   - pdoc --html -o . --force stripy
-  - mv pycurious/*.html .
-  - rm -rf pycurious/
+  - mv stripy/*.html .
+  - rm -rf stripy/
   - cd ../
 
 deploy:
