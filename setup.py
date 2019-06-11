@@ -12,14 +12,13 @@
 ## (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
 
-
 from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
 from os import path
 import io
 
 ## in development set version to none and ...
-PYPI_VERSION = "1.0.0"
+PYPI_VERSION = "1.0.1"
 
 # Return the git revision as a string (from numpy)
 def git_version():
