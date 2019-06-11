@@ -27,7 +27,7 @@ except: pass
 
 _ier_codes = {0:  "no errors were encountered.",
               -1: "N < 3 on input.",
-              -2: "the first three nodes are collinear.\nSet permute to True or reorder nodes manually.",
+              -2: "the first three nodes lie on a great circle.\nSet permute to True or reorder nodes manually.",
               -3: "duplicate nodes were encountered.",
               -4: "an error flag was returned by a call to SWAP in ADDNOD.\n \
                    This is an internal error and should be reported to the programmer.",
@@ -60,7 +60,7 @@ class sTriangulation(object):
             (see uniformly_refine_triangulation)
         permute : bool
             randomises the order of lons and lats to improve
-            triangulation efficiency and eliminate colinearity issues (see notes)
+            triangulation efficiency and eliminate issues where the first points lie on a great circle (see notes)
         tree : bool
             construct a cKDtree for efficient nearest-neighbour lookup
 
@@ -1248,4 +1248,3 @@ def angular_separation(lonp1, latp1, lonp2, latp2):
     ## As this is a unit sphere, angle = length
 
     return angles
-

@@ -148,7 +148,7 @@ class triangulated_soccerball_mesh(_spherical.sTriangulation):
         ## Now randomise the point order
         np.random.shuffle(ll)
 
-        super(triangulated_soccerball_mesh, self).__init__(lons=ll[:,0], lats=ll[:,1], permute=False, tree=tree)
+        super(triangulated_soccerball_mesh, self).__init__(lons=ll[:,0], lats=ll[:,1], permute=True, tree=tree)
 
         for r in range(0,refinement_levels):
             lons, lats = self.uniformly_refine_triangulation(faces=False, trisect=False)
