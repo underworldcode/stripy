@@ -59,9 +59,9 @@ ext1 = Extension(name    = 'stripy._stripack',
 ext2 = Extension(name    = 'stripy._tripack',
                  sources = ['src/tripack.pyf', 'src/tripack.f90'])
 ext3 = Extension(name    = 'stripy._srfpack',
-                 sources = ['src/srfpack.pyf', 'src/f77/srfpack.f', 'src/f77/tripack.f'])
+                 sources = ['src/srfpack.pyf', 'src/f77/srfpack.f'])
 ext4 = Extension(name    = 'stripy._ssrfpack',
-                 sources = ['src/ssrfpack.pyf', 'src/f77/ssrfpack.f', 'src/f77/stripack.f'])
+                 sources = ['src/ssrfpack.pyf', 'src/f77/ssrfpack.f'])
 
 if __name__ == "__main__":
     setup(name = 'stripy',
