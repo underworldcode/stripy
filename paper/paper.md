@@ -25,9 +25,7 @@ date: 7 March 2019
 bibliography: paper.bib
 ---
 
-![Figure](figure.png)
-
-**Figure 1.** Samples meshes on the sphere produced by `stripy` based on the octahedron with added points at the face centroids (far left), and the icosahedron with with face points (left). An icosahedron grid with refinement in regions where ocean age-grid information is available [@MullerEtAl2008], and an icosahedral mesh refined to create a smooth heat-map of seismic activity and average earthquake depth from a global catalogue of earthquakes of magnitude > 5.5 since 1990 from the IRIS online catalogue
+![Samples meshes on the sphere produced by `stripy` based on the octahedron with added points at the face centroids (far left), and the icosahedron with with face points (left). An icosahedron grid with refinement in regions where ocean age-grid information is available [@MullerEtAl2008], and an icosahedral mesh refined to create a smooth heat-map of seismic activity and average earthquake depth from a global catalogue of earthquakes of magnitude > 5.5 since 1990 from the IRIS online catalogue](figure.png)
 
 # Summary
 
