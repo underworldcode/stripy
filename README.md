@@ -23,7 +23,7 @@ Launch the demonstration at [links.underworldcode.org/stripy-live (mybinder.org)
 
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.01410/status.svg)](https://doi.org/10.21105/joss.01410)
 
-Moresi et al., (2019). Stripy: A Python module for (constrained) triangulation in Cartesian coordinates and on a sphere.. Journal of Open Source Software, 4(38), 1410, [https://doi.org/10.21105/joss.01410](https://doi.org/10.21105/joss.01410)
+Moresi, L. and Mather, B.R., (2019). Stripy: A Python module for (constrained) triangulation in Cartesian coordinates and on a sphere.. Journal of Open Source Software, 4(38), 1410, [https://doi.org/10.21105/joss.01410](https://doi.org/10.21105/joss.01410)
 
 ## Navigation / Notebooks
 
