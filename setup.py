@@ -18,7 +18,7 @@ from os import path
 import io
 
 ## in development set version to none and ...
-PYPI_VERSION = "1.0.1"
+PYPI_VERSION = "1.0.2"
 
 # Return the git revision as a string (from numpy)
 def git_version():
@@ -59,9 +59,9 @@ ext1 = Extension(name    = 'stripy._stripack',
 ext2 = Extension(name    = 'stripy._tripack',
                  sources = ['src/tripack.pyf', 'src/tripack.f90'])
 ext3 = Extension(name    = 'stripy._srfpack',
-                 sources = ['src/srfpack.pyf', 'src/f77/srfpack.f'])
+                 sources = ['src/srfpack.pyf', 'src/srfpack.f'])
 ext4 = Extension(name    = 'stripy._ssrfpack',
-                 sources = ['src/ssrfpack.pyf', 'src/f77/ssrfpack.f'])
+                 sources = ['src/ssrfpack.pyf', 'src/ssrfpack.f'])
 
 if __name__ == "__main__":
     setup(name = 'stripy',
