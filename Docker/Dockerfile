@@ -29,6 +29,9 @@ RUN ipython3 -c 'import stripy; stripy.documentation.install_documentation(path=
 
 RUN python3 -m pip install --no-cache-dir --upgrade \
     jupyterhub \
+    pytest \
+    imageio \
+    litho1pt0 \
     git+https://github.com/OKaluza/LavaVu.git@afa8cd24e6dae7ffbacf9735db8e1affd85fd3df
 
 # This file is too big to bundle with the pip installation
@@ -42,6 +45,12 @@ ENV PATH=/usr/local/files:${PATH}
 ENV NB_USER jovyan
 RUN chown -R jovyan:jovyan /home/jovyan
 USER jovyan
+
+
+# Run PyTest
+############
+
+RUN cd $MODULE_DIR/tests && pytest *.py
 
 # Non standard as the files come from the packages
 ##################################################

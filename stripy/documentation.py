@@ -1,5 +1,5 @@
 """
-Copyright 2017 Louis Moresi, Ben Mather
+Copyright 2017-2019 Louis Moresi, Ben Mather
 
 This file is part of Stripy.
 

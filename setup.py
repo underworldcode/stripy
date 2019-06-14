@@ -11,14 +11,14 @@
 ##
 ## (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
+
 from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
 from os import path
-import os, io
-import subprocess
+import io
 
 ## in development set version to none and ...
-PYPI_VERSION = None
+PYPI_VERSION = "1.0.2"
 
 # Return the git revision as a string (from numpy)
 def git_version():
@@ -49,8 +49,6 @@ if PYPI_VERSION is None:
     PYPI_VERSION = git_version()
 
 
-## Standard setup
-
 this_directory = path.abspath(path.dirname(__file__))
 with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
@@ -61,9 +59,9 @@ ext1 = Extension(name    = 'stripy._stripack',
 ext2 = Extension(name    = 'stripy._tripack',
                  sources = ['src/tripack.pyf', 'src/tripack.f90'])
 ext3 = Extension(name    = 'stripy._srfpack',
-                 sources = ['src/srfpack.pyf', 'src/f77/srfpack.f'])
+                 sources = ['src/srfpack.pyf', 'src/srfpack.f'])
 ext4 = Extension(name    = 'stripy._ssrfpack',
-                 sources = ['src/ssrfpack.pyf', 'src/f77/ssrfpack.f'])
+                 sources = ['src/ssrfpack.pyf', 'src/ssrfpack.f'])
 
 if __name__ == "__main__":
     setup(name = 'stripy',

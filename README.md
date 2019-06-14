@@ -19,6 +19,11 @@ Launch the demonstration at [links.underworldcode.org/stripy-live (mybinder.org)
 
 [![Binder](https://mybinder.org/badge_logo.svg)](http://links.underworldcode.org/stripy-live)
 
+#### Citation
+
+[![DOI](http://joss.theoj.org/papers/10.21105/joss.01410/status.svg)](https://doi.org/10.21105/joss.01410)
+
+Moresi, L. and Mather, B.R., (2019). Stripy: A Python module for (constrained) triangulation in Cartesian coordinates and on a sphere.. Journal of Open Source Software, 4(38), 1410, [https://doi.org/10.21105/joss.01410](https://doi.org/10.21105/joss.01410)
 
 ## Navigation / Notebooks
 
@@ -28,7 +33,7 @@ There are two matching sets of `stripy` notebooks - one set for [Cartesian Trian
 Note: the Cartesian and Spherical notebooks can be obtained / installed from `stripy` itself as follows:
 
 ```bash
-   python -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'   
+   python -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
 ```
 
 ### Cartesian
@@ -84,7 +89,10 @@ Also, the following packages are required:
 
 **Recommended Packages** for running the notebooks:
 
+ - [`litho1pt0`](https://pypi.org/project/litho1pt0/)
  - [`gdal`](https://www.gdal.org/)
+ - [`matplotlib`](https://matplotlib.org/)
+ - [`imageio`](https://imageio.github.io/)
  - [`cartopy`](https://scitools.org.uk/cartopy/docs/latest/)
  - [`pyproj`](https://github.com/pyproj4/pyproj)
  - [`lavavu`](https://github.com/OKaluza/LavaVu/)
@@ -183,7 +191,13 @@ These classes share similar methods and can be easily interchanged.
 In addition, there are many helper functions provided for building meshes.
 
 A series of tests are located in the *tests* subdirectory.
+In order to perform these tests clone the repository and run [`pytest`](https://pypi.org/project/pytest/):
 
+```bash
+git checkout https://github.com/underworldcode/stripy.git
+cd stripy
+pytest -v
+```
 
 ## References
 

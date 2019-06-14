@@ -1,138 +1,189 @@
-import numpy as np
+import pytest
 import stripy
+import numpy as np
 
-from scipy import spatial
-from time import time
+def test_nearest_nd_interpolation():
 
-try: range = xrange
-except: pass
+    p0 = 0.0
+    p2 = np.pi/2
+    p4 = np.pi/4
+    
+    coords = np.array([[p0 , -p2], \
+                       [-p2,  p0], \
+                       [p0 ,  p2], \
+                       [p2 ,  p0]])
+
+    lons, lats = coords[:,0], coords[:,1]
+    mesh = stripy.sTriangulation(lons, lats)
+
+    Z = np.linspace(-p2, p2, mesh.npoints)
+
+    ilons = lons[0] + 0.001
+    ilats = lats[0] + 0.001
+
+    Zi, ierr = mesh.interpolate_nearest(ilons, ilats, Z)
+    
+    # check if we return the nearest numbers
+    if Zi == Z[0]:
+        print("PASS! (Interpolation - nearest neighbour)")
+    else:
+        assert False, "FAIL! (Interpolation - nearest neighbour)"
 
 
-mesh = stripy.spherical_meshes.octahedral_mesh(include_face_points=True, refinement_levels=3)
+def test_linear_interpolation():
+
+    p0 = 0.0
+    p2 = np.pi/2
+    p4 = np.pi/4
+
+    coords = np.array([[p0 , -p2], \
+                       [-p2,  p0], \
+                       [p0 ,  p2], \
+                       [p2 ,  p0], \
+                       [p0 ,  p0]])
+
+    lons, lats = coords[:,0], coords[:,1]
+    mesh = stripy.sTriangulation(lons, lats)
+
+    Z = mesh.lons
+
+    npts = 5
+    ilons = np.linspace(-p2, p2, npts)
+    ilats = np.zeros(npts)
+
+    Zi, ierr = mesh.interpolate_linear(ilons, ilats, Z)
+
+    # this should be true
+    # but machine precision may differ so we don't test it
+    # print((Zi == ilons).all())
+
+    bounded = Zi[0] == ilons[0] and Zi[-1] == ilons[-1]
+    ascending = ( np.diff(Zi) > 0 ).all()
+
+    # check if linear gradient across the equator
+    if bounded and ascending:
+        print("PASS! (Interpolation - linear")
+    else:
+        assert False, "FAIL! (Interpolation - linear)"
 
 
-def test_area():
+def test_cubic_interpolation():
 
-    def compute_area(v1, v2, v3):
-        """ manually compute area on unit sphere """
-        u1 = np.cross(v1, v2)
-        u2 = np.cross(v2, v3)
-        u3 = np.cross(v3, v1)
+    p0 = 0.0
+    p2 = np.pi/2
+    p4 = np.pi/4
 
-        s1 = np.sqrt(u1.dot(u1))
-        s2 = np.sqrt(u2.dot(u2))
-        s3 = np.sqrt(u3.dot(u3))
+    # we need more points for cubic interpolation
+    coords = np.array([[p0 , -p2], \
+                       [-p2,  p0], \
+                       [p0 ,  p2], \
+                       [p2 ,  p0], \
+                       [p0 , -p4], \
+                       [-p4,  p0], \
+                       [p0 ,  p4], \
+                       [p4 ,  p0]])
 
-        u1 /= s1
-        u2 /= s2
-        u3 /= s3
+    lons, lats = coords[:,0], coords[:,1]
+    mesh = stripy.sTriangulation(lons, lats)
 
-        ca1 = -u1.dot(u3)
-        ca2 = -u2.dot(u1)
-        ca3 = -u3.dot(u2)
+    Z = mesh.lons**2
 
-        a1 = np.arccos(ca1)
-        a2 = np.arccos(ca2)
-        a3 = np.arccos(ca3)
+    npts = 7
+    ilons = np.linspace(-p2, p2, npts)
+    ilats = np.zeros(npts)
 
-        areas = a1 + a2 + a3 - np.arccos(-1.0)
-        return areas
+    Zi_linear, ierr = mesh.interpolate_linear(ilons, ilats, Z)
+    Zi_cubic,  ierr = mesh.interpolate_cubic(ilons, ilats, Z)
 
-    n  = mesh.npoints
-    nt = mesh.simplices.shape[0]
+    diff_linear = np.abs(Zi_linear - ilons**2).sum()
+    diff_cubic  = np.abs(Zi_cubic  - ilons**2).sum()
 
-    area1 = np.empty(nt)
-
-    t = time()
-    for i in range(0,nt):
-        tr = mesh.simplices[i]
-        xi = mesh.x[tr]
-        yi = mesh.y[tr]
-        zi = mesh.z[tr]
-
-        area1[i] = compute_area(xi, yi, zi)
-    t1 = time() - t
-    t = time()
-    area2 = mesh.areas()
-    t2 = time() - t
-
-    res = ((area1 - area2)**2).max()
-    assert res < 1.0e-5
-
-    return
+    # check if cubic interpolation is more accurate than linear
+    if diff_cubic < diff_linear:
+        print("PASS! (Interpolation - cubic")
+    else:
+        assert False, "FAIL! (Interpolation - cubic)"
 
 
 def test_derivative():
-    from scipy import interpolate
 
-    def analytic(lons, lats, k1, k2):
-        return np.cos(k1*lons) * np.sin(k2*lats)
+    p0 = 0.0
+    p2 = np.pi/2
+    p4 = np.pi/4
 
-    def analytic_ddlon(lons, lats, k1, k2):
-        return -k1 * np.sin(k1*lons) * np.sin(k2*lats) / np.cos(lats)
+    coords = np.array([[p0 , -p2], \
+                       [-p2,  p0], \
+                       [p0 ,  p2], \
+                       [p2 ,  p0], \
+                       [p0 , -p4], \
+                       [-p4,  p0], \
+                       [p0 ,  p4], \
+                       [p4 ,  p0], \
+                       [-p4, -p4], \
+                       [-p4,  p4], \
+                       [p4 ,  p4], \
+                       [p4 , -p4], \
+                       [p0 ,  p0]])
+    
+    lons, lats = coords[:,0], coords[:,1]
+    mesh = stripy.sTriangulation(lons, lats)
 
-    def analytic_ddlat(lons, lats, k1, k2):
-        return k2 * np.cos(k1*lons) * np.cos(k2*lats)
+    # create a soup bowl
+    Z = mesh.lons**2 + mesh.lats**2
 
-    # Create a field to test derivatives
-    lons, lats = mesh.lons, mesh.lats + np.pi/2
+    # derivatives will have a constant gradient
+    dZdlon, dZdlat = mesh.gradient_lonlat(Z, nit=10, tol=1e-12)
 
-    Z     = analytic(lons, lats, 5.0, 2.0)
-    Zlons = analytic_ddlon(lons, lats, 5.0, 2.0)
-    Zlats = analytic_ddlat(lons, lats, 5.0, 2.0)
-    gradZ = np.hypot(Zlons, Zlats)
+    # interpolate onto a straight line
+    ipts = np.linspace(-p2, p2, 5)
+    dZdlon_interp, ierr = mesh.interpolate_linear(ipts, ipts*0, dZdlon)
+    dZdlat_interp, ierr = mesh.interpolate_linear(ipts*0, ipts, dZdlat)
 
-    # Stripy
-    t = time()
-    Zlons1, Zlats1 = mesh.gradient_lonlat(Z, nit=10, tol=1e-10)
-    t1 = time() - t
-    gradZ1 = np.hypot(Zlons1, Zlats1)
+    ascending_lon = ( np.diff(dZdlon_interp) > 0 ).all()
+    ascending_lat = ( np.diff(dZdlat_interp) > 0 ).all()
 
-    # Spline
-    spl = interpolate.SmoothSphereBivariateSpline(lats, lons, Z, s=1)
-    t = time()
-    Zlons2 = spl.ev(lats, lons, dtheta=1)
-    Zlats2 = spl.ev(lats, lons, dphi=1)
-    t2 = time() - t
-    gradZ2 = np.hypot(Zlons2, Zlats2)
+    if ascending_lon and ascending_lat:
+        print("PASS! (Derivatives)")
+    else:
+        assert False, "FAIL! (Derivatives)"
 
-    res1 = ((gradZ1 - gradZ)**2).max()
-    res2 = ((gradZ2 - gradZ)**2).max()
-
-    return
-
-def test_interpolation():
-    from scipy import interpolate
-
-    lons, lats = mesh.lons, mesh.lats
-    Z = np.exp(-lons**2 - lats**2)
-    lon = 2.*np.pi*np.random.random(10)
-    lat = np.arccos(2.*np.random.random(10) - 1.) - np.pi/2
-
-    # Stripy
-    zn1 = mesh.interpolate_nearest(lon, lat, Z)
-    zl1 = mesh.interpolate_linear(lon, lat, Z)
-    zc1 = mesh.interpolate_cubic(lon, lat, Z)
-
-    # cKDTree
-    tree = interpolate.NearestNDInterpolator((lons,lats), Z)
-    zn2 = tree(lon, lat)
-
-    # Least-squares spline
-    tri = interpolate.LinearNDInterpolator((lons,lats), Z)
-    zl2 = tri((lon, lat))
-
-
-    # Cubic spline
-    spl = interpolate.SmoothSphereBivariateSpline(lats+np.pi/2, lons, Z, s=1)
-    zc2 = spl.ev(lat+np.pi/2,lon)
-
-    print("squared residual in interpolation\n  \
-     - nearest neighbour = {}\n  \
-     - linear = {}\n  \
-     - cubic  = {}".format(((zn1 - zn2)**2).max(), \
-                           ((zl1 - zl2)**2).max(), \
-                           ((zc1 - zc2)**2).max()))
 
 def test_smoothing():
-    pass
+
+    p0 = 0.0
+    p2 = np.pi/2
+    p4 = np.pi/4
+
+    # we need more points for cubic interpolation
+    coords = np.array([[p0 , -p2], \
+                       [-p2,  p0], \
+                       [p0 ,  p2], \
+                       [p2 ,  p0], \
+                       [p0 , -p4], \
+                       [-p4,  p0], \
+                       [p0 ,  p4], \
+                       [p4 ,  p0], \
+                       [p0 ,  p0]])
+
+    lons, lats = coords[:,0], coords[:,1]
+    mesh = stripy.sTriangulation(lons, lats)
+
+    Z = np.ones_like(lons)
+    Z[-1] = 0.0
+
+    weights = np.ones_like(lons)
+    f_smooth, ierr = mesh.smoothing(Z, weights, 0.05, 1e-2, 1e-5)
+
+    # check if f_smooth is smoother than f
+    if (f_smooth.max() - f_smooth.min()) < 1.0:
+        print("PASS! (Smoothing)")
+    else:
+        assert False, "FAIL! (Smoothing)"
+
+
+if __name__ == "__main__":
+    test_derivative()
+    test_nearest_nd_interpolation()
+    test_linear_interpolation()
+    test_cubic_interpolation()
+    test_smoothing()
