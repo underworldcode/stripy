@@ -6,6 +6,6 @@ echo "Building docs in $THIS_DIR"
 
 cd $THIS_DIR/..
 
-pdoc --html stripy --force -o docs
+pdoc -c latex_math=True --html stripy --force -o docs
 mv docs/stripy/*.html docs
 rmdir docs/stripy
