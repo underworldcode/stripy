@@ -1,4 +1,9 @@
+dist: bionic
 language: python
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
 
 # define global environment variables
 env:
@@ -26,15 +31,15 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install python3 ; fi
 
 install:
-  - python3 -m pip install Cython numpy scipy pytest git+https://github.com/lmoresi/pdoc.git
-  - python3 -m pip install -e .
+  - pip3 install numpy scipy pytest git+https://github.com/kernc/pdoc.git@latex_math
+  - pip3 install -e .
 
 script:
   # run pytest
   - pytest tests/
   # generate the docs
   - mkdir docs
-  - cd docs 
+  - cd docs
   - pdoc --html -o . --force stripy
   - mv stripy/*.html .
   - rm -rf stripy/

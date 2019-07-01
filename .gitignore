@@ -5,6 +5,8 @@ __pycache__
 *checkpoint.ipynb
 *.png
 
+.coverage
+
 swpcom.mod
 
 build/*

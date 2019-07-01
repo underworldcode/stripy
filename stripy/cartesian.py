@@ -321,7 +321,7 @@ class Triangulation(object):
 
         This routine employs a local method, in which values depend only on nearby
         data points, to compute an estimated gradient at a node.
-        
+
         `gradient_local()` is more efficient than `gradient()` only if it is unnecessary
         to compute gradients at all of the nodes. Both routines have similar accuracy.
         """
@@ -338,7 +338,7 @@ class Triangulation(object):
 
 
     def smoothing(self, f, w, sm, smtol, gstol):
-        """
+        r"""
         Smooths a surface `f` by choosing nodal function values and gradients to
         minimize the linearized curvature of F subject to a bound on the
         deviation from the data values. This is more appropriate than interpolation
@@ -364,7 +364,7 @@ class Triangulation(object):
             f_smooth : array of floats, shape (n,)
                 smoothed version of f
             derivatives : tuple of floats, shape (n,3)
-                \\( \\partial f \\partial y , \\partial f \\partial y \\) first derivatives
+                \\( \partial f \partial y , \partial f \partial y \\) first derivatives
                 of `f_smooth` in the x and y directions
         """
         if f.size != self.npoints or f.size != w.size:
@@ -416,8 +416,7 @@ class Triangulation(object):
         """
 
         if order == 0:
-            zierr = np.zeros_like(xi, dtype=np.int)
-            return self.interpolate_nearest(xi, yi, zdata), zierr
+            return self.interpolate_nearest(xi, yi, zdata)
         elif order == 1:
             return self.interpolate_linear(xi, yi, zdata)
         elif order == 3:
@@ -440,16 +439,40 @@ class Triangulation(object):
         Returns:
             zi : float / array of floats, shape (l,)
                 nearest-neighbour interpolated value(s) of (xi,yi)
+            err : int / array of ints, shape (l,)
+                whether interpolation (0), extrapolation (1) or error (other)
         """
         if zdata.size != self.npoints:
             raise ValueError('zdata should be same size as mesh')
 
+        xi = np.atleast_1d(xi)
+        yi = np.atleast_1d(yi)
+
+        size = xi.size
+
         zdata = self._shuffle_field(zdata)
 
-        ist = np.ones_like(xi, dtype=np.int32)
+        zierr = np.zeros(size, dtype=np.int32)
+        ist = np.ones(size, dtype=np.int32)
         ist, dist = _tripack.nearnds(xi, yi, ist, self._x, self._y,
                                      self.lst, self.lptr, self.lend)
-        return zdata[ist - 1], ist*0
+
+        # check if interpolation or extrapolation
+        hull_idx = self.convex_hull()
+        hull_pts = self.points[hull_idx]
+        hull_x = hull_pts[:,0]
+        hull_y = hull_pts[:,1]
+
+        for i in range(0, zierr.size):
+            vector_det = (hull_x[1:] - hull_x[:-1])*(yi[i] - hull_y[:-1]) - \
+                         (hull_y[1:] - hull_y[:-1])*(xi[i] - hull_x[:-1])
+
+            # if vector_det > 0: within convex hull
+            # if vector_det = 0: on top of convex hull
+            # if vector_det < 0: outside convex hull
+            zierr[i] = (vector_det < 0).any()
+
+        return np.squeeze(zdata[ist - 1]), zierr
 
 
     def interpolate_linear(self, xi, yi, zdata):
@@ -523,7 +546,7 @@ class Triangulation(object):
             err : int / array of ints, shape (l,)
                 whether interpolation (0), extrapolation (1) or error (other)
             dzx, dzy (optional) : float, array of floats, shape(l,)
-                first partial derivatives \\( \\frac{df}{dx} , \\frac{df}{dy} \\)
+                first partial derivatives \\( \\partial f \\partial x , \\partial f \\partial y \\)
                 at (xi,yi)
         """
 
