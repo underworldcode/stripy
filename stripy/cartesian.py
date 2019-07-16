@@ -321,7 +321,7 @@ class Triangulation(object):
 
         This routine employs a local method, in which values depend only on nearby
         data points, to compute an estimated gradient at a node.
-        
+
         `gradient_local()` is more efficient than `gradient()` only if it is unnecessary
         to compute gradients at all of the nodes. Both routines have similar accuracy.
         """
@@ -338,7 +338,7 @@ class Triangulation(object):
 
 
     def smoothing(self, f, w, sm, smtol, gstol):
-        """
+        r"""
         Smooths a surface `f` by choosing nodal function values and gradients to
         minimize the linearized curvature of F subject to a bound on the
         deviation from the data values. This is more appropriate than interpolation
@@ -364,7 +364,7 @@ class Triangulation(object):
             f_smooth : array of floats, shape (n,)
                 smoothed version of f
             derivatives : tuple of floats, shape (n,3)
-                \\( \\partial f \\partial y , \\partial f \\partial y \\) first derivatives
+                \\( \partial f \partial y , \partial f \partial y \\) first derivatives
                 of `f_smooth` in the x and y directions
         """
         if f.size != self.npoints or f.size != w.size:
@@ -466,7 +466,7 @@ class Triangulation(object):
         for i in range(0, zierr.size):
             vector_det = (hull_x[1:] - hull_x[:-1])*(yi[i] - hull_y[:-1]) - \
                          (hull_y[1:] - hull_y[:-1])*(xi[i] - hull_x[:-1])
-            
+
             # if vector_det > 0: within convex hull
             # if vector_det = 0: on top of convex hull
             # if vector_det < 0: outside convex hull

@@ -199,6 +199,11 @@ cd stripy
 pytest -v
 ```
 
+### API Documentation
+
+The API for all functions and classes in `stripy` can be accessed from [http://www.underworldcode.org/stripy/](http://www.underworldcode.org/stripy/).
+
+
 ## References
 
    1. Laske, G., G. Masters, and Z. Ma (2013), Update on CRUST1. 0—A 1-degree global model of Earth's crust, Geophys Research Abstracts, 15, EGU2013–2658.

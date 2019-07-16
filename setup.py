@@ -78,7 +78,8 @@ if __name__ == "__main__":
           setup_requires    = ["pytest-runner", 'webdav'],
           tests_require     = ["pytest", 'webdav'],
           packages          = ['stripy'],
-          package_data      = {'stripy': ['Notebooks/CartesianTriangulations/*ipynb',  # Worked Examples is not currently used
+          package_data      = {'stripy': ['Notebooks/*ipynb', # Worked Examples is not currently used
+                                          'Notebooks/CartesianTriangulations/*ipynb',
                                           'Notebooks/SphericalTriangulations/*ipynb',
                                           'Notebooks/Data/*'] },
           include_package_data = True,
