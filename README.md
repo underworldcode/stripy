@@ -8,10 +8,10 @@ A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triang
 `stripy` is bundled with `litho1pt0` which is a python interface to the _crust 1.0_ dataset and the lithospheric part of the _litho 1.0_ dataset (Laske et al, 2013 and Pasyanos et al, 2014) which both requires and demonstrates the triangulation / searching and interpolation on the sphere that is provided by `stripy`.
 
 
-![Examples](https://github.com/underworldcode/stripy/blob/master/stripy/Notebooks/Images/Examples.png?raw=true)
+![Examples](https://github.com/underworldcode/stripy/blob/master/stripy/Notebooks/Images/seafloor-age-topo.png?raw=true)
 
+_Sample images created with `stripy` illustrating the meshing capability: ocean age data can be triangulated on the sphere with no need for points on land. Once `stripy` ingests your data points, you can sample another dataset to your grid (bathymetry on the right), smooth, find the derivatives of your data, or interpolate to another set of points._
 
-_Sample images created with `stripy` illustrating the meshing capability, the ability to refine meshes to match criteria such as data density, and the ability to create distance-weighted averages to meshes and continuous interpolating functions_
 
 #### Binder
 
