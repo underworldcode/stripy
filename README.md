@@ -2,6 +2,7 @@
 
 [![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/underworldcode/stripy.svg)](https://hub.docker.com/r/underworldcode/stripy)
 [![PyPI](https://img.shields.io/pypi/v/stripy.svg)](https://pypi.org/project/stripy/)
+[![Build Status (dev)](https://travis-ci.org/underworldcode/stripy.svg?branch=dev)](https://travis-ci.org/underworldcode/stripy)
 
 A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives (Renka 1996a,b and 1997a,b).
 

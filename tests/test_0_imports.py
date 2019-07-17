@@ -27,12 +27,12 @@ def test_jupyter_available():
     except:
         assert False, "jupyter notebook system is not installed"
 
-def test_documentation_dependencies():
-    import matplotlib
-    import cartopy
-    import imageio
-    import lavavu
-    import pyproj
-
-def test_litho1pt0():
-    import litho1pt0
+# def test_documentation_dependencies():
+#     import matplotlib
+#     import cartopy
+#     import imageio
+#     import lavavu
+#     import pyproj
+#
+# def test_litho1pt0():
+#     import litho1pt0
