@@ -28,3 +28,9 @@ deploy:
     branch: master
   verbose: true
   local_dir: docs/
+
+
+addons:
+  apt:
+    packages:
+     - gfortran
