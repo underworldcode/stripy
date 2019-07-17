@@ -5,6 +5,9 @@ python:
   - "3.6"
   - "3.7"
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y gfortran
 
 install:
   - pip3 install numpy scipy pytest pdoc3
@@ -28,9 +31,3 @@ deploy:
     branch: master
   verbose: true
   local_dir: docs/
-
-
-addons:
-  apt:
-    packages:
-     - gfortran
