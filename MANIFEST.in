@@ -1,7 +1,7 @@
 include README.md
 include MANIFEST.in
-include COPYING
-include COPYING.LESSER
+include LICENCE
+include CONTRIBUTING.md
 include src/*
 include stripy/__init__.py
 include stripy/cartesian.py
@@ -10,6 +10,6 @@ include stripy/spherical_meshes.py
 include stripy/cartesian_meshes.py
 include stripy/documentation.py
 include stripy/Notebooks/SphericalTriangulations/*.ipynb
-include stripy/Notebooks/CartestianTriangulations/*.ipynb
+include stripy/Notebooks/CartesianTriangulations/*.ipynb
 include stripy/Notebooks/Data/*
 include stripy/Notebooks/0-StartHere.ipynb
