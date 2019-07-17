@@ -28,7 +28,7 @@ before_install:
   - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get install -y gfortran ; fi
 
 install:
-  - pip3 install numpy scipy jupyter litho1pt0 pytest pdoc3
+  - pip3 install numpy scipy jupyter matplotlib litho1pt0 pytest pdoc3
   - pip3 install -e .
 
 script:
@@ -37,7 +37,7 @@ script:
   # generate the release
   - python3 setup.py sdist
   # generate the docs
-  - mkdir docs
+  - mkdir -p docs
   - cd docs
   - pdoc --config latex_math=True --html -o . --force stripy
   - mv stripy/*.html .
