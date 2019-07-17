@@ -7,14 +7,14 @@ python:
 
 
 install:
-  - pip3 install numpy scipy pytest git+https://github.com/lmoresi/pdoc.git
+  - pip3 install numpy scipy pytest pdoc3
   - pip3 install -e .
 
 script:
   # generate the docs
   - mkdir docs
-  - cd docs 
-  - pdoc --html -o . --force stripy
+  - cd docs
+  - pdoc3 --config latex_math=True --html -o . --force stripy
   - mv stripy/*.html .
   - rm -rf stripy/
   - cd ../
