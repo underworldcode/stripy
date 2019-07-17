@@ -1,9 +1,7 @@
 dist: bionic
 language: python
 python:
-  - "3.5"
   - "3.6"
-  - "3.7"
 
 before_install:
   - sudo apt-get update
@@ -15,7 +13,7 @@ install:
 
 script:
   # generate the docs
-  - mkdir docs
+  - mkdir -p docs
   - cd docs
   - pdoc3 --config latex_math=True --html -o . --force stripy
   - mv stripy/*.html .
