@@ -169,7 +169,7 @@ class random_mesh(_spherical.sTriangulation):
 
         lon,lat = _spherical.xyz2lonlat(xyz[:,0], xyz[:,1], xyz[:,2])
 
-        super(random_mesh, self).__init__(lons=lon, lats=lat, permute=False, tree=tree)
+        super(random_mesh, self).__init__(lons=lon, lats=lat, permute=True, tree=tree)
 
         return
 
