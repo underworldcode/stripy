@@ -32,7 +32,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade \
     pytest \
     imageio \
     litho1pt0 \
-    git+https://github.com/OKaluza/LavaVu.git@afa8cd24e6dae7ffbacf9735db8e1affd85fd3df
+    lavavu==1.4.1 # this one has the relevant texture and cloud fixes
 
 # This file is too big to bundle with the pip installation
 
