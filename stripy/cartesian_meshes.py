@@ -61,7 +61,7 @@ class square_border(_cartesian.Triangulation):
 
         xy = np.vstack([xy0, xy])
 
-        super(square_border, self).__init__(xy[:,0], xy[:,1], permute=False, tree=tree)
+        super(square_border, self).__init__(xy[:,0], xy[:,1], permute=True, tree=tree)
 
         return
 
@@ -205,7 +205,7 @@ class random_mesh(_cartesian.Triangulation):
         x = np.concatenate([base_mesh.x, x], axis=0)
         y = np.concatenate([base_mesh.y, y], axis=0)
 
-        super(random_mesh, self).__init__(x, y, permute=False, tree=tree)
+        super(random_mesh, self).__init__(x, y, permute=True, tree=tree)
 
         return
 

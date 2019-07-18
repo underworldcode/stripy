@@ -23,12 +23,12 @@ matrix:
 
 before_install:
   - if [ $TRAVIS_OS_NAME = osx   ]; then brew update ; fi
-  - if [ $TRAVIS_OS_NAME = osx   ]; then brew install python3 ; fi
+  - if [ $TRAVIS_OS_NAME = osx   ]; then brew install python3 || true ; fi
   - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get update -q ; fi
   - if [ $TRAVIS_OS_NAME = linux ]; then sudo apt-get install -y gfortran ; fi
 
 install:
-  - pip3 install numpy scipy jupyter pytest git+https://github.com/kernc/pdoc.git@latex_math
+  - pip3 install numpy scipy jupyter pytest pdoc3
   - pip3 install -e .
 
 script:
@@ -37,9 +37,9 @@ script:
   # generate the release
   - python3 setup.py sdist
   # generate the docs
-  - mkdir docs
+  - mkdir -p docs
   - cd docs
-  - pdoc --html -o . --force stripy
+  - pdoc --config latex_math=True --html -o . --force stripy
   - mv stripy/*.html .
   - rm -rf stripy/
   - cd ../
@@ -61,3 +61,4 @@ deploy:
   #     tags: true
   #     condition: '$DEPLOY_PYPI == true'
   #   skip_cleanup: true
+
