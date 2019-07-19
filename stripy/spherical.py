@@ -405,7 +405,7 @@ class sTriangulation(object):
                 break
 
         if ierr < 0:
-            raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
+            warnings.warn('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
 
         return self._deshuffle_field(grad[0], grad[1], grad[2])
 
@@ -453,15 +453,16 @@ class sTriangulation(object):
         f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol, prnt)
 
+
+        import warnings
+
         if ierr < 0:
             raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
         if ierr == 1:
-            raise RuntimeWarning("No errors were encountered but the constraint is not active --\n\
-                  F, FX, and FY are the values and partials of a linear function \
-                  which minimizes Q2(F), and Q1 = 0.")
+            warnings.warn("No errors were encountered but the constraint is not active --\n\
+                  F, FX, and FY are the values and partials of a linear function which minimizes Q2(F), and Q1 = 0.")
         if ierr == 2:
-            raise RuntimeWarning("The constraint could not be satisfied to within SMTOL\
-                  due to ill-conditioned linear systems.")
+            warnings.warn("The constraint could not be satisfied to within SMTOL due to ill-conditioned linear systems.")
 
         return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2])
 
