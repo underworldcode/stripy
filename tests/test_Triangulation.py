@@ -3,7 +3,7 @@ import stripy
 import numpy as np
 
 def test_nearest_nd_interpolation():
-    
+
     coords = np.array([[0.0, 0.0], \
                        [0.0, 1.0], \
                        [1.0, 0.0], \
@@ -18,7 +18,7 @@ def test_nearest_nd_interpolation():
     iy = y[0] + 0.001
 
     Zi, ierr = mesh.interpolate_nearest(ix, iy, Z)
-    
+
     if Zi == Z[0]:
         print("PASS! (Interpolation - nearest neighbour)")
     else:
@@ -92,7 +92,7 @@ def test_cubic_interpolation():
 
 
 def test_derivative():
-    
+
     p0 = 0.0
     p1 = 1.0
     p2 = 2.0
@@ -110,7 +110,7 @@ def test_derivative():
                        [p1 ,  p1], \
                        [p1 , -p1], \
                        [p0 ,  p0]])
-    
+
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y)
 
@@ -149,7 +149,7 @@ def test_smoothing():
     Z[-1] = 0.0
 
     weights = np.ones_like(x)
-    f_smooth, ierr = mesh.smoothing(Z, weights, 0.05, 1e-2, 1e-5)
+    f_smooth, f_derivatives, ierr = mesh.smoothing(Z, weights, 0.05, 1e-2, 1e-5)
 
     if (f_smooth.max() - f_smooth.min()) < 1.0:
         print("PASS! (Smoothing)")

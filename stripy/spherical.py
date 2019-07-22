@@ -439,6 +439,8 @@ class sTriangulation(object):
             derivatives : tuple of floats, shape (n,3)
                 (dfdx, dfdy, dfdz) first derivatives of f_smooth in the
                 x, y, and z directions
+            err : error indicator
+                0 indicates no error, +ve values indicate warnings, -ve values are errors
         """
 
         if f.size != self.npoints or f.size != w.size:
@@ -453,18 +455,24 @@ class sTriangulation(object):
         f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol, prnt)
 
-
         import warnings
 
+        # Note - warnings are good because they can be 'upgraded' to exceptions by the
+        # user of the module. The warning text is usually something that we don't
+        # emit every time the error occurs. So here we emit a message about the problem
+        # and a warning that explains it (once) - and also serves as a hook for an exception trap.
+
         if ierr < 0:
-            raise ValueError('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
+            raise ValueError('ierr={} in smooth routines\n{}'.format(ierr, _ier_codes[ierr]))
+
         if ierr == 1:
             warnings.warn("No errors were encountered but the constraint is not active --\n\
-                  F, FX, and FY are the values and partials of a linear function which minimizes Q2(F), and Q1 = 0.")
+F, FX, and FY are the values and partials of a linear function which minimizes Q2(F), and Q1 = 0.")
+
         if ierr == 2:
             warnings.warn("The constraint could not be satisfied to within SMTOL due to ill-conditioned linear systems.")
 
-        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2])
+        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2]), ierr
 
 
 
