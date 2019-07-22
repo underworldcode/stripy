@@ -3,6 +3,7 @@
 __pycache__
 *.so*
 *checkpoint.ipynb
+.ipynb_checkpoints
 *.png
 
 .coverage
