@@ -545,8 +545,10 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                                       self._x, self._y, self._z, zdata,\
                                       self.lst, self.lptr, self.lend)
 
+        import warnings
+
         if ierr != 0:
-            print('Warning some points may have errors - check error array\n'.format(ierr))
+            warnings.warn('Warning some points may have errors - check error array\n'.format(ierr))
             zi[zierr < 0] = np.nan
 
         return zi.reshape(shape), zierr.reshape(shape)
