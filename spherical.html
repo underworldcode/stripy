@@ -443,7 +443,7 @@ class sTriangulation(object):
                 break
 
         if ierr &lt; 0:
-            raise ValueError(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
+            warnings.warn(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
 
         return self._deshuffle_field(grad[0], grad[1], grad[2])
 
@@ -477,6 +477,8 @@ class sTriangulation(object):
             derivatives : tuple of floats, shape (n,3)
                 (dfdx, dfdy, dfdz) first derivatives of f_smooth in the
                 x, y, and z directions
+            err : error indicator
+                0 indicates no error, +ve values indicate warnings, -ve values are errors
         &#34;&#34;&#34;
 
         if f.size != self.npoints or f.size != w.size:
@@ -491,17 +493,24 @@ class sTriangulation(object):
         f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol, prnt)
 
-        if ierr &lt; 0:
-            raise ValueError(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
-        if ierr == 1:
-            raise RuntimeWarning(&#34;No errors were encountered but the constraint is not active --\n\
-                  F, FX, and FY are the values and partials of a linear function \
-                  which minimizes Q2(F), and Q1 = 0.&#34;)
-        if ierr == 2:
-            raise RuntimeWarning(&#34;The constraint could not be satisfied to within SMTOL\
-                  due to ill-conditioned linear systems.&#34;)
+        import warnings
 
-        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2])
+        # Note - warnings are good because they can be &#39;upgraded&#39; to exceptions by the
+        # user of the module. The warning text is usually something that we don&#39;t
+        # emit every time the error occurs. So here we emit a message about the problem
+        # and a warning that explains it (once) - and also serves as a hook for an exception trap.
+
+        if ierr &lt; 0:
+            raise ValueError(&#39;ierr={} in smooth routines\n{}&#39;.format(ierr, _ier_codes[ierr]))
+
+        if ierr == 1:
+            warnings.warn(&#34;No errors were encountered but the constraint is not active --\n\
+F, FX, and FY are the values and partials of a linear function which minimizes Q2(F), and Q1 = 0.&#34;)
+
+        if ierr == 2:
+            warnings.warn(&#34;The constraint could not be satisfied to within SMTOL due to ill-conditioned linear systems.&#34;)
+
+        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2]), ierr
 
 
 
@@ -574,8 +583,10 @@ class sTriangulation(object):
                                       self._x, self._y, self._z, zdata,\
                                       self.lst, self.lptr, self.lend)
 
+        import warnings
+
         if ierr != 0:
-            print(&#39;Warning some points may have errors - check error array\n&#39;.format(ierr))
+            warnings.warn(&#39;Warning some points may have errors - check error array\n&#39;.format(ierr))
             zi[zierr &lt; 0] = np.nan
 
         return zi.reshape(shape), zierr.reshape(shape)
@@ -1907,7 +1918,7 @@ however, the node ordering will remain identical.</p></section>
                 break
 
         if ierr &lt; 0:
-            raise ValueError(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
+            warnings.warn(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
 
         return self._deshuffle_field(grad[0], grad[1], grad[2])
 
@@ -1941,6 +1952,8 @@ however, the node ordering will remain identical.</p></section>
             derivatives : tuple of floats, shape (n,3)
                 (dfdx, dfdy, dfdz) first derivatives of f_smooth in the
                 x, y, and z directions
+            err : error indicator
+                0 indicates no error, +ve values indicate warnings, -ve values are errors
         &#34;&#34;&#34;
 
         if f.size != self.npoints or f.size != w.size:
@@ -1955,17 +1968,24 @@ however, the node ordering will remain identical.</p></section>
         f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol, prnt)
 
-        if ierr &lt; 0:
-            raise ValueError(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
-        if ierr == 1:
-            raise RuntimeWarning(&#34;No errors were encountered but the constraint is not active --\n\
-                  F, FX, and FY are the values and partials of a linear function \
-                  which minimizes Q2(F), and Q1 = 0.&#34;)
-        if ierr == 2:
-            raise RuntimeWarning(&#34;The constraint could not be satisfied to within SMTOL\
-                  due to ill-conditioned linear systems.&#34;)
+        import warnings
 
-        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2])
+        # Note - warnings are good because they can be &#39;upgraded&#39; to exceptions by the
+        # user of the module. The warning text is usually something that we don&#39;t
+        # emit every time the error occurs. So here we emit a message about the problem
+        # and a warning that explains it (once) - and also serves as a hook for an exception trap.
+
+        if ierr &lt; 0:
+            raise ValueError(&#39;ierr={} in smooth routines\n{}&#39;.format(ierr, _ier_codes[ierr]))
+
+        if ierr == 1:
+            warnings.warn(&#34;No errors were encountered but the constraint is not active --\n\
+F, FX, and FY are the values and partials of a linear function which minimizes Q2(F), and Q1 = 0.&#34;)
+
+        if ierr == 2:
+            warnings.warn(&#34;The constraint could not be satisfied to within SMTOL due to ill-conditioned linear systems.&#34;)
+
+        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2]), ierr
 
 
 
@@ -2038,8 +2058,10 @@ however, the node ordering will remain identical.</p></section>
                                       self._x, self._y, self._z, zdata,\
                                       self.lst, self.lptr, self.lend)
 
+        import warnings
+
         if ierr != 0:
-            print(&#39;Warning some points may have errors - check error array\n&#39;.format(ierr))
+            warnings.warn(&#39;Warning some points may have errors - check error array\n&#39;.format(ierr))
             zi[zierr &lt; 0] = np.nan
 
         return zi.reshape(shape), zierr.reshape(shape)
@@ -2633,12 +2655,12 @@ however, the node ordering will remain identical.</p></section>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="stripy.spherical_meshes.uniform_ring_mesh" href="spherical_meshes.html#stripy.spherical_meshes.uniform_ring_mesh">uniform_ring_mesh</a></li>
 <li><a title="stripy.spherical_meshes.octahedral_mesh" href="spherical_meshes.html#stripy.spherical_meshes.octahedral_mesh">octahedral_mesh</a></li>
-<li><a title="stripy.spherical_meshes.icosahedral_mesh" href="spherical_meshes.html#stripy.spherical_meshes.icosahedral_mesh">icosahedral_mesh</a></li>
 <li><a title="stripy.spherical_meshes.triangulated_cube_mesh" href="spherical_meshes.html#stripy.spherical_meshes.triangulated_cube_mesh">triangulated_cube_mesh</a></li>
 <li><a title="stripy.spherical_meshes.triangulated_soccerball_mesh" href="spherical_meshes.html#stripy.spherical_meshes.triangulated_soccerball_mesh">triangulated_soccerball_mesh</a></li>
 <li><a title="stripy.spherical_meshes.random_mesh" href="spherical_meshes.html#stripy.spherical_meshes.random_mesh">random_mesh</a></li>
+<li><a title="stripy.spherical_meshes.icosahedral_mesh" href="spherical_meshes.html#stripy.spherical_meshes.icosahedral_mesh">icosahedral_mesh</a></li>
+<li><a title="stripy.spherical_meshes.uniform_ring_mesh" href="spherical_meshes.html#stripy.spherical_meshes.uniform_ring_mesh">uniform_ring_mesh</a></li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
@@ -3279,7 +3301,7 @@ derivative of F with respect to distance T along the arc.</p></section>
             break
 
     if ierr &lt; 0:
-        raise ValueError(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
+        warnings.warn(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
 
     return self._deshuffle_field(grad[0], grad[1], grad[2])</code></pre>
 </details>
@@ -3437,8 +3459,10 @@ must be the same size of the mesh</dd>
                                   self._x, self._y, self._z, zdata,\
                                   self.lst, self.lptr, self.lend)
 
+    import warnings
+
     if ierr != 0:
-        print(&#39;Warning some points may have errors - check error array\n&#39;.format(ierr))
+        warnings.warn(&#39;Warning some points may have errors - check error array\n&#39;.format(ierr))
         zi[zierr &lt; 0] = np.nan
 
     return zi.reshape(shape), zierr.reshape(shape)</code></pre>
@@ -3832,63 +3856,74 @@ gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.</dd>
 <dt><strong><code>derivatives</code></strong> :&ensp;<code>tuple</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,<code>3</code>)</dt>
 <dd>(dfdx, dfdy, dfdz) first derivatives of f_smooth in the
 x, y, and z directions</dd>
+<dt><strong><code>err</code></strong> :&ensp;<code>error</code> <code>indicator</code></dt>
+<dd>0 indicates no error, +ve values indicate warnings, -ve values are errors</dd>
 </dl></section>
 <details class="source">
 <summary>Source code</summary>
-<pre><code class="python">def smoothing(self, f, w, sm, smtol, gstol):
-    &#34;&#34;&#34;
-    Smooths a surface f by choosing nodal function values and gradients to
-    minimize the linearized curvature of F subject to a bound on the
-    deviation from the data values. This is more appropriate than interpolation
-    when significant errors are present in the data.
+<pre><code class="python">    def smoothing(self, f, w, sm, smtol, gstol):
+        &#34;&#34;&#34;
+        Smooths a surface f by choosing nodal function values and gradients to
+        minimize the linearized curvature of F subject to a bound on the
+        deviation from the data values. This is more appropriate than interpolation
+        when significant errors are present in the data.
 
-    Args:
-        f : array of floats, shape (n,)
-            field to apply smoothing on
-        w : array of floats, shape (n,)
-            weights associated with data value in f
-            w[i] = 1/sigma_f^2 is a good rule of thumb.
-        sm : float
-            positive parameter specifying an upper bound on Q2(f).
-            generally n-sqrt(2n) &lt;= sm &lt;= n+sqrt(2n)
-        smtol : float
-            specifies relative error in satisfying the constraint
-            sm(1-smtol) &lt;= Q2 &lt;= sm(1+smtol) between 0 and 1.
-        gstol : float
-            tolerance for convergence.
-            gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
+        Args:
+            f : array of floats, shape (n,)
+                field to apply smoothing on
+            w : array of floats, shape (n,)
+                weights associated with data value in f
+                w[i] = 1/sigma_f^2 is a good rule of thumb.
+            sm : float
+                positive parameter specifying an upper bound on Q2(f).
+                generally n-sqrt(2n) &lt;= sm &lt;= n+sqrt(2n)
+            smtol : float
+                specifies relative error in satisfying the constraint
+                sm(1-smtol) &lt;= Q2 &lt;= sm(1+smtol) between 0 and 1.
+            gstol : float
+                tolerance for convergence.
+                gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
 
-    Returns:
-        f_smooth : array of floats, shape (n,)
-            smoothed version of f
-        derivatives : tuple of floats, shape (n,3)
-            (dfdx, dfdy, dfdz) first derivatives of f_smooth in the
-            x, y, and z directions
-    &#34;&#34;&#34;
+        Returns:
+            f_smooth : array of floats, shape (n,)
+                smoothed version of f
+            derivatives : tuple of floats, shape (n,3)
+                (dfdx, dfdy, dfdz) first derivatives of f_smooth in the
+                x, y, and z directions
+            err : error indicator
+                0 indicates no error, +ve values indicate warnings, -ve values are errors
+        &#34;&#34;&#34;
 
-    if f.size != self.npoints or f.size != w.size:
-        raise ValueError(&#39;f and w should be the same size as mesh&#39;)
+        if f.size != self.npoints or f.size != w.size:
+            raise ValueError(&#39;f and w should be the same size as mesh&#39;)
 
-    f, w = self._shuffle_field(f, w)
+        f, w = self._shuffle_field(f, w)
 
-    sigma = 0
-    iflgs = 0
-    prnt = -1
+        sigma = 0
+        iflgs = 0
+        prnt = -1
 
-    f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
-                                         iflgs, sigma, w, sm, smtol, gstol, prnt)
+        f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
+                                             iflgs, sigma, w, sm, smtol, gstol, prnt)
 
-    if ierr &lt; 0:
-        raise ValueError(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
-    if ierr == 1:
-        raise RuntimeWarning(&#34;No errors were encountered but the constraint is not active --\n\
-              F, FX, and FY are the values and partials of a linear function \
-              which minimizes Q2(F), and Q1 = 0.&#34;)
-    if ierr == 2:
-        raise RuntimeWarning(&#34;The constraint could not be satisfied to within SMTOL\
-              due to ill-conditioned linear systems.&#34;)
+        import warnings
 
-    return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2])</code></pre>
+        # Note - warnings are good because they can be &#39;upgraded&#39; to exceptions by the
+        # user of the module. The warning text is usually something that we don&#39;t
+        # emit every time the error occurs. So here we emit a message about the problem
+        # and a warning that explains it (once) - and also serves as a hook for an exception trap.
+
+        if ierr &lt; 0:
+            raise ValueError(&#39;ierr={} in smooth routines\n{}&#39;.format(ierr, _ier_codes[ierr]))
+
+        if ierr == 1:
+            warnings.warn(&#34;No errors were encountered but the constraint is not active --\n\
+F, FX, and FY are the values and partials of a linear function which minimizes Q2(F), and Q1 = 0.&#34;)
+
+        if ierr == 2:
+            warnings.warn(&#34;The constraint could not be satisfied to within SMTOL due to ill-conditioned linear systems.&#34;)
+
+        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1], df[2]), ierr</code></pre>
 </details>
 </dd>
 <dt id="stripy.spherical.sTriangulation.tri_area"><code class="name flex">
