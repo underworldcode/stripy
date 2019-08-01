@@ -7,7 +7,7 @@ def test_nearest_nd_interpolation():
     p0 = 0.0
     p2 = np.pi/2
     p4 = np.pi/4
-    
+
     coords = np.array([[p0 , -p2], \
                        [-p2,  p0], \
                        [p0 ,  p2], \
@@ -22,7 +22,7 @@ def test_nearest_nd_interpolation():
     ilats = lats[0] + 0.001
 
     Zi, ierr = mesh.interpolate_nearest(ilons, ilats, Z)
-    
+
     # check if we return the nearest numbers
     if Zi == Z[0]:
         print("PASS! (Interpolation - nearest neighbour)")
@@ -124,7 +124,7 @@ def test_derivative():
                        [p4 ,  p4], \
                        [p4 , -p4], \
                        [p0 ,  p0]])
-    
+
     lons, lats = coords[:,0], coords[:,1]
     mesh = stripy.sTriangulation(lons, lats)
 
@@ -172,7 +172,7 @@ def test_smoothing():
     Z[-1] = 0.0
 
     weights = np.ones_like(lons)
-    f_smooth, ierr = mesh.smoothing(Z, weights, 0.05, 1e-2, 1e-5)
+    f_smooth, f_derivatives, ierr = mesh.smoothing(Z, weights, 0.05, 1e-2, 1e-5)
 
     # check if f_smooth is smoother than f
     if (f_smooth.max() - f_smooth.min()) < 1.0:
