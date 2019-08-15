@@ -404,6 +404,8 @@ class sTriangulation(object):
             if not guarantee_convergence:
                 break
 
+        import warnings
+
         if ierr < 0:
             warnings.warn('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
 
