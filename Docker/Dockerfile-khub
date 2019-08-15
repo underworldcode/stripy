@@ -10,13 +10,12 @@ FROM ${FROMIMG_ARG}
 
 USER root
 
-RUN apt-get update -qq && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
-    gettext && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /home/user_data && chmod +rx /home/user_data && chown jovyan:jovyan /home/user_data
+WORKDIR /home/user_data
 
 ### Stripy - Notebooks
 
+RUN python3 -m pip uninstall stripy --yes
 ENV MODULE_DIR="stripy-src"
 ADD --chown=jovyan:jovyan . / stripy-src/
 RUN   cd $MODULE_DIR && python3 -m pip install --no-cache-dir --no-deps --upgrade .
@@ -32,18 +31,17 @@ RUN python3 -m pip install --no-cache-dir --upgrade \
     pytest \
     imageio \
     litho1pt0 \
-    lavavu==1.4.2
-
-# This file is too big to bundle with the pip installation
-
-RUN mkdir -p /usr/local/files && chown -R jovyan:jovyan /usr/local/files
-ADD --chown=jovyan:jovyan Docker/scripts  /usr/local/files
-ENV PATH=/usr/local/files:${PATH}
+    git+https://github.com/OKaluza/LavaVu.git@afa8cd24e6dae7ffbacf9735db8e1affd85fd3df
 
 
-# change ownership of everything
+# Find a place to keep /home/jovyan in the container for khub
+
+RUN mkdir -p /home/jovyan/STRIPY && chmod +rx /home/jovyan/STRIPY && chown jovyan:jovyan /home/jovyan/STRIPY
+RUN ln -s /home/user_data/Notebooks /home/jovyan/STRIPY/Notebooks
+ADD --chown=jovyan:jovyan  Docker/install_notebooks.py /home/user_data/scripts/install_notebooks.py
+
+WORKDIR  /home/jovyan/
 ENV NB_USER jovyan
-RUN chown -R jovyan:jovyan /home/jovyan
 USER jovyan
 
 
@@ -54,7 +52,6 @@ RUN cd $MODULE_DIR/tests && pytest *.py
 
 # Non standard as the files come from the packages
 ##################################################
-
 
 ## These are supplied by the build script
 ## build-dockerfile.sh
@@ -78,15 +75,9 @@ ENV NB_DIR=$NB_DIR_ARG
 ENV START_NB=$START_NB_ARG
 
 
-## NOW INSTALL NOTEBOOKS
-
-# (This is not standard - nothing to do here )
-
-## The notebooks (and other files we are serving up)
-
-
 # Trust all notebooks
-RUN find -name \*.ipynb  -print0 | xargs -0 jupyter trust
+# RUN find -name \*.ipynb  -print0 | xargs -0 jupyter trust
+
 
 # expose notebook port server port
 EXPOSE $NB_PORT

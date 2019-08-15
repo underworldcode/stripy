@@ -62,18 +62,18 @@ $PROJ_NAME-docker-help(){
 
 # Open the default version of the docker to browse the examples
 $PROJ_NAME-docker-browse(){
-  PORT=${1:-8899};
-  echo "Navigate to http://localhost:$PORT to view the examples, ^\ when done";
-  docker run --rm -p $PORT:8888 -v ${PWD}:/home/jovyan/external --rm $IMAGENAME;
+  PORT=${1:-8899} ;
+  echo "Navigate to http://localhost:${PORT} to view the examples, ^\ when done" ;
+  docker run -it --rm -p ${PORT}:8888 -v ${PWD}:/home/jovyan/external $IMAGENAME ;
 }
 
 # Open the default version of the docker to serve examples (persistent)
 $PROJ_NAME-docker-serve(){
-  NAME=${1:$PROJ_NAME}
-  PORT=${2:-8899};
-  echo "Check status: docker ps | grep $NAME "
-  echo "Manage:       docker stop/start/restart $NAME"
-  docker run -d --restart unless-stopped -v ${PWD}:/home/jovyan/external --name $NAME -p $PORT:8888 $IMAGENAME;
+  NAME=${1:$PROJ_NAME} ;
+  PORT=${2:-8899} ;
+  echo "Check status: docker ps | grep $NAME " ;
+  echo "Manage:       docker stop/start/restart $NAME" ;
+  docker run -d --restart unless-stopped -v ${PWD}:/home/jovyan/external --name $NAME -p ${PORT}:8888 $IMAGENAME
 }
 
 #
