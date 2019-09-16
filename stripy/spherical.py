@@ -404,6 +404,8 @@ class sTriangulation(object):
             if not guarantee_convergence:
                 break
 
+        import warnings
+
         if ierr < 0:
             warnings.warn('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
 
@@ -545,8 +547,10 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                                       self._x, self._y, self._z, zdata,\
                                       self.lst, self.lptr, self.lend)
 
+        import warnings
+
         if ierr != 0:
-            print('Warning some points may have errors - check error array\n'.format(ierr))
+            warnings.warn('Warning some points may have errors - check error array\n'.format(ierr))
             zi[zierr < 0] = np.nan
 
         return zi.reshape(shape), zierr.reshape(shape)
@@ -1024,8 +1028,8 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
     def centroid_refine_triangulation_by_triangles(self, triangles):
         """
-        return points defining a refined triangulation obtained by bisection of all edges
-        in the triangulation that are associated with the triangles in the list provided.
+        return points defining a refined triangulation obtained by adding the
+        face centroids of the triangles in the list of indices provided.
 
         Notes:
             The triangles are here represented as a single index.
@@ -1046,8 +1050,9 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
     def centroid_refine_triangulation_by_vertices(self, vertices):
         """
-        return points defining a refined triangulation obtained by bisection of all edges
-        in the triangulation connected to any of the vertices in the list provided
+        return points defining a refined triangulation obtained by adding the
+        face centroids in the triangulation connected to any of the vertices in
+        the list provided
         """
 
         triangles = self.identify_vertex_triangles(vertices)
@@ -1167,9 +1172,7 @@ def lonlat2xyz(lon, lat):
     lons = np.array(lon)
     lats = np.array(lat)
 
-    xs = np.cos(lats) * np.cos(lons)
-    ys = np.cos(lats) * np.sin(lons)
-    zs = np.sin(lats)
+    xs,ys,zs = _stripack.trans(lats, lons)
 
     return xs, ys, zs
 
