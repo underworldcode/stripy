@@ -737,18 +737,14 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         array of vertices (n1,n2) where n1 < n2
         """
 
-        lst  = self.lst
-        lend = self.lend
-        lptr = self.lptr
+        segments_set = set()
 
-        segments_array = np.empty((len(lptr),2),dtype=np.int)
-        segments_array[:,0] = lst[:] - 1
-        segments_array[:,1] = lst[lptr[:]-1] - 1
+        for n0,n1,n2 in self.simplices:
+            segments_set.add( (n0,n1) )
+            segments_set.add( (n0,n2) )
+            segments_set.add( min( (n1, n2), (n2, n1) ))
 
-        valid = np.where(segments_array[:,0] < segments_array[:,1])[0]
-        segments = segments_array[valid,:]
-
-        return self._deshuffle_simplices(segments)
+        return np.array(sorted(segments_set))
 
 
     def segment_midpoints_by_vertices(self, vertices):
