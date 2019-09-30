@@ -710,7 +710,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
         while True:
             lp = self.lptr[lp-1]
-            neighbours.append(self.lst[lp-1]-1)
+            neighbours.append(np.abs(self.lst[lp-1])-1)
             if (lp == lpl):
                 break
 
