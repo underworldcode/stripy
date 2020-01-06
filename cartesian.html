@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.3" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>stripy.cartesian API documentation</title>
 <meta name="description" content="Copyright 2017-2019 Louis Moresi, Ben Mather …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_CHTML'></script>
@@ -35,7 +35,9 @@ GNU Lesser General Public License for more details.</p>
 along with Stripy.
 If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">&#34;&#34;&#34;
 Copyright 2017-2019 Louis Moresi, Ben Mather
 
@@ -1191,7 +1193,9 @@ def remove_duplicates(vector_tuple):
 <dd>
 <section class="desc"><p>Remove duplicates rows from N equally-sized arrays</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def remove_duplicates(vector_tuple):
     &#34;&#34;&#34;
     Remove duplicates rows from N equally-sized arrays
@@ -1277,7 +1281,9 @@ they are triangulated. The distribution of triangles will
 differ between setting <code>permute=True</code> and <code>permute=False</code>,
 however, the node ordering will remain identical.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">class Triangulation(object):
     &#34;&#34;&#34;
     Define a Delaunay triangulation for given Cartesian mesh points (x, y)
@@ -2371,9 +2377,9 @@ however, the node ordering will remain identical.</p></section>
 <ul class="hlist">
 <li><a title="stripy.cartesian_meshes.square_border" href="cartesian_meshes.html#stripy.cartesian_meshes.square_border">square_border</a></li>
 <li><a title="stripy.cartesian_meshes.square_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.square_mesh">square_mesh</a></li>
+<li><a title="stripy.cartesian_meshes.elliptical_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.elliptical_mesh">elliptical_mesh</a></li>
 <li><a title="stripy.cartesian_meshes.random_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.random_mesh">random_mesh</a></li>
 <li><a title="stripy.cartesian_meshes.warped_xy_mesh_sphere" href="cartesian_meshes.html#stripy.cartesian_meshes.warped_xy_mesh_sphere">warped_xy_mesh_sphere</a></li>
-<li><a title="stripy.cartesian_meshes.elliptical_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.elliptical_mesh">elliptical_mesh</a></li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
@@ -2381,7 +2387,9 @@ however, the node ordering will remain identical.</p></section>
 <dd>
 <section class="desc"><p>Stored Cartesian xy coordinates from triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def points(self):
     &#34;&#34;&#34; Stored Cartesian xy coordinates from triangulation &#34;&#34;&#34;
@@ -2393,7 +2401,9 @@ def points(self):
 <section class="desc"><p>Indices of the points forming the simplices in the triangulation.
 Points are ordered anticlockwise</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def simplices(self):
     &#34;&#34;&#34; Indices of the points forming the simplices in the triangulation.
@@ -2405,7 +2415,9 @@ def simplices(self):
 <dd>
 <section class="desc"><p>Stored Cartesian x coordinates from triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def x(self):
     &#34;&#34;&#34; Stored Cartesian x coordinates from triangulation &#34;&#34;&#34;
@@ -2416,7 +2428,9 @@ def x(self):
 <dd>
 <section class="desc"><p>Stored Cartesian y coordinates from triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def y(self):
     &#34;&#34;&#34; Stored Cartesian y coordinates from triangulation &#34;&#34;&#34;
@@ -2438,7 +2452,9 @@ def y(self):
 is the number of triangles.</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def areas(self):
     &#34;&#34;&#34;
     Compute the area of each triangle within the triangulation of points.
@@ -2466,7 +2482,9 @@ in the triangulation that are associated with the triangles in the list provided
 <p>The triangles are here represented as a single index.
 The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</code>.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def centroid_refine_triangulation_by_triangles(self, triangles):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -2496,7 +2514,9 @@ The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</co
 <section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
 in the triangulation connected to any of the vertices in the list provided</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def centroid_refine_triangulation_by_vertices(self, vertices):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -2534,7 +2554,9 @@ and the local barycentric, normalised coordinates.</p>
 <p>The ordering of the vertices may differ from that stored in
 <code>self.simplices</code> array but will still be a loop around the simplex.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def containing_simplex_and_bcc(self, xi, yi):
     &#34;&#34;&#34;
     Returns the simplices containing (xi,yi)
@@ -2609,7 +2631,9 @@ and the local barycentric, normalised coordinates.</p>
 <h2 id="notes">Notes</h2>
 <p>The simplices are found as <code>cartesian.Triangulation.simplices[tri_indices]</code></p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def containing_triangle(self, xi, yi):
     &#34;&#34;&#34;
     Returns indices of the triangles containing xi yi
@@ -2652,7 +2676,9 @@ and the local barycentric, normalised coordinates.</p>
 <dd>indices corresponding to points on the convex hull</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def convex_hull(self):
     &#34;&#34;&#34;
     Find the Convex Hull of the internal set of x,y points.
@@ -2671,7 +2697,9 @@ and the local barycentric, normalised coordinates.</p>
 <dd>
 <section class="desc"><p>Compute the edge-lengths of each triangle in the triangulation.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def edge_lengths(self):
     &#34;&#34;&#34;
     Compute the edge-lengths of each triangle in the triangulation.
@@ -2702,7 +2730,9 @@ of indices provided.</p>
 <p>The triangles are here represented as a single index.
 The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</code>.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def edge_refine_triangulation_by_triangles(self, triangles):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -2746,7 +2776,9 @@ The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</co
 <section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
 in the triangulation connected to any of the vertices in the list provided</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def edge_refine_triangulation_by_vertices(self, vertices):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -2765,7 +2797,9 @@ in the triangulation connected to any of the vertices in the list provided</p></
 <section class="desc"><p>Identify the centroid of every simplex in the triangulation. If an array of
 simplices is given then the centroids of only those simplices is returned.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def face_midpoints(self, simplices=None):
     &#34;&#34;&#34;
     Identify the centroid of every simplex in the triangulation. If an array of
@@ -2820,7 +2854,9 @@ constraint arcs, of the linearized curvatures of F along the arcs &ndash;
 the integrals over the arcs of <span><span class="MathJax_Preview"> (d^2 F / dT^2)^2</span><script type="math/tex"> (d^2 F / dT^2)^2</script></span>, where <span><span class="MathJax_Preview"> d^2 F / dT^2</span><script type="math/tex"> d^2 F / dT^2</script></span>is the second
 derivative of <span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span> with respect to distance <span><span class="MathJax_Preview">T</span><script type="math/tex">T</script></span> along the arc.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
     &#34;&#34;&#34;
     Return the gradient of an n-dimensional array.
@@ -2890,7 +2926,9 @@ data points, to compute an estimated gradient at a node.</p>
 <p><code>gradient_local()</code> is more efficient than <code>gradient()</code> only if it is unnecessary
 to compute gradients at all of the nodes. Both routines have similar accuracy.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def gradient_local(self, f, index):
     &#34;&#34;&#34;
     Return the gradient at a specified node.
@@ -2920,7 +2958,9 @@ to compute gradients at all of the nodes. Both routines have similar accuracy.</
 <section class="desc"><p>Find all the segments in the triangulation and return an
 array of vertices (n1,n2) where n1 &lt; n2</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def identify_segments(self):
     &#34;&#34;&#34;
     Find all the segments in the triangulation and return an
@@ -2948,7 +2988,9 @@ array of vertices (n1,n2) where n1 &lt; n2</p></section>
 <section class="desc"><p>Find the neighbour-vertices in the triangulation for the given vertex
 Searches <code>self.simplices</code> for vertex entries and sorts neighbours</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def identify_vertex_neighbours(self, vertex):
     &#34;&#34;&#34;
     Find the neighbour-vertices in the triangulation for the given vertex
@@ -2967,7 +3009,9 @@ Searches <code>self.simplices</code> for vertex entries and sorts neighbours</p>
 <dd>
 <section class="desc"><p>Find all triangles which own any of the vertices in the list provided</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def identify_vertex_triangles(self, vertices):
     &#34;&#34;&#34;
     Find all triangles which own any of the vertices in the list provided
@@ -3011,7 +3055,9 @@ must be the same size of the mesh</dd>
 <dd>whether interpolation (0), extrapolation (1) or error (other)</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def interpolate(self, xi, yi, zdata, order=1):
     &#34;&#34;&#34;
     Base class to handle nearest neighbour, linear, and cubic interpolation.
@@ -3084,7 +3130,9 @@ the first derivatives at point(s) (xi,yi)</dd>
 at (xi,yi)</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def interpolate_cubic(self, xi, yi, zdata, gradz=None, derivatives=False):
     &#34;&#34;&#34;
     Cubic spline interpolation / extrapolation to arbirary point(s).
@@ -3181,7 +3229,9 @@ must be the same size of the mesh</dd>
 <dd>whether interpolation (0), extrapolation (1) or error (other)</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def interpolate_linear(self, xi, yi, zdata):
     &#34;&#34;&#34;
     Piecewise linear interpolation / extrapolation to arbitrary point(s).
@@ -3246,7 +3296,9 @@ Calls nearnd to find the index of the closest neighbours to xi,yi</p>
 <dd>whether interpolation (0), extrapolation (1) or error (other)</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def interpolate_nearest(self, xi, yi, zdata):
     &#34;&#34;&#34;
     Nearest-neighbour interpolation.
@@ -3304,7 +3356,9 @@ Calls nearnd to find the index of the closest neighbours to xi,yi</p>
 <section class="desc"><p>Join this triangulation with another. If the points are known to have no duplicates, then
 set unique=False to skip the testing and duplicate removal</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def join(self, t2, unique=False):
     &#34;&#34;&#34;
     Join this triangulation with another. If the points are known to have no duplicates, then
@@ -3334,7 +3388,9 @@ set unique=False to skip the testing and duplicate removal</p></section>
 <section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
 in the triangulation connected to any of the vertices in the list provided</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def midpoint_refine_triangulation_by_vertices(self, vertices):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -3375,7 +3431,9 @@ each nearest neighbour.</p>
 Store all x and y coordinates in a (c)KDTree, then query
 a set of points to find their nearest neighbours.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def nearest_vertex(self, xi, yi):
     &#34;&#34;&#34;
     Locate the index of the nearest vertex to points (xi,yi)
@@ -3446,7 +3504,9 @@ nearest neighbour(s)</dd>
 <dd>vertices of the nearest neighbour(s)</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def nearest_vertices(self, x, y, k=1, max_distance=np.inf ):
     &#34;&#34;&#34;
     Query the cKDtree for the nearest neighbours and Euclidean
@@ -3493,7 +3553,9 @@ nearest neighbour(s)</dd>
 Identical to get_neighbour_simplices() but also returns an array
 of indices that reside on boundary hull, -1 denotes no neighbour.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def neighbour_and_arc_simplices(self):
     &#34;&#34;&#34;
     Get indices of neighbour simplices for each simplex and arc indices.
@@ -3515,7 +3577,9 @@ of indices that reside on boundary hull, -1 denotes no neighbour.</p></section>
 The kth neighbour is opposite to the kth vertex.
 For simplices at the boundary, -1 denotes no neighbour.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def neighbour_simplices(self):
     &#34;&#34;&#34;
     Get indices of neighbour simplices for each simplex.
@@ -3539,7 +3603,9 @@ then the midpoints of only those segments is returned.</p>
 <p>Segments in the array must not be duplicates or the re-triangulation
 will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def segment_midpoints(self, segments=None):
     &#34;&#34;&#34;
     Identify the midpoints of every line segment in the triangulation.
@@ -3568,7 +3634,9 @@ will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).</p></sec
 <section class="desc"><p>Add midpoints to any segment connected to the vertices in the
 list / array provided.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def segment_midpoints_by_vertices(self, vertices):
     &#34;&#34;&#34;
     Add midpoints to any segment connected to the vertices in the
@@ -3594,7 +3662,9 @@ list / array provided.</p></section>
 <dd>
 <section class="desc"><p>Identify the trisection points of every line segment in the triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def segment_tripoints(self, ratio=0.33333):
     &#34;&#34;&#34;
     Identify the trisection points of every line segment in the triangulation
@@ -3648,7 +3718,9 @@ of <code>f_smooth</code> in the x and y directions</dd>
 <dd>0 indicates no error, +ve values indicate warnings, -ve values are errors</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def smoothing(self, f, w, sm, smtol, gstol):
     r&#34;&#34;&#34;
     Smooths a surface `f` by choosing nodal function values and gradients to
@@ -3718,7 +3790,9 @@ of <code>f_smooth</code> in the x and y directions</dd>
 <section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
 in the triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def uniformly_refine_triangulation(self, faces=False, trisect=False):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -3805,7 +3879,7 @@ in the triangulation</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.3</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>

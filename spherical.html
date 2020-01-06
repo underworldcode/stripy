@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.6.3" />
+<meta name="generator" content="pdoc 0.7.2" />
 <title>stripy.spherical API documentation</title>
 <meta name="description" content="Copyright 2017-2019 Louis Moresi, Ben Mather …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_CHTML'></script>
@@ -35,7 +35,9 @@ GNU Lesser General Public License for more details.</p>
 along with Stripy.
 If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">&#34;&#34;&#34;
 Copyright 2017-2019 Louis Moresi, Ben Mather
 
@@ -1314,7 +1316,9 @@ def angular_separation(lonp1, latp1, lonp2, latp2):
 On the unit sphere, this also corresponds to the great circle distance.
 p1 and p2 can be numpy arrays of the same length.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def angular_separation(lonp1, latp1, lonp2, latp2):
     &#34;&#34;&#34;
     Compute the angles between lon / lat points p1 and p2 given in radians.
@@ -1341,7 +1345,9 @@ p1 and p2 can be numpy arrays of the same length.</p></section>
 <section class="desc"><p>Take stripack df/dx, df/dy, df/dz format and convert to
 surface gradients df/dlon, df/dlat</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def dxyz2dlonlat(x,y,z, dfx, dfy, dfz):
     &#34;&#34;&#34;
     Take stripack df/dx, df/dy, df/dz format and convert to
@@ -1376,7 +1382,9 @@ surface gradients df/dlon, df/dlat</p></section>
 <dd>
 <section class="desc"><p>N points along the line joining lonlat1 and lonlat2</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def great_circle_Npoints(lonlat1r, lonlat2r, N):
     &#34;&#34;&#34;
     N points along the line joining lonlat1 and lonlat2
@@ -1404,7 +1412,9 @@ surface gradients df/dlon, df/dlat</p></section>
 <section class="desc"><p>Convert lon / lat (radians) for the spherical triangulation into x,y,z
 on the unit sphere</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def lonlat2xyz(lon, lat):
     &#34;&#34;&#34;
     Convert lon / lat (radians) for the spherical triangulation into x,y,z
@@ -1427,7 +1437,9 @@ on the unit sphere</p></section>
 <dd>
 <section class="desc"><p>remove duplicates from an array of lon / lat points</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def remove_duplicate_lonlat(lon, lat):
     &#34;&#34;&#34;
     remove duplicates from an array of lon / lat points
@@ -1452,7 +1464,9 @@ spherical triangulation to lon / lat (radians).</p>
 <h2 id="notes">Notes</h2>
 <p>no check is made here that (x,y,z) are unit vectors</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def xyz2lonlat(x,y,z):
     &#34;&#34;&#34;
     Convert x,y,z representation of points *on the unit sphere* of the
@@ -1551,7 +1565,9 @@ they are triangulated. The distribution of triangles will
 differ between setting permute=True and permute=False,
 however, the node ordering will remain identical.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">class sTriangulation(object):
     &#34;&#34;&#34;
     Define a Delaunay triangulation for given points on a sphere
@@ -2655,12 +2671,12 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="stripy.spherical_meshes.random_mesh" href="spherical_meshes.html#stripy.spherical_meshes.random_mesh">random_mesh</a></li>
 <li><a title="stripy.spherical_meshes.octahedral_mesh" href="spherical_meshes.html#stripy.spherical_meshes.octahedral_mesh">octahedral_mesh</a></li>
+<li><a title="stripy.spherical_meshes.uniform_ring_mesh" href="spherical_meshes.html#stripy.spherical_meshes.uniform_ring_mesh">uniform_ring_mesh</a></li>
+<li><a title="stripy.spherical_meshes.icosahedral_mesh" href="spherical_meshes.html#stripy.spherical_meshes.icosahedral_mesh">icosahedral_mesh</a></li>
 <li><a title="stripy.spherical_meshes.triangulated_cube_mesh" href="spherical_meshes.html#stripy.spherical_meshes.triangulated_cube_mesh">triangulated_cube_mesh</a></li>
 <li><a title="stripy.spherical_meshes.triangulated_soccerball_mesh" href="spherical_meshes.html#stripy.spherical_meshes.triangulated_soccerball_mesh">triangulated_soccerball_mesh</a></li>
-<li><a title="stripy.spherical_meshes.random_mesh" href="spherical_meshes.html#stripy.spherical_meshes.random_mesh">random_mesh</a></li>
-<li><a title="stripy.spherical_meshes.icosahedral_mesh" href="spherical_meshes.html#stripy.spherical_meshes.icosahedral_mesh">icosahedral_mesh</a></li>
-<li><a title="stripy.spherical_meshes.uniform_ring_mesh" href="spherical_meshes.html#stripy.spherical_meshes.uniform_ring_mesh">uniform_ring_mesh</a></li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
@@ -2668,7 +2684,9 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 <dd>
 <section class="desc"><p>Latitudinal coordinates on a sphere</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def lats(self):
     &#34;&#34;&#34; Latitudinal coordinates on a sphere &#34;&#34;&#34;
@@ -2679,7 +2697,9 @@ def lats(self):
 <dd>
 <section class="desc"><p>Longitudinal coordinates on a sphere</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def lons(self):
     &#34;&#34;&#34; Longitudinal coordinates on a sphere &#34;&#34;&#34;
@@ -2690,7 +2710,9 @@ def lons(self):
 <dd>
 <section class="desc"><p>Stored Cartesian xyz coordinates from triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def points(self):
     &#34;&#34;&#34; Stored Cartesian xyz coordinates from triangulation &#34;&#34;&#34;
@@ -2702,7 +2724,9 @@ def points(self):
 <section class="desc"><p>Indices of the points forming the simplices in the triangulation.
 Points are ordered anticlockwise</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def simplices(self):
     &#34;&#34;&#34; Indices of the points forming the simplices in the triangulation.
@@ -2714,7 +2738,9 @@ def simplices(self):
 <dd>
 <section class="desc"><p>Stored Cartesian x coordinates from triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def x(self):
     &#34;&#34;&#34; Stored Cartesian x coordinates from triangulation &#34;&#34;&#34;
@@ -2725,7 +2751,9 @@ def x(self):
 <dd>
 <section class="desc"><p>Stored Cartesian y coordinates from triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def y(self):
     &#34;&#34;&#34; Stored Cartesian y coordinates from triangulation &#34;&#34;&#34;
@@ -2736,7 +2764,9 @@ def y(self):
 <dd>
 <section class="desc"><p>Stored Cartesian x coordinates from triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">@property
 def z(self):
     &#34;&#34;&#34; Stored Cartesian x coordinates from triangulation &#34;&#34;&#34;
@@ -2758,7 +2788,9 @@ Consider using the module function instead, as this method may be
 deprecated in favor of that function. For now, this method is
 retained to avoid issues with the Jupyter notebooks.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def angular_separation(self, lonp1, latp1, lonp2, latp2):
     &#34;&#34;&#34;
     Compute the angles between lon / lat points p1 and p2 given in radians.
@@ -2790,7 +2822,9 @@ is the number of triangles.</dd>
 <p>This uses a Fortran 90 subroutine that wraps the AREA function
 to iterate over many points.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def areas(self):
     &#34;&#34;&#34;
     Compute the area each triangle within the triangulation of points
@@ -2819,7 +2853,9 @@ in the triangulation that are associated with the triangles in the list provided
 <p>The triangles are here represented as a single index.
 The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</code>.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def centroid_refine_triangulation_by_triangles(self, triangles):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -2849,7 +2885,9 @@ The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</co
 <section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
 in the triangulation connected to any of the vertices in the list provided</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def centroid_refine_triangulation_by_vertices(self, vertices):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -2888,7 +2926,9 @@ and the local barycentric, normalised coordinates.</p>
 that stored in the self.simplices array but will
 still be a loop around the simplex.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def containing_simplex_and_bcc(self, lons, lats):
     &#34;&#34;&#34;
     Returns the simplices containing (lons,lats)
@@ -2947,7 +2987,9 @@ still be a loop around the simplex.</p></section>
 <h2 id="notes">Notes</h2>
 <p>The simplices are found as <code>spherical.sTriangulation.simplices[tri_indices]</code></p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def containing_triangle(self, lons, lats):
     &#34;&#34;&#34;
     Returns indices of the triangles containing lons / lats.
@@ -2988,7 +3030,9 @@ still be a loop around the simplex.</p></section>
 <dd>
 <section class="desc"><p>Compute the edge-lengths of each triangle in the triangulation.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def edge_lengths(self):
     &#34;&#34;&#34;
     Compute the edge-lengths of each triangle in the triangulation.
@@ -3022,7 +3066,9 @@ of indices provided.</p>
 <p>The triangles are here represented as a single index.
 The vertices of triangle <code>i</code> are given by <code>self.simplices[i].</code></p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def edge_refine_triangulation_by_triangles(self, triangles):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -3066,7 +3112,9 @@ The vertices of triangle <code>i</code> are given by <code>self.simplices[i].</c
 <section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
 in the triangulation connected to any of the vertices in the list provided</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def edge_refine_triangulation_by_vertices(self, vertices):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -3085,7 +3133,9 @@ in the triangulation connected to any of the vertices in the list provided</p></
 <section class="desc"><p>Identify the centroid of every simplex in the triangulation. If an array of
 simplices is given then the centroids of only those simplices is returned.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def face_midpoints(self, simplices=None):
     &#34;&#34;&#34;
     Identify the centroid of every simplex in the triangulation. If an array of
@@ -3142,7 +3192,9 @@ even if the scalar field is smooth and the Cartesian gradient is well defined.</
 to lon/lat coordinates at any point on the unit sphere. This is helpful
 to avoid recalculation if you need both forms.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def gradient_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False):
     &#34;&#34;&#34;
     Return the lon / lat components of the gradient
@@ -3242,7 +3294,9 @@ constraint arcs, of the linearized curvatures of F along the arcs &ndash;
 the integrals over the arcs of D2F(T)**2, where D2F(T) is the second
 derivative of F with respect to distance T along the arc.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def gradient_xyz(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
     &#34;&#34;&#34;
     Return the cartesian components of the gradient
@@ -3313,7 +3367,9 @@ derivative of F with respect to distance T along the arc.</p></section>
 <section class="desc"><p>Find all the segments in the triangulation and return an
 array of vertices (n1,n2) where n1 &lt; n2</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def identify_segments(self):
     &#34;&#34;&#34;
     Find all the segments in the triangulation and return an
@@ -3341,7 +3397,9 @@ array of vertices (n1,n2) where n1 &lt; n2</p></section>
 <section class="desc"><p>Find the neighbour-vertices in the triangulation for the given vertex
 (from the data structures of the triangulation)</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def identify_vertex_neighbours(self, vertex):
     &#34;&#34;&#34;
     Find the neighbour-vertices in the triangulation for the given vertex
@@ -3369,7 +3427,9 @@ array of vertices (n1,n2) where n1 &lt; n2</p></section>
 <dd>
 <section class="desc"><p>Find all triangles which own any of the vertices in the list provided</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def identify_vertex_triangles(self, vertices):
     &#34;&#34;&#34;
     Find all triangles which own any of the vertices in the list provided
@@ -3414,7 +3474,9 @@ must be the same size of the mesh</dd>
 <dd>whether interpolation (0), extrapolation (1) or error (other)</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def interpolate(self, lons, lats, zdata, order=1):
     &#34;&#34;&#34;
     Base class to handle nearest neighbour, linear, and cubic interpolation.
@@ -3475,7 +3537,9 @@ must be the same size of the mesh</dd>
 <section class="desc"><p>Interpolate using cubic spline approximation
 Returns the same as <code>interpolate(lons,lats,data,order=3)</code></p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def interpolate_cubic(self, lons, lats, data):
     &#34;&#34;&#34;
     Interpolate using cubic spline approximation
@@ -3491,7 +3555,9 @@ Returns the same as <code>interpolate(lons,lats,data,order=3)</code></p></sectio
 <section class="desc"><p>Interpolate using linear approximation
 Returns the same as <code>interpolate(lons,lats,data,order=1)</code></p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def interpolate_linear(self, lons, lats, data):
     &#34;&#34;&#34;
     Interpolate using linear approximation
@@ -3507,7 +3573,9 @@ Returns the same as <code>interpolate(lons,lats,data,order=1)</code></p></sectio
 <section class="desc"><p>Interpolate using nearest-neighbour approximation
 Returns the same as <code>interpolate(lons,lats,data,order=0)</code></p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def interpolate_nearest(self, lons, lats, data):
     &#34;&#34;&#34;
     Interpolate using nearest-neighbour approximation
@@ -3523,7 +3591,9 @@ Returns the same as <code>interpolate(lons,lats,data,order=0)</code></p></sectio
 <section class="desc"><p>Join this triangulation with another. If the points are known to have no duplicates, then
 set unique=True to skip the testing and duplicate removal</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def join(self, t2, unique=False):
     &#34;&#34;&#34;
     Join this triangulation with another. If the points are known to have no duplicates, then
@@ -3547,7 +3617,9 @@ set unique=True to skip the testing and duplicate removal</p></section>
 <dd>
 <section class="desc"></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def lons_map_to_wrapped(self, lon):
 
     lons = np.array(lon)
@@ -3563,7 +3635,9 @@ set unique=True to skip the testing and duplicate removal</p></section>
 <section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
 in the triangulation connected to any of the vertices in the list provided</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def midpoint_refine_triangulation_by_vertices(self, vertices):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -3605,7 +3679,9 @@ vertex identified.</dd>
 See <a title="stripy.spherical.sTriangulation.nearest_vertices" href="#stripy.spherical.sTriangulation.nearest_vertices"><code>sTriangulation.nearest_vertices()</code></a> for details.
 There is an additional overhead associated with building and storing the k-d tree.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def nearest_vertex(self, lons, lats):
     &#34;&#34;&#34;
     Locate the index of the nearest vertex to points (lons,lats)
@@ -3680,7 +3756,9 @@ nearest neighbour(s)</dd>
 <dd>vertices of the nearest neighbour(s)</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def nearest_vertices(self, lon, lat, k=1, max_distance=2.0 ):
     &#34;&#34;&#34;
     Query the cKDtree for the nearest neighbours and Euclidean
@@ -3747,7 +3825,9 @@ then the midpoints of only those segments is returned. Note,
 segments in the array must not be duplicates or the re-triangulation
 will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def segment_midpoints(self, segments=None):
     &#34;&#34;&#34;
     Identify the midpoints of every line segment in the triangulation.
@@ -3776,7 +3856,9 @@ will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).</p></sec
 <section class="desc"><p>Add midpoints to any segment connected to the vertices in the
 list / array provided.</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def segment_midpoints_by_vertices(self, vertices):
     &#34;&#34;&#34;
     Add midpoints to any segment connected to the vertices in the
@@ -3802,7 +3884,9 @@ list / array provided.</p></section>
 <dd>
 <section class="desc"><p>Identify the trisection points of every line segment in the triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def segment_tripoints(self, ratio=0.33333):
     &#34;&#34;&#34;
     Identify the trisection points of every line segment in the triangulation
@@ -3860,7 +3944,9 @@ x, y, and z directions</dd>
 <dd>0 indicates no error, +ve values indicate warnings, -ve values are errors</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">    def smoothing(self, f, w, sm, smtol, gstol):
         &#34;&#34;&#34;
         Smooths a surface f by choosing nodal function values and gradients to
@@ -3944,7 +4030,9 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 <dd>area of triangle on the unit sphere</dd>
 </dl></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def tri_area(self, lons, lats):
     &#34;&#34;&#34;
     Calculate the area enclosed by 3 points on the unit sphere.
@@ -3978,7 +4066,9 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 <section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
 in the triangulation</p></section>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def uniformly_refine_triangulation(self, faces=False, trisect=False):
     &#34;&#34;&#34;
     return points defining a refined triangulation obtained by bisection of all edges
@@ -4074,7 +4164,7 @@ in the triangulation</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.3</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
