@@ -39,23 +39,23 @@ Note: the Cartesian and Spherical notebooks can be obtained / installed from `st
 
 ### Cartesian
 
-  - [Ex1-Cartesian-Triangulations.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex1-Cartesian-Triangulations.ipynb)
-  - [Ex2-CartesianGrids.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex2-CartesianGrids.ipynb)
-  - [Ex3-Interpolation.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex3-Interpolation.ipynb)
-  - [Ex4-Gradients.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex4-Gradients.ipynb)
-  - [Ex5-Smoothing.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex5-Smoothing.ipynb)
-  - [Ex6-Scattered-Data.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex6-Scattered-Data.ipynb)
-  - [Ex7-Refinement-of-Triangulations.ipynb](stripy-src/stripy/Notebooks/CartesianTriangulations/Ex7-Refinement-of-Triangulations.ipynb)
+  - [Ex1-Cartesian-Triangulations.ipynb](stripy/Notebooks/CartesianTriangulations/Ex1-Cartesian-Triangulations.ipynb)
+  - [Ex2-CartesianGrids.ipynb](stripy/Notebooks/CartesianTriangulations/Ex2-CartesianGrids.ipynb)
+  - [Ex3-Interpolation.ipynb](stripy/Notebooks/CartesianTriangulations/Ex3-Interpolation.ipynb)
+  - [Ex4-Gradients.ipynb](stripy/Notebooks/CartesianTriangulations/Ex4-Gradients.ipynb)
+  - [Ex5-Smoothing.ipynb](stripy/Notebooks/CartesianTriangulations/Ex5-Smoothing.ipynb)
+  - [Ex6-Scattered-Data.ipynb](stripy/Notebooks/CartesianTriangulations/Ex6-Scattered-Data.ipynb)
+  - [Ex7-Refinement-of-Triangulations.ipynb](stripy/Notebooks/CartesianTriangulations/Ex7-Refinement-of-Triangulations.ipynb)
 
 ### Spherical
 
-  - [Ex1-Spherical-Triangulations.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex1-Spherical-Triangulations.ipynb)
-  - [Ex2-SphericalGrids.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex2-SphericalGrids.ipynb)
-  - [Ex3-Interpolation.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex3-Interpolation.ipynb)
-  - [Ex4-Gradients.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex4-Gradients.ipynb)
-  - [Ex5-Smoothing.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex5-Smoothing.ipynb)
-  - [Ex6-Scattered-Data.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex6-Scattered-Data.ipynb)
-  - [Ex7-Refinement-of-Triangulations.ipynb](stripy-src/stripy/Notebooks/SphericalTriangulations/Ex7-Refinement-of-Triangulations.ipynb)
+  - [Ex1-Spherical-Triangulations.ipynb](stripy/Notebooks/SphericalTriangulations/Ex1-Spherical-Triangulations.ipynb)
+  - [Ex2-SphericalGrids.ipynb](stripy/Notebooks/SphericalTriangulations/Ex2-SphericalGrids.ipynb)
+  - [Ex3-Interpolation.ipynb](stripy/Notebooks/SphericalTriangulations/Ex3-Interpolation.ipynb)
+  - [Ex4-Gradients.ipynb](stripy/Notebooks/SphericalTriangulations/Ex4-Gradients.ipynb)
+  - [Ex5-Smoothing.ipynb](stripy/Notebooks/SphericalTriangulations/Ex5-Smoothing.ipynb)
+  - [Ex6-Scattered-Data.ipynb](stripy/Notebooks/SphericalTriangulations/Ex6-Scattered-Data.ipynb)
+  - [Ex7-Refinement-of-Triangulations.ipynb](stripy/Notebooks/SphericalTriangulations/Ex7-Refinement-of-Triangulations.ipynb)
 
 
 ### Examples
