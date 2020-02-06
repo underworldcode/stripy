@@ -202,7 +202,7 @@ pytest -v
 
 ### API Documentation
 
-The API for all functions and classes in `stripy` can be accessed from [http://www.underworldcode.org/stripy/](http://www.underworldcode.org/stripy/).
+The API for all functions and classes in `stripy` can be accessed from [https://underworldcode.github.io/stripy/](https://underworldcode.github.io/stripy/).
 
 
 ## References
