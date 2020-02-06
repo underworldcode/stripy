@@ -301,27 +301,27 @@ python module _ssrfpack ! in
 !            real :: coshm
 !            real :: coshmm
 !        end subroutine snhcsh
-!        subroutine unif(n,x,y,z,f,list,lptr,lend,iflgs,sigma,nrow,ni,nj,plat,plon,iflgg,grad,ff,ier) ! in :_ssrfpack:ssrfpack.f
-!            integer, optional,check(len(x)>=n),depend(x) :: n=len(x)
-!            real dimension(n) :: x
-!            real dimension(n),depend(n) :: y
-!            real dimension(n),depend(n) :: z
-!            real dimension(n),depend(n) :: f
-!            integer dimension(*) :: list
-!            integer dimension(*) :: lptr
-!            integer dimension(n),depend(n) :: lend
-!            integer :: iflgs
-!            real dimension(*) :: sigma
-!            integer, optional,check(shape(ff,0)==nrow),depend(ff) :: nrow=shape(ff,0)
-!            integer, optional,check(len(plat)>=ni),depend(plat) :: ni=len(plat)
-!            integer, optional,check(len(plon)>=nj),depend(plon) :: nj=len(plon)
-!            real dimension(ni) :: plat
-!            real dimension(nj) :: plon
-!            integer :: iflgg
-!            real dimension(3,n),depend(n) :: grad
-!            real dimension(nrow,nj),depend(nj) :: ff
-!            integer :: ier
-!        end subroutine unif
+       subroutine unif(n,x,y,z,f,list,lptr,lend,iflgs,sigma,nrow,ni,nj,plat,plon,iflgg,grad,ff,ier) ! in :_ssrfpack:ssrfpack.f
+           integer, depend(x), intent(hide) :: n=len(x)
+           real dimension(n), intent(in) :: x
+           real dimension(n), intent(in) :: y
+           real dimension(n), intent(in) :: z
+           real dimension(n), intent(in) :: f
+           integer dimension(6*n-12), intent(in) :: list
+           integer dimension(6*n-12), intent(in) :: lptr
+           integer dimension(n), intent(in) :: lend
+           integer, intent(in) :: iflgs
+           real dimension(*), intent(in) :: sigma
+           integer, intent(in) :: nrow
+           integer, depend(plat), intent(hide) :: ni=len(plat)
+           integer, depend(plon), intent(hide) :: nj=len(plon)
+           real dimension(ni), intent(in) :: plat
+           real dimension(nj), intent(in) :: plon
+           integer, intent(in) :: iflgg
+           real dimension(3,n), intent(in) :: grad
+           real dimension(nrow,nj), intent(out) :: ff
+           integer, intent(out) :: ier
+       end subroutine unif
     end interface
 end python module _ssrfpack
 

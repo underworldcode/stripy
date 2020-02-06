@@ -526,24 +526,32 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                  -2: "nodes are collinear.",\
                  -3: "extrapolation failed due to the uniform grid extending \
                       too far beyond the triangulation boundary"}
-        
+
         sigma = 0
         iflgs = 0
         iflgg = 0
 
-        lons, lats = self._check_integrity(lons, lats)
-
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
+
+        p = self._permutation
 
         zdata = self._shuffle_field(zdata)
         
         nrow = len(lats)
         
         if grad is None:
-            grad = np.vstack(self.gradient_xyz(f))
-        
-        ff, ierr = _ssrfpack.unif(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
+            grad = np.vstack(self.gradient_xyz(zdata))
+            grad = grad[:,p] # permute
+
+        elif grad.shape == (3,self.npoints):
+            grad = grad[:,p] # permute
+
+        else:
+            raise ValueError("gradient should be 'None' or shape (3,n).")
+
+
+        ff, ierr = _ssrfpack.unif(self._x, self._y, self._z, zdata, self.lst, self.lptr, self.lend,\
                                   iflgs, sigma, nrow, lats, lons, iflgg, grad)
 
         if ierr < 0:
