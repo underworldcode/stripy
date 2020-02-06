@@ -498,7 +498,58 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return lons, lats
 
 
+    def interpolate_to_grid(self, lons, lats, zdata, grad=None):
+        """
+        Interplates the data values to a uniform grid defined by
+        longitude and latitudinal arrays. The interpolant is once
+        continuously differentiable. Extrapolation is performed at
+        grid points exterior to the triangulation when the nodes
+        do not cover the entire sphere.
 
+        Args:
+            lons : array of floats, shape (ni,)
+                longitudinal coordinates in ascending order
+            lats : array of floats, shape (nj,)
+                latitudinal coordinates in ascending order
+            zdata : array of floats, shape(n,)
+                value at each point in the triangulation
+                must be the same size of the mesh
+            grad : array of floats, shape(3,n)
+                precomputed gradient of zdata or if not provided,
+                the result of `self.gradient(zdata)`.
+
+        Returns:
+            zgrid : array of floats, shape(nj,ni)
+                interpolated values defined by gridded lons/lats
+        """
+        _emsg = {-1: "n, ni, nj, or iflgg is outside its valid range.",\
+                 -2: "nodes are collinear.",\
+                 -3: "extrapolation failed due to the uniform grid extending \
+                      too far beyond the triangulation boundary"}
+        
+        sigma = 0
+        iflgs = 0
+        iflgg = 0
+
+        lons, lats = self._check_integrity(lons, lats)
+
+        if zdata.size != self.npoints:
+            raise ValueError("data must be of size {}".format(self.npoints))
+
+        zdata = self._shuffle_field(zdata)
+        
+        nrow = len(lats)
+        
+        if grad is None:
+            grad = np.vstack(self.gradient_xyz(f))
+        
+        ff, ierr = _ssrfpack.unif(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
+                                  iflgs, sigma, nrow, lats, lons, iflgg, grad)
+
+        if ierr < 0:
+            raise ValueError(_emsg[ierr])
+
+        return ff
 
 
     def interpolate(self, lons, lats, zdata, order=1):
