@@ -208,6 +208,7 @@ class sTriangulation(object):
 
         # initialise with zero tension factors
         self.sigma = np.zeros(self.lptr.size)
+        self.iflgs = 0
 
         # Convert a triangulation to a triangle list form (human readable)
         # Uses an optimised version of trlist that returns triangles
@@ -401,7 +402,7 @@ class sTriangulation(object):
 
         # gradient = np.zeros((3,self.npoints), order='F', dtype=np.float32)
         sigma = self.sigma
-        iflgs = 0
+        iflgs = self.iflgs
 
         f = self._shuffle_field(f)
 
@@ -413,6 +414,7 @@ class sTriangulation(object):
                 break
 
         if ierr < 0:
+            import warnings
             warnings.warn('ierr={} in gradg\n{}'.format(ierr, _ier_codes[ierr]))
 
         return self._deshuffle_field(grad[0], grad[1], grad[2])
@@ -457,7 +459,7 @@ class sTriangulation(object):
         f, w = self._shuffle_field(f, w)
 
         sigma = self.sigma
-        iflgs = 0
+        iflgs = self.iflgs
         prnt = -1
 
         f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
@@ -527,11 +529,6 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
             sigma : array of floats, shape(6n-12)
                 tension factors applied to `zdata`.
         """
-        _emsg = {-1: "n, ni, nj, or iflgg is outside its valid range.",\
-                 -2: "nodes are collinear.",\
-                 -3: "extrapolation failed due to the uniform grid extending \
-                      too far beyond the triangulation boundary"}
-
         sigma = self.sigma
 
         if zdata.size != self.npoints:
@@ -554,11 +551,13 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         sigma, dsmax, ierr = _ssrfpack.getsig(self._x, self._y, self._z, zdata, self.lst, self.lptr, self.lend, grad, tol)
 
         if ierr == -1:
+            import warnings
             warnings.warn("sigma is not altered.")
         elif ierr == -2:
             raise ValueError("Duplicate nodes were encountered.")
 
         self.sigma = sigma
+        self.iflgs = int(sigma.any())
 
         return self.sigma
 
@@ -593,8 +592,8 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                       too far beyond the triangulation boundary"}
 
         sigma = self.sigma
-        iflgs = 0
-        iflgg = 0
+        iflgs = self.iflgs
+        iflgg = 1
 
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
@@ -669,9 +668,9 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                                       self._x, self._y, self._z, zdata,\
                                       self.lst, self.lptr, self.lend)
 
-        import warnings
 
         if ierr != 0:
+            import warnings
             warnings.warn('Warning some points may have errors - check error array\n'.format(ierr))
             zi[zierr < 0] = np.nan
 
