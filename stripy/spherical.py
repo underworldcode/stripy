@@ -96,6 +96,11 @@ class sTriangulation(object):
             lend(k) points to the last neighbor of node K.
             lst(lend(K)) < 0 if and only if K is a boundary node.
             The indices are 1-based (as in Fortran), not zero based (as in python).
+        sigma : array of floats, shape (6n-12,)
+            tension factors which preserves the local data properties on each
+            triangulation arc with the restriction that `sigma[i] <= 85`.
+            `sigma[i] = 85` if infinite tension is required on an arc.
+            `sigma[i] = 0` if the result should be cubic on the arc.
 
     Notes:
         Provided the nodes are randomly ordered, the algorithm
@@ -200,6 +205,9 @@ class sTriangulation(object):
         self.lst = lst
         self.lptr = lptr
         self.lend = lend
+
+        # initialise with zero tension factors
+        self.sigma = np.zeros(self.lptr.size)
 
         # Convert a triangulation to a triangle list form (human readable)
         # Uses an optimised version of trlist that returns triangles
@@ -392,7 +400,7 @@ class sTriangulation(object):
             raise ValueError('f should be the same size as mesh')
 
         # gradient = np.zeros((3,self.npoints), order='F', dtype=np.float32)
-        sigma = 0
+        sigma = self.sigma
         iflgs = 0
 
         f = self._shuffle_field(f)
@@ -448,7 +456,7 @@ class sTriangulation(object):
 
         f, w = self._shuffle_field(f, w)
 
-        sigma = 0
+        sigma = self.sigma
         iflgs = 0
         prnt = -1
 
@@ -498,6 +506,63 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return lons, lats
 
 
+    def update_tension_factors(self, zdata, tol=1e-3, grad=None):
+        """
+        Determines, for each triangulation arc, the smallest (nonnegative) tension factor `sigma`
+        such that the Hermite interpolatory tension spline, defined by `sigma` and specified
+        endpoint data, preserves local shape properties (monotonicity and convexity) of `zdata`.
+
+        Args:
+            zdata : array of floats, shape(n,)
+                value at each point in the triangulation
+                must be the same size of the mesh
+            tol : float
+                tolerance of each tension factor to its optimal value
+                when nonzero finite tension is necessary.
+            grad : array of floats, shape(3,n)
+                precomputed gradient of zdata or if not provided,
+                the result of `self.gradient(zdata)`.
+
+        Returns:
+            sigma : array of floats, shape(6n-12)
+                tension factors applied to `zdata`.
+        """
+        _emsg = {-1: "n, ni, nj, or iflgg is outside its valid range.",\
+                 -2: "nodes are collinear.",\
+                 -3: "extrapolation failed due to the uniform grid extending \
+                      too far beyond the triangulation boundary"}
+
+        sigma = self.sigma
+
+        if zdata.size != self.npoints:
+            raise ValueError("data must be of size {}".format(self.npoints))
+
+        p = self._permutation
+        zdata = self._shuffle_field(zdata)
+        
+        if grad is None:
+            grad = np.vstack(self.gradient_xyz(zdata))
+            grad = grad[:,p] # permute
+
+        elif grad.shape == (3,self.npoints):
+            grad = grad[:,p] # permute
+
+        else:
+            raise ValueError("gradient should be 'None' or of shape (3,n).")
+
+
+        sigma, dsmax, ierr = _ssrfpack.getsig(self._x, self._y, self._z, zdata, self.lst, self.lptr, self.lend, grad, tol)
+
+        if ierr == -1:
+            warnings.warn("sigma is not altered.")
+        elif ierr == -2:
+            raise ValueError("Duplicate nodes were encountered.")
+
+        self.sigma = sigma
+
+        return self.sigma
+
+
     def interpolate_to_grid(self, lons, lats, zdata, grad=None):
         """
         Interplates the data values to a uniform grid defined by
@@ -527,7 +592,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                  -3: "extrapolation failed due to the uniform grid extending \
                       too far beyond the triangulation boundary"}
 
-        sigma = 0
+        sigma = self.sigma
         iflgs = 0
         iflgg = 0
 
@@ -548,7 +613,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
             grad = grad[:,p] # permute
 
         else:
-            raise ValueError("gradient should be 'None' or shape (3,n).")
+            raise ValueError("gradient should be 'None' or of shape (3,n).")
 
 
         ff, ierr = _ssrfpack.unif(self._x, self._y, self._z, zdata, self.lst, self.lptr, self.lend,\
