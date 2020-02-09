@@ -408,8 +408,9 @@ class sTriangulation(object):
 
         ierr = 1
         while ierr == 1:
-            grad, ierr = _ssrfpack.gradg(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
-                                   iflgs, sigma, nit, tol)
+            grad, ierr = _ssrfpack.gradg(self._x, self._y, self._z, f,\
+                                         self.lst, self.lptr, self.lend,\
+                                         iflgs, sigma, nit, tol)
             if not guarantee_convergence:
                 break
 
@@ -462,7 +463,8 @@ class sTriangulation(object):
         iflgs = self.iflgs
         prnt = -1
 
-        f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f, self.lst, self.lptr, self.lend,\
+        f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f,\
+                                              self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol, prnt)
 
         import warnings
@@ -508,6 +510,29 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return lons, lats
 
 
+    def _check_gradient(self, zdata, grad):
+        """
+        Error checking on the gradient operator
+        `grad` must be (3,n) array that is permuted
+        iflgg = 0 if gradient should be estimated
+        iflgg = 1 if gradient is provided
+        """
+        p = self._permutation
+
+        if grad is None:
+            grad = np.empty((3,self.npoints))
+            iflgg = 0
+
+        elif grad.shape == (3,self.npoints):
+            grad = grad[:,p] # permute
+            iflgg = 1
+
+        else:
+            raise ValueError("gradient should be 'None' or of shape (3,n).")
+
+        return grad, iflgg
+
+
     def update_tension_factors(self, zdata, tol=1e-3, grad=None):
         """
         Determines, for each triangulation arc, the smallest (nonnegative) tension factor `sigma`
@@ -536,7 +561,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
         p = self._permutation
         zdata = self._shuffle_field(zdata)
-        
+
         if grad is None:
             grad = np.vstack(self.gradient_xyz(zdata))
             grad = grad[:,p] # permute
@@ -547,8 +572,9 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         else:
             raise ValueError("gradient should be 'None' or of shape (3,n).")
 
-
-        sigma, dsmax, ierr = _ssrfpack.getsig(self._x, self._y, self._z, zdata, self.lst, self.lptr, self.lend, grad, tol)
+        sigma, dsmax, ierr = _ssrfpack.getsig(self._x, self._y, self._z, zdata,\
+                                              self.lst, self.lptr, self.lend,\
+                                              grad, tol)
 
         if ierr == -1:
             import warnings
@@ -593,30 +619,20 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
         sigma = self.sigma
         iflgs = self.iflgs
-        iflgg = 1
 
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
-        p = self._permutation
-
         zdata = self._shuffle_field(zdata)
+        grad, iflgg = self._check_gradient(zdata, grad)
         
         nrow = len(lats)
-        
-        if grad is None:
-            grad = np.vstack(self.gradient_xyz(zdata))
-            grad = grad[:,p] # permute
-
-        elif grad.shape == (3,self.npoints):
-            grad = grad[:,p] # permute
-
-        else:
-            raise ValueError("gradient should be 'None' or of shape (3,n).")
 
 
-        ff, ierr = _ssrfpack.unif(self._x, self._y, self._z, zdata, self.lst, self.lptr, self.lend,\
-                                  iflgs, sigma, nrow, lats, lons, iflgg, grad)
+        ff, ierr = _ssrfpack.unif(self._x, self._y, self._z, zdata,\
+                                  self.lst, self.lptr, self.lend,\
+                                  iflgs, sigma, nrow, lats, lons,\
+                                  iflgg, grad)
 
         if ierr < 0:
             raise ValueError(_emsg[ierr])
@@ -624,7 +640,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return ff
 
 
-    def interpolate(self, lons, lats, zdata, order=1):
+    def interpolate(self, lons, lats, zdata, order=1, grad=None):
         """
         Base class to handle nearest neighbour, linear, and cubic interpolation.
         Given a triangulation of a set of nodes on the unit sphere, along with data
@@ -653,21 +669,34 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         """
 
 
-        shape = np.array(lons).shape
+        shape = np.shape(lons)
 
         lons, lats = self._check_integrity(lons, lats)
 
-        if order not in [0,1,3]:
-            raise ValueError("order must be 0, 1, or 3")
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
         zdata = self._shuffle_field(zdata)
 
-        zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
-                                      self._x, self._y, self._z, zdata,\
-                                      self.lst, self.lptr, self.lend)
+        if order == 0:
+            zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
+                                          self._x, self._y, self._z, zdata,\
+                                          self.lst, self.lptr, self.lend)
+        elif order == 1:
+            zi, zierr, ierr = _ssrfpack.interp_linear(lats, lons,\
+                                          self._x, self._y, self._z, zdata,\
+                                          self.lst, self.lptr, self.lend)
+        elif order == 3:
+            sigma = self.sigma
+            iflgs = self.iflgs
+            grad, iflgg = self._check_gradient(zdata, grad)
 
+            zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,\
+                                          self._x, self._y, self._z, zdata,\
+                                          self.lst, self.lptr, self.lend,\
+                                          iflgs, sigma, iflgg, grad)
+        else:
+            raise ValueError("order must be 0, 1, or 3")
 
         if ierr != 0:
             import warnings
@@ -691,12 +720,12 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         """
         return self.interpolate(lons, lats, data, order=1)
 
-    def interpolate_cubic(self, lons, lats, data):
+    def interpolate_cubic(self, lons, lats, data, grad=None):
         """
         Interpolate using cubic spline approximation
         Returns the same as `interpolate(lons,lats,data,order=3)`
         """
-        return self.interpolate(lons, lats, data, order=3)
+        return self.interpolate(lons, lats, data, order=3, grad=grad)
 
 
     def nearest_vertex(self, lons, lats):
