@@ -174,6 +174,10 @@ class Triangulation(object):
         self.lptr = lptr
         self.lend = lend
 
+        # initialise with zero tension factors
+        self.sigma = np.zeros(self.lptr.size)
+        self.iflgs = 0
+
         # Convert a triangulation to a triangle list form (human readable)
         # Uses an optimised version of trlist that returns triangles
         # without neighbours or arc indices
@@ -254,6 +258,88 @@ class Triangulation(object):
         """
         p = self._permutation
         return p[simplices]
+
+
+    def _check_gradient(self, zdata, grad):
+        """
+        Error checking on the gradient operator
+        `grad` must be (2,n) array that is permuted
+
+
+        Notes:
+            It appears `iflgg` has no bearing on whether
+            the local derivatives are estimated. Safer to
+            find the global derivative for every interpolant
+        """
+        p = self._permutation
+        iflgg = False
+
+        if grad is None:
+            grad = np.vstack(self.gradient(zdata))
+            grad = grad[:,p]
+
+        elif grad.shape == (2,self.npoints):
+            grad = grad[:,p] # permute
+
+        else:
+            raise ValueError("gradient should be 'None' or of shape (2,n).")
+
+        return grad, iflgg
+
+
+    def update_tension_factors(self, zdata, tol=1e-3, grad=None):
+        """
+        Determines, for each triangulation arc, the smallest (nonnegative) tension factor `sigma`
+        such that the Hermite interpolatory tension spline, defined by `sigma` and specified
+        endpoint data, preserves local shape properties (monotonicity and convexity) of `zdata`.
+
+        Args:
+            zdata : array of floats, shape(n,)
+                value at each point in the triangulation
+                must be the same size of the mesh
+            tol : float
+                tolerance of each tension factor to its optimal value
+                when nonzero finite tension is necessary.
+            grad : array of floats, shape(3,n)
+                precomputed gradient of zdata or if not provided,
+                the result of `self.gradient(zdata)`.
+
+        Returns:
+            sigma : array of floats, shape(6n-12)
+                tension factors applied to `zdata`.
+        """
+        sigma = self.sigma
+
+        if zdata.size != self.npoints:
+            raise ValueError("data must be of size {}".format(self.npoints))
+
+        p = self._permutation
+        zdata = self._shuffle_field(zdata)
+
+        if grad is None:
+            grad = np.vstack(self.gradient(zdata))
+            grad = grad[:,p] # permute
+
+        elif grad.shape == (3,self.npoints):
+            grad = grad[:,p] # permute
+
+        else:
+            raise ValueError("gradient should be 'None' or of shape (3,n).")
+
+        sigma, dsmax, ierr = _ssrfpack.getsig(self._x, self._y, zdata,\
+                                              self.lst, self.lptr, self.lend,\
+                                              grad, tol)
+
+        if ierr == -1:
+            import warnings
+            warnings.warn("sigma is not altered.")
+        elif ierr == -2:
+            raise ValueError("Duplicate nodes were encountered.")
+
+        self.sigma = sigma
+        self.iflgs = int(sigma.any())
+
+        return self.sigma
 
 
     def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
@@ -399,7 +485,59 @@ class Triangulation(object):
         return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1]), ierr
 
 
-    def interpolate(self, xi, yi, zdata, order=1):
+    def interpolate_to_grid(self, xi, yi, zdata, grad=None):
+        """
+        Interplates the data values to a uniform grid defined by
+        longitude and latitudinal arrays. The interpolant is once
+        continuously differentiable. Extrapolation is performed at
+        grid points exterior to the triangulation when the nodes
+        do not cover the entire sphere.
+
+        Args:
+            lons : array of floats, shape (ni,)
+                longitudinal coordinates in ascending order
+            lats : array of floats, shape (nj,)
+                latitudinal coordinates in ascending order
+            zdata : array of floats, shape(n,)
+                value at each point in the triangulation
+                must be the same size of the mesh
+            grad : array of floats, shape(3,n)
+                precomputed gradient of zdata or if not provided,
+                the result of `self.gradient(zdata)`.
+
+        Returns:
+            zgrid : array of floats, shape(nj,ni)
+                interpolated values defined by gridded lons/lats
+        """
+        _emsg = {-1: "n, ni, nj, or iflgg is outside its valid range.",\
+                 -2: "nodes are collinear.",\
+                 -3: "extrapolation failed due to the uniform grid extending \
+                      too far beyond the triangulation boundary"}
+
+        sigma = self.sigma
+        iflgs = self.iflgs
+
+        if zdata.size != self.npoints:
+            raise ValueError("data must be of size {}".format(self.npoints))
+
+        zdata = self._shuffle_field(zdata)
+        grad, iflgg = self._check_gradient(zdata, grad)
+        
+        nrow = len(yi)
+
+
+        ff, ierr = _ssrfpack.unif(self._x, self._y, zdata,\
+                                  self.lst, self.lptr, self.lend,\
+                                  iflgs, sigma, nrow, xi, yi,\
+                                  iflgg, grad)
+
+        if ierr < 0:
+            raise ValueError(_emsg[ierr])
+
+        return ff
+
+
+    def interpolate(self, xi, yi, zdata, order=1, grad=None):
         """
         Base class to handle nearest neighbour, linear, and cubic interpolation.
         Given a triangulation of a set of nodes and values at the nodes,
@@ -425,180 +563,65 @@ class Triangulation(object):
             err : int / array of ints, shape (l,)
                 whether interpolation (0), extrapolation (1) or error (other)
         """
+        shape = np.shape(xi)
+
+        if zdata.size != self.npoints:
+            raise ValueError('zdata should be same size as mesh')
+
+        zdata = self._shuffle_field(zdata)
 
         if order == 0:
-            return self.interpolate_nearest(xi, yi, zdata)
+            ierr = 0
+            ist = np.ones(shape, dtype=np.int)
+            ist, dist, zierr = _tripack.nearnds(xi, yi, ist, \
+                                                self._x, self._y, \
+                                                self.lst, self.lptr, self.lend)
+            zi = zdata[ist - 1]
+
         elif order == 1:
-            return self.interpolate_linear(xi, yi, zdata)
+            zi, zierr, ierr = _srfpack.interp_linear(xi, yi,\
+                                                self._x,self._y, zdata, \
+                                                self.lst, self.lptr, self.lend)
         elif order == 3:
-            return self.interpolate_cubic(xi, yi, zdata)
+            sigma = self.sigma
+            iflgs = self.iflgs
+            grad, iflgg = self._check_gradient(zdata, grad)
+
+            zi, zierr, ierr = _srfpack.interp_cubic(xi, yi, \
+                                                    self._x, self._y, zdata, \
+                                                    self.lst,self.lptr,self.lend,\
+                                                    iflgs, sigma, iflgg, grad)
         else:
             raise ValueError("order must be 0, 1, or 3")
+
+        if ierr != 0:
+            import warnings
+            warnings.warn('Warning some points may have errors - check error array\n'.format(ierr))
+            zi[zierr < 0] = np.nan
+
+        return zi.reshape(shape), zierr.reshape(shape)
 
 
     def interpolate_nearest(self, xi, yi, zdata):
         """
-        Nearest-neighbour interpolation.
-        Calls nearnd to find the index of the closest neighbours to xi,yi
-
-        Args:
-            xi : float / array of floats, shape (l,)
-                x coordinates on the Cartesian plane
-            yi : float / array of floats, shape (l,)
-                y coordinates on the Cartesian plane
-
-        Returns:
-            zi : float / array of floats, shape (l,)
-                nearest-neighbour interpolated value(s) of (xi,yi)
-            err : int / array of ints, shape (l,)
-                whether interpolation (0), extrapolation (1) or error (other)
+        Interpolate using nearest-neighbour approximation
+        Returns the same as `interpolate(xi,yi,zdata,order=0)`
         """
-        if zdata.size != self.npoints:
-            raise ValueError('zdata should be same size as mesh')
-
-        xi = np.atleast_1d(xi)
-        yi = np.atleast_1d(yi)
-
-        size = xi.size
-
-        zdata = self._shuffle_field(zdata)
-
-        zierr = np.zeros(size, dtype=np.int32)
-        ist = np.ones(size, dtype=np.int32)
-        ist, dist = _tripack.nearnds(xi, yi, ist, self._x, self._y,
-                                     self.lst, self.lptr, self.lend)
-
-        # check if interpolation or extrapolation
-        hull_idx = self.convex_hull()
-        hull_pts = self.points[hull_idx]
-        hull_x = hull_pts[:,0]
-        hull_y = hull_pts[:,1]
-
-        for i in range(0, zierr.size):
-            vector_det = (hull_x[1:] - hull_x[:-1])*(yi[i] - hull_y[:-1]) - \
-                         (hull_y[1:] - hull_y[:-1])*(xi[i] - hull_x[:-1])
-
-            # if vector_det > 0: within convex hull
-            # if vector_det = 0: on top of convex hull
-            # if vector_det < 0: outside convex hull
-            zierr[i] = (vector_det < 0).any()
-
-        return np.squeeze(zdata[ist - 1]), zierr
-
+        return self.interpolate(xi, yi, zdata, order=0)
 
     def interpolate_linear(self, xi, yi, zdata):
         """
-        Piecewise linear interpolation / extrapolation to arbitrary point(s).
-        The method is fast, but has only \\(C^0\\) continuity.
-
-        Args:
-            xi : float / array of floats, shape (l,)
-                x coordinates on the Cartesian plane
-            yi : float / array of floats, shape (l,)
-                y coordinates on the Cartesian plane
-            zdata : array of floats, shape (n,)
-                value at each point in the triangulation
-                must be the same size of the mesh
-
-        Returns:
-            zi : float / array of floats, shape (l,)
-                interpolated value(s) of (xi,yi)
-            err : int / array of ints, shape (l,)
-                whether interpolation (0), extrapolation (1) or error (other)
+        Interpolate using linear approximation
+        Returns the same as `interpolate(xi,yi,zdata,order=1)`
         """
+        return self.interpolate(xi, yi, zdata, order=1)
 
-        if zdata.size != self.npoints:
-            raise ValueError('zdata should be same size as mesh')
-
-        xi = np.atleast_1d(xi)
-        yi = np.atleast_1d(yi)
-
-        size = xi.size
-
-        zi = np.empty(size)
-        zierr = np.empty(size, dtype=np.int)
-
-        zdata = self._shuffle_field(zdata)
-
-        # iterate
-        for i in range(0, size):
-            ist = np.abs(self._x - xi[i]).argmin() + 1
-            zi[i], zierr[i] = _srfpack.intrc0(xi[i], yi[i], self._x, self._y, zdata,\
-                                       self.lst, self.lptr, self.lend, ist)
-
-        return np.squeeze(zi), zierr
-
-
-    def interpolate_cubic(self, xi, yi, zdata, gradz=None, derivatives=False):
+    def interpolate_cubic(self, xi, yi, zdata, grad=None):
         """
-        Cubic spline interpolation / extrapolation to arbirary point(s).
-        This method has \\(C^1\\) continuity.
-
-        Args:
-            xi : float / array of floats, shape (l,)
-                x coordinates on the Cartesian plane
-            yi : float / array of floats, shape (l,)
-                y coordinates on the Cartesian plane
-            zdata : array of floats, shape (n,)
-                value at each point in the triangulation
-                must be the same size of the mesh
-            gradz : array of floats, shape (2,n) (optional)
-                derivative at each point in the triangulation in the
-                - x-direction (first row),
-                - y-direction (second row)
-                if not supplied it is evaluated using `gradient()`
-            derivatives : bool (default=False)
-                optionally returns \\( \\frac{df}{dx} , \\frac{df}{dy} \\)
-                the first derivatives at point(s) (xi,yi)
-
-        Returns:
-            zi : float / array of floats, shape (l,)
-                interpolated value(s) of (xi,yi)
-            err : int / array of ints, shape (l,)
-                whether interpolation (0), extrapolation (1) or error (other)
-            dzx, dzy (optional) : float, array of floats, shape(l,)
-                first partial derivatives \\( \\partial f \\partial x , \\partial f \\partial y \\)
-                at (xi,yi)
+        Interpolate using cubic spline approximation
+        Returns the same as `interpolate(xi,yi,zdata,order=3)`
         """
-
-        if zdata.size != self.npoints:
-            raise ValueError('zdata should be same size as mesh')
-
-        if type(gradz) == type(None):
-            gradX, gradY = self.gradient(zdata)
-            gradX, gradY = self._shuffle_field(gradX, gradY)
-        elif np.array(gradz).shape == (2,self.npoints):
-            gradX, gradY = self._shuffle_field(gradz[0], gradz[1])
-        else:
-            raise ValueError("gradz must be of shape {}".format((2,self.npoints)))
-
-        iflgs = 0
-        dflag = 1
-        sigma = 0.0
-
-
-        xi = np.atleast_1d(xi)
-        yi = np.atleast_1d(yi)
-
-        size = xi.size
-
-        zi = np.empty(size)
-        dzx = np.empty(size)
-        dzy = np.empty(size)
-        zierr = np.empty(size, dtype=np.int)
-
-        gradZ = np.vstack([gradX, gradY])
-        zdata = self._shuffle_field(zdata)
-
-        for i in range(0, size):
-            ist = np.abs(self._x - xi[i]).argmin() + 1
-            zi[i], dzx[i], dzy[i], zierr[i] = _srfpack.intrc1(xi[i], yi[i], self._x, self._y, zdata,\
-                               self.lst, self.lptr, self.lend, iflgs, sigma, gradZ, dflag, ist)
-
-        if derivatives:
-            return np.squeeze(zi), zierr, (dzx, dzy)
-        else:
-            return np.squeeze(zi), zierr
+        return self.interpolate(xi, yi, zdata, order=3, grad=grad)
 
 
     def neighbour_simplices(self):
