@@ -313,22 +313,13 @@ class Triangulation(object):
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
-        p = self._permutation
         zdata = self._shuffle_field(zdata)
+        grad, iflgg = self._check_gradient(zdata, grad)
 
-        if grad is None:
-            grad = np.vstack(self.gradient(zdata))
-            grad = grad[:,p] # permute
 
-        elif grad.shape == (3,self.npoints):
-            grad = grad[:,p] # permute
-
-        else:
-            raise ValueError("gradient should be 'None' or of shape (3,n).")
-
-        sigma, dsmax, ierr = _ssrfpack.getsig(self._x, self._y, zdata,\
-                                              self.lst, self.lptr, self.lend,\
-                                              grad, tol)
+        sigma, dsmax, ierr = _srfpack.getsig(self._x, self._y, zdata,\
+                                             self.lst, self.lptr, self.lend,\
+                                             grad, tol)
 
         if ierr == -1:
             import warnings
@@ -383,8 +374,8 @@ class Triangulation(object):
             raise ValueError('f should be the same size as mesh')
 
         gradient = np.zeros((2,self.npoints), order='F', dtype=np.float32)
-        sigma = 0
-        iflgs = 0
+        sigma = self.sigma
+        iflgs = self.iflgs
 
         f = self._shuffle_field(f)
 
@@ -461,8 +452,8 @@ class Triangulation(object):
 
         f, w = self._shuffle_field(f, w)
 
-        sigma = 0
-        iflgs = 0
+        sigma = self.sigma
+        iflgs = self.iflgs
 
         f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol)
@@ -522,14 +513,17 @@ class Triangulation(object):
 
         zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
-        
+
+        sflag = False
+        sval = 0
+        ncc = 0
+        lcc = 0
         nrow = len(yi)
 
-
-        ff, ierr = _ssrfpack.unif(self._x, self._y, zdata,\
-                                  self.lst, self.lptr, self.lend,\
-                                  iflgs, sigma, nrow, xi, yi,\
-                                  iflgg, grad)
+        ff, ierr = _srfpack.unif(ncc, lcc, self._x, self._y, zdata, grad,\
+                                 self.lst, self.lptr, self.lend,\
+                                 iflgs, sigma, nrow, xi, yi,\
+                                 sflag, sval)
 
         if ierr < 0:
             raise ValueError(_emsg[ierr])
