@@ -683,7 +683,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                                           self._x, self._y, self._z, zdata,\
                                           self.lst, self.lptr, self.lend)
         elif order == 1:
-            zi, zierr, ierr = _ssrfpack.interp_linear(lats, lons,\
+            zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
                                           self._x, self._y, self._z, zdata,\
                                           self.lst, self.lptr, self.lend)
         elif order == 3:
