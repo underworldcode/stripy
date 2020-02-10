@@ -518,7 +518,7 @@ class Triangulation(object):
         sval = 0
         ncc = 0
         lcc = 0
-        nrow = len(yi)
+        nrow = len(xi)
 
         ff, ierr = _srfpack.unif(ncc, lcc, self._x, self._y, zdata, grad,\
                                  self.lst, self.lptr, self.lend,\
@@ -528,7 +528,7 @@ class Triangulation(object):
         if ierr < 0:
             raise ValueError(_emsg[ierr])
 
-        return ff
+        return ff.T
 
 
     def interpolate(self, xi, yi, zdata, order=1, grad=None):
