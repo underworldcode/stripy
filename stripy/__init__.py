@@ -21,6 +21,7 @@ from .spherical import sTriangulation
 from .cartesian import Triangulation
 from . import spherical_meshes
 from . import cartesian_meshes
+from . import hybrid_st_meshes
 from . import documentation
 
 ## The following functions are general across sTriangulations and Triangulations

@@ -4140,30 +4140,56 @@ function nearnd ( xp, yp, ist, n, x, y, list, lptr, lend, dsq )
 
   return
 end
-subroutine nearnds ( l, xp, yp, ist, n, x, y, list, lptr, lend, dsqs )
+subroutine nearnds ( l, xp, yp, ist, n, x, y, list, lptr, lend, dsqs, ier )
 
   implicit none
 
   integer ( kind = 4 ) l
   real ( kind = 8 ) xp(l)
   real ( kind = 8 ) yp(l)
-  integer ( kind = 4 ) ist(l)
+  integer ( kind = 4 ) ist(l), ier(l)
   integer ( kind = 4 ) n
   real ( kind = 8 ) x(n)
   real ( kind = 8 ) y(n)
   integer ( kind = 4 ) list(6*(n-2))
   integer ( kind = 4 ) lptr(6*(n-2))
   integer ( kind = 4 ) lend(n)
-  real ( kind = 8 ) dsq
   real ( kind = 8 ) dsqs(l)
   integer ( kind = 4 ) nearnd
   integer ( kind = 4 ) i
-  integer ( kind = 4 ) nn
+  integer ( kind = 4 ) nn, nb, na, nt
+  integer ( kind = 4 ) nodes(n)
+  real ( kind = 8 ), allocatable :: hull_x(:), hull_y(:), vector_det(:)
+  real ( kind = 8 ), allocatable :: hull_x1(:), hull_y1(:)
+
+  call bnodes( n, list, lptr, lend, nodes, nb, na, nt )
+
+
+  allocate(hull_x(nb))
+  allocate(hull_y(nb))
+  allocate(hull_x1(nb))
+  allocate(hull_y1(nb))
+  allocate(vector_det(nb))
+
+  hull_x = x(nodes(1:nb))
+  hull_y = y(nodes(1:nb))
+  hull_x1 = (hull_x(2:nb) - hull_x(1:nb-1))
+  hull_y1 = (hull_y(2:nb) - hull_y(1:nb-1))
 
   do i = 1, l
-    nn = nearnd(xp(i), yp(i), ist(i), n, x, y, list, lptr, lend, dsq)
-    dsqs(i) = dsq
+    nn = nearnd(xp(i), yp(i), ist(i), n, x, y, list, lptr, lend, dsqs(i))
     ist(i) = nn
+
+    ! Check if interpolation or extrapolation
+    ! if vector_det > 0: within convex hull
+    ! if vector_det = 0: on top of convex hull
+    ! if vector_det < 0: outside convex hull
+    vector_det = hull_x1*(yp(i) - hull_y(1:nb-1)) - &
+                 hull_y1*(xp(i) - hull_x(1:nb-1))
+
+    if ( any(vector_det < 0) ) then
+      ier(i) = 1
+    end if
   end do
 
   return

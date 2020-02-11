@@ -10,7 +10,7 @@ import stripy
 
 def test_warped_xy_mesh_sphere():
 
-    mesh = stripy.cartesian_meshes.warped_xy_mesh_sphere(res_lon=93, res_lat=28, epsilon=0.001)
+    mesh = stripy.hybrid_st_meshes.warped_xy_mesh_sphere(res_lon=93, res_lat=28, epsilon=0.001)
 
     r_array = mesh.XX**2 + mesh.YY**2 + mesh.ZZ**2
 
