@@ -247,66 +247,7 @@ class random_mesh(_cartesian.Triangulation):
 
         super(random_mesh, self).__init__(x, y, permute=True, tree=tree)
 
-        return
-
-
-
-## The following are cartesian meshes warped into 3D
-## such that the original x,y directions provide a natural means
-## of navigating the surface.
-##
-## These are useful for wrapping textures on surfaces
-##
-## Sphere (with x/y -&gt; lon/lat) and singular at the poles
-## which cannot be meshed with sTriangulation
-##
-## Currently: XX,YY,ZZ are the R3 coords of the points
-##            SS, TT are the normalised coordinates on the manifold
-##            x,y are the original point locations
-##            areas etc all refer to the undistorted mesh ( ... )
-
-
-class warped_xy_mesh_sphere(_cartesian.Triangulation):
-    &#34;&#34;&#34;
-    A lon/lat mesh on the sphere which, due to the poles, cannot be
-    meshed directly with sTriangulation routines.
-
-    This is a hybrid mesh which is calculated in a flat projection
-    that corresponds to cartopy.crs.PlateCarree() but has associated
-    (x,y,z) coordinates.
-
-    The primary use case is visualisation with texture maps where the
-    (s,t) coordinate system that is required on the surface has to map
-    correctly for an (x,y) array of pixels.
-    &#34;&#34;&#34;
-
-    def __init__(self, res_lon, res_lat, epsilon=0.001):
-
-        import numpy as np
-
-        lon = np.linspace(0.0, 2.0*np.pi, res_lon, endpoint=True)
-        lat = np.linspace(epsilon,  np.pi-epsilon,  res_lat, endpoint=True)
-        lons, lats = np.meshgrid(lon, lat)
-        lons = lons.reshape(-1)
-        lats = lats.reshape(-1)
-
-        XX = np.cos(lons) * np.sin(lats)
-        YY = np.sin(lons) * np.sin(lats)
-        ZZ = np.cos(lats)
-
-        SS = lons / (2.0*np.pi)
-        TT = lats / np.pi
-
-        super(warped_xy_mesh_sphere, self).__init__(x=SS, y=TT, permute=True, tree=False)
-
-        self.XX = XX
-        self.YY = YY
-        self.ZZ = ZZ
-
-        self.SS = SS
-        self.TT = TT
-
-        ## how should we re-define things like self.areas, self.tree ??</code></pre>
+        return</code></pre>
 </details>
 </section>
 <section>
@@ -413,6 +354,7 @@ increasing radius from the midpoint of the extent.</p></section>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_cubic" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_cubic">interpolate_cubic</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_linear" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_nearest" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_to_grid" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_to_grid">interpolate_to_grid</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.join" href="cartesian.html#stripy.cartesian.Triangulation.join">join</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.nearest_vertex" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertex">nearest_vertex</a></code></li>
@@ -426,6 +368,7 @@ increasing radius from the midpoint of the extent.</p></section>
 <li><code><a title="stripy.cartesian.Triangulation.simplices" href="cartesian.html#stripy.cartesian.Triangulation.simplices">simplices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.smoothing" href="cartesian.html#stripy.cartesian.Triangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.uniformly_refine_triangulation" href="cartesian.html#stripy.cartesian.Triangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.update_tension_factors" href="cartesian.html#stripy.cartesian.Triangulation.update_tension_factors">update_tension_factors</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.x" href="cartesian.html#stripy.cartesian.Triangulation.x">x</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.y" href="cartesian.html#stripy.cartesian.Triangulation.y">y</a></code></li>
 </ul>
@@ -507,6 +450,7 @@ as the location of points will not be the same on all processors.</p></section>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_cubic" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_cubic">interpolate_cubic</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_linear" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_nearest" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_to_grid" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_to_grid">interpolate_to_grid</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.join" href="cartesian.html#stripy.cartesian.Triangulation.join">join</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.nearest_vertex" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertex">nearest_vertex</a></code></li>
@@ -520,6 +464,7 @@ as the location of points will not be the same on all processors.</p></section>
 <li><code><a title="stripy.cartesian.Triangulation.simplices" href="cartesian.html#stripy.cartesian.Triangulation.simplices">simplices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.smoothing" href="cartesian.html#stripy.cartesian.Triangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.uniformly_refine_triangulation" href="cartesian.html#stripy.cartesian.Triangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.update_tension_factors" href="cartesian.html#stripy.cartesian.Triangulation.update_tension_factors">update_tension_factors</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.x" href="cartesian.html#stripy.cartesian.Triangulation.x">x</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.y" href="cartesian.html#stripy.cartesian.Triangulation.y">y</a></code></li>
 </ul>
@@ -607,6 +552,7 @@ Creates a set of points around the extent of the domain.</p></section>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_cubic" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_cubic">interpolate_cubic</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_linear" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_nearest" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_to_grid" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_to_grid">interpolate_to_grid</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.join" href="cartesian.html#stripy.cartesian.Triangulation.join">join</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.nearest_vertex" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertex">nearest_vertex</a></code></li>
@@ -620,6 +566,7 @@ Creates a set of points around the extent of the domain.</p></section>
 <li><code><a title="stripy.cartesian.Triangulation.simplices" href="cartesian.html#stripy.cartesian.Triangulation.simplices">simplices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.smoothing" href="cartesian.html#stripy.cartesian.Triangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.uniformly_refine_triangulation" href="cartesian.html#stripy.cartesian.Triangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.update_tension_factors" href="cartesian.html#stripy.cartesian.Triangulation.update_tension_factors">update_tension_factors</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.x" href="cartesian.html#stripy.cartesian.Triangulation.x">x</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.y" href="cartesian.html#stripy.cartesian.Triangulation.y">y</a></code></li>
 </ul>
@@ -711,6 +658,7 @@ along x and y directions defined by extent.</p></section>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_cubic" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_cubic">interpolate_cubic</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_linear" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.interpolate_nearest" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.interpolate_to_grid" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_to_grid">interpolate_to_grid</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.join" href="cartesian.html#stripy.cartesian.Triangulation.join">join</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.nearest_vertex" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertex">nearest_vertex</a></code></li>
@@ -724,109 +672,7 @@ along x and y directions defined by extent.</p></section>
 <li><code><a title="stripy.cartesian.Triangulation.simplices" href="cartesian.html#stripy.cartesian.Triangulation.simplices">simplices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.smoothing" href="cartesian.html#stripy.cartesian.Triangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.uniformly_refine_triangulation" href="cartesian.html#stripy.cartesian.Triangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.x" href="cartesian.html#stripy.cartesian.Triangulation.x">x</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.y" href="cartesian.html#stripy.cartesian.Triangulation.y">y</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
-<dt id="stripy.cartesian_meshes.warped_xy_mesh_sphere"><code class="flex name class">
-<span>class <span class="ident">warped_xy_mesh_sphere</span></span>
-<span>(</span><span>res_lon, res_lat, epsilon=0.001)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>A lon/lat mesh on the sphere which, due to the poles, cannot be
-meshed directly with sTriangulation routines.</p>
-<p>This is a hybrid mesh which is calculated in a flat projection
-that corresponds to cartopy.crs.PlateCarree() but has associated
-(x,y,z) coordinates.</p>
-<p>The primary use case is visualisation with texture maps where the
-(s,t) coordinate system that is required on the surface has to map
-correctly for an (x,y) array of pixels.</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class warped_xy_mesh_sphere(_cartesian.Triangulation):
-    &#34;&#34;&#34;
-    A lon/lat mesh on the sphere which, due to the poles, cannot be
-    meshed directly with sTriangulation routines.
-
-    This is a hybrid mesh which is calculated in a flat projection
-    that corresponds to cartopy.crs.PlateCarree() but has associated
-    (x,y,z) coordinates.
-
-    The primary use case is visualisation with texture maps where the
-    (s,t) coordinate system that is required on the surface has to map
-    correctly for an (x,y) array of pixels.
-    &#34;&#34;&#34;
-
-    def __init__(self, res_lon, res_lat, epsilon=0.001):
-
-        import numpy as np
-
-        lon = np.linspace(0.0, 2.0*np.pi, res_lon, endpoint=True)
-        lat = np.linspace(epsilon,  np.pi-epsilon,  res_lat, endpoint=True)
-        lons, lats = np.meshgrid(lon, lat)
-        lons = lons.reshape(-1)
-        lats = lats.reshape(-1)
-
-        XX = np.cos(lons) * np.sin(lats)
-        YY = np.sin(lons) * np.sin(lats)
-        ZZ = np.cos(lats)
-
-        SS = lons / (2.0*np.pi)
-        TT = lats / np.pi
-
-        super(warped_xy_mesh_sphere, self).__init__(x=SS, y=TT, permute=True, tree=False)
-
-        self.XX = XX
-        self.YY = YY
-        self.ZZ = ZZ
-
-        self.SS = SS
-        self.TT = TT</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></li>
-</ul>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></b></code>:
-<ul class="hlist">
-<li><code><a title="stripy.cartesian.Triangulation.areas" href="cartesian.html#stripy.cartesian.Triangulation.areas">areas</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.centroid_refine_triangulation_by_triangles" href="cartesian.html#stripy.cartesian.Triangulation.centroid_refine_triangulation_by_triangles">centroid_refine_triangulation_by_triangles</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.centroid_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.centroid_refine_triangulation_by_vertices">centroid_refine_triangulation_by_vertices</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.containing_simplex_and_bcc" href="cartesian.html#stripy.cartesian.Triangulation.containing_simplex_and_bcc">containing_simplex_and_bcc</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.containing_triangle" href="cartesian.html#stripy.cartesian.Triangulation.containing_triangle">containing_triangle</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.convex_hull" href="cartesian.html#stripy.cartesian.Triangulation.convex_hull">convex_hull</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.edge_lengths" href="cartesian.html#stripy.cartesian.Triangulation.edge_lengths">edge_lengths</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles" href="cartesian.html#stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles">edge_refine_triangulation_by_triangles</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices">edge_refine_triangulation_by_vertices</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.face_midpoints" href="cartesian.html#stripy.cartesian.Triangulation.face_midpoints">face_midpoints</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.gradient" href="cartesian.html#stripy.cartesian.Triangulation.gradient">gradient</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.gradient_local" href="cartesian.html#stripy.cartesian.Triangulation.gradient_local">gradient_local</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.identify_segments" href="cartesian.html#stripy.cartesian.Triangulation.identify_segments">identify_segments</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.identify_vertex_neighbours" href="cartesian.html#stripy.cartesian.Triangulation.identify_vertex_neighbours">identify_vertex_neighbours</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.identify_vertex_triangles" href="cartesian.html#stripy.cartesian.Triangulation.identify_vertex_triangles">identify_vertex_triangles</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.interpolate" href="cartesian.html#stripy.cartesian.Triangulation.interpolate">interpolate</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.interpolate_cubic" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_cubic">interpolate_cubic</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.interpolate_linear" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_linear">interpolate_linear</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.interpolate_nearest" href="cartesian.html#stripy.cartesian.Triangulation.interpolate_nearest">interpolate_nearest</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.join" href="cartesian.html#stripy.cartesian.Triangulation.join">join</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.midpoint_refine_triangulation_by_vertices">midpoint_refine_triangulation_by_vertices</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.nearest_vertex" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertex">nearest_vertex</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.nearest_vertices" href="cartesian.html#stripy.cartesian.Triangulation.nearest_vertices">nearest_vertices</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.neighbour_and_arc_simplices" href="cartesian.html#stripy.cartesian.Triangulation.neighbour_and_arc_simplices">neighbour_and_arc_simplices</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.neighbour_simplices" href="cartesian.html#stripy.cartesian.Triangulation.neighbour_simplices">neighbour_simplices</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.points" href="cartesian.html#stripy.cartesian.Triangulation.points">points</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.segment_midpoints" href="cartesian.html#stripy.cartesian.Triangulation.segment_midpoints">segment_midpoints</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.segment_midpoints_by_vertices" href="cartesian.html#stripy.cartesian.Triangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.segment_tripoints" href="cartesian.html#stripy.cartesian.Triangulation.segment_tripoints">segment_tripoints</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.simplices" href="cartesian.html#stripy.cartesian.Triangulation.simplices">simplices</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.smoothing" href="cartesian.html#stripy.cartesian.Triangulation.smoothing">smoothing</a></code></li>
-<li><code><a title="stripy.cartesian.Triangulation.uniformly_refine_triangulation" href="cartesian.html#stripy.cartesian.Triangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.update_tension_factors" href="cartesian.html#stripy.cartesian.Triangulation.update_tension_factors">update_tension_factors</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.x" href="cartesian.html#stripy.cartesian.Triangulation.x">x</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.y" href="cartesian.html#stripy.cartesian.Triangulation.y">y</a></code></li>
 </ul>
@@ -860,9 +706,6 @@ correctly for an (x,y) array of pixels.</p></section>
 </li>
 <li>
 <h4><code><a title="stripy.cartesian_meshes.square_mesh" href="#stripy.cartesian_meshes.square_mesh">square_mesh</a></code></h4>
-</li>
-<li>
-<h4><code><a title="stripy.cartesian_meshes.warped_xy_mesh_sphere" href="#stripy.cartesian_meshes.warped_xy_mesh_sphere">warped_xy_mesh_sphere</a></code></h4>
 </li>
 </ul>
 </li>

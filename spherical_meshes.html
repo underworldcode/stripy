@@ -348,6 +348,7 @@ class uniform_ring_mesh(_spherical.sTriangulation):
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_cubic" href="spherical.html#stripy.spherical.sTriangulation.interpolate_cubic">interpolate_cubic</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.interpolate_to_grid" href="spherical.html#stripy.spherical.sTriangulation.interpolate_to_grid">interpolate_to_grid</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
@@ -362,6 +363,7 @@ class uniform_ring_mesh(_spherical.sTriangulation):
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.update_tension_factors" href="spherical.html#stripy.spherical.sTriangulation.update_tension_factors">update_tension_factors</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
@@ -439,6 +441,7 @@ class uniform_ring_mesh(_spherical.sTriangulation):
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_cubic" href="spherical.html#stripy.spherical.sTriangulation.interpolate_cubic">interpolate_cubic</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.interpolate_to_grid" href="spherical.html#stripy.spherical.sTriangulation.interpolate_to_grid">interpolate_to_grid</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
@@ -453,6 +456,7 @@ class uniform_ring_mesh(_spherical.sTriangulation):
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.update_tension_factors" href="spherical.html#stripy.spherical.sTriangulation.update_tension_factors">update_tension_factors</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
@@ -515,6 +519,7 @@ as the location of points will not be the same on all processors</p></section>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_cubic" href="spherical.html#stripy.spherical.sTriangulation.interpolate_cubic">interpolate_cubic</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.interpolate_to_grid" href="spherical.html#stripy.spherical.sTriangulation.interpolate_to_grid">interpolate_to_grid</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
@@ -529,6 +534,7 @@ as the location of points will not be the same on all processors</p></section>
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.update_tension_factors" href="spherical.html#stripy.spherical.sTriangulation.update_tension_factors">update_tension_factors</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
@@ -604,6 +610,7 @@ as the location of points will not be the same on all processors</p></section>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_cubic" href="spherical.html#stripy.spherical.sTriangulation.interpolate_cubic">interpolate_cubic</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.interpolate_to_grid" href="spherical.html#stripy.spherical.sTriangulation.interpolate_to_grid">interpolate_to_grid</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
@@ -618,6 +625,7 @@ as the location of points will not be the same on all processors</p></section>
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.update_tension_factors" href="spherical.html#stripy.spherical.sTriangulation.update_tension_factors">update_tension_factors</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
@@ -691,6 +699,7 @@ a uniform triangulation.</p></section>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_cubic" href="spherical.html#stripy.spherical.sTriangulation.interpolate_cubic">interpolate_cubic</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.interpolate_to_grid" href="spherical.html#stripy.spherical.sTriangulation.interpolate_to_grid">interpolate_to_grid</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
@@ -705,6 +714,7 @@ a uniform triangulation.</p></section>
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.update_tension_factors" href="spherical.html#stripy.spherical.sTriangulation.update_tension_factors">update_tension_factors</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
@@ -800,6 +810,7 @@ prime meridian so this mesh should be used with caution in parallel</p></section
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_cubic" href="spherical.html#stripy.spherical.sTriangulation.interpolate_cubic">interpolate_cubic</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_linear" href="spherical.html#stripy.spherical.sTriangulation.interpolate_linear">interpolate_linear</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.interpolate_nearest" href="spherical.html#stripy.spherical.sTriangulation.interpolate_nearest">interpolate_nearest</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.interpolate_to_grid" href="spherical.html#stripy.spherical.sTriangulation.interpolate_to_grid">interpolate_to_grid</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.join" href="spherical.html#stripy.spherical.sTriangulation.join">join</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lats" href="spherical.html#stripy.spherical.sTriangulation.lats">lats</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.lons" href="spherical.html#stripy.spherical.sTriangulation.lons">lons</a></code></li>
@@ -814,6 +825,7 @@ prime meridian so this mesh should be used with caution in parallel</p></section
 <li><code><a title="stripy.spherical.sTriangulation.smoothing" href="spherical.html#stripy.spherical.sTriangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.tri_area" href="spherical.html#stripy.spherical.sTriangulation.tri_area">tri_area</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.uniformly_refine_triangulation" href="spherical.html#stripy.spherical.sTriangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
+<li><code><a title="stripy.spherical.sTriangulation.update_tension_factors" href="spherical.html#stripy.spherical.sTriangulation.update_tension_factors">update_tension_factors</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.x" href="spherical.html#stripy.spherical.sTriangulation.x">x</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.y" href="spherical.html#stripy.spherical.sTriangulation.y">y</a></code></li>
 <li><code><a title="stripy.spherical.sTriangulation.z" href="spherical.html#stripy.spherical.sTriangulation.z">z</a></code></li>
