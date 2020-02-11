@@ -4914,3 +4914,55 @@ C
     5 IER = IERR
       RETURN
       END
+      SUBROUTINE interp_linear(n,ns,olats,olons,x,y,z,datain,lst,
+     .               lptr,lend,odata,edata,ierr)
+
+      INTEGER n, ns, ierr
+      INTEGER lst(6*(n-2)), lptr(6*(n-2)), lend(n)
+      REAL olats(ns), olons(ns), odata(ns)
+      REAL datain(n), x(n), y(n), z(n)
+      INTEGER i, ierr1, ist, edata(ns)
+
+      ist = 1
+      ierr = 0
+
+      DO i=1,ns
+         CALL intrc0(n,olats(i),olons(i),x,y,z,datain,lst,lptr,lend,
+     .               ist,odata(i),ierr1)
+
+         edata(i) = ierr1
+
+         IF (ierr1 .lt. 0) THEN
+           !print *,n,'warning: ierr = ',ierr1,' in interp_n'
+           !print *,olats(n), olons(n), npts
+           !stop
+           ierr = ierr + ierr1
+         ENDIF
+      ENDDO
+      END
+      SUBROUTINE interp_cubic(n,ns,olats,olons,x,y,z,datain,lst,
+     .               lptr,lend,iflgs,sigma,iflgg,grad,odata,edata,ierr)
+
+      INTEGER n, ns, ierr
+      INTEGER lst(6*(n-2)), lptr(6*(n-2)), lend(n)
+      REAL olats(ns), olons(ns), odata(ns)
+      REAL datain(n), x(n), y(n), z(n), sigma(6*(n-2)), grad(3,n)
+      INTEGER i, ierr1, ist, iflgs, iflgg, edata(ns)
+
+      ist = 1
+      ierr = 0
+
+      DO i=1,ns
+         CALL intrc1(n,olats(i),olons(i),x,y,z,datain,lst,lptr,lend,
+     .                iflgs,sigma,iflgg,grad,ist,odata(i),ierr1)
+
+         edata(i) = ierr1
+
+         IF (ierr1 .lt. 0) THEN
+           !print *,n,'warning: ierr = ',ierr1,' in interp_n'
+           !print *,olats(n), olons(n), npts
+           !stop
+           ierr = ierr + ierr1
+         ENDIF
+      ENDDO
+      END

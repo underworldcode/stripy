@@ -105,6 +105,94 @@ def test_cubic_interpolation():
         assert False, "FAIL! (Interpolation - cubic)"
 
 
+def test_cubic_interpolation_tension():
+
+    p0 = 0.0
+    p2 = np.pi/2
+    p4 = np.pi/4
+
+    # we need more points for cubic interpolation
+    coords = np.array([[p0 , -p2], \
+                       [-p2,  p0], \
+                       [p0 ,  p2], \
+                       [p2 ,  p0], \
+                       [p0 , -p4], \
+                       [-p4,  p0], \
+                       [p0 ,  p4], \
+                       [p4 ,  p0]])
+
+    lons, lats = coords[:,0], coords[:,1]
+    mesh = stripy.sTriangulation(lons, lats)
+
+    Z = mesh.lons**2
+
+    npts = 7
+    ilons = np.linspace(-p2, p2, npts)
+    ilats = np.zeros(npts)
+
+    Zi_linear, ierr = mesh.interpolate_linear(ilons, ilats, Z)
+    Zi_cubic,  ierr = mesh.interpolate_cubic(ilons, ilats, Z)
+
+    sigma = mesh.update_tension_factors(Z)
+    Zi_cubicT,  ierr = mesh.interpolate_cubic(ilons, ilats, Z)
+
+    mesh.sigma.fill(45.)
+    Zi_cubicTmax,  ierr = mesh.interpolate_cubic(ilons, ilats, Z)
+
+
+    if np.abs(Zi_cubicT - Zi_cubic).any():
+        print("PASS! (Interpolation - cubic tensioned splines")
+    # check if cubic interpolation with max tension is like linear interpolation
+    elif np.abs(Zi_linear-Zi_cubicTmax).sum() < np.abs(Zi_cubic-Zi_cubicTmax).sum():
+        print("PASS! (Interpolation - cubic tensioned splines")
+    else:
+        assert False, "FAIL! (Interpolation - cubic tensioned splines)"
+
+
+def test_cubic_interpolation_grid():
+
+    p0 = 0.0
+    p2 = np.pi/2
+    p4 = np.pi/4
+
+    # we need more points for cubic interpolation
+    coords = np.array([[p0 , -p2], \
+                       [-p2,  p0], \
+                       [p0 ,  p2], \
+                       [p2 ,  p0], \
+                       [p0 , -p4], \
+                       [-p4,  p0], \
+                       [p0 ,  p4], \
+                       [p4 ,  p0]])
+
+    lons, lats = coords[:,0], coords[:,1]
+    mesh = stripy.sTriangulation(lons, lats)
+
+    Z = mesh.lons**2
+
+    npts = 7
+    ilons = np.linspace(-p2, p2, npts)
+    ilats = np.linspace(-p2, p2, npts)
+    lonq, latq = np.meshgrid(ilons, ilats)
+    shape = (npts, npts)
+
+    Zi_cubic, zierr = mesh.interpolate_cubic(lonq.ravel(), latq.ravel(), Z)
+    Zi_cubic_grid = mesh.interpolate_to_grid(ilons, ilats, Z)
+
+    sigma = mesh.update_tension_factors(Z)
+    Zi_cubic_grid_S = mesh.interpolate_to_grid(ilons, ilats, Z)
+
+    if np.abs(Zi_cubic.reshape(shape) - Zi_cubic_grid).sum() < \
+       np.abs(Zi_cubic.reshape(shape) - Zi_cubic_grid_S).sum():
+
+       # unstructured and grid interpolation works
+       # and applying tension alters the result
+
+       print("PASS! (Interpolate to grid - cubic tensioned splines")
+    else:
+        assert False, "FAIL! (Interpolate to grid - cubic tensioned splines)"
+
+
 def test_derivative():
 
     p0 = 0.0
@@ -186,4 +274,6 @@ if __name__ == "__main__":
     test_nearest_nd_interpolation()
     test_linear_interpolation()
     test_cubic_interpolation()
+    test_cubic_interpolation_tension()
+    test_cubic_interpolation_grid()
     test_smoothing()

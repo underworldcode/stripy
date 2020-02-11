@@ -75,20 +75,103 @@ def test_cubic_interpolation():
     Z = mesh.x**2
 
     npts = 7
-    ilons = np.linspace(0.0, 1.0, npts)
-    ilats = np.zeros(npts)
+    xi = np.linspace(0.0, 1.0, npts)
+    yi = np.zeros(npts)
 
-    Zi_linear, ierr = mesh.interpolate_linear(ilons, ilats, Z)
-    Zi_cubic,  ierr = mesh.interpolate_cubic(ilons, ilats, Z)
+    Zi_linear, ierr = mesh.interpolate_linear(xi, yi, Z)
+    Zi_cubic,  ierr = mesh.interpolate_cubic(xi, yi, Z)
 
-    diff_linear = np.abs(Zi_linear - ilons**2).sum()
-    diff_cubic  = np.abs(Zi_cubic  - ilons**2).sum()
+    diff_linear = np.abs(Zi_linear - xi**2).sum()
+    diff_cubic  = np.abs(Zi_cubic  - xi**2).sum()
 
     # check if cubic interpolation is more accurate than linear
     if diff_cubic < diff_linear:
         print("PASS! (Interpolation - cubic")
     else:
         assert False, "FAIL! (Interpolation - cubic)"
+
+
+def test_cubic_interpolation_tension():
+
+    # we need more points for cubic interpolation
+    coords = np.array([[0.0, 0.0], \
+                       [0.0, 1.0], \
+                       [1.0, 0.0], \
+                       [1.0, 1.0], \
+                       [0.1, 0.1], \
+                       [0.1, 0.9], \
+                       [0.9, 0.1], \
+                       [0.9, 0.9]])
+
+    x, y = coords[:,0], coords[:,1]
+    mesh = stripy.Triangulation(x, y)
+
+    Z = mesh.x**2
+
+    npts = 7
+    xi = np.linspace(0.0, 1.0, npts)
+    yi = np.zeros(npts)
+
+    Zi_linear, ierr = mesh.interpolate_linear(xi, yi, Z)
+    Zi_cubic,  ierr = mesh.interpolate_cubic(xi, yi, Z)
+
+    sigma = mesh.update_tension_factors(Z)
+    Zi_cubicT, ierr = mesh.interpolate_cubic(xi, yi, Z)
+
+    mesh.sigma.fill(45.)
+    Zi_cubicTmax, ierr = mesh.interpolate_cubic(xi, yi, Z)
+
+    diff_linear = np.abs(Zi_linear - xi**2).sum()
+    diff_cubic  = np.abs(Zi_cubic  - xi**2).sum()
+
+
+    if np.abs(Zi_cubicT - Zi_cubic).any():
+        print("PASS! (Interpolation - cubic tensioned splines")
+    # check if cubic interpolation with max tension is like linear interpolation
+    elif np.abs(Zi_linear-Zi_cubicTmax).sum() < np.abs(Zi_cubic-Zi_cubicTmax).sum():
+        print("PASS! (Interpolation - cubic tensioned splines")
+    else:
+        assert False, "FAIL! (Interpolation - cubic tensioned splines)"
+
+
+def test_cubic_interpolation_grid():
+
+    # we need more points for cubic interpolation
+    coords = np.array([[0.0, 0.0], \
+                       [0.0, 1.0], \
+                       [1.0, 0.0], \
+                       [1.0, 1.0], \
+                       [0.1, 0.1], \
+                       [0.1, 0.9], \
+                       [0.9, 0.1], \
+                       [0.9, 0.9]])
+
+    x, y = coords[:,0], coords[:,1]
+    mesh = stripy.Triangulation(x, y)
+
+    Z = mesh.x**2
+
+    npts = 7
+    xi = np.linspace(0.0, 1.0, npts)
+    yi = np.linspace(0.0, 1.0, npts)
+    xq, yq = np.meshgrid(xi,yi)
+    shape = (npts, npts)
+
+    Zi_cubic,  ierr = mesh.interpolate_cubic(xq.ravel(), yq.ravel(), Z)
+    Zi_cubic_grid = mesh.interpolate_to_grid(xi, yi, Z)
+
+    sigma = mesh.update_tension_factors(Z)
+    Zi_cubic_grid_S = mesh.interpolate_to_grid(xi, yi, Z)
+
+    if np.abs(Zi_cubic.reshape(shape) - Zi_cubic_grid).sum() < \
+       np.abs(Zi_cubic.reshape(shape) - Zi_cubic_grid_S).sum():
+
+       # unstructured and grid interpolation works
+       # and applying tension alters the result
+
+       print("PASS! (Interpolate to grid - cubic tensioned splines")
+    else:
+        assert False, "FAIL! (Interpolate to grid - cubic tensioned splines)"
 
 
 def test_derivative():
@@ -125,10 +208,10 @@ def test_derivative():
     dZdx_interp, ierr = mesh.interpolate_linear(ipts, ipts*0, dZdx)
     dZdy_interp, ierr = mesh.interpolate_linear(ipts*0, ipts, dZdy)
 
-    ascending_lon = ( np.diff(dZdx_interp) > 0 ).all()
-    ascending_lat = ( np.diff(dZdy_interp) > 0 ).all()
+    ascending_xi = ( np.diff(dZdx_interp) > 0 ).all()
+    ascending_yi = ( np.diff(dZdy_interp) > 0 ).all()
 
-    if ascending_lon and ascending_lat:
+    if ascending_xi and ascending_yi:
         print("PASS! (Derivatives)")
     else:
         assert False, "FAIL! (Derivatives)"
@@ -162,4 +245,6 @@ if __name__ == "__main__":
     test_nearest_nd_interpolation()
     test_linear_interpolation()
     test_cubic_interpolation()
+    test_cubic_interpolation_tension()
+    test_cubic_interpolation_grid()
     test_smoothing()
