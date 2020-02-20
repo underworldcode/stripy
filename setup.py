@@ -75,8 +75,8 @@ if __name__ == "__main__":
           ext_modules       = [ext1, ext2, ext3, ext4],
           install_requires  = ['numpy', 'scipy>=0.15.0'],
           python_requires   = '>=2.7, >=3.5',
-          setup_requires    = ["pytest-runner", 'webdav'],
-          tests_require     = ["pytest", 'webdav'],
+          setup_requires    = ["pytest-runner"],
+          tests_require     = ["pytest"],
           packages          = ['stripy'],
           package_data      = {'stripy': ['Notebooks/*ipynb', # Worked Examples is not currently used
                                           'Notebooks/CartesianTriangulations/*ipynb',
