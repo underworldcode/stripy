@@ -16,7 +16,7 @@ from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
 from os import path
 import io
-import os
+import os, subprocess
 
 ## in development set version to none and ...
 
