@@ -8,6 +8,11 @@
 ##  - Update the version information in this file
 ##  - python setup.py sdist upload -r pypitest  # for the test version
 ##  - python setup.py sdist upload -r pypi      # for the real version
+## With twine:
+##  - python setup.py sdist
+##  - twine upload dist/*
+
+
 ##
 ## (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
@@ -16,9 +21,11 @@ from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
 from os import path
 import io
+import os, subprocess
+
 
 ## in development set version to none and ...
-PYPI_VERSION = "1.1.1"
+PYPI_VERSION = "1.1.3"
 
 # Return the git revision as a string (from numpy)
 def git_version():
@@ -66,7 +73,7 @@ ext4 = Extension(name    = 'stripy._ssrfpack',
 if __name__ == "__main__":
     setup(name = 'stripy',
           author            = "Louis Moresi",
-          author_email      = "louis.moresi@unimelb.edu.au",
+          author_email      = "louis.moresi@anu.edu.au",
           url               = "https://github.com/underworldcode/stripy",
           version           = PYPI_VERSION,
           description       = "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere",
@@ -75,8 +82,6 @@ if __name__ == "__main__":
           ext_modules       = [ext1, ext2, ext3, ext4],
           install_requires  = ['numpy', 'scipy>=0.15.0'],
           python_requires   = '>=2.7, >=3.5',
-          setup_requires    = ["pytest-runner", 'webdav'],
-          tests_require     = ["pytest", 'webdav'],
           packages          = ['stripy'],
           package_data      = {'stripy': ['Notebooks/*ipynb', # Worked Examples is not currently used
                                           'Notebooks/CartesianTriangulations/*ipynb',
