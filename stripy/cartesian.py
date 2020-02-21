@@ -313,8 +313,8 @@ class Triangulation(object):
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
-        zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
+        zdata = self._shuffle_field(zdata)
 
 
         sigma, dsmax, ierr = _srfpack.getsig(self._x, self._y, zdata,\
@@ -511,8 +511,8 @@ class Triangulation(object):
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
-        zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
+        zdata = self._shuffle_field(zdata)
 
         sflag = False
         sval = 0
@@ -562,17 +562,17 @@ class Triangulation(object):
         if zdata.size != self.npoints:
             raise ValueError('zdata should be same size as mesh')
 
-        zdata = self._shuffle_field(zdata)
-
         if order == 0:
             ierr = 0
             ist = np.ones(shape, dtype=np.int)
+            zdata = self._shuffle_field(zdata)
             ist, dist, zierr = _tripack.nearnds(xi, yi, ist, \
                                                 self._x, self._y, \
                                                 self.lst, self.lptr, self.lend)
             zi = zdata[ist - 1]
 
         elif order == 1:
+            zdata = self._shuffle_field(zdata)
             zi, zierr, ierr = _srfpack.interp_linear(xi, yi,\
                                                 self._x,self._y, zdata, \
                                                 self.lst, self.lptr, self.lend)
@@ -580,6 +580,7 @@ class Triangulation(object):
             sigma = self.sigma
             iflgs = self.iflgs
             grad, iflgg = self._check_gradient(zdata, grad)
+            zdata = self._shuffle_field(zdata)
 
             zi, zierr, ierr = _srfpack.interp_cubic(xi, yi, \
                                                     self._x, self._y, zdata, \
