@@ -1,0 +1,46 @@
+name: Deploy docs to gh-pages
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+  
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'    
+
+        # This is needed because we install stripy for litho1pt0 build for documentation
+      - name: Install gfortran 
+        run: |
+          sudo apt-get install -y gfortran
+         
+        # The numpy etc are needed because we install stripy for litho1pt0 build for documentation
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy 
+          pip install scipy 
+          pip install Cython
+          pip install pdoc3
+
+      - name: Install stripy
+        run: |
+          pip install -e .
+   
+      - name: Build docs with pdoc
+        run: |
+          mkdir -p docs
+          pdoc --config latex_math=True --html -o docs --force stripy
+
+      # Note deploy key needs the ----BEGIN ... KEY---- lines too
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
+          publish_dir: docs/stripy
