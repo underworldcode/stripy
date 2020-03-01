@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
         python-version: [2.7, 3.6, 3.7, 3.8]
 
     steps:
@@ -22,11 +21,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install gfortran
-      if: ${{ matrix.os }} == "ubuntu-latest"
-      - sudo apt-get install -y gfortran
-      if: ${{ matrix.os }} == "macos-latest"
-      - brew update
-      - brew install gfortran
+      run: |
+        sudo apt-get install -y gfortran
 
     - name: Install dependencies
       run: |
