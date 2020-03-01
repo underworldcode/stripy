@@ -1,0 +1,34 @@
+name: Python Build / Test
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install gfortran
+      run: |
+        sudo apt-get install -y gfortran
+        #
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy 
+        pip install scipy 
+        pip install Cython
+        #
+    - name: Install (self)
+      run: |
+        pip install -e . 
+        # 
+    - name: Test with pytest
+      run: |
+        pip install pytest
+        pytest
