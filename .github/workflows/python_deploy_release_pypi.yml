@@ -22,9 +22,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install gfortran
-      if: matrix.os == "ubuntu-latest"
+      if: ${{ matrix.os }} == "ubuntu-latest"
       - sudo apt-get install -y gfortran
-      if: matrix.os == "macos-latest"
+      if: ${{ matrix.os }} == "macos-latest"
       - brew update
       - brew install gfortran
 
