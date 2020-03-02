@@ -15,7 +15,7 @@ jobs:
 
     - name: What is here
       run: |  
-        ls hostedtoolcache 
+        ls ~/hostedtoolcache 
 
     ## Not sure why this is not on the virtual machine already !
     - name: Install miniconda 
@@ -44,5 +44,15 @@ jobs:
         source ~/myconda/etc/profile.d/conda.sh
         conda activate base
         pytest
+
+    - name: Build the wheel
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        python setup.py bdist_wheel
+        # twine upload dist/*
+
+        
 
     
