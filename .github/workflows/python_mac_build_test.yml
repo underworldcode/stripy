@@ -17,11 +17,12 @@ jobs:
     - name: Install miniconda 
       run: |
         wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh 
-        /bin/bash ~/miniconda.sh -b -p /opt/conda 
+        /bin/bash ~/miniconda.sh -b -p ~/myconda
 
     - name: Install dependencies 
       run: |
-        source /opt/conda/etc/profile.d/conda.sh
+        source ~/myconda/etc/profile.d/conda.sh
+        which conda
         conda activate base
         python -m pip install --upgrade pip
         conda install -c conda-forge gfortran
