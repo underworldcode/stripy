@@ -1,0 +1,35 @@
+name: Python Build / Test
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macos-10.15
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+        
+    - name: Install dependencies 
+      run: |
+        source /opt/conda/etc/profile.d/conda.sh
+        conda activate base
+        python -m pip install --upgrade pip
+        conda install -c conda-forge gfortran
+        conda install -c conda-forge pint
+        conda install -c conda-forge petsc4py petsc mpi4py h5py
+        conda install numpy scipy sympy
+        conda install pytest
+        
+    - name: Install (self)
+      run: |
+        pip install -e . 
+        # 
+    - name: Test with pytest
+      run: |
+        pip install pytest
+        pytest
