@@ -22,7 +22,6 @@ jobs:
     - name: Install dependencies 
       run: |
         source ~/myconda/etc/profile.d/conda.sh
-        which conda
         conda activate base
         python -m pip install --upgrade pip
         conda install -c conda-forge libgfortran
@@ -33,9 +32,13 @@ jobs:
         
     - name: Install (self)
       run: |
+        source ~/myconda/etc/profile.d/conda.sh
+        conda activate base
         pip install -e . 
         # 
     - name: Test with pytest
       run: |
+        source ~/myconda/etc/profile.d/conda.sh
+        conda activate base
         pip install pytest
         pytest
