@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on:  ubuntu-latest # macos-10.15
+    runs-on:   macos-10.15
 
     steps:
     - uses: actions/checkout@v1
@@ -14,16 +14,21 @@ jobs:
       with:
         python-version: 3.7
 
-    - name: Install miniconda 
-      run: |
-        wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.7.12.1-MacOSX-x86_64.sh -O ~/miniconda.sh 
-        /bin/bash ~/miniconda.sh -b -p ~/myconda
+    # - name: Install miniconda 
+    #   run: |
+    #     wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.7.12.1-MacOSX-x86_64.sh -O ~/miniconda.sh 
+    #     /bin/bash ~/miniconda.sh -b -p ~/myconda
+
+    - name: test conda
+      run: | 
+        which conda 
+        which pip 
 
     - name: Install dependencies 
       run: |
-        source ~/myconda/etc/profile.d/conda.sh
-        conda activate base
-        python -m pip install --upgrade pip
+        # source ~/myconda/etc/profile.d/conda.sh
+        # conda activate base
+        # python -m pip install --upgrade pip
         conda install -c conda-forge libgfortran
         conda install -c conda-forge pint
         conda install numpy scipy 
