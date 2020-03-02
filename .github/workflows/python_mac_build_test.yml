@@ -17,7 +17,8 @@ jobs:
       run: |  
         ls ~/hostedtoolcache 
         echo $PATH
-        ls /Users/runner/hostedtoolcache/Python/3.7.6/x64
+        ls /Users/runner/hostedtoolcache/Python/3.7.6/x64/bin
+        ls /Applications
         conda --help 
 
     ## Not sure why this is not on the virtual machine already !
