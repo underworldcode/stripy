@@ -68,7 +68,7 @@ jobs:
         conda install conda-build anaconda-client 
         anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
 
-        conda build conda/stripy
+        conda build conda
 
         
 
