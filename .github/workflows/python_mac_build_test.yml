@@ -16,7 +16,7 @@ jobs:
 
     - name: Install miniconda 
       run: |
-        wget --quiet https://repo.anaconda.com/miniconda/Miniconda2-4.7.12.1-MacOSX-x86_64.sh -O ~/miniconda.sh 
+        wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.7.12.1-MacOSX-x86_64.sh -O ~/miniconda.sh 
         /bin/bash ~/miniconda.sh -b -p ~/myconda
 
     - name: Install dependencies 
