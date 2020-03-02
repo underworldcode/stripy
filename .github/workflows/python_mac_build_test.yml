@@ -14,11 +14,10 @@ jobs:
       with:
         python-version: 3.7
 
-   - name: Install miniconda 
+    - name: Install miniconda 
       run: |
         wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh 
         /bin/bash ~/miniconda.sh -b -p /opt/conda 
-
 
     - name: Install dependencies 
       run: |
