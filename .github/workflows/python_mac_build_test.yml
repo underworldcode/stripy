@@ -25,10 +25,10 @@ jobs:
         which conda
         conda activate base
         python -m pip install --upgrade pip
-        conda install -c conda-forge gfortran
+        conda install -c conda-forge libgfortran
         conda install -c conda-forge pint
-        conda install -c conda-forge petsc4py petsc mpi4py h5py
-        conda install numpy scipy sympy
+        # conda install -c conda-forge petsc4py petsc mpi4py h5py
+        conda install numpy # scipy sympy
         conda install pytest
         
     - name: Install (self)
