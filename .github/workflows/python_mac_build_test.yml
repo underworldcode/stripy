@@ -17,7 +17,7 @@ jobs:
       run: |  
         ls ~/hostedtoolcache 
         echo $PATH
-        ls /Users/runner/hostedtoolcache/Python/3.7.6/x64/bin
+        ls /Users/runner/hostedtoolcache/Python/
         ls /Applications
         conda --help 
 
@@ -54,6 +54,9 @@ jobs:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
+        source ~/myconda/etc/profile.d/conda.sh
+        conda activate base
+ 
         python setup.py bdist_wheel
         # twine upload dist/*
 
