@@ -1,23 +1,25 @@
-name: Python Build / Test on MACOS with conda
+name: Upload Python Package to PYPI (MacOS / wheel)
 
-on: [push]
+on:
+  release:
+    types: [created]
 
 jobs:
   build:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: [2.7, 3.7, 3.8]
+
 
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
+      with: 
+        python-version: ${{ matrix.python-version }}
+    
 
-    - name: What is here
-      run: |  
-        ls ~ 
-
-    ## Not sure why this is not on the virtual machine already !
     - name: Install miniconda 
       run: |
         wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.7.12.1-MacOSX-x86_64.sh -O ~/miniconda.sh 
@@ -33,16 +35,13 @@ jobs:
         conda install numpy scipy 
         conda install pytest
         
-    - name: Install (self)
+         
+    - name: Build and publish
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
         source ~/myconda/etc/profile.d/conda.sh
         conda activate base
-        pip install -e . 
-        # 
-    - name: Test with pytest
-      run: |
-        source ~/myconda/etc/profile.d/conda.sh
-        conda activate base
-        pytest
-
-    
+        python setup.py bdist_wheel
+        twine upload dist/*
