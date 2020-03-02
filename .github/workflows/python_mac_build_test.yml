@@ -1,11 +1,11 @@
-name: Python Build / Test on MACOS with conda
+name: Python Build / Test on MACOS / Windows with conda
 
 on: [push]
 
 jobs:
   build:
 
-    runs-on: macos-10.15
+    runs-on: windows-latest  #  macos-10.15
 
     steps:
     - uses: actions/checkout@v1
