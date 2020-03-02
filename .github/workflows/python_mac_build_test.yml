@@ -15,7 +15,7 @@ jobs:
 
     - name: What is here
       run: |  
-        ls ~ 
+        ls hostedtoolcache 
 
     ## Not sure why this is not on the virtual machine already !
     - name: Install miniconda 
