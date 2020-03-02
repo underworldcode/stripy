@@ -26,8 +26,7 @@ jobs:
         python -m pip install --upgrade pip
         conda install -c conda-forge libgfortran
         conda install -c conda-forge pint
-        # conda install -c conda-forge petsc4py petsc mpi4py h5py
-        conda install numpy # scipy sympy
+        conda install numpy scipy 
         conda install pytest
         
     - name: Install (self)
@@ -40,5 +39,4 @@ jobs:
       run: |
         source ~/myconda/etc/profile.d/conda.sh
         conda activate base
-        pip install pytest
         pytest
