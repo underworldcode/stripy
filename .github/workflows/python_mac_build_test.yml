@@ -3,55 +3,45 @@ name: Python Build / Test on MACOS with conda
 on: [push]
 
 jobs:
-  deploy:
-    runs-on: macos-latest
+  build_and_test: 
+    name: MacOS build and test (${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [2.7, 3.7]
-
+        os: [ 'macos-latest' ]
+        python-version: ['3.7', '2.7']
     steps:
-    - uses: actions/checkout@v2
+      - uses: goanpeca/setup-miniconda@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Conda info
+        shell: bash -l {0}
+        run: conda info
 
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-
-    ## Not sure why conda is not on the virtual machine already !
-
-    - name: Install miniconda 3.7
-      if: ${{ matrix.python-version }} == 3.7
-      run: |
-        wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.7.12.1-MacOSX-x86_64.sh -O ~/miniconda.sh 
-        /bin/bash ~/miniconda.sh -b -p ~/myconda
-      
-    - name: Install miniconda 2.7
-      if: ${{ matrix.python-version }} == 2.7
-      run: |
-        wget --quiet https://repo.anaconda.com/miniconda/Miniconda2-4.7.12.1-MacOSX-x86_64.sh -O ~/miniconda.sh 
-        /bin/bash ~/miniconda.sh -b -p ~/myconda
-
-    - name: Install dependencies 
-      run: |
-        source ~/myconda/etc/profile.d/conda.sh
-        conda activate base
-        python -m pip install --upgrade pip
-        conda install -c conda-forge libgfortran
-        conda install -c conda-forge pint
-        conda install numpy scipy 
-        conda install pytest
-        
-    - name: Install (self)
-      run: |
-        source ~/myconda/etc/profile.d/conda.sh
-        conda activate base
-        pip install -e . 
-        # 
-    - name: Test with pytest
-      run: |
-        source ~/myconda/etc/profile.d/conda.sh
-        conda activate base
-        pytest
+      - name: Install dependencies 
+        shell: bash -l {0}
+        run: |
+          source ~/myconda/etc/profile.d/conda.sh
+          conda activate base
+          python -m pip install --upgrade pip
+          conda install -c conda-forge libgfortran
+          conda install -c conda-forge pint
+          conda install numpy scipy 
+          conda install pytest
+          
+      - name: Install (self)
+        shell: bash -l {0}
+        run: |
+          source ~/myconda/etc/profile.d/conda.sh
+          conda activate base
+          pip install -e . 
+          # 
+      - name: Test with pytest
+        run: |
+          source ~/myconda/etc/profile.d/conda.sh
+          conda activate base
+          pytest
 
     ## Move this to a release script
 
