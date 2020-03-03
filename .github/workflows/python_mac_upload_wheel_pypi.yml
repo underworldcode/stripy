@@ -37,9 +37,7 @@ jobs:
         run: |
           conda install -c conda-forge gfortran_osx-64 libgfortran numpy scipy
           conda install pytest
-          conda install pip 
 
-   
       - name: Reinvent the wheel / upload
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
@@ -49,9 +47,7 @@ jobs:
 
         shell: bash -l {0}
         run: |
-
           # Conda version
-          conda activate base
           conda install conda-build anaconda-client 
           conda config --set anaconda_upload yes
           anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
