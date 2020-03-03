@@ -23,6 +23,7 @@ jobs:
 
       - name: Install dependencies 
         shell: bash -l {0}
+        if: ${{matrix.os}} == "ubuntu-*"
         run: |
           conda install pip 
           conda install -c conda-forge fortran-compiler numpy scipy
@@ -38,3 +39,6 @@ jobs:
         shell: bash -l {0}
         run: |
           pytest
+
+
+          
