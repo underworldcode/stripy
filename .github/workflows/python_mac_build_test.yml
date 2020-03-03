@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build_and_test: 
-    name: MacOS build and test (${{ matrix.python-version }})
+    name: ${{matrix.os}} build and test on py: (${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
