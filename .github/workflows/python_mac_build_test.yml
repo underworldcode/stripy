@@ -3,7 +3,7 @@ name: Python Build / Test on MACOS with conda
 on: [push]
 
 jobs:
-  build:
+  deploy:
     runs-on: macos-latest
     strategy:
       matrix:
