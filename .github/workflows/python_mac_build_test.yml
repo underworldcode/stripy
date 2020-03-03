@@ -20,13 +20,13 @@ jobs:
     ## Not sure why conda is not on the virtual machine already !
 
     - name: Install miniconda 3.7
-      if: ${{python-version}} == 3.7
+      if: ${{ matrix.python-version }} == 3.7
       run: |
         wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.7.12.1-MacOSX-x86_64.sh -O ~/miniconda.sh 
         /bin/bash ~/miniconda.sh -b -p ~/myconda
       
     - name: Install miniconda 2.7
-      if: ${{python-version}} == 2.7
+      if: ${{ matrix.python-version }} == 2.7
       run: |
         wget --quiet https://repo.anaconda.com/miniconda/Miniconda2-4.7.12.1-MacOSX-x86_64.sh -O ~/miniconda.sh 
         /bin/bash ~/miniconda.sh -b -p ~/myconda
