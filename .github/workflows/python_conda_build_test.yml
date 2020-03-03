@@ -20,7 +20,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies on 'ubuntu-latest'       
-        if: matrix.os == "ubuntu-latest"
+        if: matrix.os == 'ubuntu-latest'
         shell: bash -l {0}
         run: |
           conda install pip 
@@ -28,7 +28,7 @@ jobs:
           conda install pytest
 
       - name: Install dependencies on MacOS
-        if: matrix.os == "macos-latest"
+        if: matrix.os == 'macos-latest'
         shell: bash -l {0}
         run: |
           conda install pip 
