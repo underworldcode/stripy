@@ -1,23 +1,20 @@
-## To install locally: python setup.py build && python setup.py install
-## (If there are problems with installation of the documentation, it may be that
-##  the egg file is out of sync and will need to be manually deleted - see error message
-##  for details of the corrupted zip file. )
-##
-## To push a version through to pip.
-##  - Make sure it installs correctly locally as above
-##  - Update the version information in this file
-##  - python setup.py sdist upload -r pypitest  # for the test version
-##  - python setup.py sdist upload -r pypi      # for the real version
-## With twine:
-##  - python setup.py sdist
-##  - twine upload dist/*
+# To install locally: python setup.py build && python setup.py install
+# (If there are problems with installation of the documentation, the
+#  egg file may be out of sync and will need to be manually deleted 
+#  - see error message for details of the corrupted zip file. )
+#
+# To push a version through to pip.
+#  - Make sure it installs correctly locally as above
+#  - Update the version information in this file
+#  - python setup.py sdist upload -r pypitest  # for the test version
+#  - python setup.py sdist upload -r pypi      # for the real version
+# With twine:
+#  - python setup.py sdist
+#  - twine upload dist/*
+#
+# (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
 
-##
-## (see http://peterdowns.com/posts/first-time-with-pypi.html)
-
-
-from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
 from os import path
 import io

@@ -35,9 +35,10 @@ jobs:
         if: matrix.os == 'macos-latest'
         shell: bash -l {0}
         run: |
-          conda install pip 
-          conda install -c conda-forge libgfortran=4.0.0 numpy scipy
+          conda install -c conda-forge gfortran_osx-64 libgfortran numpy scipy
           conda install pytest
+          conda install pip 
+
    
       - name: Reinvent the wheel / upload
         env:
@@ -48,7 +49,6 @@ jobs:
 
         shell: bash -l {0}
         run: |
-          python --version   
 
           # Conda version
           conda activate base
