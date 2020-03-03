@@ -49,17 +49,17 @@ jobs:
         shell: bash -l {0}
         run: |
           python --version   
-          
-          # Pypi
 
-          python -m pip install --upgrade pip
-          pip install setuptools wheel twine
-          python setup.py bdist_wheel
-          twine upload dist/*  --skip-existing
-          
           # Conda version
           conda activate base
           conda install conda-build anaconda-client 
           conda config --set anaconda_upload yes
           anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
           conda build conda --user underworldcode
+          
+          # Pypi
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+          python setup.py bdist_wheel
+          twine upload dist/*  --skip-existing
+          
