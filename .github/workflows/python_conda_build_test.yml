@@ -25,9 +25,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda install pip 
-          conda install -c conda-forge libgfortran || conda install -c conda-forge fortran-compiler           
-          conda install -c conda-forge pint
-          conda install numpy scipy 
+          conda install -c conda-forge fortran-compiler numpy scipy
           conda install pytest
           
       - name: Install (self)
