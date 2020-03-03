@@ -1,8 +1,8 @@
 name: Upload Python Package to PYPI & Anaconda Cloud (MacOS / ubuntu)
 
-on: [push]
-  # release:
-  #   types: [created]
+on: 
+  release:
+    types: [created]
 
 jobs:
   catch_and_release: 
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'macos-latest', 'ubuntu-latest' ]
+        os: [ 'macos-latest', 'ubuntu-latest' 'windows-latest']
         python-version: ['3.7', '2.7']
 
     steps:
@@ -53,9 +53,4 @@ jobs:
           anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
           conda build conda --user underworldcode
           
-          # Pypi
-          python -m pip install --upgrade pip
-          pip install setuptools wheel twine
-          python setup.py bdist_wheel
-          twine upload dist/*  --skip-existing
-          
+         
