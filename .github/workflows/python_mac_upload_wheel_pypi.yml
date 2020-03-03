@@ -1,56 +1,54 @@
-name: Upload Python Package to PYPI (MacOS / wheel)
+name: Upload Python Package to PYPI & Anaconda Cloud (MacOS / ubuntu)
 
 on:
   release:
     types: [created]
 
 jobs:
-  build:
-    runs-on: macos-latest
+  catch_and_release: 
+    name: ${{matrix.os}} build and test on py (${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [2.7, 3.7, 3.8]
+        os: [ 'macos-latest', 'windows-latest' ]
+        python-version: ['3.7', '2.7']
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with: 
-        python-version: ${{ matrix.python-version }}
-    
+      - uses: actions/checkout@v2
+      - uses: goanpeca/setup-miniconda@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Conda info
+        shell: bash -l {0}
+        run: conda info
 
-    - name: Install miniconda 
-      run: |
-        wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.7.12.1-MacOSX-x86_64.sh -O ~/miniconda.sh 
-        /bin/bash ~/miniconda.sh -b -p ~/myconda
-
-    - name: Install dependencies 
-      run: |
-        source ~/myconda/etc/profile.d/conda.sh
-        conda activate base
-        python -m pip install --upgrade pip
-        conda install -c conda-forge libgfortran
-        conda install -c conda-forge pint
-        conda install numpy scipy 
-        conda install pytest
+      - name: Install dependencies 
+        shell: bash -l {0}
+        run: |
+          conda install pip 
+          conda install -c conda-forge libgfortran
+          conda install -c conda-forge pint
+          conda install numpy scipy 
+          conda install pytest
         
-         
-    - name: Build the wheel
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        ANACONDA_USERNAME: ${{ secrets.ANACONDA_USERNAME}}
-        ANACONDA_PASSWORD: ${{ secrets.ANACONDA_PASSWORD}}
+       
+      - name: Reinvent the wheel / upload
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          ANACONDA_USERNAME: ${{ secrets.ANACONDA_USERNAME}}
+          ANACONDA_PASSWORD: ${{ secrets.ANACONDA_PASSWORD}}
 
-      run: |
-        source ~/myconda/etc/profile.d/conda.sh
-        conda activate base
-        conda config --set anaconda_upload yes
-        conda install conda-build anaconda-client 
-
-        python setup.py bdist_wheel
-        twine upload dist/*  --skip-existing
-
-        anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
-
-        conda build conda --user underworldcode
+        shell: bash -l {0}
+        run: |
+          python --version 
+    # Pypi
+          python setup.py bdist_wheel
+          twine upload dist/*  --skip-existing         
+    # Conda version
+          conda activate base
+          conda install conda-build anaconda-client 
+          conda config --set anaconda_upload yes
+          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
+          conda build conda --user underworldcode
