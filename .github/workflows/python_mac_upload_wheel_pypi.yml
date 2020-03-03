@@ -1,8 +1,8 @@
 name: Upload Python Package to PYPI & Anaconda Cloud (MacOS / ubuntu)
 
-on:
-  release:
-    types: [created]
+on: [push]
+  # release:
+  #   types: [created]
 
 jobs:
   catch_and_release: 
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'macos-latest', 'windows-latest' ]
+        os: [ 'macos-latest', 'ubuntu-latest' ]
         python-version: ['3.7', '2.7']
 
     steps:
@@ -23,16 +23,22 @@ jobs:
         shell: bash -l {0}
         run: conda info
 
-      - name: Install dependencies 
+      - name: Install dependencies on 'ubuntu-latest'       
+        if: matrix.os == 'ubuntu-latest' 
         shell: bash -l {0}
         run: |
           conda install pip 
-          conda install -c conda-forge libgfortran
-          conda install -c conda-forge pint
-          conda install numpy scipy 
+          conda install -c conda-forge fortran-compiler numpy scipy
           conda install pytest
-        
-       
+
+      - name: Install dependencies on MacOS
+        if: matrix.os == 'macos-latest'
+        shell: bash -l {0}
+        run: |
+          conda install pip 
+          conda install -c conda-forge libgfortran=4.0.0 numpy scipy
+          conda install pytest
+   
       - name: Reinvent the wheel / upload
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
@@ -45,7 +51,8 @@ jobs:
           python --version 
     # Pypi
           python setup.py bdist_wheel
-          twine upload dist/*  --skip-existing         
+          twine upload dist/*  --skip-existing
+
     # Conda version
           conda activate base
           conda install conda-build anaconda-client 
