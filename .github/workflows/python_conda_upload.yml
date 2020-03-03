@@ -1,4 +1,4 @@
-name: Upload Python Package to PYPI & Anaconda Cloud (MacOS / ubuntu)
+name: Upload Python Package to Anaconda Cloud (MacOS / ubuntu)
 
 on: 
   release:
@@ -9,9 +9,8 @@ jobs:
     name: ${{matrix.os}} build and test on py (${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
-        os: [ 'macos-latest', 'ubuntu-latest' 'windows-latest']
+        os: [ 'macos-latest', 'ubuntu-latest', 'windows-latest']
         python-version: ['3.7', '2.7']
 
     steps:
