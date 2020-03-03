@@ -19,17 +19,17 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies on Ubuntu
+      - name: Install dependencies on 'ubuntu-latest'       
+        if: matrix.os == "ubuntu-latest"
         shell: bash -l {0}
-        if: ${{matrix.os}} == "ubuntu-*"
         run: |
           conda install pip 
           conda install -c conda-forge fortran-compiler numpy scipy
           conda install pytest
 
       - name: Install dependencies on MacOS
+        if: matrix.os == "macos-latest"
         shell: bash -l {0}
-        if: ${{matrix.os}} == "macos-*"
         run: |
           conda install pip 
           conda install -c conda-forge libgfortran=4.0.0 numpy scipy
