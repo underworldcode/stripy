@@ -25,7 +25,6 @@ requirements:
     - scipy >=0.15.0
 
 
-
 about:
   home: "https://github.com/underworldcode/stripy"
   license: UNKNOWN

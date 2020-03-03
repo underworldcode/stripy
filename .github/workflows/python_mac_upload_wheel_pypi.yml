@@ -11,7 +11,6 @@ jobs:
       matrix:
         python-version: [2.7, 3.7, 3.8]
 
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.7
@@ -36,12 +35,22 @@ jobs:
         conda install pytest
         
          
-    - name: Build and publish
+    - name: Build the wheel
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        ANACONDA_USERNAME: ${{ secrets.ANACONDA_USERNAME}}
+        ANACONDA_PASSWORD: ${{ secrets.ANACONDA_PASSWORD}}
+
       run: |
         source ~/myconda/etc/profile.d/conda.sh
         conda activate base
+        conda config --set anaconda_upload yes
+        conda install conda-build anaconda-client 
+
         python setup.py bdist_wheel
-        twine upload dist/*
+        twine upload dist/*  --skip-existing
+
+        anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
+
+        conda build conda --user underworldcode

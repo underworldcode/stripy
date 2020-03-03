@@ -49,26 +49,26 @@ jobs:
 
     ## Move this to a release script
 
-    - name: Build the wheel
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        ANACONDA_USERNAME: ${{ secrets.ANACONDA_USERNAME}}
-        ANACONDA_PASSWORD: ${{ secrets.ANACONDA_PASSWORD}}
+    # - name: Build the wheel
+    #   env:
+    #     TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+    #     TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    #     ANACONDA_USERNAME: ${{ secrets.ANACONDA_USERNAME}}
+    #     ANACONDA_PASSWORD: ${{ secrets.ANACONDA_PASSWORD}}
 
-      run: |
-        source ~/myconda/etc/profile.d/conda.sh
-        conda activate base
-        conda config --set anaconda_upload yes
+    #   run: |
+    #     source ~/myconda/etc/profile.d/conda.sh
+    #     conda activate base
+    #     conda config --set anaconda_upload yes
 
  
-        python setup.py bdist_wheel
-        # twine upload dist/*
+    #     python setup.py bdist_wheel
+    #     # twine upload dist/*
 
-        conda install conda-build anaconda-client 
-        anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
+    #     conda install conda-build anaconda-client 
+    #     anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
 
-        conda build conda --user underworldcode
+    #     conda build conda --user underworldcode
 
         
 

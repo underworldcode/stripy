@@ -1,4 +1,4 @@
-name: Upload Python Package to PYPI
+name: Upload Python Package to PYPI (Ubuntu / wheel)
 
 on:
   release:
@@ -31,10 +31,30 @@ jobs:
         pip install scipy
         pip install Cython
         
-    - name: Build and publish
+    # - name: Build and publish
+    #   env:
+    #     TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+    #     TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    #   run: |
+    #     python setup.py bdist_wheel
+    #     twine upload dist/*
+
+    - name: Build the wheel
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        ANACONDA_USERNAME: ${{ secrets.ANACONDA_USERNAME}}
+        ANACONDA_PASSWORD: ${{ secrets.ANACONDA_PASSWORD}}
+
       run: |
+        source ~/myconda/etc/profile.d/conda.sh
+        conda activate base
+        conda config --set anaconda_upload yes
+        conda install conda-build anaconda-client 
+
         python setup.py bdist_wheel
-        twine upload dist/*
+        twine upload dist/*  --skip-existing
+
+        anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
+
+        conda build conda --user underworldcode
