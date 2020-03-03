@@ -22,9 +22,7 @@ jobs:
       - name: Install dependencies 
         shell: bash -l {0}
         run: |
-          source ~/myconda/etc/profile.d/conda.sh
-          conda activate base
-          python -m pip install --upgrade pip
+          conda install pip 
           conda install -c conda-forge libgfortran
           conda install -c conda-forge pint
           conda install numpy scipy 
@@ -33,10 +31,8 @@ jobs:
       - name: Install (self)
         shell: bash -l {0}
         run: |
-          source ~/myconda/etc/profile.d/conda.sh
-          conda activate base
           pip install -e . 
-          # 
+          
       - name: Test with pytest
         run: |
           source ~/myconda/etc/profile.d/conda.sh
