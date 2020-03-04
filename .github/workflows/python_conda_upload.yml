@@ -1,0 +1,55 @@
+name: Upload Python Package to Anaconda Cloud (MacOS / ubuntu)
+
+on: 
+  release:
+    types: [created]
+
+jobs:
+  catch_and_release: 
+    name: ${{matrix.os}} build and test on py (${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ 'macos-latest', 'ubuntu-latest']
+        python-version: ['3.7']
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: goanpeca/setup-miniconda@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Conda info
+        shell: bash -l {0}
+        run: conda info
+
+      - name: Install dependencies on 'ubuntu-latest'       
+        if: matrix.os == 'ubuntu-latest' 
+        shell: bash -l {0}
+        run: |
+          conda install pip 
+          conda install -c conda-forge fortran-compiler numpy scipy
+          conda install pytest
+
+      - name: Install dependencies on MacOS
+        if: matrix.os == 'macos-latest'
+        shell: bash -l {0}
+        run: |
+          conda install -c conda-forge gfortran_osx-64 libgfortran numpy scipy
+          conda install pytest
+
+      - name: Reinvent the wheel / upload
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          ANACONDA_USERNAME: ${{ secrets.ANACONDA_USERNAME}}
+          ANACONDA_PASSWORD: ${{ secrets.ANACONDA_PASSWORD}}
+
+        shell: bash -l {0}
+        run: |
+          # Conda version
+          conda install conda-build anaconda-client 
+          conda config --set anaconda_upload yes
+          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
+          conda build conda --user underworldcode
+          
+         
