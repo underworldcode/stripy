@@ -3,11 +3,10 @@
 [![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/underworldcode/stripy.svg)](https://hub.docker.com/r/underworldcode/stripy)
 [![PyPI](https://img.shields.io/pypi/v/stripy.svg)](https://pypi.org/project/stripy/)
 
+[![pip builds](https://github.com/underworldcode/stripy/workflows/pip%20builds/badge.svg)](https://github.com/underworldcode/stripy/actions?query=workflow%3A%22pip+builds%22)
 
-![Build status (master)](https://github.com/underworldcode/stripy/workflows/Python%20Build%20/%20Test%20with%20pip%20install%20on%20Ubuntu%20/%20MacOS/badge.svg?branch=master)
+[![conda builds](https://github.com/underworldcode/stripy/workflows/conda%20builds/badge.svg)](https://github.com/underworldcode/stripy/actions?query=workflow%3A%22conda+builds%22)
 
-
-![Build status (dev)](https://github.com/underworldcode/stripy/workflows/Python%20Build%20/%20Test%20with%20pip%20install%20on%20Ubuntu%20/%20MacOS/badge.svg?branch=dev)
 
 
 
