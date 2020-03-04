@@ -1,4 +1,4 @@
-name: Deploy docs to gh-pages
+name: API docs 
 
 on:
   push:
