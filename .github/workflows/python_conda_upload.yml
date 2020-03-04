@@ -10,6 +10,7 @@ jobs:
     name: ${{matrix.os}} build and test on py (${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ 'macos-latest', 'ubuntu-latest']
         python-version: ['3.7']
