@@ -1,34 +1,34 @@
-## To install locally: python setup.py build && python setup.py install
-## (If there are problems with installation of the documentation, it may be that
-##  the egg file is out of sync and will need to be manually deleted - see error message
-##  for details of the corrupted zip file. )
-##
-## To push a version through to pip.
-##  - Make sure it installs correctly locally as above
-##  - Update the version information in this file
-##  - python setup.py sdist upload -r pypitest  # for the test version
-##  - python setup.py sdist upload -r pypi      # for the real version
-## With twine:
-##  - python setup.py sdist
-##  - twine upload dist/*
+# To install locally: python setup.py build && python setup.py install
+# (If there are problems with installation of the documentation, the
+#  egg file may be out of sync and will need to be manually deleted 
+#  - see error message for details of the corrupted zip file. )
+#
+# To push a version through to pip.
+#  - Make sure it installs correctly locally as above
+#  - Update the version information in this file
+#  - python setup.py sdist upload -r pypitest  # for the test version
+#  - python setup.py sdist upload -r pypi      # for the real version
+# With twine:
+#  - python setup.py sdist
+#  - twine upload dist/*
+#
+# (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
 
-##
-## (see http://peterdowns.com/posts/first-time-with-pypi.html)
-
-
-from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
 from os import path
 import io
-import os, subprocess
+import os
+import subprocess
 
 
-## in development set version to none and ...
-PYPI_VERSION = "1.1.3"
+# in development set version to none and ...
+PYPI_VERSION = None
 
 # Return the git revision as a string (from numpy)
+
 def git_version():
+    
     def _minimal_ext_cmd(cmd):
         # construct minimal environment
         env = {}
@@ -81,7 +81,6 @@ if __name__ == "__main__":
           long_description_content_type='text/markdown',
           ext_modules       = [ext1, ext2, ext3, ext4],
           install_requires  = ['numpy', 'scipy>=0.15.0'],
-          python_requires   = '>=2.7, >=3.5',
           packages          = ['stripy'],
           package_data      = {'stripy': ['Notebooks/*ipynb', # Worked Examples is not currently used
                                           'Notebooks/CartesianTriangulations/*ipynb',
