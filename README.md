@@ -2,7 +2,9 @@
 
 [![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/underworldcode/stripy.svg)](https://hub.docker.com/r/underworldcode/stripy)
 [![PyPI](https://img.shields.io/pypi/v/stripy.svg)](https://pypi.org/project/stripy/)
+
 ![Build status (master)](https://github.com/underworldcode/stripy/workflows/Python%20Build%20/%20Test%20with%20pip%20install%20on%20Ubuntu%20/%20MacOS/badge.svg?branch=master)
+
 ![Build status (dev)](https://github.com/underworldcode/stripy/workflows/Python%20Build%20/%20Test%20with%20pip%20install%20on%20Ubuntu%20/%20MacOS/badge.svg?branch=dev)
 
 
