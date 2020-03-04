@@ -28,7 +28,7 @@ jobs:
       - name: Install gfortran (macos)
         if: matrix.os == 'macos-latest' 
         run: |
-          brew install gfortran
+          brew cask install gfortran
       
       - name: Install dependencies
         run: |
