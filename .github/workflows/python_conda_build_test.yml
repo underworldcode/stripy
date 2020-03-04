@@ -1,4 +1,5 @@
-name: Python Build / Test with conda
+name: conda builds
+
 
 on: [push]
 

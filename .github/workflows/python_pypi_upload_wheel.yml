@@ -1,4 +1,4 @@
-name: Upload Python Package to PYPI (Ubuntu / wheel)
+name: PYPI wheels
 
 on:
   release:

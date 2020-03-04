@@ -1,4 +1,5 @@
-name: Python Build / Test with pip install on Ubuntu / MacOS
+name: pip builds  
+
 
 on: [push]
 

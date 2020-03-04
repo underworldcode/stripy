@@ -1,4 +1,5 @@
-name: Upload Python Package to Anaconda Cloud (MacOS / ubuntu)
+name: conda -c underworldcode 
+
 
 on: 
   release:
