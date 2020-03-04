@@ -18,14 +18,17 @@
 from numpy.distutils.core import setup, Extension
 from os import path
 import io
-import os, subprocess
+import os
+import subprocess
 
 
-## in development set version to none and ...
+# in development set version to none and ...
 PYPI_VERSION = None
 
 # Return the git revision as a string (from numpy)
+
 def git_version():
+    
     def _minimal_ext_cmd(cmd):
         # construct minimal environment
         env = {}
