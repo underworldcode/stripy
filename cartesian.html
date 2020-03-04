@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.4" />
+<meta name="generator" content="pdoc 0.7.5" />
 <title>stripy.cartesian API documentation</title>
 <meta name="description" content="Copyright 2017-2019 Louis Moresi, Ben Mather …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
@@ -353,8 +353,8 @@ class Triangulation(object):
         if zdata.size != self.npoints:
             raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
-        zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
+        zdata = self._shuffle_field(zdata)
 
 
         sigma, dsmax, ierr = _srfpack.getsig(self._x, self._y, zdata,\
@@ -551,8 +551,8 @@ class Triangulation(object):
         if zdata.size != self.npoints:
             raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
-        zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
+        zdata = self._shuffle_field(zdata)
 
         sflag = False
         sval = 0
@@ -602,17 +602,17 @@ class Triangulation(object):
         if zdata.size != self.npoints:
             raise ValueError(&#39;zdata should be same size as mesh&#39;)
 
-        zdata = self._shuffle_field(zdata)
-
         if order == 0:
             ierr = 0
             ist = np.ones(shape, dtype=np.int)
+            zdata = self._shuffle_field(zdata)
             ist, dist, zierr = _tripack.nearnds(xi, yi, ist, \
                                                 self._x, self._y, \
                                                 self.lst, self.lptr, self.lend)
             zi = zdata[ist - 1]
 
         elif order == 1:
+            zdata = self._shuffle_field(zdata)
             zi, zierr, ierr = _srfpack.interp_linear(xi, yi,\
                                                 self._x,self._y, zdata, \
                                                 self.lst, self.lptr, self.lend)
@@ -620,6 +620,7 @@ class Triangulation(object):
             sigma = self.sigma
             iflgs = self.iflgs
             grad, iflgg = self._check_gradient(zdata, grad)
+            zdata = self._shuffle_field(zdata)
 
             zi, zierr, ierr = _srfpack.interp_cubic(xi, yi, \
                                                     self._x, self._y, zdata, \
@@ -1575,8 +1576,8 @@ however, the node ordering will remain identical.</p></section>
         if zdata.size != self.npoints:
             raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
-        zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
+        zdata = self._shuffle_field(zdata)
 
 
         sigma, dsmax, ierr = _srfpack.getsig(self._x, self._y, zdata,\
@@ -1773,8 +1774,8 @@ however, the node ordering will remain identical.</p></section>
         if zdata.size != self.npoints:
             raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
-        zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
+        zdata = self._shuffle_field(zdata)
 
         sflag = False
         sval = 0
@@ -1824,17 +1825,17 @@ however, the node ordering will remain identical.</p></section>
         if zdata.size != self.npoints:
             raise ValueError(&#39;zdata should be same size as mesh&#39;)
 
-        zdata = self._shuffle_field(zdata)
-
         if order == 0:
             ierr = 0
             ist = np.ones(shape, dtype=np.int)
+            zdata = self._shuffle_field(zdata)
             ist, dist, zierr = _tripack.nearnds(xi, yi, ist, \
                                                 self._x, self._y, \
                                                 self.lst, self.lptr, self.lend)
             zi = zdata[ist - 1]
 
         elif order == 1:
+            zdata = self._shuffle_field(zdata)
             zi, zierr, ierr = _srfpack.interp_linear(xi, yi,\
                                                 self._x,self._y, zdata, \
                                                 self.lst, self.lptr, self.lend)
@@ -1842,6 +1843,7 @@ however, the node ordering will remain identical.</p></section>
             sigma = self.sigma
             iflgs = self.iflgs
             grad, iflgg = self._check_gradient(zdata, grad)
+            zdata = self._shuffle_field(zdata)
 
             zi, zierr, ierr = _srfpack.interp_cubic(xi, yi, \
                                                     self._x, self._y, zdata, \
@@ -3123,17 +3125,17 @@ must be the same size of the mesh</dd>
     if zdata.size != self.npoints:
         raise ValueError(&#39;zdata should be same size as mesh&#39;)
 
-    zdata = self._shuffle_field(zdata)
-
     if order == 0:
         ierr = 0
         ist = np.ones(shape, dtype=np.int)
+        zdata = self._shuffle_field(zdata)
         ist, dist, zierr = _tripack.nearnds(xi, yi, ist, \
                                             self._x, self._y, \
                                             self.lst, self.lptr, self.lend)
         zi = zdata[ist - 1]
 
     elif order == 1:
+        zdata = self._shuffle_field(zdata)
         zi, zierr, ierr = _srfpack.interp_linear(xi, yi,\
                                             self._x,self._y, zdata, \
                                             self.lst, self.lptr, self.lend)
@@ -3141,6 +3143,7 @@ must be the same size of the mesh</dd>
         sigma = self.sigma
         iflgs = self.iflgs
         grad, iflgg = self._check_gradient(zdata, grad)
+        zdata = self._shuffle_field(zdata)
 
         zi, zierr, ierr = _srfpack.interp_cubic(xi, yi, \
                                                 self._x, self._y, zdata, \
@@ -3277,8 +3280,8 @@ the result of <code>self.gradient(zdata)</code>.</dd>
     if zdata.size != self.npoints:
         raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
-    zdata = self._shuffle_field(zdata)
     grad, iflgg = self._check_gradient(zdata, grad)
+    zdata = self._shuffle_field(zdata)
 
     sflag = False
     sval = 0
@@ -3813,8 +3816,8 @@ the result of <code>self.gradient(zdata)</code>.</dd>
     if zdata.size != self.npoints:
         raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
-    zdata = self._shuffle_field(zdata)
     grad, iflgg = self._check_gradient(zdata, grad)
+    zdata = self._shuffle_field(zdata)
 
 
     sigma, dsmax, ierr = _srfpack.getsig(self._x, self._y, zdata,\
@@ -3903,7 +3906,7 @@ the result of <code>self.gradient(zdata)</code>.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.4</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.5</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
