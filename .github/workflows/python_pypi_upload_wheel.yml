@@ -5,12 +5,15 @@ on:
     types: [created]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  deploy_to_pypi:
+    name: ${{matrix.os}} build and deploy on pypi (${{ matrix.python-version }})
+
     strategy:
       matrix:
-        python-version: [2.7, 3.6, 3.7, 3.8]
+        os: [ 'macos-latest', 'ubuntu-latest']
+        python-version: ['2.7', '3.7', '3.8']
 
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v2
@@ -20,9 +23,15 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install gfortran
+    - name: Install gfortran (ubuntu)
+      if: matrix.os == 'ubuntu-latest' 
       run: |
         sudo apt-get install -y gfortran
+
+    - name: Install gfortran (macos)
+      if: matrix.os == 'macos-latest' 
+      run: |
+        brew cask install gfortran
 
     - name: Install dependencies
       run: |
@@ -32,14 +41,6 @@ jobs:
         pip install scipy
         pip install Cython
         
-    # - name: Build and publish
-    #   env:
-    #     TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-    #     TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-    #   run: |
-    #     python setup.py bdist_wheel
-    #     twine upload dist/*
-
     - name: Build the wheel
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}

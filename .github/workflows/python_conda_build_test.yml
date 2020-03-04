@@ -2,6 +2,9 @@ name: Python Build / Test with conda
 
 on: [push]
 
+# This should work with windows but fails in the testing phase for 
+# reasons to do with python naming (Help !!) 
+
 jobs:
   build_and_test: 
     name: Build test (${{matrix.os}}, py ${{ matrix.python-version }})
@@ -9,8 +12,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ 'macos-latest', 'ubuntu-latest', 'windows-latest' ]
-        python-version: [ '3.7' ]
+        os: [ 'macos-latest', 'ubuntu-latest' , 'windows-latest']
+        python-version: [ '2.7' , '3.7' ]
 
     steps:
 
