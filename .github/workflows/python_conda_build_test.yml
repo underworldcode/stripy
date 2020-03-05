@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'macos-latest', 'ubuntu-latest' ]
+        os: [ 'macos-latest', 'ubuntu-16.04' ]
         python-version: [ '2.7' , '3.7' ]
 
     steps:
