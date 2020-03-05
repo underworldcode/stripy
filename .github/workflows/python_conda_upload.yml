@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 1
       matrix:
         os: [ 'macos-latest', 'ubuntu-latest']
         python-version: ['2.7', '3.7']
@@ -28,6 +28,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest' 
         shell: bash -l {0}
         run: |
+          conda update -n base -c defaults conda
           conda install -c conda-forge fortran-compiler numpy scipy
           conda install pytest
 
@@ -35,6 +36,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         shell: bash -l {0}
         run: |
+          conda update -n base -c defaults conda
           conda install -c conda-forge gfortran_osx-64 libgfortran numpy scipy
           conda install pytest
 

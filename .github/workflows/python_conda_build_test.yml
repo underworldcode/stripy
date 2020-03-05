@@ -2,9 +2,7 @@ name: conda builds
 
 
 on: 
-  push:
-    branches:
-      - master
+  push
 
 
 # This should work with windows but fails in the testing phase for 
