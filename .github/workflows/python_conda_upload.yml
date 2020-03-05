@@ -32,6 +32,9 @@ jobs:
           conda install pip 
           conda install -c conda-forge fortran-compiler numpy scipy
           conda install pytest
+          conda install conda-build anaconda-client 
+          conda config --set anaconda_upload yes
+
 
       - name: Install dependencies on MacOS
         if: matrix.os == 'macos-latest'
@@ -54,7 +57,7 @@ jobs:
         run: |
           # Conda version
   
-          yes | anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
+          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
           conda build conda --user underworldcode
           anaconda logout
 
