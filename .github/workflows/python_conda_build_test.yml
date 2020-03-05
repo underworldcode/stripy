@@ -46,7 +46,7 @@ jobs:
         shell: bash -l {0}
         run: |
           python --version 
-          pip install . --no-dep
+          pip install . --no-dependencies
           
       - name: Test with pytest
         shell: bash -l {0}
