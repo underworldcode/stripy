@@ -43,7 +43,7 @@ jobs:
       with:
         python-versions: 'cp36-cp36m cp37-cp37m cp38-cp38m'
         build-requirements: 'cython numpy scipy'
-        system-packages: 'gfortran'
+        system-packages: 'libgfortran'
         package-path: ''
         pip-wheel-args: '--no-deps'
         
