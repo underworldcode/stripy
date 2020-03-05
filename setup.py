@@ -15,6 +15,7 @@
 # (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
 
+from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
 from os import path
 import io
