@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [  'ubuntu-16.04', 'macos-latest']
+        os: [  'ubuntu-latest', 'macos-latest']
         python-version: ['2.7', '3.7']
 
     steps:
@@ -24,7 +24,7 @@ jobs:
         run: conda info
 
       - name: Install dependencies on 'ubuntu-latest'       
-        if: matrix.os == 'ubuntu-16.04' 
+        if: matrix.os == 'ubuntu-latest' 
         shell: bash -l {0}
         run: |
           conda update -n base -c defaults conda
