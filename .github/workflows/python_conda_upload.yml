@@ -51,7 +51,7 @@ jobs:
           conda install conda-build anaconda-client 
           conda config --set anaconda_upload yes
 
-          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD --hostname "stripy-virtual-${{ matrix.os}}-${{ matrix.python-version }}"
+          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD --hostname stripy-virtual-${{ matrix.os}}-${{ matrix.python-version }}
           conda build conda --user underworldcode
           anaconda logout
 
