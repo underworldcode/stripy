@@ -39,6 +39,9 @@ jobs:
         run: |
           conda install -c conda-forge gfortran_osx-64 libgfortran numpy scipy
           conda install pytest
+          conda install conda-build anaconda-client 
+          conda config --set anaconda_upload yes
+
 
       - name: Reinvent the wheel / upload
         env:
@@ -50,11 +53,10 @@ jobs:
         shell: bash -l {0}
         run: |
           # Conda version
-          conda install conda-build anaconda-client 
-          conda config --set anaconda_upload yes
-          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
+  
+          yes | anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
           conda build conda --user underworldcode
           anaconda logout
-          
+
           
          
