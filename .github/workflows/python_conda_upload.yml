@@ -58,7 +58,7 @@ jobs:
         run: |
           # Conda version
   
-          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
+          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD --hostname "stripy-virtual-${{ matrix.ox}}"
           conda build conda --user underworldcode
           anaconda logout
 
