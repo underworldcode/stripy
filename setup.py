@@ -23,7 +23,7 @@ import subprocess
 
 
 # in development set version to none and ...
-PYPI_VERSION = None
+PYPI_VERSION = 1.4.0
 
 # Return the git revision as a string (from numpy)
 
