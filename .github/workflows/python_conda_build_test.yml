@@ -1,6 +1,5 @@
 name: conda + pip
 
-
 on: 
   push
 
@@ -16,6 +15,10 @@ jobs:
       matrix:
         os: [ 'macos-latest', 'ubuntu-latest' ]
         python-version: [ '2.7' , '3.7' ]
+      
+        exclude:
+        - os: ubuntu-latest
+          python-version: '2.7'
 
     steps:
 
