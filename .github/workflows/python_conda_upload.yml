@@ -54,5 +54,7 @@ jobs:
           conda config --set anaconda_upload yes
           anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
           conda build conda --user underworldcode
+          anaconda logout
+          
           
          
