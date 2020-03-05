@@ -1,12 +1,8 @@
 name: PYPI wheels macos
 
-# on:
-#   release:
-#     types: [created]
-
 on:
-  create
-
+  release:
+    types: [created, edited]
 
 
 jobs:

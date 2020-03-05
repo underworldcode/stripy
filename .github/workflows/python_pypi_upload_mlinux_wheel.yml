@@ -1,11 +1,11 @@
 name: PYPI wheels manylinux
 
-# on:
-#   release:
-#     types: [created]
-
 on:
-  push
+  release:
+    types: [created, edited]
+
+# on:
+#   push
 
 jobs:
   deploy_to_pypi:

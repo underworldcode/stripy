@@ -1,9 +1,8 @@
 name: pip builds  
 
 on: 
-  push:
-    branches:
-      - master
+  push
+
 
 
 jobs:
