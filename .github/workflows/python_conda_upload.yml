@@ -2,7 +2,7 @@ name: conda -c underworldcode
 
 
 on: 
-  create 
+  push 
   # release:
   #   types: [created]
 

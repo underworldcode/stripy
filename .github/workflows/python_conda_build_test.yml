@@ -1,7 +1,11 @@
 name: conda builds
 
 
-on: [push]
+on: 
+  push:
+    branches:
+      - master
+
 
 # This should work with windows but fails in the testing phase for 
 # reasons to do with python naming (Help !!) 
