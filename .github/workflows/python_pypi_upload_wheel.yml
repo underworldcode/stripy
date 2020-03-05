@@ -1,8 +1,13 @@
 name: PYPI wheels
 
+# on:
+#   release:
+#     types: [created]
+
 on:
-  release:
-    types: [created]
+  create
+    
+
 
 jobs:
   deploy_to_pypi:

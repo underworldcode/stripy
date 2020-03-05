@@ -2,8 +2,9 @@ name: conda -c underworldcode
 
 
 on: 
-  release:
-    types: [created]
+  create 
+  # release:
+  #   types: [created]
 
 jobs:
   catch_and_release: 
