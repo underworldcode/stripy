@@ -4,9 +4,6 @@ on:
   release:
     types: [created, edited]
 
-# on:
-#   push
-
 jobs:
   deploy_to_pypi:
     name:  build and deploy manylinux on pypi 

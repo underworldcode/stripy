@@ -4,7 +4,6 @@ name: conda + pip
 on: 
   push
 
-
 # This should work with windows but fails in the testing phase for 
 # reasons to do with python naming (Help !!) 
 
