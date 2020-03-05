@@ -52,7 +52,7 @@ jobs:
           conda config --set anaconda_upload yes
 
           anaconda logout
-          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD --hostname stripy-virtual-${{ matrix.os}}-${{ matrix.python-version }}
+          printf Y | anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD --hostname stripy-virtual-${{ matrix.os}}-${{ matrix.python-version }}
           conda build conda --user underworldcode
           anaconda logout
 
