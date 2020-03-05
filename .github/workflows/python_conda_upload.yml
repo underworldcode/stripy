@@ -1,6 +1,5 @@
 name: conda -c underworldcode 
 
-
 on: 
   push 
   # release:
@@ -12,10 +11,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-      max-parallel: 1
+      max-parallel: 2
       matrix:
         os: [ 'macos-latest', 'ubuntu-latest']
-        python-version: ['3.7']
+        python-version: ['3.8']
 
     steps:
       - uses: actions/checkout@v2
@@ -30,12 +29,8 @@ jobs:
         if: matrix.os == 'ubuntu-latest' 
         shell: bash -l {0}
         run: |
-          conda install pip 
           conda install -c conda-forge fortran-compiler numpy scipy
           conda install pytest
-          conda install conda-build anaconda-client 
-          conda config --set anaconda_upload yes
-
 
       - name: Install dependencies on MacOS
         if: matrix.os == 'macos-latest'
@@ -43,22 +38,19 @@ jobs:
         run: |
           conda install -c conda-forge gfortran_osx-64 libgfortran numpy scipy
           conda install pytest
-          conda install conda-build anaconda-client 
-          conda config --set anaconda_upload yes
-
 
       - name: Reinvent the wheel / upload
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
           ANACONDA_USERNAME: ${{ secrets.ANACONDA_USERNAME}}
           ANACONDA_PASSWORD: ${{ secrets.ANACONDA_PASSWORD}}
 
         shell: bash -l {0}
         run: |
           # Conda version
-  
-          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD --hostname "stripy-virtual-${{ matrix.ox}}"
+          conda install conda-build anaconda-client 
+          conda config --set anaconda_upload yes
+
+          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD --hostname "stripy-virtual-${{ matrix.os}}-${{ matrix.python-version }}"
           conda build conda --user underworldcode
           anaconda logout
 
