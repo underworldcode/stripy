@@ -2,7 +2,7 @@ name: PYPI source
 
 on:
   release:
-    types: [created]
+    types: [created, edited]
 
 jobs:
   deploy:

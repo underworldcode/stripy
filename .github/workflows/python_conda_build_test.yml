@@ -1,7 +1,7 @@
-name: conda builds
+name: conda + pip
 
-
-on: [push]
+on: 
+  push
 
 # This should work with windows but fails in the testing phase for 
 # reasons to do with python naming (Help !!) 
@@ -12,10 +12,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-      max-parallel: 1
       matrix:
         os: [ 'macos-latest', 'ubuntu-latest' ]
         python-version: [ '2.7' , '3.7' ]
+      
+        exclude:
+        - os: ubuntu-latest
+          python-version: '2.7'
 
     steps:
 
@@ -45,7 +48,7 @@ jobs:
         shell: bash -l {0}
         run: |
           python --version 
-          pip install -e . 
+          pip install . --no-dependencies
           
       - name: Test with pytest
         shell: bash -l {0}

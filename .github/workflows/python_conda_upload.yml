@@ -1,9 +1,8 @@
 name: conda -c underworldcode 
 
-
 on: 
   release:
-    types: [created]
+    types: [created, edited]
 
 jobs:
   catch_and_release: 
@@ -12,8 +11,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'macos-latest', 'ubuntu-latest']
-        python-version: ['3.7']
+        os: [  'ubuntu-latest', 'macos-latest']
+        python-version: ['2.7', '3.7']
 
     steps:
       - uses: actions/checkout@v2
@@ -28,7 +27,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest' 
         shell: bash -l {0}
         run: |
-          conda install pip 
+          conda update -n base -c defaults conda
           conda install -c conda-forge fortran-compiler numpy scipy
           conda install pytest
 
@@ -36,13 +35,12 @@ jobs:
         if: matrix.os == 'macos-latest'
         shell: bash -l {0}
         run: |
+          conda update -n base -c defaults conda
           conda install -c conda-forge gfortran_osx-64 libgfortran numpy scipy
           conda install pytest
 
       - name: Reinvent the wheel / upload
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
           ANACONDA_USERNAME: ${{ secrets.ANACONDA_USERNAME}}
           ANACONDA_PASSWORD: ${{ secrets.ANACONDA_PASSWORD}}
 
@@ -51,7 +49,11 @@ jobs:
           # Conda version
           conda install conda-build anaconda-client 
           conda config --set anaconda_upload yes
-          anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD
+
+          anaconda logout
+          printf Y | anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD --hostname stripy-virtual-${{ matrix.os}}-${{ matrix.python-version }}
           conda build conda --user underworldcode
+          anaconda logout
+
           
          

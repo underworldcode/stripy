@@ -1,8 +1,9 @@
-name: PYPI wheels
+name: PYPI wheels macos
 
 on:
   release:
-    types: [created]
+    types: [created, edited]
+
 
 jobs:
   deploy_to_pypi:
@@ -11,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'macos-latest', 'ubuntu-latest']
+        os: [ 'macos-latest']
         python-version: ['2.7', '3.7', '3.8']
 
     runs-on: ${{ matrix.os }}
