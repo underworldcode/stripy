@@ -5,7 +5,6 @@
 
 [![pip builds](https://github.com/underworldcode/stripy/workflows/pip%20builds/badge.svg)](https://github.com/underworldcode/stripy/actions?query=workflow%3A%22pip+builds%22)
 
-[![conda builds](https://github.com/underworldcode/stripy/workflows/conda%20builds/badge.svg)](https://github.com/underworldcode/stripy/actions?query=workflow%3A%22conda+builds%22)
 
 
 
