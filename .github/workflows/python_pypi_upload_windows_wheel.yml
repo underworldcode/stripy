@@ -1,0 +1,43 @@
+name: PYPI wheels windows
+
+on:
+  release:
+    types: [created, edited]
+
+
+jobs:
+  deploy_to_pypi:
+    name: ${{matrix.os}} build and deploy on pypi (${{ matrix.python-version }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ 'windows-latest']
+        python-version: ['3.6', '3.7']
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel twine
+        pip install numpy
+        pip install scipy
+        pip install Cython
+        
+    - name: Build the wheel
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+
+      run: |
+        python setup.py bdist_wheel
+        twine upload dist/*  --skip-existing
