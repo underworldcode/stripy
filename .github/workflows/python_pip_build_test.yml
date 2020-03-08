@@ -37,7 +37,7 @@ jobs:
           brew cask install gfortran
 
       - name: Install fortran (windows)
-        if: matrix.os == "windows-latest"
+        if: matrix.os == 'windows-latest'
         uses: numworks/setup-msys2@v1
       
       - name: Install dependencies
