@@ -17,15 +17,21 @@ Stripy source code is available from <https://github.com/underworldcode/stripy>
 
 """
 
-import os
-extra_dll_dir = os.path.join(os.path.dirname(__file__), 'extra-dll')
-if os.path.isdir(extra_dll_dir):
-    print(os.listdir(extra_dll_dir))
-    os.environ["PATH"] += os.pathsep + extra_dll_dir
-extra_dll_dir = os.path.join(os.path.dirname(__file__), '.libs')
-if os.path.isdir(extra_dll_dir):
-    print(os.listdir(extra_dll_dir))
-    os.environ["PATH"] += os.pathsep + extra_dll_dir
+
+import os as _os
+from platform import system as _system
+
+# add '.dll' files if we are on Windows
+if _system() == "Windows":
+    extra_dll_dir = _os.path.join(_os.path.dirname(__file__), 'extra-dll')
+    if _os.path.isdir(extra_dll_dir):
+        print(_os.listdir(extra_dll_dir))
+        _os.environ["PATH"] += _os.pathsep + extra_dll_dir
+    extra_dll_dir = _os.path.join(_os.path.dirname(__file__), '.libs')
+    if _os.path.isdir(extra_dll_dir):
+        print(_os.listdir(extra_dll_dir))
+        _os.environ["PATH"] += _os.pathsep + extra_dll_dir
+
 
 from .spherical import sTriangulation
 from .cartesian import Triangulation
