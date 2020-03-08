@@ -48,30 +48,3 @@ def test_uniform_ring_mesh():
     mesh = stripy.spherical_meshes.uniform_ring_mesh(resolution=9, refinement_levels=0)
     mesh = stripy.spherical_meshes.uniform_ring_mesh(resolution=3, refinement_levels=3)
 
-
-## Cartesian meshes
-
-def test_cart_square_border():
-    mesh = stripy.cartesian_meshes.square_border((-1.0,1.0,-1.0,1.0), 0.1, 0.1, refinement_levels=0)
-    mesh = stripy.cartesian_meshes.square_border((-1.0,1.0,-1.0,1.0), 0.1, 0.1, refinement_levels=2)
-    mesh = stripy.cartesian_meshes.square_border((-1.0,1.0,-1.0,1.0), 0.1, 0.2, refinement_levels=0)
-
-
-def test_cart_square_mesh():
-    mesh = stripy.cartesian_meshes.square_mesh((-1.0,1.0,-1.0,1.0), 0.1, 0.1, refinement_levels=0)
-    mesh = stripy.cartesian_meshes.square_mesh((-1.0,1.0,-1.0,1.0), 0.1, 0.1, refinement_levels=2)
-    mesh = stripy.cartesian_meshes.square_mesh((-1.0,1.0,-1.0,1.0), 0.1, 0.2, refinement_levels=0)
-
-
-def test_elliptical_mesh():
-    mesh = stripy.cartesian_meshes.elliptical_mesh((-1.0,1.0,-1.0,1.0), 0.1, 0.1, refinement_levels=0)
-    mesh = stripy.cartesian_meshes.elliptical_mesh((-1.0,1.0,-1.0,1.0), 0.1, 0.1, refinement_levels=2)
-    mesh = stripy.cartesian_meshes.elliptical_mesh((-1.0,1.0,-1.0,1.0), 0.1, 0.2, refinement_levels=0)
-    mesh = stripy.cartesian_meshes.elliptical_mesh((-1.0,1.0,-1.0,1.0), 0.1, 0.1, random_scale=0.01, refinement_levels=0)
-    mesh = stripy.cartesian_meshes.elliptical_mesh((-1.0,1.0,-1.0,1.0), 0.1, 0.2, random_scale=0.01, refinement_levels=0)
-
-
-def test_cart_random_mesh():
-    mesh = stripy.cartesian_meshes.random_mesh((-1.0,1.0,-1.0,1.0), 5000)
-    mesh = stripy.cartesian_meshes.random_mesh((-1.0,1.0,-1.0,1.0), 10000)
-    mesh = stripy.cartesian_meshes.random_mesh((-1.0,1.0,-1.0,1.0), 20000)
