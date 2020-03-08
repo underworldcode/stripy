@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'macos-latest', 'ubuntu-latest']
+        os: [ 'macos-latest', 'ubuntu-latest', 'windows-latest']
         python-version: ['2.7', '3.7', '3.8']
 
     runs-on: ${{ matrix.os }}
@@ -35,6 +35,11 @@ jobs:
         if: matrix.os == 'macos-latest' 
         run: |
           brew cask install gfortran
+
+      - name: Install gfortran (windows)
+        if: matrix.os == "windows-latest"
+        uses: numworks/setup-msys2@v1
+        run: msys2do uname -a
       
       - name: Install dependencies
         run: |
