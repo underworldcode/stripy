@@ -21,11 +21,11 @@ from os import path
 import io
 import os
 import subprocess
-import sys 
+import platform 
 
 link_args = []
  
-if not "darwin" in sys.platform:
+if "Windows" in platform.system():
     link_args = ["-static"]
 
 # in development set version to none and ...
