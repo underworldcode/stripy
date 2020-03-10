@@ -28,7 +28,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda update -n base -c defaults conda
-          conda install -c conda-forge fortran-compiler numpy scipy
+          conda install -c conda-forge compilers numpy scipy cython
           conda install pytest
 
       - name: Install dependencies on MacOS
@@ -36,7 +36,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda update -n base -c defaults conda
-          conda install -c conda-forge fortran-compiler libgfortran numpy scipy cython
+          conda install -c conda-forge compilers numpy scipy cython
           conda install pytest
 
       - name: Reinvent the wheel / upload

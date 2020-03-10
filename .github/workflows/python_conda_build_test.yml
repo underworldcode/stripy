@@ -29,7 +29,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda install pip 
-          conda install -c conda-forge compilers numpy scipy
+          conda install -c conda-forge compilers numpy scipy cython
           conda install pytest
 
       - name: Install dependencies on MacOS
@@ -37,7 +37,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda install pip 
-          conda install -c conda-forge compilers numpy scipy
+          conda install -c conda-forge compilers numpy scipy cython
           conda install pytest
 
           
