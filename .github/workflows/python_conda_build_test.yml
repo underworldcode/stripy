@@ -11,10 +11,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ 'macos-latest', 'ubuntu-latest', 'windows-latest' ]
-        python-version: [ '2.7' , '3.7' ]
+        python-version: [ '2.7' , '3.7', '3.8' ]
       
         exclude:
         - os: ubuntu-latest
+          python-version: '2.7'
+        - os: macos-latest
           python-version: '2.7'
 
     steps:
