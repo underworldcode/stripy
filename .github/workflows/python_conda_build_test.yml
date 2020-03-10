@@ -24,23 +24,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies on 'ubuntu-latest' and 'windows-latest'       
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'windows-latest'
+      - name: Install dependencies with conda
         shell: bash -l {0}
         run: |
           conda install pip 
-          conda install -c conda-forge compilers numpy scipy cython
+          conda install -c conda-forge compilers numpy scipy 
           conda install pytest
 
-      - name: Install dependencies on MacOS
-        if: matrix.os == 'macos-latest'
-        shell: bash -l {0}
-        run: |
-          conda install pip 
-          conda install -c conda-forge compilers numpy scipy cython
-          conda install pytest
-
-          
       - name: Install (self)
         shell: bash -l {0}
         run: |

@@ -23,20 +23,11 @@ jobs:
         shell: bash -l {0}
         run: conda info
 
-      - name: Install dependencies on 'ubuntu-latest'       
-        if: matrix.os == 'ubuntu-latest' 
+      - name: Install dependencies via conda
         shell: bash -l {0}
         run: |
           conda update -n base -c defaults conda
-          conda install -c conda-forge compilers numpy scipy cython
-          conda install pytest
-
-      - name: Install dependencies on MacOS
-        if: matrix.os == 'macos-latest'
-        shell: bash -l {0}
-        run: |
-          conda update -n base -c defaults conda
-          conda install -c conda-forge compilers numpy scipy cython
+          conda install -c conda-forge compilers numpy scipy 
           conda install pytest
 
       - name: Reinvent the wheel / upload
