@@ -21,6 +21,9 @@ requirements:
     - pip
     - python
     - scipy >=0.15.0
+    - {{ compiler('fortran')}}
+    - {{ compiler('c')}}
+    
   run:
     - numpy
     - python

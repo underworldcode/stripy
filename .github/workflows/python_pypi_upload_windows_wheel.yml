@@ -1,8 +1,8 @@
-name: PYPI wheels macos
+name: PYPI wheels windows
 
-on: [push]
-  # release:
-  #   types: [created, edited]
+on:
+  release:
+    types: [created, edited]
 
 
 jobs:
@@ -12,8 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'macos-latest']
-        python-version: ['2.7', '3.7', '3.8']
+        os: [ 'windows-latest']
+        python-version: ['3.6', '3.7']
 
     runs-on: ${{ matrix.os }}
 
@@ -24,10 +24,6 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-
-    - name: Install gfortran (macos)
-      run: |
-        brew cask install gfortran
 
     - name: Install dependencies
       run: |
@@ -41,8 +37,7 @@ jobs:
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
- 
+
       run: |
- 
-        python setup.py bdist_wheel 
+        python setup.py bdist_wheel
         twine upload dist/*  --skip-existing

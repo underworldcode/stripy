@@ -21,7 +21,12 @@ from os import path
 import io
 import os
 import subprocess
+import platform 
 
+link_args = []
+ 
+if "Windows" in platform.system():
+    link_args = ["-static"]
 
 # in development set version to none and ...
 PYPI_VERSION = "1.2.0"
@@ -63,13 +68,17 @@ with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 # interface for Renka's algorithm 772 fortran code
 ext1 = Extension(name    = 'stripy._stripack',
-                 sources = ['src/stripack.pyf','src/stripack.f90'])
+                 sources = ['src/stripack.pyf','src/stripack.f90'],
+                 extra_link_args=link_args)
 ext2 = Extension(name    = 'stripy._tripack',
-                 sources = ['src/tripack.pyf', 'src/tripack.f90'])
+                 sources = ['src/tripack.pyf', 'src/tripack.f90'],
+                 extra_link_args=link_args)
 ext3 = Extension(name    = 'stripy._srfpack',
-                 sources = ['src/srfpack.pyf', 'src/srfpack.f'])
+                 sources = ['src/srfpack.pyf', 'src/srfpack.f'],
+                 extra_link_args=link_args)
 ext4 = Extension(name    = 'stripy._ssrfpack',
-                 sources = ['src/ssrfpack.pyf', 'src/ssrfpack.f'])
+                 sources = ['src/ssrfpack.pyf', 'src/ssrfpack.f'],
+                 extra_link_args=link_args)
 
 if __name__ == "__main__":
     setup(name = 'stripy',

@@ -17,6 +17,20 @@ Stripy source code is available from <https://github.com/underworldcode/stripy>
 
 """
 
+
+import os as _os
+from platform import system as _system
+
+# add '.dll' files if we are on Windows
+if _system() == "Windows":
+    extra_dll_dir = _os.path.join(_os.path.dirname(__file__), 'extra-dll')
+    if _os.path.isdir(extra_dll_dir):
+        _os.environ["PATH"] += _os.pathsep + extra_dll_dir
+    extra_dll_dir = _os.path.join(_os.path.dirname(__file__), '.libs')
+    if _os.path.isdir(extra_dll_dir):
+        _os.environ["PATH"] += _os.pathsep + extra_dll_dir
+
+
 from .spherical import sTriangulation
 from .cartesian import Triangulation
 from . import spherical_meshes

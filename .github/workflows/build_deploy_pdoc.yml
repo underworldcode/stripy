@@ -15,12 +15,10 @@ jobs:
         with:
           python-version: '3.x'    
 
-        # This is needed because we install stripy for litho1pt0 build for documentation
       - name: Install gfortran 
         run: |
           sudo apt-get install -y gfortran
          
-        # The numpy etc are needed because we install stripy for litho1pt0 build for documentation
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -31,7 +29,7 @@ jobs:
 
       - name: Install stripy
         run: |
-          pip install .
+          pip install -e .
    
       - name: Build docs with pdoc
         run: |

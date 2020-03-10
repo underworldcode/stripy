@@ -87,7 +87,7 @@ class square_mesh(_cartesian.Triangulation):
         x = x.ravel()
         y = y.ravel()
 
-        nsamples = interior_mask.sum()
+        nsamples = np.count_nonzero(interior_mask)
         xscale = random_scale*spacingX
         yscale = random_scale*spacingY
 
@@ -95,20 +95,24 @@ class square_mesh(_cartesian.Triangulation):
         y[interior_mask] += yscale * (0.5 - np.random.rand(nsamples))
 
         xy = np.column_stack([x, y])
+        xy_mask = xy[interior_mask]
 
-        n2 = x.size//2
+        # Randomise the point order for triangulation efficiency
+        np.random.shuffle(xy_mask)
+        xy[interior_mask] = xy_mask
 
         # ensure first 3 points are not collinear
-        # xy[0], xy[-1] = xy[-1].copy(), xy[0].copy()
-        # xy[2], xy[n2] = xy[n2].copy(), xy[2].copy()
-
-        ## Randomise the point order for triangulation efficiency
-        np.random.shuffle(xy)
+        xy[1], xy[-1] = xy[-1].copy(), xy[1].copy()
 
         super(square_mesh, self).__init__(xy[:,0], xy[:,1], permute=False, tree=tree)
 
         for r in range(0, refinement_levels):
             X, Y = self.uniformly_refine_triangulation(faces=False, trisect=False)
+
+            # ensure first 3 points are not collinear
+            X[1], X[-1] = X[-1].copy(), X[1].copy()
+            Y[1], Y[-1] = Y[-1].copy(), Y[1].copy()
+
             self._update_triangulation(X, Y)
 
         return
