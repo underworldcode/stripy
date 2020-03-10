@@ -1,8 +1,8 @@
 name: conda -c underworldcode 
 
-on: 
-  release:
-    types: [created, edited]
+on: [push]
+  # release:
+  #   types: [created, edited]
 
 jobs:
   catch_and_release: 
@@ -36,7 +36,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda update -n base -c defaults conda
-          conda install -c conda-forge gfortran_osx-64 libgfortran numpy scipy
+          conda install -c conda-forge fortran-compiler numpy scipy
           conda install pytest
 
       - name: Reinvent the wheel / upload
