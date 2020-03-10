@@ -22,11 +22,12 @@ requirements:
     - python
     - scipy >=0.15.0
     - {{ compiler('fortran')}}
+    
   run:
     - numpy
     - python
     - scipy >=0.15.0
-    - libgfortran
+    - {{ compiler('fortran')}}
 
 
 about:
