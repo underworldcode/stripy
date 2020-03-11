@@ -42,11 +42,12 @@ jobs:
         run: |
           # Conda version
           conda install conda-build anaconda-client 
-          conda config --set anaconda_upload yes
+          # conda config --set anaconda_upload yes
 
           anaconda logout
           printf Y | anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD --hostname stripy-virtual-${{ matrix.os}}-${{ matrix.python-version }}
           python setup.py bdist_conda   # this will upload to lmoresi in the first instance ... 
+          anaconda upload -u underworldcode /usr/share/miniconda/envs/test/conda-bld/*/*.tar.bz2 
           anaconda logout
 
           
