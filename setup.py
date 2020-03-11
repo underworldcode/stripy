@@ -17,6 +17,8 @@
 
 from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
+from distutils.command import bdist_conda
+
 from os import path
 import io
 import os
@@ -90,7 +92,7 @@ if __name__ == "__main__":
           long_description  = long_description,
           long_description_content_type='text/markdown',
           ext_modules       = [ext1, ext2, ext3, ext4],
-          install_requires  = ['numpy', 'scipy>=0.15.0'],
+          install_requires  = ['numpy>=1.18.1', 'scipy>=1.4.1'],
           packages          = ['stripy'],
           package_data      = {'stripy': ['Notebooks/*ipynb', # Worked Examples is not currently used
                                           'Notebooks/CartesianTriangulations/*ipynb',

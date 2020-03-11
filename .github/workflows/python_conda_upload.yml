@@ -3,6 +3,9 @@ name: conda -c underworldcode
 on: 
   release:
     types: [created, edited]
+  push:
+    branches:
+      - dev
 
 jobs:
   catch_and_release: 
@@ -43,7 +46,7 @@ jobs:
 
           anaconda logout
           printf Y | anaconda login --username $ANACONDA_USERNAME --password $ANACONDA_PASSWORD --hostname stripy-virtual-${{ matrix.os}}-${{ matrix.python-version }}
-          conda build conda --user underworldcode
+          python setup.py bdist_conda   # this will upload to lmoresi in the first instance ... 
           anaconda logout
 
           

@@ -16,18 +16,19 @@ build:
   script: "{{ PYTHON }} -m pip install . -vv"
 
 requirements:
+
   host:
-    - numpy
-    - pip
     - python
-    - scipy >=0.15.0
+    - pip
+    - numpy>=1.18.1
+    - scipy>=1.4.1
     - {{ compiler('fortran')}}
     - {{ compiler('c')}}
     
   run:
-    - numpy
     - python
-    - scipy >=0.15.0
+    - numpy==1.18.1
+    - scipy >=1.4.1
 
 
 about:
@@ -41,4 +42,5 @@ about:
 
 extra:
   recipe-maintainers:
-    - your-github-id-here
+    - lmoresi
+    - brmather
