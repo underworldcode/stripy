@@ -24,10 +24,12 @@ jobs:
           conda install -c conda-forge pdoc3
           
       - name: Install stripy
+        shell: bash -l {0}
         run: |
           pip install -e .
    
       - name: Build docs with pdoc
+        shell: bash -l {0}
         run: |
           mkdir -p docs
           pdoc --config latex_math=True --html -o docs --force stripy
