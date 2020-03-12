@@ -17,6 +17,11 @@
 
 from setuptools import setup, find_packages
 from numpy.distutils.core import setup, Extension
+try: 
+    from distutils.command import bdist_conda
+except ImportError:
+    pass
+
 from os import path
 import io
 import os
@@ -29,7 +34,7 @@ if "Windows" in platform.system():
     link_args = ["-static"]
 
 # in development set version to none and ...
-PYPI_VERSION = "1.2.0"
+PYPI_VERSION = "1.2.2"
 
 # Return the git revision as a string (from numpy)
 
@@ -90,7 +95,7 @@ if __name__ == "__main__":
           long_description  = long_description,
           long_description_content_type='text/markdown',
           ext_modules       = [ext1, ext2, ext3, ext4],
-          install_requires  = ['numpy', 'scipy>=0.15.0'],
+          install_requires  = ['numpy>=1.16.0', 'scipy>=1.0.0'],
           packages          = ['stripy'],
           package_data      = {'stripy': ['Notebooks/*ipynb', # Worked Examples is not currently used
                                           'Notebooks/CartesianTriangulations/*ipynb',
