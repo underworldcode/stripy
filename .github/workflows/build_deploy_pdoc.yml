@@ -10,28 +10,26 @@ jobs:
     steps:
       - uses: actions/checkout@v2
   
-      - name: Set up Python
-        uses: actions/setup-python@v1
+      - uses: actions/checkout@v2
+      - uses: goanpeca/setup-miniconda@v1
         with:
-          python-version: '3.x'    
+          python-version: 3.7
 
-      - name: Install gfortran 
+      - name: Install dependencies with conda
+        shell: bash -l {0}
         run: |
-          sudo apt-get install -y gfortran
-         
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install numpy 
-          pip install scipy 
-          pip install Cython
-          pip install pdoc3
-
+          conda install pip 
+          conda install -c conda-forge compilers numpy scipy 
+          conda install pytest 
+          conda install -c conda-forge pdoc3
+          
       - name: Install stripy
+        shell: bash -l {0}
         run: |
           pip install -e .
    
       - name: Build docs with pdoc
+        shell: bash -l {0}
         run: |
           mkdir -p docs
           pdoc --config latex_math=True --html -o docs --force stripy
