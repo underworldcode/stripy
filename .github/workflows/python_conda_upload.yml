@@ -3,9 +3,11 @@ name: conda -c underworldcode
 on: 
   release:
     types: [created, edited]
-  push:
-    branches:
-      - dev
+  # push:
+  #   branches:
+  #     - dev
+
+# I think py38 is pointless with bdist_conda as it seems not to be supported yet
 
 jobs:
   catch_and_release: 
@@ -15,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [  'ubuntu-latest', 'macos-latest']
-        python-version: ['2.7', '3.7', '3.8']
+        python-version: ['2.7', '3.7']
 
     steps:
       - uses: actions/checkout@v2
