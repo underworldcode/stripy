@@ -15,7 +15,8 @@
 # (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
 
-from setuptools import setup, find_packages
+from setuptools import dist, setup, find_packages
+dist.Distribution().fetch_build_eggs(['numpy>=1.16'])
 from numpy.distutils.core import setup, Extension
 try: 
     from distutils.command import bdist_conda
