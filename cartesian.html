@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.7.2" />
+<meta name="generator" content="pdoc 0.8.1" />
 <title>stripy.cartesian API documentation</title>
 <meta name="description" content="Copyright 2017-2019 Louis Moresi, Ben Mather …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_CHTML'></script>
 </head>
@@ -1209,7 +1209,7 @@ def remove_duplicates(vector_tuple):
 <span>def <span class="ident">remove_duplicates</span></span>(<span>vector_tuple)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Remove duplicates rows from N equally-sized arrays</p></section>
+<div class="desc"><p>Remove duplicates rows from N equally-sized arrays</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1235,7 +1235,7 @@ def remove_duplicates(vector_tuple):
 <span>(</span><span>x, y, refinement_levels=0, permute=False, tree=False)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Define a Delaunay triangulation for given Cartesian mesh points (x, y)
+<div class="desc"><p>Define a Delaunay triangulation for given Cartesian mesh points (x, y)
 where x and y vectors are 1D numpy arrays of equal length.</p>
 <h2 id="algorithm">Algorithm</h2>
 <p>R. J. Renka (1996), Algorithm 751; TRIPACK: a constrained two-
@@ -1244,9 +1244,9 @@ ACM Trans. Math. Softw., 22(1), pp 1-8,
 doi:10.1145/225545.225546.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>x</code></strong> :&ensp;<code>1D</code> <code>array</code></dt>
+<dt><strong><code>x</code></strong> :&ensp;<code>1D array</code></dt>
 <dd>Cartesian x coordinates</dd>
-<dt><strong><code>y</code></strong> :&ensp;<code>1D</code> <code>array</code></dt>
+<dt><strong><code>y</code></strong> :&ensp;<code>1D array</code></dt>
 <dd>Cartesian y coordinates</dd>
 <dt><strong><code>refinement_levels</code></strong> :&ensp;<code>int</code></dt>
 <dd>refine the number of points in the triangulation
@@ -1260,14 +1260,14 @@ issues (see notes)</dd>
 </dl>
 <h2 id="attributes">Attributes</h2>
 <dl>
-<dt><strong><code>x</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,)</dt>
+<dt><strong><code>x</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
 <dd>stored Cartesian x coordinates from input</dd>
-<dt><strong><code>y</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,)</dt>
+<dt><strong><code>y</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
 <dd>stored Cartesian y coordinates from input</dd>
-<dt><strong><code>simplices</code></strong> :&ensp;<code>array</code> of <code>ints</code>, <code>shape</code> (<code>nsimplex</code>, <code>3</code>)</dt>
+<dt><strong><code>simplices</code></strong> :&ensp;<code>array</code> of <code>ints, shape (nsimplex, 3)</code></dt>
 <dd>indices of the points forming the simplices in the triangulation
 points are ordered anticlockwise</dd>
-<dt><strong><code>lst</code></strong> :&ensp;<code>array</code> of <code>ints</code>, <code>shape</code> (<code>6n</code>-<code>12</code>,)</dt>
+<dt><strong><code>lst</code></strong> :&ensp;<code>array</code> of <code>ints, shape (6n-12,)</code></dt>
 <dd>nodal indices with lptr and lend, define the triangulation as a set of N
 adjacency lists; counterclockwise-ordered sequences of neighboring nodes
 such that the first and last neighbors of a boundary node are boundary
@@ -1276,12 +1276,12 @@ In order to
 distinguish between interior and boundary nodes, the last neighbor of
 each boundary node is represented by the negative of its index.
 The indices are 1-based (as in Fortran), not zero based (as in python).</dd>
-<dt><strong><code>lptr</code></strong> :&ensp;<code>array</code> of <code>ints</code>, <code>shape</code> (<code>6n</code>-<code>12</code>),)</dt>
+<dt><strong><code>lptr</code></strong> :&ensp;<code>array</code> of <code>ints, shape (6n-12),)</code></dt>
 <dd>set of pointers in one-to-one correspondence with the elements of lst.
 lst(lptr(i)) indexes the node which follows lst(i) in cyclical
 counterclockwise order (the first neighbor follows the last neighbor).
 The indices are 1-based (as in Fortran), not zero based (as in python).</dd>
-<dt><strong><code>lend</code></strong> :&ensp;<code>array</code> of <code>ints</code>, <code>shape</code> (<code>n</code>,)</dt>
+<dt><strong><code>lend</code></strong> :&ensp;<code>array</code> of <code>ints, shape (n,)</code></dt>
 <dd>N pointers to adjacency lists.
 lend(k) points to the last neighbor of node K.
 lst(lend(K)) &lt; 0 if and only if K is a boundary node.
@@ -1297,7 +1297,7 @@ on increasing x.</p>
 <p>If <code>permute=True</code>, x and y are randomised on input before
 they are triangulated. The distribution of triangles will
 differ between setting <code>permute=True</code> and <code>permute=False</code>,
-however, the node ordering will remain identical.</p></section>
+however, the node ordering will remain identical.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2411,17 +2411,17 @@ however, the node ordering will remain identical.</p></section>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="stripy.cartesian_meshes.square_border" href="cartesian_meshes.html#stripy.cartesian_meshes.square_border">square_border</a></li>
-<li><a title="stripy.cartesian_meshes.square_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.square_mesh">square_mesh</a></li>
 <li><a title="stripy.cartesian_meshes.elliptical_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.elliptical_mesh">elliptical_mesh</a></li>
 <li><a title="stripy.cartesian_meshes.random_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.random_mesh">random_mesh</a></li>
+<li><a title="stripy.cartesian_meshes.square_border" href="cartesian_meshes.html#stripy.cartesian_meshes.square_border">square_border</a></li>
+<li><a title="stripy.cartesian_meshes.square_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.square_mesh">square_mesh</a></li>
 <li><a title="stripy.hybrid_st_meshes.warped_xy_mesh_sphere" href="hybrid_st_meshes.html#stripy.hybrid_st_meshes.warped_xy_mesh_sphere">warped_xy_mesh_sphere</a></li>
 </ul>
 <h3>Instance variables</h3>
 <dl>
 <dt id="stripy.cartesian.Triangulation.points"><code class="name">var <span class="ident">points</span></code></dt>
 <dd>
-<section class="desc"><p>Stored Cartesian xy coordinates from triangulation</p></section>
+<div class="desc"><p>Stored Cartesian xy coordinates from triangulation</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2434,8 +2434,8 @@ def points(self):
 </dd>
 <dt id="stripy.cartesian.Triangulation.simplices"><code class="name">var <span class="ident">simplices</span></code></dt>
 <dd>
-<section class="desc"><p>Indices of the points forming the simplices in the triangulation.
-Points are ordered anticlockwise</p></section>
+<div class="desc"><p>Indices of the points forming the simplices in the triangulation.
+Points are ordered anticlockwise</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2449,7 +2449,7 @@ def simplices(self):
 </dd>
 <dt id="stripy.cartesian.Triangulation.x"><code class="name">var <span class="ident">x</span></code></dt>
 <dd>
-<section class="desc"><p>Stored Cartesian x coordinates from triangulation</p></section>
+<div class="desc"><p>Stored Cartesian x coordinates from triangulation</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2462,7 +2462,7 @@ def x(self):
 </dd>
 <dt id="stripy.cartesian.Triangulation.y"><code class="name">var <span class="ident">y</span></code></dt>
 <dd>
-<section class="desc"><p>Stored Cartesian y coordinates from triangulation</p></section>
+<div class="desc"><p>Stored Cartesian y coordinates from triangulation</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2480,13 +2480,14 @@ def y(self):
 <span>def <span class="ident">areas</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Compute the area of each triangle within the triangulation of points.</p>
+<div class="desc"><p>Compute the area of each triangle within the triangulation of points.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>area</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>nt</code>,)</dt>
-<dd>area of each triangle in <code>self.simplices</code> where nt
+<dt><code>area </code></dt>
+<dd>array of floats, shape (nt,)
+area of each triangle in <code>self.simplices</code> where nt
 is the number of triangles.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2512,11 +2513,11 @@ is the number of triangles.</dd>
 <span>def <span class="ident">centroid_refine_triangulation_by_triangles</span></span>(<span>self, triangles)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
+<div class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
 in the triangulation that are associated with the triangles in the list provided.</p>
 <h2 id="notes">Notes</h2>
 <p>The triangles are here represented as a single index.
-The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</code>.</p></section>
+The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2547,8 +2548,8 @@ The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</co
 <span>def <span class="ident">centroid_refine_triangulation_by_vertices</span></span>(<span>self, vertices)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
-in the triangulation connected to any of the vertices in the list provided</p></section>
+<div class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
+in the triangulation connected to any of the vertices in the list provided</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2568,27 +2569,27 @@ in the triangulation connected to any of the vertices in the list provided</p></
 <span>def <span class="ident">containing_simplex_and_bcc</span></span>(<span>self, xi, yi)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Returns the simplices containing (xi,yi)
+<div class="desc"><p>Returns the simplices containing (xi,yi)
 and the local barycentric, normalised coordinates.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>xi</code></strong> :&ensp;<code>float</code> / <code>array</code> of <code>floats</code>, <code>shape</code> (<code>l</code>,)</dt>
+<dt><strong><code>xi</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
 <dd>&nbsp;</dd>
 <dt>Cartesian coordinates in the x direction</dt>
-<dt><strong><code>yi</code></strong> :&ensp;<code>float</code> / <code>array</code> of <code>floats</code>, <code>shape</code> (<code>l</code>,)</dt>
+<dt><strong><code>yi</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
 <dd>&nbsp;</dd>
 </dl>
 <p>Cartesian coordinates in the y direction</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>bcc</code></strong> :&ensp;<code>normalised</code> <code>barycentric</code> <code>coordinates</code></dt>
-<dd>&nbsp;</dd>
-<dt><strong><code>tri</code></strong> :&ensp;<code>simplices</code> <code>containing</code> (<code>xi</code>,<code>yi</code>)</dt>
-<dd>&nbsp;</dd>
+<dt><code>bcc </code></dt>
+<dd>normalised barycentric coordinates</dd>
+<dt><code>tri </code></dt>
+<dd>simplices containing (xi,yi)</dd>
 </dl>
 <h2 id="notes">Notes</h2>
 <p>The ordering of the vertices may differ from that stored in
-<code>self.simplices</code> array but will still be a loop around the simplex.</p></section>
+<code>self.simplices</code> array but will still be a loop around the simplex.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2651,21 +2652,21 @@ and the local barycentric, normalised coordinates.</p>
 <span>def <span class="ident">containing_triangle</span></span>(<span>self, xi, yi)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Returns indices of the triangles containing xi yi</p>
+<div class="desc"><p>Returns indices of the triangles containing xi yi</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>xi</code></strong> :&ensp;<code>float</code> / <code>array</code> of <code>floats</code>, <code>shape</code> (<code>l</code>,)</dt>
+<dt><strong><code>xi</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
 <dd>Cartesian coordinates in the x direction</dd>
-<dt><strong><code>yi</code></strong> :&ensp;<code>float</code> / <code>array</code> of <code>floats</code>, <code>shape</code> (<code>l</code>,)</dt>
+<dt><strong><code>yi</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
 <dd>Cartesian coordinates in the y direction</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>tri_indices</code></strong></dt>
+<dt><code>tri_indices</code></dt>
 <dd>array of ints, shape (l,)</dd>
 </dl>
 <h2 id="notes">Notes</h2>
-<p>The simplices are found as <code>cartesian.Triangulation.simplices[tri_indices]</code></p></section>
+<p>The simplices are found as <code>cartesian.Triangulation.simplices[tri_indices]</code></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2705,12 +2706,13 @@ and the local barycentric, normalised coordinates.</p>
 <span>def <span class="ident">convex_hull</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Find the Convex Hull of the internal set of x,y points.</p>
+<div class="desc"><p>Find the Convex Hull of the internal set of x,y points.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>bnodes</code></strong> :&ensp;<code>array</code> of <code>ints</code></dt>
-<dd>indices corresponding to points on the convex hull</dd>
-</dl></section>
+<dt><code>bnodes </code></dt>
+<dd>array of ints
+indices corresponding to points on the convex hull</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2731,7 +2733,7 @@ and the local barycentric, normalised coordinates.</p>
 <span>def <span class="ident">edge_lengths</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Compute the edge-lengths of each triangle in the triangulation.</p></section>
+<div class="desc"><p>Compute the edge-lengths of each triangle in the triangulation.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2759,12 +2761,12 @@ and the local barycentric, normalised coordinates.</p>
 <span>def <span class="ident">edge_refine_triangulation_by_triangles</span></span>(<span>self, triangles)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
+<div class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
 in the triangulation that are associated with the triangles in the list
 of indices provided.</p>
 <h2 id="notes">Notes</h2>
 <p>The triangles are here represented as a single index.
-The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</code>.</p></section>
+The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2809,8 +2811,8 @@ The vertices of triangle <code>i</code> are given by <code>self.simplices[i]</co
 <span>def <span class="ident">edge_refine_triangulation_by_vertices</span></span>(<span>self, vertices)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
-in the triangulation connected to any of the vertices in the list provided</p></section>
+<div class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
+in the triangulation connected to any of the vertices in the list provided</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2830,8 +2832,8 @@ in the triangulation connected to any of the vertices in the list provided</p></
 <span>def <span class="ident">face_midpoints</span></span>(<span>self, simplices=None)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Identify the centroid of every simplex in the triangulation. If an array of
-simplices is given then the centroids of only those simplices is returned.</p></section>
+<div class="desc"><p>Identify the centroid of every simplex in the triangulation. If an array of
+simplices is given then the centroids of only those simplices is returned.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2855,16 +2857,16 @@ simplices is given then the centroids of only those simplices is returned.</p></
 <span>def <span class="ident">gradient</span></span>(<span>self, f, nit=3, tol=0.001, guarantee_convergence=False)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Return the gradient of an n-dimensional array.</p>
+<div class="desc"><p>Return the gradient of an n-dimensional array.</p>
 <p>The method consists of minimizing a quadratic functional Q(G) over
 gradient vectors (in x and y directions), where Q is an approximation
 to the linearized curvature over the triangulation of a C-1 bivariate
 function <span><span class="MathJax_Preview">F(x,y)</span><script type="math/tex">F(x,y)</script></span> which interpolates the nodal values and gradients.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>f</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,)</dt>
+<dt><strong><code>f</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
 <dd>field over which to evaluate the gradient</dd>
-<dt><strong><code>nit</code></strong> :&ensp;<code>int</code> (default: <code>3</code>)</dt>
+<dt><strong><code>nit</code></strong> :&ensp;<code>int (default: 3)</code></dt>
 <dd>number of iterations to reach a convergence tolerance,
 tol nit &gt;= 1</dd>
 <dt><strong><code>tol</code></strong></dt>
@@ -2874,10 +2876,12 @@ convergence is reached when this condition is met.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>dfdx</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,)</dt>
-<dd>derivative of f in the x direction</dd>
-<dt><strong><code>dfdy</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,)</dt>
-<dd>derivative of f in the y direction</dd>
+<dt><code>dfdx </code></dt>
+<dd>array of floats, shape (n,)
+derivative of f in the x direction</dd>
+<dt><code>dfdy </code></dt>
+<dd>array of floats, shape (n,)
+derivative of f in the y direction</dd>
 </dl>
 <h2 id="notes">Notes</h2>
 <p>For SIGMA = 0, optimal efficiency was achieved in testing with
@@ -2888,7 +2892,7 @@ and tangential gradient components at the endpoints of the arc, and
 Q is the sum over the triangulation arcs, excluding interior
 constraint arcs, of the linearized curvatures of F along the arcs &ndash;
 the integrals over the arcs of <span><span class="MathJax_Preview"> (d^2 F / dT^2)^2</span><script type="math/tex"> (d^2 F / dT^2)^2</script></span>, where <span><span class="MathJax_Preview"> d^2 F / dT^2</span><script type="math/tex"> d^2 F / dT^2</script></span>is the second
-derivative of <span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span> with respect to distance <span><span class="MathJax_Preview">T</span><script type="math/tex">T</script></span> along the arc.</p></section>
+derivative of <span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span> with respect to distance <span><span class="MathJax_Preview">T</span><script type="math/tex">T</script></span> along the arc.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2956,11 +2960,11 @@ derivative of <span><span class="MathJax_Preview">F</span><script type="math/tex
 <span>def <span class="ident">gradient_local</span></span>(<span>self, f, index)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Return the gradient at a specified node.</p>
+<div class="desc"><p>Return the gradient at a specified node.</p>
 <p>This routine employs a local method, in which values depend only on nearby
 data points, to compute an estimated gradient at a node.</p>
 <p><code>gradient_local()</code> is more efficient than <code>gradient()</code> only if it is unnecessary
-to compute gradients at all of the nodes. Both routines have similar accuracy.</p></section>
+to compute gradients at all of the nodes. Both routines have similar accuracy.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2991,8 +2995,8 @@ to compute gradients at all of the nodes. Both routines have similar accuracy.</
 <span>def <span class="ident">identify_segments</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Find all the segments in the triangulation and return an
-array of vertices (n1,n2) where n1 &lt; n2</p></section>
+<div class="desc"><p>Find all the segments in the triangulation and return an
+array of vertices (n1,n2) where n1 &lt; n2</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3021,8 +3025,8 @@ array of vertices (n1,n2) where n1 &lt; n2</p></section>
 <span>def <span class="ident">identify_vertex_neighbours</span></span>(<span>self, vertex)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Find the neighbour-vertices in the triangulation for the given vertex
-Searches <code>self.simplices</code> for vertex entries and sorts neighbours</p></section>
+<div class="desc"><p>Find the neighbour-vertices in the triangulation for the given vertex
+Searches <code>self.simplices</code> for vertex entries and sorts neighbours</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3043,7 +3047,7 @@ Searches <code>self.simplices</code> for vertex entries and sorts neighbours</p>
 <span>def <span class="ident">identify_vertex_triangles</span></span>(<span>self, vertices)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Find all triangles which own any of the vertices in the list provided</p></section>
+<div class="desc"><p>Find all triangles which own any of the vertices in the list provided</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3065,19 +3069,19 @@ Searches <code>self.simplices</code> for vertex entries and sorts neighbours</p>
 <span>def <span class="ident">interpolate</span></span>(<span>self, xi, yi, zdata, order=1, grad=None)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Base class to handle nearest neighbour, linear, and cubic interpolation.
+<div class="desc"><p>Base class to handle nearest neighbour, linear, and cubic interpolation.
 Given a triangulation of a set of nodes and values at the nodes,
 this method interpolates the value at the given xi,yi coordinates.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>xi</code></strong> :&ensp;<code>float</code> / <code>array</code> of <code>floats</code>, <code>shape</code> (<code>l</code>,)</dt>
+<dt><strong><code>xi</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
 <dd>x Cartesian coordinate(s)</dd>
-<dt><strong><code>yi</code></strong> :&ensp;<code>float</code> / <code>array</code> of <code>floats</code>, <code>shape</code> (<code>l</code>,)</dt>
+<dt><strong><code>yi</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
 <dd>y Cartesian coordinate(s)</dd>
-<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,)</dt>
+<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
 <dd>value at each point in the triangulation
 must be the same size of the mesh</dd>
-<dt><strong><code>order</code></strong> :&ensp;<code>int</code> (default=<code>1</code>)</dt>
+<dt><strong><code>order</code></strong> :&ensp;<code>int (default=1)</code></dt>
 <dd>order of the interpolatory function used:
 0 = nearest-neighbour,
 1 = linear,
@@ -3085,11 +3089,13 @@ must be the same size of the mesh</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>zi</code></strong> :&ensp;<code>float</code> / <code>array</code> of <code>floats</code>, <code>shape</code> (<code>l</code>,)</dt>
-<dd>interpolates value(s) at (xi, yi)</dd>
-<dt><strong><code>err</code></strong> :&ensp;<code>int</code> / <code>array</code> of <code>ints</code>, <code>shape</code> (<code>l</code>,)</dt>
-<dd>whether interpolation (0), extrapolation (1) or error (other)</dd>
-</dl></section>
+<dt><code>zi </code></dt>
+<dd>float / array of floats, shape (l,)
+interpolates value(s) at (xi, yi)</dd>
+<dt><code>err </code></dt>
+<dd>int / array of ints, shape (l,)
+whether interpolation (0), extrapolation (1) or error (other)</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3164,8 +3170,8 @@ must be the same size of the mesh</dd>
 <span>def <span class="ident">interpolate_cubic</span></span>(<span>self, xi, yi, zdata, grad=None)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Interpolate using cubic spline approximation
-Returns the same as <code>interpolate(xi,yi,zdata,order=3)</code></p></section>
+<div class="desc"><p>Interpolate using cubic spline approximation
+Returns the same as <code>interpolate(xi,yi,zdata,order=3)</code></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3182,8 +3188,8 @@ Returns the same as <code>interpolate(xi,yi,zdata,order=3)</code></p></section>
 <span>def <span class="ident">interpolate_linear</span></span>(<span>self, xi, yi, zdata)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Interpolate using linear approximation
-Returns the same as <code>interpolate(xi,yi,zdata,order=1)</code></p></section>
+<div class="desc"><p>Interpolate using linear approximation
+Returns the same as <code>interpolate(xi,yi,zdata,order=1)</code></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3200,8 +3206,8 @@ Returns the same as <code>interpolate(xi,yi,zdata,order=1)</code></p></section>
 <span>def <span class="ident">interpolate_nearest</span></span>(<span>self, xi, yi, zdata)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Interpolate using nearest-neighbour approximation
-Returns the same as <code>interpolate(xi,yi,zdata,order=0)</code></p></section>
+<div class="desc"><p>Interpolate using nearest-neighbour approximation
+Returns the same as <code>interpolate(xi,yi,zdata,order=0)</code></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3218,29 +3224,30 @@ Returns the same as <code>interpolate(xi,yi,zdata,order=0)</code></p></section>
 <span>def <span class="ident">interpolate_to_grid</span></span>(<span>self, xi, yi, zdata, grad=None)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Interplates the data values to a uniform grid defined by
+<div class="desc"><p>Interplates the data values to a uniform grid defined by
 longitude and latitudinal arrays. The interpolant is once
 continuously differentiable. Extrapolation is performed at
 grid points exterior to the triangulation when the nodes
 do not cover the entire sphere.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>lons</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>ni</code>,)</dt>
+<dt><strong><code>lons</code></strong> :&ensp;<code>array</code> of <code>floats, shape (ni,)</code></dt>
 <dd>longitudinal coordinates in ascending order</dd>
-<dt><strong><code>lats</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>nj</code>,)</dt>
+<dt><strong><code>lats</code></strong> :&ensp;<code>array</code> of <code>floats, shape (nj,)</code></dt>
 <dd>latitudinal coordinates in ascending order</dd>
-<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code>(<code>n</code>,)</dt>
+<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats, shape(n,)</code></dt>
 <dd>value at each point in the triangulation
 must be the same size of the mesh</dd>
-<dt><strong><code>grad</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code>(<code>3</code>,<code>n</code>)</dt>
+<dt><strong><code>grad</code></strong> :&ensp;<code>array</code> of <code>floats, shape(3,n)</code></dt>
 <dd>precomputed gradient of zdata or if not provided,
 the result of <code>self.gradient(zdata)</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>zgrid</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code>(<code>nj</code>,<code>ni</code>)</dt>
-<dd>interpolated values defined by gridded lons/lats</dd>
-</dl></section>
+<dt><code>zgrid </code></dt>
+<dd>array of floats, shape(nj,ni)
+interpolated values defined by gridded lons/lats</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3304,8 +3311,8 @@ the result of <code>self.gradient(zdata)</code>.</dd>
 <span>def <span class="ident">join</span></span>(<span>self, t2, unique=False)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Join this triangulation with another. If the points are known to have no duplicates, then
-set unique=False to skip the testing and duplicate removal</p></section>
+<div class="desc"><p>Join this triangulation with another. If the points are known to have no duplicates, then
+set unique=False to skip the testing and duplicate removal</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3336,8 +3343,8 @@ set unique=False to skip the testing and duplicate removal</p></section>
 <span>def <span class="ident">midpoint_refine_triangulation_by_vertices</span></span>(<span>self, vertices)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
-in the triangulation connected to any of the vertices in the list provided</p></section>
+<div class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
+in the triangulation connected to any of the vertices in the list provided</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3360,27 +3367,29 @@ in the triangulation connected to any of the vertices in the list provided</p></
 <span>def <span class="ident">nearest_vertex</span></span>(<span>self, xi, yi)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Locate the index of the nearest vertex to points (xi,yi)
+<div class="desc"><p>Locate the index of the nearest vertex to points (xi,yi)
 and return the squared distance between (xi,yi) and
 each nearest neighbour.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>xi</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>l</code>,)</dt>
+<dt><strong><code>xi</code></strong> :&ensp;<code>array</code> of <code>floats, shape (l,)</code></dt>
 <dd>Cartesian coordinates in the x direction</dd>
-<dt><strong><code>yi</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>l</code>,)</dt>
+<dt><strong><code>yi</code></strong> :&ensp;<code>array</code> of <code>floats, shape (l,)</code></dt>
 <dd>Cartesian coordinates in the y direction</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>index</code></strong> :&ensp;<code>array</code> of <code>ints</code></dt>
-<dd>the nearest vertex to each of the supplied points</dd>
-<dt><strong><code>dist</code></strong> :&ensp;<code>array</code> of <code>floats</code></dt>
-<dd>squared distance to the closest vertex identified</dd>
+<dt><code>index </code></dt>
+<dd>array of ints
+the nearest vertex to each of the supplied points</dd>
+<dt><code>dist </code></dt>
+<dd>array of floats
+squared distance to the closest vertex identified</dd>
 </dl>
 <h2 id="notes">Notes</h2>
 <p>Faster searches can be obtained using a KDTree.
 Store all x and y coordinates in a (c)KDTree, then query
-a set of points to find their nearest neighbours.</p></section>
+a set of points to find their nearest neighbours.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3431,29 +3440,31 @@ a set of points to find their nearest neighbours.</p></section>
 <span>def <span class="ident">nearest_vertices</span></span>(<span>self, x, y, k=1, max_distance=inf)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Query the cKDtree for the nearest neighbours and Euclidean
+<div class="desc"><p>Query the cKDtree for the nearest neighbours and Euclidean
 distance from x,y points.</p>
 <p>Returns 0, 0 if a cKDtree has not been constructed
 (switch <code>tree=True</code> if you need this routine)</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>x</code></strong> :&ensp;<code>1D</code> <code>array</code> of <code>Cartesian</code> <code>x</code> <code>coordinates</code></dt>
+<dt><strong><code>x</code></strong> :&ensp;<code>1D array</code> of <code>Cartesian x coordinates</code></dt>
 <dd>&nbsp;</dd>
-<dt><strong><code>y</code></strong> :&ensp;<code>1D</code> <code>array</code> of <code>Cartesian</code> <code>y</code> <code>coordinates</code></dt>
+<dt><strong><code>y</code></strong> :&ensp;<code>1D array</code> of <code>Cartesian y coordinates</code></dt>
 <dd>&nbsp;</dd>
-<dt><strong><code>k</code></strong> :&ensp;<code>int</code> (<code>defaul</code>=<code>1</code>)</dt>
+<dt><strong><code>k</code></strong> :&ensp;<code>int (defaul=1)</code></dt>
 <dd>number of nearest neighbours to return</dd>
-<dt><strong><code>max_distance</code></strong> :&ensp;<code>float</code> (default: <code>inf</code>)</dt>
+<dt><strong><code>max_distance</code></strong> :&ensp;<code>float (default: inf)</code></dt>
 <dd>maximum Euclidean distance to search for neighbours</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>d</code></strong> :&ensp;<code>array</code> of <code>floats</code></dt>
-<dd>Euclidean distance between each point and their
+<dt><code>d </code></dt>
+<dd>array of floats
+Euclidean distance between each point and their
 nearest neighbour(s)</dd>
-<dt><strong><code>vert</code></strong> :&ensp;<code>array</code> of <code>ints</code></dt>
-<dd>vertices of the nearest neighbour(s)</dd>
-</dl></section>
+<dt><code>vert </code></dt>
+<dd>array of ints
+vertices of the nearest neighbour(s)</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3500,9 +3511,9 @@ nearest neighbour(s)</dd>
 <span>def <span class="ident">neighbour_and_arc_simplices</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Get indices of neighbour simplices for each simplex and arc indices.
+<div class="desc"><p>Get indices of neighbour simplices for each simplex and arc indices.
 Identical to get_neighbour_simplices() but also returns an array
-of indices that reside on boundary hull, -1 denotes no neighbour.</p></section>
+of indices that reside on boundary hull, -1 denotes no neighbour.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3524,9 +3535,9 @@ of indices that reside on boundary hull, -1 denotes no neighbour.</p></section>
 <span>def <span class="ident">neighbour_simplices</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Get indices of neighbour simplices for each simplex.
+<div class="desc"><p>Get indices of neighbour simplices for each simplex.
 The kth neighbour is opposite to the kth vertex.
-For simplices at the boundary, -1 denotes no neighbour.</p></section>
+For simplices at the boundary, -1 denotes no neighbour.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3547,12 +3558,12 @@ For simplices at the boundary, -1 denotes no neighbour.</p></section>
 <span>def <span class="ident">segment_midpoints</span></span>(<span>self, segments=None)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Identify the midpoints of every line segment in the triangulation.
+<div class="desc"><p>Identify the midpoints of every line segment in the triangulation.
 If an array of segments of shape (no_of_segments,2) is given,
 then the midpoints of only those segments is returned.</p>
 <h2 id="notes">Notes</h2>
 <p>Segments in the array must not be duplicates or the re-triangulation
-will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).</p></section>
+will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3582,8 +3593,8 @@ will fail. Take care not to miss that (n1,n2) is equivalent to (n2,n1).</p></sec
 <span>def <span class="ident">segment_midpoints_by_vertices</span></span>(<span>self, vertices)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Add midpoints to any segment connected to the vertices in the
-list / array provided.</p></section>
+<div class="desc"><p>Add midpoints to any segment connected to the vertices in the
+list / array provided.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3611,7 +3622,7 @@ list / array provided.</p></section>
 <span>def <span class="ident">segment_tripoints</span></span>(<span>self, ratio=0.33333)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Identify the trisection points of every line segment in the triangulation</p></section>
+<div class="desc"><p>Identify the trisection points of every line segment in the triangulation</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3637,21 +3648,21 @@ list / array provided.</p></section>
 <span>def <span class="ident">smoothing</span></span>(<span>self, f, w, sm, smtol, gstol)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Smooths a surface <code>f</code> by choosing nodal function values and gradients to
+<div class="desc"><p>Smooths a surface <code>f</code> by choosing nodal function values and gradients to
 minimize the linearized curvature of F subject to a bound on the
 deviation from the data values. This is more appropriate than interpolation
 when significant errors are present in the data.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>f</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,)</dt>
+<dt><strong><code>f</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
 <dd>field to apply smoothing on</dd>
-<dt><strong><code>w</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,)</dt>
+<dt><strong><code>w</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
 <dd>weights associated with data value in <code>f</code>
 <code>w[i] = 1/sigma_f**2</code> is a good rule of thumb.</dd>
 <dt><strong><code>sm</code></strong> :&ensp;<code>float</code></dt>
 <dd>positive parameter specifying an upper bound on Q2(f).
 generally <code>n-sqrt(2n) &lt;= sm &lt;= n+sqrt(2n)</code></dd>
-<dt><strong><code>smtol</code></strong> :&ensp;<code>float</code> [<code>0</code>,<code>1</code>]</dt>
+<dt><strong><code>smtol</code></strong> :&ensp;<code>float [0,1]</code></dt>
 <dd>specifies relative error in satisfying the constraint
 <code>sm(1-smtol) &lt;= Q2 &lt;= sm(1+smtol)</code> between 0 and 1.</dd>
 <dt><strong><code>gstol</code></strong> :&ensp;<code>float</code></dt>
@@ -3660,14 +3671,17 @@ generally <code>n-sqrt(2n) &lt;= sm &lt;= n+sqrt(2n)</code></dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>f_smooth</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,)</dt>
-<dd>smoothed version of f</dd>
-<dt><strong><code>derivatives</code></strong> :&ensp;<code>tuple</code> of <code>floats</code>, <code>shape</code> (<code>n</code>,<code>3</code>)</dt>
-<dd>\( \partial f \partial y , \partial f \partial y \) first derivatives
+<dt><code>f_smooth </code></dt>
+<dd>array of floats, shape (n,)
+smoothed version of f</dd>
+<dt><code>derivatives </code></dt>
+<dd>tuple of floats, shape (n,3)
+\( \partial f \partial y , \partial f \partial y \) first derivatives
 of <code>f_smooth</code> in the x and y directions</dd>
-<dt><strong><code>err</code></strong> :&ensp;<code>error</code> <code>indicator</code></dt>
-<dd>0 indicates no error, +ve values indicate warnings, -ve values are errors</dd>
-</dl></section>
+<dt><code>err </code></dt>
+<dd>error indicator
+0 indicates no error, +ve values indicate warnings, -ve values are errors</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3738,8 +3752,8 @@ of <code>f_smooth</code> in the x and y directions</dd>
 <span>def <span class="ident">uniformly_refine_triangulation</span></span>(<span>self, faces=False, trisect=False)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
-in the triangulation</p></section>
+<div class="desc"><p>return points defining a refined triangulation obtained by bisection of all edges
+in the triangulation</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3766,26 +3780,27 @@ in the triangulation</p></section>
 <span>def <span class="ident">update_tension_factors</span></span>(<span>self, zdata, tol=0.001, grad=None)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Determines, for each triangulation arc, the smallest (nonnegative) tension factor <code>sigma</code>
+<div class="desc"><p>Determines, for each triangulation arc, the smallest (nonnegative) tension factor <code>sigma</code>
 such that the Hermite interpolatory tension spline, defined by <code>sigma</code> and specified
 endpoint data, preserves local shape properties (monotonicity and convexity) of <code>zdata</code>.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code>(<code>n</code>,)</dt>
+<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats, shape(n,)</code></dt>
 <dd>value at each point in the triangulation
 must be the same size of the mesh</dd>
 <dt><strong><code>tol</code></strong> :&ensp;<code>float</code></dt>
 <dd>tolerance of each tension factor to its optimal value
 when nonzero finite tension is necessary.</dd>
-<dt><strong><code>grad</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code>(<code>3</code>,<code>n</code>)</dt>
+<dt><strong><code>grad</code></strong> :&ensp;<code>array</code> of <code>floats, shape(3,n)</code></dt>
 <dd>precomputed gradient of zdata or if not provided,
 the result of <code>self.gradient(zdata)</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats</code>, <code>shape</code>(<code>6n</code>-<code>12</code>)</dt>
-<dd>tension factors applied to <code>zdata</code>.</dd>
-</dl></section>
+<dt><code>sigma </code></dt>
+<dd>array of floats, shape(6n-12)
+tension factors applied to <code>zdata</code>.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3906,7 +3921,7 @@ the result of <code>self.gradient(zdata)</code>.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad()</script>
