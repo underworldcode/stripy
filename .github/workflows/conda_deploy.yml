@@ -1,9 +1,8 @@
 name: Conda Deployment 
 
 on:
-  push:
-    branches: 
-      - conda_deploy
+  release:
+    types: [created, edited]
     
 jobs:
 
