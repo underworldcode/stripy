@@ -477,7 +477,7 @@ class sTriangulation(object):
         # and a warning that explains it (once) - and also serves as a hook for an exception trap.
 
         if ierr < 0:
-            raise ValueError('ierr={} in smooth routines\n{}'.format(ierr, _ier_codes[ierr]))
+            print('ierr={} in smooth routines\n{}'.format(ierr, _ier_codes[ierr]))
 
         if ierr == 1:
             warnings.warn("No errors were encountered but the constraint is not active --\n\
@@ -565,7 +565,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         zdata = self._shuffle_field(zdata)
 
         if grad is None:
-            grad = np.vstack(self.gradient_xyz(zdata))
+            grad = np.vstack(self.gradient_xyz(zdata, tol=tol))
             grad = grad[:,p] # permute
 
         elif grad.shape == (3,self.npoints):
@@ -581,8 +581,6 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         if ierr == -1:
             import warnings
             warnings.warn("sigma is not altered.")
-        elif ierr == -2:
-            raise ValueError("Duplicate nodes were encountered.")
 
         self.sigma = sigma
         self.iflgs = int(sigma.any())
@@ -628,7 +626,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
         
-        nrow = len(lons)
+        nrow = len(lats)
 
 
         ff, ierr = _ssrfpack.unif(self._x, self._y, self._z, zdata,\
@@ -639,7 +637,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         if ierr < 0:
             raise ValueError(_emsg[ierr])
 
-        return ff.T
+        return ff
 
 
     def interpolate(self, lons, lats, zdata, order=1, grad=None):

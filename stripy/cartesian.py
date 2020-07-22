@@ -260,7 +260,7 @@ class Triangulation(object):
         return p[simplices]
 
 
-    def _check_gradient(self, zdata, grad):
+    def _check_gradient(self, zdata, grad, **kwargs):
         """
         Error checking on the gradient operator
         `grad` must be (2,n) array that is permuted
@@ -275,7 +275,7 @@ class Triangulation(object):
         iflgg = False
 
         if grad is None:
-            grad = np.vstack(self.gradient(zdata))
+            grad = np.vstack(self.gradient(zdata, **kwargs))
             grad = grad[:,p]
 
         elif grad.shape == (2,self.npoints):
@@ -313,7 +313,7 @@ class Triangulation(object):
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
-        grad, iflgg = self._check_gradient(zdata, grad)
+        grad, iflgg = self._check_gradient(zdata, grad, tol=tol)
         zdata = self._shuffle_field(zdata)
 
 
