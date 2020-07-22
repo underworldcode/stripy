@@ -300,7 +300,7 @@ class Triangulation(object):
             tol : float
                 tolerance of each tension factor to its optimal value
                 when nonzero finite tension is necessary.
-            grad : array of floats, shape(3,n)
+            grad : array of floats, shape(2,n)
                 precomputed gradient of zdata or if not provided,
                 the result of `self.gradient(zdata)`.
 
@@ -391,7 +391,66 @@ class Triangulation(object):
 
         return self._deshuffle_field(gradient[0], gradient[1])
 
+    def second_gradient_local(self, f, index):
+        """
+        Return the gradient / 2nd partials of an n-dimensional array.
 
+        The method consists of minimizing a quadratic functional Q(G) over
+        gradient vectors (in x and y directions), where Q is an approximation
+        to the linearized curvature over the triangulation of a C-1 bivariate
+        function \\(F(x,y)\\) which interpolates the nodal values and gradients.
+
+        Args:
+            f : array of floats, shape (n,)
+                field over which to evaluate the gradient
+            nit : int (default: 3)
+                number of iterations to reach a convergence tolerance,
+                tol nit >= 1
+            tol: float (default: 1e-3)
+                maximum change in gradient between iterations.
+                convergence is reached when this condition is met.
+
+        Returns:
+            dfdx : array of floats, shape (n,)
+                derivative of f in the x direction
+            dfdy : array of floats, shape (n,)
+                derivative of f in the y direction
+
+        Notes:
+            For SIGMA = 0, optimal efficiency was achieved in testing with
+            tol = 0, and nit = 3 or 4.
+
+            The restriction of F to an arc of the triangulation is taken to be
+            the Hermite interpolatory tension spline defined by the data values
+            and tangential gradient components at the endpoints of the arc, and
+            Q is the sum over the triangulation arcs, excluding interior
+            constraint arcs, of the linearized curvatures of F along the arcs --
+            the integrals over the arcs of \\( (d^2 F / dT^2)^2\\), where \\( d^2 F / dT^2\\)is the second
+            derivative of \\(F\\) with respect to distance \\(T\\) along the arc.
+        """
+
+        if f.size != self.npoints:
+            raise ValueError('f should be the same size as mesh')
+
+        sigma = self.sigma
+        iflgs = self.iflgs
+
+        f = self._shuffle_field(f)
+
+        ## wrapping: 
+
+        # subroutine gradc(k,ncc,lcc,n,x,y,z,list,lptr,lend,dx,dy,dxx,dxy,dyy,ier) ! in :_srfpack:srfpack.f
+        # subroutine gradg(  ncc,lcc,n,x,y,z,list,lptr,lend,iflgs,sigma,nit,dgmax,grad,ier) ! in :_srfpack:srfpack.f
+
+        dx, dy, dxx, dxy, dyy, ierr = _srfpack.gradc(index+1, self._x, self._y, f, self.lst, self.lptr, self.lend)
+    
+        if ierr < 0:
+            raise ValueError('ierr={} in gradc\n{}'.format(ierr, _ier_codes[ierr]))
+
+        return dx, dy, dxx, dxy, dyy
+
+
+    # TODO: check if index should be subject to self._permutation / self._invpermutation
     def gradient_local(self, f, index):
         """
         Return the gradient at a specified node.
@@ -406,7 +465,6 @@ class Triangulation(object):
             raise ValueError('f should be the same size as mesh')
 
         f = self._shuffle_field(f)
-
 
         gradX, gradY, l = _srfpack.gradl(index + 1, self._x, self._y, f,\
                                          self.lst, self.lptr, self.lend)
@@ -473,7 +531,7 @@ class Triangulation(object):
                   F, FX, and FY are the values and partials of a linear function \
                   which minimizes Q2(F), and Q1 = 0.")
 
-        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1]), ierr
+        return self._deshuffle_field(f_smooth), self._deshuffle_field( df[0], df[1] ), ierr
 
 
     def interpolate_to_grid(self, xi, yi, zdata, grad=None):

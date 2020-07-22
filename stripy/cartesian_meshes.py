@@ -122,6 +122,8 @@ class elliptical_mesh(_cartesian.Triangulation):
     """
     An elliptical mesh where points are successively populated at an
     increasing radius from the midpoint of the extent.
+
+    Caution in parallel - random points ... 
     """
     def __init__(self, extent, spacingX, spacingY, random_scale=0.0, refinement_levels=0, tree=False):
 
