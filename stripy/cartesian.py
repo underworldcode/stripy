@@ -252,6 +252,13 @@ class Triangulation(object):
         else:
             return fields
 
+    def _shuffle_simplices(self, simplices):
+        """
+        Permute ordering
+        """
+        ip = self._invpermutation
+        return ip[simplices]
+
     def _deshuffle_simplices(self, simplices):
         """
         Return to original ordering
@@ -436,6 +443,7 @@ class Triangulation(object):
         iflgs = self.iflgs
 
         f = self._shuffle_field(f)
+        index = self._shuffle_simplices(index)
 
         ## wrapping: 
 
@@ -465,6 +473,7 @@ class Triangulation(object):
             raise ValueError('f should be the same size as mesh')
 
         f = self._shuffle_field(f)
+        index = self._shuffle_simplices(index)
 
         gradX, gradY, l = _srfpack.gradl(index + 1, self._x, self._y, f,\
                                          self.lst, self.lptr, self.lend)
@@ -513,7 +522,7 @@ class Triangulation(object):
         sigma = self.sigma
         iflgs = self.iflgs
 
-        f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, f, self.lst, self.lptr, self.lend,\
+        f_smooth, df, ierr = _srfpack.smsurf(self._x, self._y, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol)
 
         import warnings
