@@ -188,7 +188,7 @@ class elliptical_equispaced_mesh(_cartesian.Triangulation):
     If you only need the base point distribution try the elliptical_base_math_points method but beware
     artefacts on the axis if 
     """
-    def __init__(self, axisX, axisY, spacing, refinement_levels=0, tree=False, remove_artefacts=True):
+    def __init__(self, axisX, axisY, spacing, refinement_levels=0, tree=False, remove_artifacts=True):
 
         x, y, mask = elliptical_base_mesh_points(axisX, axisY, spacing)
 
@@ -201,7 +201,7 @@ class elliptical_equispaced_mesh(_cartesian.Triangulation):
         return
 
 
-def elliptical_base_mesh_points(axisX, axisY, spacing, remove_artefacts=True):
+def elliptical_base_mesh_points(axisX, axisY, spacing, remove_artifacts=True):
     """
     Generate well-spaced points in an ellipse - assumes the ellipse is axis-aligned and centred on the origin
     """
