@@ -123,7 +123,7 @@ class elliptical_mesh(_cartesian.Triangulation):
     An elliptical mesh where points are successively populated at an
     increasing radius from the midpoint of the extent.
 
-    Caution in parallel - random points ... 
+    Caution in parallel and for reproducibility - random noise in point locations !
     """
     def __init__(self, extent, spacingX, spacingY, random_scale=0.0, refinement_levels=0, tree=False):
 
@@ -176,6 +176,116 @@ class elliptical_mesh(_cartesian.Triangulation):
             self._update_triangulation(X, Y)
 
         return
+
+
+class elliptical_equispaced_mesh(_cartesian.Triangulation):
+    """
+    An elliptical mesh where points are successively populated at an
+    increasing radius from the midpoint of the extent.
+
+    Caution in parallel and for reproducibility - random noise in point locations !
+
+    If you only need the base point distribution try the elliptical_base_math_points method but beware
+    artefacts on the axis if 
+    """
+    def __init__(self, axisX, axisY, spacing, refinement_levels=0, tree=False, remove_artefacts=True):
+
+        x, y, mask = self.elliptical_base_mesh_points(axisX, axisY, spacing)
+
+        super(elliptical_mesh, self).__init__(x, y, permute=False, tree=tree)
+
+        for r in range(0, refinement_levels):
+            X, Y = self.uniformly_refine_triangulation(faces=False, trisect=False)
+            self._update_triangulation(X, Y)
+
+        return
+
+
+    def elliptical_base_mesh_points(axisX, axisY, spacing, remove_artefacts):
+        """
+        Generate well-spaced points in an ellipse - assumes the ellipse is axis-aligned and centred on the origin
+        """
+
+        import numpy as np 
+        import scipy 
+        from scipy import optimize, special
+
+        b = axisX
+        a = axisY
+
+        def equal_angles_in_ellipse(arc_length, a, b):
+            """ This is a routine that returns equal spaced points around the perimeter of an ellipse
+            """
+        
+            if a == b: 
+                tot_size = 2.0 * np.pi * a 
+                num = tot_size // arc_length
+                angles = 2 * np.pi * np.arange(num) / num
+                
+                return a * np.cos(angles), a * np.sin(angles)
+                
+            if (a < b):
+                e = (1.0 - a ** 2.0 / b ** 2.0) ** 0.5
+            else:
+                e = (1.0 - b ** 2.0 / a ** 2.0) ** 0.5       
+                
+            
+            # approximate perimeter of this ellipse    
+            h = (a-b)**2 / (a+b)**2
+            length = np.pi * (a+b) * ( 1.0 + 3.0 * h / (10.0 + np.sqrt(4.0-3*h)))    
+            num = length // arc_length
+                
+            # This is normalised 
+            tot_size = scipy.special.ellipeinc(2.0 * np.pi, e)
+            arc_size = tot_size / num
+            
+            # starting points for search
+            angles = 2 * np.pi * np.arange(num) / num
+        
+            arcs = np.arange(num) * arc_size 
+            res = scipy.optimize.root(
+                lambda x: (scipy.special.ellipeinc(x, e) - arcs), angles)
+            
+            angles = res.x 
+            
+            if a < b: 
+                return b * np.sin(angles), a * np.cos(angles)
+            else:
+                return b * np.cos(angles), a * np.sin(angles)
+
+    
+        pointsx, pointsy = equal_angles_in_ellipse( spacing, a, b)
+        bmask = np.full_like(pointsx, 0, dtype=np.bool)
+        a -= spacing 
+        b -= spacing 
+
+        while (a >= 0.0 and b >= 0.0):
+            points = equal_angles_in_ellipse( spacing, a, b)
+            pointsx = np.append(pointsx,points[0])
+            pointsy = np.append(pointsy,points[1])
+            bmask   = np.append(bmask, np.full_like(points[0], 1, dtype=np.bool))
+            a -= spacing 
+            b -= spacing 
+
+
+        # The mesh can have some artefacts close to the longer axis so we drop a small fraction of points in that case
+
+        from ._fortran import ntriw
+        # from . import _srfpack
+
+
+        tri = _cartesian.Triangulation(pointsx, pointsy)
+        area, weight = ntriw(pointsx, pointsy, tri.simplices.T+1)
+        tiny = np.logical_and(bmask, area < np.mean(area)*0.2)
+
+        return pointsx[~tiny], pointsy[~tiny], bmask[~tiny]
+
+
+
+
+
+
+
 
 
 class random_mesh(_cartesian.Triangulation):
