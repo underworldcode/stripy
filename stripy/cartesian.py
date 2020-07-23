@@ -522,7 +522,7 @@ class Triangulation(object):
         sigma = self.sigma
         iflgs = self.iflgs
 
-        f_smooth, df, ierr = _srfpack.smsurf(self._x, self._y, f, self.lst, self.lptr, self.lend,\
+        f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol)
 
         import warnings
@@ -540,7 +540,7 @@ class Triangulation(object):
                   F, FX, and FY are the values and partials of a linear function \
                   which minimizes Q2(F), and Q1 = 0.")
 
-        return self._deshuffle_field(f_smooth), self._deshuffle_field( df[0], df[1] ), ierr
+        return self._deshuffle_field(f_smooth),  (self._deshuffle_field(df[0]), self._deshuffle_field(df[1])) , ierr
 
 
     def interpolate_to_grid(self, xi, yi, zdata, grad=None):
