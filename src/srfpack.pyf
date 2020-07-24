@@ -110,7 +110,7 @@ python module _srfpack ! in
 !            real :: c
 !            real :: s
 !        end subroutine givens
-         subroutine gradc(k,ncc,lcc,n,x,y,z,list,lptr,lend,dx,dy,dxx,dxy,dyy,ier) ! in :_srfpack:srfpack.f
+        subroutine gradc(k,ncc,lcc,n,x,y,z,list,lptr,lend,dx,dy,dxx,dxy,dyy,ier) ! in :_srfpack:srfpack.f
             integer :: k
             integer, optional :: ncc=0
             integer dimension(ncc+1), optional :: lcc
@@ -128,6 +128,25 @@ python module _srfpack ! in
             real intent(out) :: dyy
             integer, intent(out) :: ier
         end subroutine gradc
+        subroutine gradcs(nk,k,ncc,lcc,n,x,y,z,list,lptr,lend,dxs,dys,dxxs,dxys,dyys,ier) ! in :_srfpack:srfpack.f
+            integer, depend(k), intent(hide) :: nk=len(k)
+            integer dimension(nk), intent(in) :: k
+            integer, optional :: ncc=0
+            integer dimension(ncc+1), optional :: lcc
+            integer, depend(x), intent(hide) :: n=len(x)
+            real dimension(n), intent(in) :: x
+            real dimension(n), intent(in) :: y
+            real dimension(n), intent(in) :: z
+            integer dimension(6*n-12), intent(in) :: list
+            integer dimension(6*n-12), intent(in) :: lptr
+            integer dimension(n), intent(in) :: lend
+            real dimension(nk), intent(out) :: dxs
+            real dimension(nk), intent(out) :: dys
+            real dimension(nk), intent(out) :: dxxs
+            real dimension(nk), intent(out) :: dxys
+            real dimension(nk), intent(out) :: dyys
+            integer, intent(out) :: ier
+        end subroutine gradcs
         subroutine gradg(ncc,lcc,n,x,y,z,list,lptr,lend,iflgs,sigma,nit,dgmax,grad,ier) ! in :_srfpack:srfpack.f
             integer, optional :: ncc=0
             integer dimension(ncc+1), optional :: lcc
@@ -160,6 +179,22 @@ python module _srfpack ! in
             real, intent(out) :: dy
             integer, intent(out) :: ier
         end subroutine gradl
+        subroutine gradls(nk,k,ncc,lcc,n,x,y,z,list,lptr,lend,dxs,dys,ier) ! in :_srfpack:srfpack.f
+            integer, depend(k), intent(hide) :: nk=len(k)
+            integer dimension(nk), intent(in) :: k
+            integer, optional :: ncc=0
+            integer dimension(ncc+1), optional :: lcc
+            integer, depend(x), intent(hide) :: n=len(x)
+            real dimension(n), intent(in) :: x
+            real dimension(n), intent(in) :: y
+            real dimension(n), intent(in) :: z
+            integer dimension(6*n-12), intent(in) :: list
+            integer dimension(6*n-12), intent(in) :: lptr
+            integer dimension(n), intent(in) :: lend
+            real dimension(nk), intent(out) :: dxs
+            real dimension(nk), intent(out) :: dys
+            integer, intent(out) :: ier
+        end subroutine gradls
 !        subroutine grcoef(sigma,dcub,d,sd) ! in :_srfpack:srfpack.f
 !            real :: sigma
 !            real :: dcub

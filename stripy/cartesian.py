@@ -450,7 +450,7 @@ class Triangulation(object):
         # subroutine gradc(k,ncc,lcc,n,x,y,z,list,lptr,lend,dx,dy,dxx,dxy,dyy,ier) ! in :_srfpack:srfpack.f
         # subroutine gradg(  ncc,lcc,n,x,y,z,list,lptr,lend,iflgs,sigma,nit,dgmax,grad,ier) ! in :_srfpack:srfpack.f
 
-        dx, dy, dxx, dxy, dyy, ierr = _srfpack.gradc(index+1, self._x, self._y, f, self.lst, self.lptr, self.lend)
+        dx, dy, dxx, dxy, dyy, ierr = _srfpack.gradcs(index+1, self._x, self._y, f, self.lst, self.lptr, self.lend)
     
         if ierr < 0:
             raise ValueError('ierr={} in gradc\n{}'.format(ierr, _ier_codes[ierr]))
@@ -475,7 +475,7 @@ class Triangulation(object):
         f = self._shuffle_field(f)
         index = self._shuffle_simplices(index)
 
-        gradX, gradY, l = _srfpack.gradl(index + 1, self._x, self._y, f,\
+        gradX, gradY, l = _srfpack.gradls(index + 1, self._x, self._y, f,\
                                          self.lst, self.lptr, self.lend)
 
         return gradX, gradY
@@ -522,7 +522,7 @@ class Triangulation(object):
         sigma = self.sigma
         iflgs = self.iflgs
 
-        f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, f, self.lst, self.lptr, self.lend,\
+        f_smooth, df, ierr = _srfpack.smsurf(self._x, self._y, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol)
 
         import warnings
@@ -540,7 +540,7 @@ class Triangulation(object):
                   F, FX, and FY are the values and partials of a linear function \
                   which minimizes Q2(F), and Q1 = 0.")
 
-        return self._deshuffle_field(f_smooth),  (self._deshuffle_field(df[0]), self._deshuffle_field(df[1])) , ierr
+        return self._deshuffle_field(f_smooth),  self._deshuffle_field(df[0], df[1]), ierr
 
 
     def interpolate_to_grid(self, xi, yi, zdata, grad=None):

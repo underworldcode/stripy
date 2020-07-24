@@ -635,7 +635,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
         
-        nrow = len(lons)
+        nrow = len(lats)
 
 
         ff, ierr = _ssrfpack.unif(self._x, self._y, self._z, zdata,\
@@ -646,7 +646,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         if ierr < 0:
             raise ValueError(_emsg[ierr])
 
-        return ff.T
+        return ff
 
 
     def interpolate(self, lons, lats, zdata, order=1, grad=None):
