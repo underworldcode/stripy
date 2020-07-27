@@ -1214,6 +1214,84 @@ class Triangulation(object):
         return dxy, vertices
 
 
+    def voronoi_points(self, return_circumradius=False, return_triangle_area=False, return_aspect_ratio=False):
+        """
+        Calculates the voronoi points from the triangulation.
+
+        This routine returns the circumcentre, circumradius, signed triangle area,
+        and aspect ratio of each triangle.
+
+        Args:
+            return_circumradius : bool
+                optionally return circumradius of each circumcentre
+            return_triangle_area : bool
+                optionally return triangle area
+            return_aspect_ratio : bool
+                optionally return the aspect ratio of each triangle
+
+        Returns:
+            xc : ndarray of floats
+                x coordinates of the Voronoi
+            yc : ndarray of floats
+                y coordinates of the Voronoi
+            cr : ndarray of floats (optional)
+                coordinates of the circumcentre (centre of the circle
+                defined by three points in a triangle)
+            sa : ndarray of floats (optional)
+                signed triangle area with positive value if the vertices
+                are specified in anticlockwise order.
+            ar : ndarray of floats (optional)
+                aspect ratio $r/c_r$ where $r$ is the radius of the
+                inscribed circle in the range [0,0.5] with 0 if `sa=0`
+                and `sa=0.5` if the vertices form an equilateral triangle
+        """
+
+        # get x,y coordinates of each triangle
+        xt = self.x[self.simplices]
+        yt = self.y[self.simplices]
+
+        # get coordinate vectors
+        u = np.empty_like(xt)
+        v = np.empty_like(yt)
+        u[:,0] = xt[:,2] - xt[:,1]
+        u[:,1] = xt[:,0] - xt[:,2]
+        u[:,2] = xt[:,1] - xt[:,0]
+        v[:,0] = yt[:,2] - yt[:,1]
+        v[:,1] = yt[:,0] - yt[:,2]
+        v[:,2] = yt[:,1] - yt[:,0]
+
+        # signed area is triangle area
+        sa = 0.5*(u[:,0]*v[:,1] - u[:,1]*v[:,0])
+
+        # squared distance from the origin to the vertex k
+        ds = xt**2 + yt**2
+
+        # compute factors of xc and yc
+        fx = -(ds*v).sum(axis=1)
+        fy =  (ds*u).sum(axis=1)
+
+        xc = fx / (4.0*sa)
+        yc = fy / (4.0*sa)
+
+        out = [xc, yc]
+
+        if return_circumradius:
+            cr = np.hypot(xc - xt[:,0], yc - yt[:,0])
+            out.append( cr )
+
+        if return_triangle_area:
+            out.append( sa )
+
+        if return_aspect_ratio:
+            # compute square edge lengths and aspect ratio
+            ds = u**2 + v**2
+            ar = 2.0*np.abs(sa)/(np.sqrt(ds).sum(axis=1)*cr)
+            ar[sa==0.0] = 0.0
+            out.append( ar )
+
+        return tuple(out)
+
+
 def remove_duplicates(vector_tuple):
     """
     Remove duplicates rows from N equally-sized arrays
