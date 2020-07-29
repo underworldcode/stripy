@@ -1303,6 +1303,65 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return angles, vertices
 
 
+    def voronoi_points(self, return_circumradius=False):
+        """
+        Calculates the voronoi points from the triangulation.
+
+        This routine returns the circumcentre, circumradius of each triangle.
+
+        Args:
+            return_circumradius : bool
+                optionally return circumradius of each circumcentre
+
+        Returns:
+            vlons : ndarray of floats
+                x coordinates of the Voronoi
+            vlats : ndarray of floats
+                y coordinates of the Voronoi
+            cr : ndarray of floats (optional)
+                coordinates of the circumcentre (centre of the circle
+                defined by three points in a triangle)
+        """
+
+        # get x,y,z coordinates for each triangle
+        simplices = self.simplices
+        xt = self.x[simplices]
+        yt = self.y[simplices]
+        zt = self.z[simplices]
+
+        # construct 3-component vectors
+        v1 = np.column_stack([xt[:,0], yt[:,0], zt[:,0]])
+        v2 = np.column_stack([xt[:,1], yt[:,1], zt[:,1]])
+        v3 = np.column_stack([xt[:,2], yt[:,2], zt[:,2]])
+
+        # get edge lengths
+        e1 = v2 - v1
+        e2 = v3 - v1
+
+        # compute scalar multiples of e1 * e2
+        cu = np.empty_like(xt)
+        cu[:,0] = e1[:,1]*e2[:,2] - e1[:,2]*e2[:,1]
+        cu[:,1] = e1[:,2]*e2[:,0] - e1[:,0]*e2[:,2]
+        cu[:,2] = e1[:,0]*e2[:,1] - e1[:,1]*e2[:,0]
+
+        # compute normal vector
+        cnorm = np.sqrt( (cu**2).sum(axis=1) )
+
+        coords = cu / cnorm.reshape(-1,1)
+        xc, yc, zc = coords[:,0], coords[:,1], coords[:,2]
+
+        # convert to lon/lat
+        vlons, vlats = xyz2lonlat(xc,yc,zc)
+
+        out = [vlons, vlats]
+
+        if return_circumradius:
+            tr = (v1*coords).sum(axis=1)
+            tr = np.clip(tr, -1.0, 1.0)
+            cr = np.arccos(tr)
+            out.append( cr )
+
+        return tuple(out)
 
 
 ## Helper functions for the module
