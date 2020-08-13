@@ -308,7 +308,10 @@ class sTriangulation(object):
     def gradient_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False):
         """
         Return the lon / lat components of the gradient
-        of a scalar field on the surface of the sphere.
+        of a scalar field on the surface of the UNIT sphere.
+        (Note: the companion routine is derivatives_lonlat which returns
+        the components of the derivative in each direction - these differ by a factor of 
+        1/cos(lat) in the first component)
 
         The method consists of minimizing a quadratic functional Q(G) over
         gradient vectors, where Q is an approximation to the linearized
@@ -355,12 +358,70 @@ class sTriangulation(object):
         dlon = -dfxs * np.cos(lats) * np.sin(lons) + dfys * np.cos(lats) * np.cos(lons) # no z dependence
         dlat = -dfxs * np.sin(lats) * np.cos(lons) - dfys * np.sin(lats) * np.sin(lons) + dfzs * np.cos(lats)
 
-        corr = np.sqrt((1.0-z**2))
+        corr = np.sqrt((1.0-z**2))  
         valid = ~np.isclose(corr,0.0)
-
         dlon[valid] = dlon[valid] / corr[valid]
 
         return dlon, dlat
+
+
+    def derivatives_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False):
+        """
+        Return the lon / lat components of the derivatives
+        of a scalar field on the surface of the UNIT sphere.
+        (Note: the companion routine is gradient_lonlat which returns
+        the components of the surface gradient - these differ by a factor of 
+        1/cos(lat) in the first component)
+
+
+        The method consists of minimizing a quadratic functional Q(G) over
+        gradient vectors, where Q is an approximation to the linearized
+        curvature over the triangulation of a C-1 bivariate function F(x,y)
+        which interpolates the nodal values and gradients.
+
+        Args:
+            data : array of floats, shape (n,)
+                field over which to evaluate the gradient
+            nit : int (default: 3)
+                number of iterations to reach a convergence tolerance, tol
+                nit >= 1
+            tol : float (default: 1e-3)
+                maximum change in gradient between iterations.
+                convergence is reached when this condition is met.
+
+        Returns:
+            dfdlon : array of floats, shape (n,)
+                derivative of f in the longitudinal direction
+            dfdlat : array of floats, shape (n,)
+                derivative of f in the lattitudinal direction
+
+        Notes:
+            The gradient is computed via the Cartesian components using
+            `spherical.sTriangulation.gradient_xyz` and the iteration parameters
+            controling the spline interpolation are passed directly to this
+            routine (See notes for `gradient_xyz` for more details).
+
+            The gradient operator in this geometry is not well defined at the poles
+            even if the scalar field is smooth and the Cartesian gradient is well defined.
+
+            The routine spherical.dxyz2dlonlat is available to convert the Cartesian
+            to lon/lat coordinates at any point on the unit sphere. This is helpful
+            to avoid recalculation if you need both forms.
+        """
+
+        dfxs, dfys, dfzs = self.gradient_xyz(data, nit=nit, tol=tol, guarantee_convergence=guarantee_convergence)
+
+        # get deshuffled versions
+        lons = self.lons
+        lats = self.lats
+        z = self.z
+
+        dlon = -dfxs * np.cos(lats) * np.sin(lons) + dfys * np.cos(lats) * np.cos(lons) # no z dependence
+        dlat = -dfxs * np.sin(lats) * np.cos(lons) - dfys * np.sin(lats) * np.sin(lons) + dfzs * np.cos(lats)
+
+        return dlon, dlat
+
+
 
 
     def gradient_xyz(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
