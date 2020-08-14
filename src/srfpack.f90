@@ -1902,6 +1902,9 @@
       S = 0.
       RETURN
       END
+
+
+      
       SUBROUTINE GRADC (K,NCC,LCC,N,X,Y,Z,LIST,LPTR,&
      &                  LEND, DX,DY,DXX,DXY,DYY,IER)
       INTEGER K, NCC, LCC(*), N, LIST(*), LPTR(*),&

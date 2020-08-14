@@ -7399,3 +7399,32 @@ C
       ENDDO
       RETURN
       END
+C
+C Routines that benefit from a Fortran loop
+C
+      SUBROUTINE GRADLS (NK,K,NCC,LCC,N,X,Y,Z,LIST,LPTR,
+     .                   LEND,DXS,DYS,IER)
+      INTEGER NK, I, NCC, LCC(*), N, LIST(*), LPTR(*),
+     .        LEND(N), IER, K(NK)
+      REAL    X(N), Y(N), Z(N), DXS(NK), DYS(NK)
+C
+      DO I = 1, NK
+        CALL GRADL(K(I),NCC,LCC,N,X,Y,Z,LIST,LPTR,
+     .             LEND,DXS(I),DYS(I),IER)
+      ENDDO
+      RETURN
+      END
+C
+      SUBROUTINE GRADCS (NK,K,NCC,LCC,N,X,Y,Z,LIST,LPTR,
+     .                  LEND,DXS,DYS,DXXS,DXYS,DYYS,IER)
+      INTEGER NK, NCC, LCC(*), N, LIST(*), LPTR(*),
+     .        LEND(N), IER, K(NK)
+      REAL    X(N), Y(N), Z(N)
+      REAL    DXS(NK), DYS(NK), DXXS(NK), DXYS(NK), DYYS(NK)
+C
+      DO I = 1, NK
+        CALL GRADC(K(I),NCC,LCC,N,X,Y,Z,LIST,LPTR,LEND,
+     .             DXS(I),DYS(I),DXXS(I),DXYS(I),DYYS(I),IER)
+      ENDDO
+      RETURN
+      END

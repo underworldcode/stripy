@@ -1,0 +1,81 @@
+! Copyright 2016-2017 Louis Moresi, Ben Mather, Romain Beucher
+! 
+! This file is part of Quagmire.
+! 
+! Quagmire is free software: you can redistribute it and/or modify
+! it under the terms of the GNU Lesser General Public License as published by
+! the Free Software Foundation, either version 3 of the License, or any later version.
+! 
+! Quagmire is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU Lesser General Public License for more details.
+! 
+! You should have received a copy of the GNU Lesser General Public License
+! along with Quagmire.  If not, see <http://www.gnu.org/licenses/>.
+!
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module _fortran ! in 
+    interface  ! in :_fortran
+        subroutine ntriw(n,x,y,nt,ltri,area,weight) ! in :_fortran:trimesh.f90
+            integer(kind=4), depend(x), intent(hide) :: n=len(x)
+            real(kind=8) dimension(n), intent(in) :: x
+            real(kind=8) dimension(n), intent(in) :: y
+            integer(kind=4), depend(ltri), intent(hide) :: nt=shape(ltri,1)
+            integer(kind=4) dimension(3,nt), intent(in) :: ltri
+            real(kind=8) dimension(n), intent(out) :: area
+            integer(kind=4) dimension(n), intent(out) :: weight
+        end subroutine ntriw
+        subroutine ncloud(nt,ltri,n,nnz,ecloud) ! in :_fortran:trimesh.f90
+            integer(kind=4), depend(ltri), intent(hide) :: nt=shape(ltri,1)
+            integer(kind=4) dimension(3,nt), intent(in) :: ltri
+            integer(kind=4), intent(in) :: n
+            integer(kind=4), intent(in) :: nnz
+            integer(kind=4) dimension(n,nnz*nnz), intent(out) :: ecloud
+        end subroutine ncloud
+        subroutine lambert_equal_area(lon,lat,n,lons,lats,x,y) ! in :fib1:trimesh.f90
+            real(kind=8), intent(in) :: lon
+            real(kind=8), intent(in) :: lat
+            integer(kind=4), depend(lons), intent(hide) :: n=len(lons)
+            real(kind=8) dimension(n), intent(in) :: lons
+            real(kind=8) dimension(n), intent(in) :: lats
+            real(kind=8) dimension(n), intent(out) :: x
+            real(kind=8) dimension(n), intent(out) :: y
+        end subroutine lambert_equal_area
+        function geocentric_radius(lat,r1,r2) ! in :fib1:trimesh.f90
+            real(kind=8), intent(in) :: lat
+            real(kind=8), intent(in) :: r1
+            real(kind=8), intent(in) :: r2
+            real(kind=8), intent(out) :: geocentric_radius
+        end function geocentric_radius
+        subroutine ntriw_proj(n,lon,lat,nt,ltri,r1,r2,area,weight) ! in :fib1:trimesh.f90
+            integer(kind=4), depend(lon), intent(hide) :: n=len(lon)
+            real(kind=8) dimension(n), intent(in) :: lon
+            real(kind=8) dimension(n), intent(in) :: lat
+            integer(kind=4), depend(ltri), intent(hide) :: nt=shape(ltri,1)
+            integer(kind=4) dimension(3,nt), intent(in) :: ltri
+            real(kind=8), intent(in) :: r1
+            real(kind=8), intent(in) :: r2
+            real(kind=8) dimension(n), intent(out) :: area
+            integer(kind=4) dimension(n), intent(out) :: weight
+        end subroutine ntriw_proj
+        subroutine ntriw_s(n,nt,ltri,tri_area,area,weight) ! in :fib1:trimesh.f90
+            integer(kind=4), intent(in) :: n
+            integer(kind=4), depend(ltri), intent(hide) :: nt=shape(ltri,1)
+            integer(kind=4) dimension(3,nt), intent(in) :: ltri
+            real(kind=8) dimension(nt), intent(in) :: tri_area
+            real(kind=8) dimension(n), intent(out) :: area
+            integer(kind=4) dimension(n), intent(out) :: weight
+        end subroutine ntriw_s
+        subroutine fill_mask_to_idx(rows,cols,mask,idx)
+            integer(kind=4), intent(hide) :: rows=len(idx)
+            integer(kind=4), intent(in) :: cols
+            logical(kind=4) dimension(rows,cols), intent(out) :: mask
+            integer(kind=4) dimension(rows), intent(in) :: idx
+    end interface
+end python module _fortran
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
