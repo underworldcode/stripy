@@ -337,7 +337,11 @@ class Triangulation(object):
 
         Returns:
             sigma : array of floats, shape(6n-12)
-                tension factors applied to `zdata`.
+                tension factors which preserves the local properties of `zdata` on each
+                triangulation arc with the restriction that `sigma[i] <= 85`.
+
+                - `sigma[i] = 85` if infinite tension is required on an arc.
+                - `sigma[i] = 0` if the result should be cubic on the arc.
 
         Notes:
             Supply sigma to gradient, interpolate, derivative, or smoothing
@@ -389,6 +393,9 @@ class Triangulation(object):
             tol: float (default: 1e-3)
                 maximum change in gradient between iterations.
                 convergence is reached when this condition is met.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             dfdx : array of floats, shape (n,)
@@ -530,6 +537,9 @@ class Triangulation(object):
             gstol : float
                 tolerance for convergence.
                 `gstol = 0.05*mean(sigma_f)**2` is a good rule of thumb.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             f_smooth : array of floats, shape (n,)
@@ -586,7 +596,10 @@ class Triangulation(object):
                 must be the same size of the mesh
             grad : array of floats, shape(3,n)
                 precomputed gradient of zdata or if not provided,
-                the result of `self.gradient(zdata)`.
+                the result of `gradient(zdata)`.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             zgrid : array of floats, shape(nj,ni)
@@ -637,9 +650,12 @@ class Triangulation(object):
                 must be the same size of the mesh
             order : int (default=1)
                 order of the interpolatory function used:
-                    0 = nearest-neighbour,
-                    1 = linear,
-                    3 = cubic
+                - `order=0` = nearest-neighbour
+                - `order=1` = linear
+                - `order=3` = cubic
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             zi : float / array of floats, shape (l,)
@@ -703,7 +719,7 @@ class Triangulation(object):
     def interpolate_cubic(self, xi, yi, zdata, grad=None, sigma=None):
         """
         Interpolate using cubic spline approximation
-        Returns the same as `interpolate(xi,yi,zdata,order=3)`
+        Returns the same as `interpolate(xi,yi,zdata,order=3,sigma=sigma)`
         """
         return self.interpolate(xi, yi, zdata, order=3, grad=grad, sigma=sigma)
 

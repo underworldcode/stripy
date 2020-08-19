@@ -96,11 +96,6 @@ class sTriangulation(object):
             lend(k) points to the last neighbor of node K.
             lst(lend(K)) < 0 if and only if K is a boundary node.
             The indices are 1-based (as in Fortran), not zero based (as in python).
-        sigma : array of floats, shape (6n-12,)
-            tension factors which preserves the local data properties on each
-            triangulation arc with the restriction that `sigma[i] <= 85`.
-            `sigma[i] = 85` if infinite tension is required on an arc.
-            `sigma[i] = 0` if the result should be cubic on the arc.
 
     Notes:
         Provided the nodes are randomly ordered, the algorithm
@@ -665,7 +660,11 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
         Returns:
             sigma : array of floats, shape(6n-12)
-                tension factors applied to `zdata`.
+                tension factors which preserves the local properties of `zdata` on each
+                triangulation arc with the restriction that `sigma[i] <= 85`.
+
+                - `sigma[i] = 85` if infinite tension is required on an arc.
+                - `sigma[i] = 0` if the result should be cubic on the arc.
 
         Notes:
             Supply sigma to gradient, interpolate, derivative, or smoothing

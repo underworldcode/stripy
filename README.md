@@ -51,6 +51,8 @@ Note: the Cartesian and Spherical notebooks can be obtained / installed from `st
   - [Ex5-Smoothing.ipynb](stripy/Notebooks/CartesianTriangulations/Ex5-Smoothing.ipynb)
   - [Ex6-Scattered-Data.ipynb](stripy/Notebooks/CartesianTriangulations/Ex6-Scattered-Data.ipynb)
   - [Ex7-Refinement-of-Triangulations.ipynb](stripy/Notebooks/CartesianTriangulations/Ex7-Refinement-of-Triangulations.ipynb)
+  - [Ex8-Spline-Tension.ipynb](stripy/Notebooks/CartesianTriangulations/Ex8-Spline-Tension.ipynb)
+  - [Ex9-Voronoi-Diagram.ipynb](stripy/Notebooks/CartesianTriangulations/Ex9-Voronoi-Diagram.ipynb)
 
 ### Spherical
 
@@ -61,6 +63,8 @@ Note: the Cartesian and Spherical notebooks can be obtained / installed from `st
   - [Ex5-Smoothing.ipynb](stripy/Notebooks/SphericalTriangulations/Ex5-Smoothing.ipynb)
   - [Ex6-Scattered-Data.ipynb](stripy/Notebooks/SphericalTriangulations/Ex6-Scattered-Data.ipynb)
   - [Ex7-Refinement-of-Triangulations.ipynb](stripy/Notebooks/SphericalTriangulations/Ex7-Refinement-of-Triangulations.ipynb)
+  - [Ex8-Spline-Tension.ipynb](stripy/Notebooks/SphericalTriangulations/Ex8-Spline-Tension.ipynb)
+  - [Ex9-Voronoi-Diagram.ipynb](stripy/Notebooks/SphericalTriangulations/Ex9-Voronoi-Diagram.ipynb)
 
 
 ### Examples
