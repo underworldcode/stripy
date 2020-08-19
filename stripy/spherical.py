@@ -674,9 +674,9 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
             - `interpolate(lons, lats, zdata, order=3, grad=None, sigma=None)`
             - `interpolate_cubic(lons, lats, zdata, grad=None, sigma=None)`
             - `interpolate_to_grid(lons, lats, zdata, grad=None, sigma=None)`
-            - `gradient_xyz(self, f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
-            - `gradient_lonlat(self, f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
-            - `smoothing(self, f, w, sm, smtol, gstol, sigma=None)`
+            - `gradient_xyz(f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
+            - `gradient_lonlat(f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
+            - `smoothing(f, w, sm, smtol, gstol, sigma=None)`
 
         """
 

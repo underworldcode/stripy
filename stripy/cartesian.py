@@ -174,9 +174,8 @@ class Triangulation(object):
         self.lptr = lptr
         self.lend = lend
 
-        # initialise with zero tension factors
-        self.sigma = np.zeros(self.lptr.size)
-        self.iflgs = 0
+        # initialise dummy array with zero tension factors
+        self._sigma = np.zeros(self.lptr.size)
 
         # Convert a triangulation to a triangle list form (human readable)
         # Uses an optimised version of trlist that returns triangles
@@ -293,8 +292,33 @@ class Triangulation(object):
 
         return grad, iflgg
 
+    def _check_sigma(self, sigma):
+        """
+        Error checking on sigma
+        `sigma` must be of length 6n-12.
+        """
+        if sigma is None:
+            iflgs = 0
+            sigma = self._sigma
+        else:
+            assert len(sigma) == 6*self.npoints-12, "sigma must be of length 6n-12"
+            iflgs = int(np.any(sigma))
+
+        return sigma, iflgs
+
 
     def update_tension_factors(self, zdata, tol=1e-3, grad=None):
+        """
+        WARNING: this is deprecated in favour of `get_spline_tension_factors`
+        """
+        import warnings
+        message = "Use get_spline_tension_factors and supply tension factors to interpolation/gradient arrays"
+        message += "\nsigma stored on this mesh object no longer does anything as of v2.0"
+        warnings.warn(message, DeprecationWarning, stacklevel=2)
+        return self.get_spline_tension_factors(zdata, tol, grad)
+
+
+    def get_spline_tension_factors(self, zdata, tol=1e-3, grad=None):
         """
         Determines, for each triangulation arc, the smallest (nonnegative) tension factor `sigma`
         such that the Hermite interpolatory tension spline, defined by `sigma` and specified
@@ -307,15 +331,25 @@ class Triangulation(object):
             tol : float
                 tolerance of each tension factor to its optimal value
                 when nonzero finite tension is necessary.
-            grad : array of floats, shape(2,n)
+            grad : array of floats, shape(3,n)
                 precomputed gradient of zdata or if not provided,
                 the result of `self.gradient(zdata)`.
 
         Returns:
             sigma : array of floats, shape(6n-12)
                 tension factors applied to `zdata`.
+
+        Notes:
+            Supply sigma to gradient, interpolate, derivative, or smoothing
+            methods for tensioned splines. Here is a list of compatible methods:
+
+            - `interpolate(xi, yi, zdata, order=3, grad=None, sigma=None)`
+            - `interpolate_cubic(xi, yi, zdata, grad=None, sigma=None)`
+            - `interpolate_to_grid(xi, yi, zdata, grad=None, sigma=None)`
+            - `gradient(f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
+            - `smoothing(f, w, sm, smtol, gstol, sigma=None)`
+
         """
-        sigma = self.sigma
 
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
@@ -334,13 +368,10 @@ class Triangulation(object):
         elif ierr == -2:
             raise ValueError("Duplicate nodes were encountered.")
 
-        self.sigma = sigma
-        self.iflgs = int(sigma.any())
-
-        return self.sigma
+        return sigma
 
 
-    def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
+    def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None):
         """
         Return the gradient of an n-dimensional array.
 
@@ -381,8 +412,7 @@ class Triangulation(object):
             raise ValueError('f should be the same size as mesh')
 
         gradient = np.zeros((2,self.npoints), order='F', dtype=np.float32)
-        sigma = self.sigma
-        iflgs = self.iflgs
+        sigma, iflgs = self._check_sigma(sigma)
 
         f = self._shuffle_field(f)
 
@@ -439,9 +469,6 @@ class Triangulation(object):
         if f.size != self.npoints:
             raise ValueError('f should be the same size as mesh')
 
-        sigma = self.sigma
-        iflgs = self.iflgs
-
         f = self._shuffle_field(f)
         index = self._shuffle_simplices(index)
 
@@ -481,7 +508,7 @@ class Triangulation(object):
         return gradX, gradY
 
 
-    def smoothing(self, f, w, sm, smtol, gstol):
+    def smoothing(self, f, w, sm, smtol, gstol, sigma=None):
         r"""
         Smooths a surface `f` by choosing nodal function values and gradients to
         minimize the linearized curvature of F subject to a bound on the
@@ -518,9 +545,7 @@ class Triangulation(object):
             raise ValueError('f and w should be the same size as mesh')
 
         f, w = self._shuffle_field(f, w)
-
-        sigma = self.sigma
-        iflgs = self.iflgs
+        sigma, iflgs = self._check_sigma(sigma)
 
         f_smooth, df, ierr = _srfpack.smsurf(self._x, self._y, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol)
@@ -543,7 +568,7 @@ class Triangulation(object):
         return self._deshuffle_field(f_smooth),  self._deshuffle_field(df[0], df[1]), ierr
 
 
-    def interpolate_to_grid(self, xi, yi, zdata, grad=None):
+    def interpolate_to_grid(self, xi, yi, zdata, grad=None, sigma=None):
         """
         Interplates the data values to a uniform grid defined by
         longitude and latitudinal arrays. The interpolant is once
@@ -572,13 +597,11 @@ class Triangulation(object):
                  -3: "extrapolation failed due to the uniform grid extending \
                       too far beyond the triangulation boundary"}
 
-        sigma = self.sigma
-        iflgs = self.iflgs
-
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
         grad, iflgg = self._check_gradient(zdata, grad)
+        sigma, iflgs = self._check_sigma(sigma)
         zdata = self._shuffle_field(zdata)
 
         sflag = False
@@ -598,7 +621,7 @@ class Triangulation(object):
         return ff.T
 
 
-    def interpolate(self, xi, yi, zdata, order=1, grad=None):
+    def interpolate(self, xi, yi, zdata, order=1, grad=None, sigma=None):
         """
         Base class to handle nearest neighbour, linear, and cubic interpolation.
         Given a triangulation of a set of nodes and values at the nodes,
@@ -644,8 +667,7 @@ class Triangulation(object):
                                                 self._x,self._y, zdata, \
                                                 self.lst, self.lptr, self.lend)
         elif order == 3:
-            sigma = self.sigma
-            iflgs = self.iflgs
+            sigma, iflgs = self._check_sigma(sigma)
             grad, iflgg = self._check_gradient(zdata, grad)
             zdata = self._shuffle_field(zdata)
 
@@ -678,12 +700,12 @@ class Triangulation(object):
         """
         return self.interpolate(xi, yi, zdata, order=1)
 
-    def interpolate_cubic(self, xi, yi, zdata, grad=None):
+    def interpolate_cubic(self, xi, yi, zdata, grad=None, sigma=None):
         """
         Interpolate using cubic spline approximation
         Returns the same as `interpolate(xi,yi,zdata,order=3)`
         """
-        return self.interpolate(xi, yi, zdata, order=3, grad=grad)
+        return self.interpolate(xi, yi, zdata, order=3, grad=grad, sigma=sigma)
 
 
     def neighbour_simplices(self):
