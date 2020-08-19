@@ -637,10 +637,10 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
     def update_tension_factors(self, zdata, tol=1e-3, grad=None):
         """
-        WARNING: this is deprecated in favour of `get_tension_factors`
+        WARNING: this is deprecated in favour of `get_spline_tension_factors`
         """
         import warnings
-        message = "Use get_tension_factors and supply tension factors to interpolation/gradient arrays"
+        message = "Use get_spline_tension_factors and supply tension factors to interpolation/gradient arrays"
         message += "\nsigma stored on this mesh object no longer does anything as of v2.0"
         warnings.warn(message, DeprecationWarning, stacklevel=2)
         return self.get_spline_tension_factors(zdata, tol, grad)
