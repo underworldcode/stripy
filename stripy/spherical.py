@@ -212,9 +212,8 @@ class sTriangulation(object):
         self.lptr = lptr
         self.lend = lend
 
-        # initialise with zero tension factors
-        self.sigma = np.zeros(self.lptr.size)
-        self.iflgs = 0
+        # initialise dummy sigma array with zero tension factors
+        self._sigma = np.zeros(self.lptr.size)
 
         # Convert a triangulation to a triangle list form (human readable)
         # Uses an optimised version of trlist that returns triangles
@@ -311,7 +310,7 @@ class sTriangulation(object):
         return p[simplices]
 
 
-    def gradient_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False):
+    def gradient_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False, sigma=None):
         """
         Return the lon / lat components of the gradient
         of a scalar field on the surface of the UNIT sphere.
@@ -333,6 +332,9 @@ class sTriangulation(object):
             tol : float (default: 1e-3)
                 maximum change in gradient between iterations.
                 convergence is reached when this condition is met.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             dfdlon : array of floats, shape (n,)
@@ -354,7 +356,8 @@ class sTriangulation(object):
             to avoid recalculation if you need both forms.
         """
 
-        dfxs, dfys, dfzs = self.gradient_xyz(data, nit=nit, tol=tol, guarantee_convergence=guarantee_convergence)
+        dfxs, dfys, dfzs = self.gradient_xyz(data, nit=nit, tol=tol, \
+            guarantee_convergence=guarantee_convergence, sigma=sigma)
 
         # get deshuffled versions
         lons = self.lons
@@ -371,7 +374,7 @@ class sTriangulation(object):
         return dlon, dlat
 
 
-    def derivatives_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False):
+    def derivatives_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False, sigma=None):
         """
         Return the lon / lat components of the derivatives
         of a scalar field on the surface of the UNIT sphere.
@@ -394,6 +397,9 @@ class sTriangulation(object):
             tol : float (default: 1e-3)
                 maximum change in gradient between iterations.
                 convergence is reached when this condition is met.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             dfdlon : array of floats, shape (n,)
@@ -415,7 +421,8 @@ class sTriangulation(object):
             to avoid recalculation if you need both forms.
         """
 
-        dfxs, dfys, dfzs = self.gradient_xyz(data, nit=nit, tol=tol, guarantee_convergence=guarantee_convergence)
+        dfxs, dfys, dfzs = self.gradient_xyz(data, nit=nit, tol=tol, \
+            guarantee_convergence=guarantee_convergence, sigma=sigma)
 
         # get deshuffled versions
         lons = self.lons
@@ -430,7 +437,7 @@ class sTriangulation(object):
 
 
 
-    def gradient_xyz(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
+    def gradient_xyz(self, f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None):
         """
         Return the cartesian components of the gradient
         of a scalar field on the surface of the sphere.
@@ -449,6 +456,9 @@ class sTriangulation(object):
             tol : float (default: 1e-3)
                 maximum change in gradient between iterations.
                 convergence is reached when this condition is met.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             dfdx : array of floats, shape (n,)
@@ -475,8 +485,7 @@ class sTriangulation(object):
             raise ValueError('f should be the same size as mesh')
 
         # gradient = np.zeros((3,self.npoints), order='F', dtype=np.float32)
-        sigma = self.sigma
-        iflgs = self.iflgs
+        sigma, iflgs = self._check_sigma(sigma)
 
         f = self._shuffle_field(f)
 
@@ -497,7 +506,7 @@ class sTriangulation(object):
         return self._deshuffle_field(grad[0], grad[1], grad[2])
 
 
-    def smoothing(self, f, w, sm, smtol, gstol):
+    def smoothing(self, f, w, sm, smtol, gstol, sigma=None):
         """
         Smooths a surface f by choosing nodal function values and gradients to
         minimize the linearized curvature of F subject to a bound on the
@@ -519,6 +528,9 @@ class sTriangulation(object):
             gstol : float
                 tolerance for convergence.
                 gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             f_smooth : array of floats, shape (n,)
@@ -535,8 +547,7 @@ class sTriangulation(object):
 
         f, w = self._shuffle_field(f, w)
 
-        sigma = self.sigma
-        iflgs = self.iflgs
+        sigma, iflgs = self._check_sigma(sigma)
         prnt = -1
 
         f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f,\
@@ -609,7 +620,33 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return grad, iflgg
 
 
+    def _check_sigma(self, sigma):
+        """
+        Error checking on sigma
+        `sigma` must be of length 6n-12.
+        """
+        if sigma is None:
+            iflgs = 0
+            sigma = self._sigma
+        else:
+            assert len(sigma) == 6*self.npoints-12, "sigma must be of length 6n-12"
+            iflgs = int(np.any(sigma))
+
+        return sigma, iflgs
+
+
     def update_tension_factors(self, zdata, tol=1e-3, grad=None):
+        """
+        WARNING: this is deprecated in favour of `get_tension_factors`
+        """
+        import warnings
+        message = "Use get_tension_factors and supply tension factors to interpolation/gradient arrays"
+        message += "\nsigma stored on this mesh object no longer does anything as of v2.0"
+        warnings.warn(message, DeprecationWarning, stacklevel=2)
+        return self.get_spline_tension_factors(zdata, tol, grad)
+
+
+    def get_spline_tension_factors(self, zdata, tol=1e-3, grad=None):
         """
         Determines, for each triangulation arc, the smallest (nonnegative) tension factor `sigma`
         such that the Hermite interpolatory tension spline, defined by `sigma` and specified
@@ -629,8 +666,19 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         Returns:
             sigma : array of floats, shape(6n-12)
                 tension factors applied to `zdata`.
+
+        Notes:
+            Supply sigma to gradient, interpolate, derivative, or smoothing
+            methods for tensioned splines. Here is a list of compatible methods:
+
+            - `interpolate(lons, lats, zdata, order=3, grad=None, sigma=None)`
+            - `interpolate_cubic(lons, lats, zdata, grad=None, sigma=None)`
+            - `interpolate_to_grid(lons, lats, zdata, grad=None, sigma=None)`
+            - `gradient_xyz(self, f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
+            - `gradient_lonlat(self, f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
+            - `smoothing(self, f, w, sm, smtol, gstol, sigma=None)`
+
         """
-        sigma = self.sigma
 
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
@@ -656,13 +704,13 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
             import warnings
             warnings.warn("sigma is not altered.")
 
-        self.sigma = sigma
-        self.iflgs = int(sigma.any())
+        # self.sigma = sigma
+        # self.iflgs = int(sigma.any())
 
-        return self.sigma
+        return sigma
 
 
-    def interpolate_to_grid(self, lons, lats, zdata, grad=None):
+    def interpolate_to_grid(self, lons, lats, zdata, grad=None, sigma=None):
         """
         Interplates the data values to a uniform grid defined by
         longitude and latitudinal arrays. The interpolant is once
@@ -681,6 +729,9 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
             grad : array of floats, shape(3,n)
                 precomputed gradient of zdata or if not provided,
                 the result of `self.gradient(zdata)`.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             zgrid : array of floats, shape(nj,ni)
@@ -691,14 +742,13 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                  -3: "extrapolation failed due to the uniform grid extending \
                       too far beyond the triangulation boundary"}
 
-        sigma = self.sigma
-        iflgs = self.iflgs
 
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
         zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
+        sigma, iflgs = self._check_sigma(sigma)
         
         nrow = len(lats)
 
@@ -714,7 +764,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return ff
 
 
-    def interpolate(self, lons, lats, zdata, order=1, grad=None):
+    def interpolate(self, lons, lats, zdata, order=1, grad=None, sigma=None):
         """
         Base class to handle nearest neighbour, linear, and cubic interpolation.
         Given a triangulation of a set of nodes on the unit sphere, along with data
@@ -761,8 +811,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                                           self._x, self._y, self._z, zdata,\
                                           self.lst, self.lptr, self.lend)
         elif order == 3:
-            sigma = self.sigma
-            iflgs = self.iflgs
+            sigma, iflgs = self._check_sigma(sigma)
             grad, iflgg = self._check_gradient(zdata, grad)
 
             zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,\
@@ -794,12 +843,12 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         """
         return self.interpolate(lons, lats, data, order=1)
 
-    def interpolate_cubic(self, lons, lats, data, grad=None):
+    def interpolate_cubic(self, lons, lats, data, grad=None, sigma=None):
         """
         Interpolate using cubic spline approximation
         Returns the same as `interpolate(lons,lats,data,order=3)`
         """
-        return self.interpolate(lons, lats, data, order=3, grad=grad)
+        return self.interpolate(lons, lats, data, order=3, grad=grad, sigma=sigma)
 
 
     def neighbour_simplices(self):

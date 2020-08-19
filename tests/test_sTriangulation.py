@@ -133,11 +133,11 @@ def test_cubic_interpolation_tension():
     Zi_linear, ierr = mesh.interpolate_linear(ilons, ilats, Z)
     Zi_cubic,  ierr = mesh.interpolate_cubic(ilons, ilats, Z)
 
-    sigma = mesh.update_tension_factors(Z)
-    Zi_cubicT,  ierr = mesh.interpolate_cubic(ilons, ilats, Z)
+    sigma = mesh.get_spline_tension_factors(Z)
+    Zi_cubicT,  ierr = mesh.interpolate_cubic(ilons, ilats, Z, sigma=sigma)
 
-    mesh.sigma.fill(45.)
-    Zi_cubicTmax,  ierr = mesh.interpolate_cubic(ilons, ilats, Z)
+    sigma.fill(45.)
+    Zi_cubicTmax,  ierr = mesh.interpolate_cubic(ilons, ilats, Z, sigma=sigma)
 
 
     if np.abs(Zi_cubicT - Zi_cubic).any():
@@ -179,8 +179,8 @@ def test_cubic_interpolation_grid():
     Zi_cubic, zierr = mesh.interpolate_cubic(lonq.ravel(), latq.ravel(), Z)
     Zi_cubic_grid = mesh.interpolate_to_grid(ilons, ilats, Z)
 
-    sigma = mesh.update_tension_factors(Z)
-    Zi_cubic_grid_S = mesh.interpolate_to_grid(ilons, ilats, Z)
+    sigma = mesh.get_spline_tension_factors(Z)
+    Zi_cubic_grid_S = mesh.interpolate_to_grid(ilons, ilats, Z, sigma=sigma)
 
     if np.abs(Zi_cubic.reshape(shape) - Zi_cubic_grid).sum() < \
        np.abs(Zi_cubic.reshape(shape) - Zi_cubic_grid_S).sum():
