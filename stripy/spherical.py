@@ -161,6 +161,12 @@ class sTriangulation(object):
 
         npoints = len(lons)
 
+        # We do this spherical -> cartesian -> spherical conversion
+        # to protect against lons or lats being out of range.
+        # (Only really an issue for refined meshes)
+        xs, ys, zs = lonlat2xyz(lons, lats)
+        lons, lats = xyz2lonlat(xs, ys, zs)
+
         # Deal with collinear issue
 
         if self.permute:
@@ -794,6 +800,30 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         Returns the same as `interpolate(lons,lats,data,order=3)`
         """
         return self.interpolate(lons, lats, data, order=3, grad=grad)
+
+
+    def neighbour_simplices(self):
+        """
+        Get indices of neighbour simplices for each simplex.
+        The kth neighbour is opposite to the kth vertex.
+        For simplices at the boundary, -1 denotes no neighbour.
+        """
+        nt, ltri, ierr = _stripack.trlist(self.lst, self.lptr, self.lend, nrow=6)
+        if ierr != 0:
+            raise ValueError('ierr={} in trlist\n{}'.format(ierr, _ier_codes[ierr]))
+        return ltri.T[:nt,3:] - 1
+
+    def neighbour_and_arc_simplices(self):
+        """
+        Get indices of neighbour simplices for each simplex and arc indices.
+        Identical to get_neighbour_simplices() but also returns an array
+        of indices that reside on boundary hull, -1 denotes no neighbour.
+        """
+        nt, ltri, ierr = _stripack.trlist(self.lst, self.lptr, self.lend, nrow=9)
+        if ierr != 0:
+            raise ValueError('ierr={} in trlist\n{}'.format(ierr, _ier_codes[ierr]))
+        ltri = ltri.T[:nt] - 1
+        return ltri[:,3:6], ltri[:,6:]
 
 
     def nearest_vertex(self, lons, lats):
