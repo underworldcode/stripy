@@ -1245,10 +1245,11 @@ class Triangulation(object):
                 inscribed circle in the range [0,0.5] with 0 if `sa=0`
                 and `sa=0.5` if the vertices form an equilateral triangle
         """
+        simplices = self.simplices
 
         # get x,y coordinates of each triangle
-        xt = self.x[self.simplices]
-        yt = self.y[self.simplices]
+        xt = self.x[simplices]
+        yt = self.y[simplices]
 
         # get coordinate vectors
         u = np.empty_like(xt)
@@ -1290,6 +1291,52 @@ class Triangulation(object):
             out.append( ar )
 
         return tuple(out)
+
+
+    def voronoi_points_and_regions(self):
+        """
+        Calculates the voronoi points from the triangulation
+        and constructs the region enclosed by them.
+
+        Returns:
+            xc : ndarray of floats
+                x coordinates of the Voronoi
+            yc : ndarray of floats
+                y coordinates of the Voronoi
+            regions : list of ints
+                a nested list of all Voronoi indices that
+                enclose a region.
+
+        Notes:
+            Inifinite regions are not indicated.
+        """
+
+        vx, vy = self.voronoi_points()
+
+        # store these to avoid any shuffle/reshuffle later
+        simplices = self.simplices
+        x = self.x
+        y = self.y
+
+        # empty placeholder array for vertices
+        voronoi_regions = [[] for i in range(0, self.npoints)]
+
+        # create regions for each point in the Delaunay triangulation
+        for i, (t0,t1,t2) in enumerate(simplices):
+            voronoi_regions[t0].append(i)
+            voronoi_regions[t1].append(i)
+            voronoi_regions[t2].append(i)
+
+        # sort the vertices around each site
+        # there is probably a more efficient way using the neighbour adjacency info
+        for i in range(0, self.npoints):
+            region = np.array(voronoi_regions[i])
+            dx = vx[region] - x[i]
+            dy = vy[region] - y[i]
+            idx = np.arctan2(dx, dy).argsort()
+            voronoi_regions[i] = region[idx]
+
+        return vx, vy, voronoi_regions
 
 
 def remove_duplicates(vector_tuple):
