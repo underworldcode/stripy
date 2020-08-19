@@ -1404,9 +1404,9 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
         Returns:
             vlons : ndarray of floats
-                x coordinates of the Voronoi
+                longitudinal coordinates of the Voronoi
             vlats : ndarray of floats
-                y coordinates of the Voronoi
+                latitudinal coordinates of the Voronoi
             cr : ndarray of floats (optional)
                 coordinates of the circumcentre (centre of the circle
                 defined by three points in a triangle)
@@ -1451,6 +1451,52 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
             out.append( cr )
 
         return tuple(out)
+
+    def voronoi_points_and_regions(self):
+        """
+        Calculates the voronoi points from the triangulation
+        and constructs the region enclosed by them.
+
+        Returns:
+            vlons : ndarray of floats
+                longitudinal coordinates of the Voronoi
+            vlats : ndarray of floats
+                latitudinal coordinates of the Voronoi
+            regions : list of ints
+                a nested list of all Voronoi indices that
+                enclose a region.
+
+        Notes:
+            Inifinite regions are not indicated.
+        """
+
+        vx, vy = self.voronoi_points()
+
+        # store these to avoid any shuffle/reshuffle later
+        simplices = self.simplices
+        x = self.lons
+        y = self.lats
+
+        # empty placeholder array for vertices
+        voronoi_regions = [[] for i in range(0, self.npoints)]
+
+        # create regions for each point in the Delaunay triangulation
+        for i, (t0,t1,t2) in enumerate(simplices):
+            voronoi_regions[t0].append(i)
+            voronoi_regions[t1].append(i)
+            voronoi_regions[t2].append(i)
+
+        # sort the vertices around each site
+        # there is probably a more efficient way using the neighbour adjacency info
+        for i in range(0, self.npoints):
+            region = np.array(voronoi_regions[i])
+            dx = vx[region] - x[i]
+            dy = vy[region] - y[i]
+            idx = np.arctan2(dx, dy).argsort() # this could be a problem across the dateline
+            voronoi_regions[i] = region[idx]
+
+        return vx, vy, voronoi_regions
+
 
 
 ## Helper functions for the module
