@@ -183,10 +183,7 @@ class elliptical_equispaced_mesh(_cartesian.Triangulation):
     An elliptical mesh where points are successively populated at an
     increasing radius from the midpoint of the extent.
 
-    Caution in parallel and for reproducibility - random noise in point locations !
-
-    If you only need the base point distribution try the elliptical_base_math_points method but beware
-    artefacts on the axis if 
+    This is a parallel-safe mesh object.
     """
     def __init__(self, axisX, axisY, spacing, refinement_levels=0, tree=False, remove_artifacts=True):
 
