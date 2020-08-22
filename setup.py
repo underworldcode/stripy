@@ -35,7 +35,7 @@ if "Windows" in platform.system():
     link_args = ["-static"]
 
 # in development set version to none and ...
-PYPI_VERSION = "1.2.2"
+PYPI_VERSION = "1.3"
 
 # Return the git revision as a string (from numpy)
 
@@ -85,6 +85,10 @@ ext3 = Extension(name    = 'stripy._srfpack',
 ext4 = Extension(name    = 'stripy._ssrfpack',
                  sources = ['src/ssrfpack.pyf', 'src/ssrfpack.f'],
                  extra_link_args=link_args)
+ext5 = Extension(name    = 'stripy._fortran',
+                 sources = ['src/stripyf.pyf', 'src/stripyf.f90'],
+                 extra_link_args=link_args)
+
 
 if __name__ == "__main__":
     setup(name = 'stripy',
@@ -95,7 +99,7 @@ if __name__ == "__main__":
           description       = "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere",
           long_description  = long_description,
           long_description_content_type='text/markdown',
-          ext_modules       = [ext1, ext2, ext3, ext4],
+          ext_modules       = [ext1, ext2, ext3, ext4, ext5],
           install_requires  = ['numpy>=1.16.0', 'scipy>=1.0.0'],
           packages          = ['stripy'],
           package_data      = {'stripy': ['Notebooks/*ipynb', # Worked Examples is not currently used

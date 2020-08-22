@@ -96,11 +96,6 @@ class sTriangulation(object):
             lend(k) points to the last neighbor of node K.
             lst(lend(K)) < 0 if and only if K is a boundary node.
             The indices are 1-based (as in Fortran), not zero based (as in python).
-        sigma : array of floats, shape (6n-12,)
-            tension factors which preserves the local data properties on each
-            triangulation arc with the restriction that `sigma[i] <= 85`.
-            `sigma[i] = 85` if infinite tension is required on an arc.
-            `sigma[i] = 0` if the result should be cubic on the arc.
 
     Notes:
         Provided the nodes are randomly ordered, the algorithm
@@ -161,6 +156,12 @@ class sTriangulation(object):
 
         npoints = len(lons)
 
+        # We do this spherical -> cartesian -> spherical conversion
+        # to protect against lons or lats being out of range.
+        # (Only really an issue for refined meshes)
+        xs, ys, zs = lonlat2xyz(lons, lats)
+        lons, lats = xyz2lonlat(xs, ys, zs)
+
         # Deal with collinear issue
 
         if self.permute:
@@ -206,9 +207,8 @@ class sTriangulation(object):
         self.lptr = lptr
         self.lend = lend
 
-        # initialise with zero tension factors
-        self.sigma = np.zeros(self.lptr.size)
-        self.iflgs = 0
+        # initialise dummy sigma array with zero tension factors
+        self._sigma = np.zeros(self.lptr.size)
 
         # Convert a triangulation to a triangle list form (human readable)
         # Uses an optimised version of trlist that returns triangles
@@ -290,6 +290,13 @@ class sTriangulation(object):
         else:
             return fields
 
+    def _shuffle_simplices(self, simplices):
+        """
+        Permute ordering
+        """
+        ip = self._invpermutation
+        return ip[simplices]
+
     def _deshuffle_simplices(self, simplices):
         """
         Return to original ordering
@@ -298,10 +305,13 @@ class sTriangulation(object):
         return p[simplices]
 
 
-    def gradient_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False):
+    def gradient_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False, sigma=None):
         """
         Return the lon / lat components of the gradient
-        of a scalar field on the surface of the sphere.
+        of a scalar field on the surface of the UNIT sphere.
+        (Note: the companion routine is derivatives_lonlat which returns
+        the components of the derivative in each direction - these differ by a factor of 
+        1/cos(lat) in the first component)
 
         The method consists of minimizing a quadratic functional Q(G) over
         gradient vectors, where Q is an approximation to the linearized
@@ -317,6 +327,9 @@ class sTriangulation(object):
             tol : float (default: 1e-3)
                 maximum change in gradient between iterations.
                 convergence is reached when this condition is met.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             dfdlon : array of floats, shape (n,)
@@ -338,7 +351,8 @@ class sTriangulation(object):
             to avoid recalculation if you need both forms.
         """
 
-        dfxs, dfys, dfzs = self.gradient_xyz(data, nit=nit, tol=tol, guarantee_convergence=guarantee_convergence)
+        dfxs, dfys, dfzs = self.gradient_xyz(data, nit=nit, tol=tol, \
+            guarantee_convergence=guarantee_convergence, sigma=sigma)
 
         # get deshuffled versions
         lons = self.lons
@@ -348,15 +362,77 @@ class sTriangulation(object):
         dlon = -dfxs * np.cos(lats) * np.sin(lons) + dfys * np.cos(lats) * np.cos(lons) # no z dependence
         dlat = -dfxs * np.sin(lats) * np.cos(lons) - dfys * np.sin(lats) * np.sin(lons) + dfzs * np.cos(lats)
 
-        corr = np.sqrt((1.0-z**2))
+        corr = np.sqrt((1.0-z**2))  
         valid = ~np.isclose(corr,0.0)
-
         dlon[valid] = dlon[valid] / corr[valid]
 
         return dlon, dlat
 
 
-    def gradient_xyz(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
+    def derivatives_lonlat(self, data, nit=3, tol=1.0e-3, guarantee_convergence=False, sigma=None):
+        """
+        Return the lon / lat components of the derivatives
+        of a scalar field on the surface of the UNIT sphere.
+        (Note: the companion routine is gradient_lonlat which returns
+        the components of the surface gradient - these differ by a factor of 
+        1/cos(lat) in the first component)
+
+
+        The method consists of minimizing a quadratic functional Q(G) over
+        gradient vectors, where Q is an approximation to the linearized
+        curvature over the triangulation of a C-1 bivariate function F(x,y)
+        which interpolates the nodal values and gradients.
+
+        Args:
+            data : array of floats, shape (n,)
+                field over which to evaluate the gradient
+            nit : int (default: 3)
+                number of iterations to reach a convergence tolerance, tol
+                nit >= 1
+            tol : float (default: 1e-3)
+                maximum change in gradient between iterations.
+                convergence is reached when this condition is met.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
+
+        Returns:
+            dfdlon : array of floats, shape (n,)
+                derivative of f in the longitudinal direction
+            dfdlat : array of floats, shape (n,)
+                derivative of f in the lattitudinal direction
+
+        Notes:
+            The gradient is computed via the Cartesian components using
+            `spherical.sTriangulation.gradient_xyz` and the iteration parameters
+            controling the spline interpolation are passed directly to this
+            routine (See notes for `gradient_xyz` for more details).
+
+            The gradient operator in this geometry is not well defined at the poles
+            even if the scalar field is smooth and the Cartesian gradient is well defined.
+
+            The routine spherical.dxyz2dlonlat is available to convert the Cartesian
+            to lon/lat coordinates at any point on the unit sphere. This is helpful
+            to avoid recalculation if you need both forms.
+        """
+
+        dfxs, dfys, dfzs = self.gradient_xyz(data, nit=nit, tol=tol, \
+            guarantee_convergence=guarantee_convergence, sigma=sigma)
+
+        # get deshuffled versions
+        lons = self.lons
+        lats = self.lats
+        z = self.z
+
+        dlon = -dfxs * np.cos(lats) * np.sin(lons) + dfys * np.cos(lats) * np.cos(lons) # no z dependence
+        dlat = -dfxs * np.sin(lats) * np.cos(lons) - dfys * np.sin(lats) * np.sin(lons) + dfzs * np.cos(lats)
+
+        return dlon, dlat
+
+
+
+
+    def gradient_xyz(self, f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None):
         """
         Return the cartesian components of the gradient
         of a scalar field on the surface of the sphere.
@@ -375,6 +451,9 @@ class sTriangulation(object):
             tol : float (default: 1e-3)
                 maximum change in gradient between iterations.
                 convergence is reached when this condition is met.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             dfdx : array of floats, shape (n,)
@@ -401,8 +480,7 @@ class sTriangulation(object):
             raise ValueError('f should be the same size as mesh')
 
         # gradient = np.zeros((3,self.npoints), order='F', dtype=np.float32)
-        sigma = self.sigma
-        iflgs = self.iflgs
+        sigma, iflgs = self._check_sigma(sigma)
 
         f = self._shuffle_field(f)
 
@@ -423,7 +501,7 @@ class sTriangulation(object):
         return self._deshuffle_field(grad[0], grad[1], grad[2])
 
 
-    def smoothing(self, f, w, sm, smtol, gstol):
+    def smoothing(self, f, w, sm, smtol, gstol, sigma=None):
         """
         Smooths a surface f by choosing nodal function values and gradients to
         minimize the linearized curvature of F subject to a bound on the
@@ -445,6 +523,9 @@ class sTriangulation(object):
             gstol : float
                 tolerance for convergence.
                 gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             f_smooth : array of floats, shape (n,)
@@ -461,8 +542,7 @@ class sTriangulation(object):
 
         f, w = self._shuffle_field(f, w)
 
-        sigma = self.sigma
-        iflgs = self.iflgs
+        sigma, iflgs = self._check_sigma(sigma)
         prnt = -1
 
         f_smooth, df, ierr = _ssrfpack.smsurf(self._x, self._y, self._z, f,\
@@ -477,7 +557,7 @@ class sTriangulation(object):
         # and a warning that explains it (once) - and also serves as a hook for an exception trap.
 
         if ierr < 0:
-            raise ValueError('ierr={} in smooth routines\n{}'.format(ierr, _ier_codes[ierr]))
+            print('ierr={} in smooth routines\n{}'.format(ierr, _ier_codes[ierr]))
 
         if ierr == 1:
             warnings.warn("No errors were encountered but the constraint is not active --\n\
@@ -535,7 +615,33 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return grad, iflgg
 
 
+    def _check_sigma(self, sigma):
+        """
+        Error checking on sigma
+        `sigma` must be of length 6n-12.
+        """
+        if sigma is None:
+            iflgs = 0
+            sigma = self._sigma
+        else:
+            assert len(sigma) == 6*self.npoints-12, "sigma must be of length 6n-12"
+            iflgs = int(np.any(sigma))
+
+        return sigma, iflgs
+
+
     def update_tension_factors(self, zdata, tol=1e-3, grad=None):
+        """
+        WARNING: this is deprecated in favour of `get_spline_tension_factors`
+        """
+        import warnings
+        message = "Use get_spline_tension_factors and supply tension factors to interpolation/gradient arrays"
+        message += "\nsigma stored on this mesh object no longer does anything as of v2.0"
+        warnings.warn(message, DeprecationWarning, stacklevel=2)
+        return self.get_spline_tension_factors(zdata, tol, grad)
+
+
+    def get_spline_tension_factors(self, zdata, tol=1e-3, grad=None):
         """
         Determines, for each triangulation arc, the smallest (nonnegative) tension factor `sigma`
         such that the Hermite interpolatory tension spline, defined by `sigma` and specified
@@ -554,9 +660,24 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
         Returns:
             sigma : array of floats, shape(6n-12)
-                tension factors applied to `zdata`.
+                tension factors which preserves the local properties of `zdata` on each
+                triangulation arc with the restriction that `sigma[i] <= 85`.
+
+                - `sigma[i] = 85` if infinite tension is required on an arc.
+                - `sigma[i] = 0` if the result should be cubic on the arc.
+
+        Notes:
+            Supply sigma to gradient, interpolate, derivative, or smoothing
+            methods for tensioned splines. Here is a list of compatible methods:
+
+            - `interpolate(lons, lats, zdata, order=3, grad=None, sigma=None)`
+            - `interpolate_cubic(lons, lats, zdata, grad=None, sigma=None)`
+            - `interpolate_to_grid(lons, lats, zdata, grad=None, sigma=None)`
+            - `gradient_xyz(f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
+            - `gradient_lonlat(f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
+            - `smoothing(f, w, sm, smtol, gstol, sigma=None)`
+
         """
-        sigma = self.sigma
 
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
@@ -565,7 +686,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         zdata = self._shuffle_field(zdata)
 
         if grad is None:
-            grad = np.vstack(self.gradient_xyz(zdata))
+            grad = np.vstack(self.gradient_xyz(zdata, tol=tol))
             grad = grad[:,p] # permute
 
         elif grad.shape == (3,self.npoints):
@@ -581,16 +702,14 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         if ierr == -1:
             import warnings
             warnings.warn("sigma is not altered.")
-        elif ierr == -2:
-            raise ValueError("Duplicate nodes were encountered.")
 
-        self.sigma = sigma
-        self.iflgs = int(sigma.any())
+        # self.sigma = sigma
+        # self.iflgs = int(sigma.any())
 
-        return self.sigma
+        return sigma
 
 
-    def interpolate_to_grid(self, lons, lats, zdata, grad=None):
+    def interpolate_to_grid(self, lons, lats, zdata, grad=None, sigma=None):
         """
         Interplates the data values to a uniform grid defined by
         longitude and latitudinal arrays. The interpolant is once
@@ -609,6 +728,9 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
             grad : array of floats, shape(3,n)
                 precomputed gradient of zdata or if not provided,
                 the result of `self.gradient(zdata)`.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             zgrid : array of floats, shape(nj,ni)
@@ -619,16 +741,15 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                  -3: "extrapolation failed due to the uniform grid extending \
                       too far beyond the triangulation boundary"}
 
-        sigma = self.sigma
-        iflgs = self.iflgs
 
         if zdata.size != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
         zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
+        sigma, iflgs = self._check_sigma(sigma)
         
-        nrow = len(lons)
+        nrow = len(lats)
 
 
         ff, ierr = _ssrfpack.unif(self._x, self._y, self._z, zdata,\
@@ -639,10 +760,10 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         if ierr < 0:
             raise ValueError(_emsg[ierr])
 
-        return ff.T
+        return ff
 
 
-    def interpolate(self, lons, lats, zdata, order=1, grad=None):
+    def interpolate(self, lons, lats, zdata, order=1, grad=None, sigma=None):
         """
         Base class to handle nearest neighbour, linear, and cubic interpolation.
         Given a triangulation of a set of nodes on the unit sphere, along with data
@@ -689,8 +810,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                                           self._x, self._y, self._z, zdata,\
                                           self.lst, self.lptr, self.lend)
         elif order == 3:
-            sigma = self.sigma
-            iflgs = self.iflgs
+            sigma, iflgs = self._check_sigma(sigma)
             grad, iflgg = self._check_gradient(zdata, grad)
 
             zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,\
@@ -722,12 +842,36 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         """
         return self.interpolate(lons, lats, data, order=1)
 
-    def interpolate_cubic(self, lons, lats, data, grad=None):
+    def interpolate_cubic(self, lons, lats, data, grad=None, sigma=None):
         """
         Interpolate using cubic spline approximation
         Returns the same as `interpolate(lons,lats,data,order=3)`
         """
-        return self.interpolate(lons, lats, data, order=3, grad=grad)
+        return self.interpolate(lons, lats, data, order=3, grad=grad, sigma=sigma)
+
+
+    def neighbour_simplices(self):
+        """
+        Get indices of neighbour simplices for each simplex.
+        The kth neighbour is opposite to the kth vertex.
+        For simplices at the boundary, -1 denotes no neighbour.
+        """
+        nt, ltri, ierr = _stripack.trlist(self.lst, self.lptr, self.lend, nrow=6)
+        if ierr != 0:
+            raise ValueError('ierr={} in trlist\n{}'.format(ierr, _ier_codes[ierr]))
+        return ltri.T[:nt,3:] - 1
+
+    def neighbour_and_arc_simplices(self):
+        """
+        Get indices of neighbour simplices for each simplex and arc indices.
+        Identical to get_neighbour_simplices() but also returns an array
+        of indices that reside on boundary hull, -1 denotes no neighbour.
+        """
+        nt, ltri, ierr = _stripack.trlist(self.lst, self.lptr, self.lend, nrow=9)
+        if ierr != 0:
+            raise ValueError('ierr={} in trlist\n{}'.format(ierr, _ier_codes[ierr]))
+        ltri = ltri.T[:nt] - 1
+        return ltri[:,3:6], ltri[:,6:]
 
 
     def nearest_vertex(self, lons, lats):
@@ -1295,6 +1439,111 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
         return angles, vertices
 
+
+    def voronoi_points(self, return_circumradius=False):
+        """
+        Calculates the voronoi points from the triangulation.
+
+        This routine returns the circumcentre, circumradius of each triangle.
+
+        Args:
+            return_circumradius : bool
+                optionally return circumradius of each circumcentre
+
+        Returns:
+            vlons : ndarray of floats
+                longitudinal coordinates of the Voronoi
+            vlats : ndarray of floats
+                latitudinal coordinates of the Voronoi
+            cr : ndarray of floats (optional)
+                coordinates of the circumcentre (centre of the circle
+                defined by three points in a triangle)
+        """
+
+        # get x,y,z coordinates for each triangle
+        simplices = self.simplices
+        xt = self.x[simplices]
+        yt = self.y[simplices]
+        zt = self.z[simplices]
+
+        # construct 3-component vectors
+        v1 = np.column_stack([xt[:,0], yt[:,0], zt[:,0]])
+        v2 = np.column_stack([xt[:,1], yt[:,1], zt[:,1]])
+        v3 = np.column_stack([xt[:,2], yt[:,2], zt[:,2]])
+
+        # get edge lengths
+        e1 = v2 - v1
+        e2 = v3 - v1
+
+        # compute scalar multiples of e1 * e2
+        cu = np.empty_like(xt)
+        cu[:,0] = e1[:,1]*e2[:,2] - e1[:,2]*e2[:,1]
+        cu[:,1] = e1[:,2]*e2[:,0] - e1[:,0]*e2[:,2]
+        cu[:,2] = e1[:,0]*e2[:,1] - e1[:,1]*e2[:,0]
+
+        # compute normal vector
+        cnorm = np.sqrt( (cu**2).sum(axis=1) )
+
+        coords = cu / cnorm.reshape(-1,1)
+        xc, yc, zc = coords[:,0], coords[:,1], coords[:,2]
+
+        # convert to lon/lat
+        vlons, vlats = xyz2lonlat(xc,yc,zc)
+
+        out = [vlons, vlats]
+
+        if return_circumradius:
+            tr = (v1*coords).sum(axis=1)
+            tr = np.clip(tr, -1.0, 1.0)
+            cr = np.arccos(tr)
+            out.append( cr )
+
+        return tuple(out)
+
+    def voronoi_points_and_regions(self):
+        """
+        Calculates the voronoi points from the triangulation
+        and constructs the region enclosed by them.
+
+        Returns:
+            vlons : ndarray of floats
+                longitudinal coordinates of the Voronoi
+            vlats : ndarray of floats
+                latitudinal coordinates of the Voronoi
+            regions : list of ints
+                a nested list of all Voronoi indices that
+                enclose a region.
+
+        Notes:
+            Inifinite regions are not indicated.
+        """
+
+        vx, vy = self.voronoi_points()
+
+        # store these to avoid any shuffle/reshuffle later
+        simplices = self.simplices
+        x = self.lons
+        y = self.lats
+
+        # empty placeholder array for vertices
+        voronoi_regions = [[] for i in range(0, self.npoints)]
+
+        # create regions for each point in the Delaunay triangulation
+        for i, (t0,t1,t2) in enumerate(simplices):
+            voronoi_regions[t0].append(i)
+            voronoi_regions[t1].append(i)
+            voronoi_regions[t2].append(i)
+
+        # sort the vertices around each site
+        # there is probably a more efficient way using the neighbour adjacency info
+        for i in range(0, self.npoints):
+            region = np.array(voronoi_regions[i])
+            dx = vx[region] - x[i]
+            dy = vy[region] - y[i]
+            idx = np.arctan2(dx, dy).argsort() # this could be a problem across the dateline
+            voronoi_regions[i] = region[idx]
+
+        return vx, vy, voronoi_regions
 
 
 
