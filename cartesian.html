@@ -214,9 +214,8 @@ class Triangulation(object):
         self.lptr = lptr
         self.lend = lend
 
-        # initialise with zero tension factors
-        self.sigma = np.zeros(self.lptr.size)
-        self.iflgs = 0
+        # initialise dummy array with zero tension factors
+        self._sigma = np.zeros(self.lptr.size)
 
         # Convert a triangulation to a triangle list form (human readable)
         # Uses an optimised version of trlist that returns triangles
@@ -292,6 +291,13 @@ class Triangulation(object):
         else:
             return fields
 
+    def _shuffle_simplices(self, simplices):
+        &#34;&#34;&#34;
+        Permute ordering
+        &#34;&#34;&#34;
+        ip = self._invpermutation
+        return ip[simplices]
+
     def _deshuffle_simplices(self, simplices):
         &#34;&#34;&#34;
         Return to original ordering
@@ -300,7 +306,7 @@ class Triangulation(object):
         return p[simplices]
 
 
-    def _check_gradient(self, zdata, grad):
+    def _check_gradient(self, zdata, grad, **kwargs):
         &#34;&#34;&#34;
         Error checking on the gradient operator
         `grad` must be (2,n) array that is permuted
@@ -315,7 +321,7 @@ class Triangulation(object):
         iflgg = False
 
         if grad is None:
-            grad = np.vstack(self.gradient(zdata))
+            grad = np.vstack(self.gradient(zdata, **kwargs))
             grad = grad[:,p]
 
         elif grad.shape == (2,self.npoints):
@@ -326,8 +332,33 @@ class Triangulation(object):
 
         return grad, iflgg
 
+    def _check_sigma(self, sigma):
+        &#34;&#34;&#34;
+        Error checking on sigma
+        `sigma` must be of length 6n-12.
+        &#34;&#34;&#34;
+        if sigma is None:
+            iflgs = 0
+            sigma = self._sigma
+        else:
+            assert len(sigma) == 6*self.npoints-12, &#34;sigma must be of length 6n-12&#34;
+            iflgs = int(np.any(sigma))
+
+        return sigma, iflgs
+
 
     def update_tension_factors(self, zdata, tol=1e-3, grad=None):
+        &#34;&#34;&#34;
+        WARNING: this is deprecated in favour of `get_spline_tension_factors`
+        &#34;&#34;&#34;
+        import warnings
+        message = &#34;Use get_spline_tension_factors and supply tension factors to interpolation/gradient arrays&#34;
+        message += &#34;\nsigma stored on this mesh object no longer does anything as of v2.0&#34;
+        warnings.warn(message, DeprecationWarning, stacklevel=2)
+        return self.get_spline_tension_factors(zdata, tol, grad)
+
+
+    def get_spline_tension_factors(self, zdata, tol=1e-3, grad=None):
         &#34;&#34;&#34;
         Determines, for each triangulation arc, the smallest (nonnegative) tension factor `sigma`
         such that the Hermite interpolatory tension spline, defined by `sigma` and specified
@@ -346,14 +377,28 @@ class Triangulation(object):
 
         Returns:
             sigma : array of floats, shape(6n-12)
-                tension factors applied to `zdata`.
+                tension factors which preserves the local properties of `zdata` on each
+                triangulation arc with the restriction that `sigma[i] &lt;= 85`.
+
+                - `sigma[i] = 85` if infinite tension is required on an arc.
+                - `sigma[i] = 0` if the result should be cubic on the arc.
+
+        Notes:
+            Supply sigma to gradient, interpolate, derivative, or smoothing
+            methods for tensioned splines. Here is a list of compatible methods:
+
+            - `interpolate(xi, yi, zdata, order=3, grad=None, sigma=None)`
+            - `interpolate_cubic(xi, yi, zdata, grad=None, sigma=None)`
+            - `interpolate_to_grid(xi, yi, zdata, grad=None, sigma=None)`
+            - `gradient(f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
+            - `smoothing(f, w, sm, smtol, gstol, sigma=None)`
+
         &#34;&#34;&#34;
-        sigma = self.sigma
 
         if zdata.size != self.npoints:
             raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
-        grad, iflgg = self._check_gradient(zdata, grad)
+        grad, iflgg = self._check_gradient(zdata, grad, tol=tol)
         zdata = self._shuffle_field(zdata)
 
 
@@ -367,15 +412,72 @@ class Triangulation(object):
         elif ierr == -2:
             raise ValueError(&#34;Duplicate nodes were encountered.&#34;)
 
-        self.sigma = sigma
-        self.iflgs = int(sigma.any())
-
-        return self.sigma
+        return sigma
 
 
-    def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
+    def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None):
         &#34;&#34;&#34;
         Return the gradient of an n-dimensional array.
+
+        The method consists of minimizing a quadratic functional Q(G) over
+        gradient vectors (in x and y directions), where Q is an approximation
+        to the linearized curvature over the triangulation of a C-1 bivariate
+        function \\(F(x,y)\\) which interpolates the nodal values and gradients.
+
+        Args:
+            f : array of floats, shape (n,)
+                field over which to evaluate the gradient
+            nit : int (default: 3)
+                number of iterations to reach a convergence tolerance,
+                tol nit &gt;= 1
+            tol: float (default: 1e-3)
+                maximum change in gradient between iterations.
+                convergence is reached when this condition is met.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
+
+        Returns:
+            dfdx : array of floats, shape (n,)
+                derivative of f in the x direction
+            dfdy : array of floats, shape (n,)
+                derivative of f in the y direction
+
+        Notes:
+            For SIGMA = 0, optimal efficiency was achieved in testing with
+            tol = 0, and nit = 3 or 4.
+
+            The restriction of F to an arc of the triangulation is taken to be
+            the Hermite interpolatory tension spline defined by the data values
+            and tangential gradient components at the endpoints of the arc, and
+            Q is the sum over the triangulation arcs, excluding interior
+            constraint arcs, of the linearized curvatures of F along the arcs --
+            the integrals over the arcs of \\( (d^2 F / dT^2)^2\\), where \\( d^2 F / dT^2\\)is the second
+            derivative of \\(F\\) with respect to distance \\(T\\) along the arc.
+        &#34;&#34;&#34;
+        if f.size != self.npoints:
+            raise ValueError(&#39;f should be the same size as mesh&#39;)
+
+        gradient = np.zeros((2,self.npoints), order=&#39;F&#39;, dtype=np.float32)
+        sigma, iflgs = self._check_sigma(sigma)
+
+        f = self._shuffle_field(f)
+
+        ierr = 1
+        while ierr == 1:
+            ierr = _srfpack.gradg(self._x, self._y, f, self.lst, self.lptr, self.lend,\
+                                  iflgs, sigma, gradient, nit=nit, dgmax=tol)
+            if not guarantee_convergence:
+                break
+
+        if ierr &lt; 0:
+            raise ValueError(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
+
+        return self._deshuffle_field(gradient[0], gradient[1])
+
+    def second_gradient_local(self, f, index):
+        &#34;&#34;&#34;
+        Return the gradient / 2nd partials of an n-dimensional array.
 
         The method consists of minimizing a quadratic functional Q(G) over
         gradient vectors (in x and y directions), where Q is an approximation
@@ -410,28 +512,27 @@ class Triangulation(object):
             the integrals over the arcs of \\( (d^2 F / dT^2)^2\\), where \\( d^2 F / dT^2\\)is the second
             derivative of \\(F\\) with respect to distance \\(T\\) along the arc.
         &#34;&#34;&#34;
+
         if f.size != self.npoints:
             raise ValueError(&#39;f should be the same size as mesh&#39;)
 
-        gradient = np.zeros((2,self.npoints), order=&#39;F&#39;, dtype=np.float32)
-        sigma = self.sigma
-        iflgs = self.iflgs
-
         f = self._shuffle_field(f)
+        index = self._shuffle_simplices(index)
 
-        ierr = 1
-        while ierr == 1:
-            ierr = _srfpack.gradg(self._x, self._y, f, self.lst, self.lptr, self.lend,\
-                                  iflgs, sigma, gradient, nit=nit, dgmax=tol)
-            if not guarantee_convergence:
-                break
+        ## wrapping: 
 
+        # subroutine gradc(k,ncc,lcc,n,x,y,z,list,lptr,lend,dx,dy,dxx,dxy,dyy,ier) ! in :_srfpack:srfpack.f
+        # subroutine gradg(  ncc,lcc,n,x,y,z,list,lptr,lend,iflgs,sigma,nit,dgmax,grad,ier) ! in :_srfpack:srfpack.f
+
+        dx, dy, dxx, dxy, dyy, ierr = _srfpack.gradcs(index+1, self._x, self._y, f, self.lst, self.lptr, self.lend)
+    
         if ierr &lt; 0:
-            raise ValueError(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
+            raise ValueError(&#39;ierr={} in gradc\n{}&#39;.format(ierr, _ier_codes[ierr]))
 
-        return self._deshuffle_field(gradient[0], gradient[1])
+        return dx, dy, dxx, dxy, dyy
 
 
+    # TODO: check if index should be subject to self._permutation / self._invpermutation
     def gradient_local(self, f, index):
         &#34;&#34;&#34;
         Return the gradient at a specified node.
@@ -446,15 +547,15 @@ class Triangulation(object):
             raise ValueError(&#39;f should be the same size as mesh&#39;)
 
         f = self._shuffle_field(f)
+        index = self._shuffle_simplices(index)
 
-
-        gradX, gradY, l = _srfpack.gradl(index + 1, self._x, self._y, f,\
+        gradX, gradY, l = _srfpack.gradls(index + 1, self._x, self._y, f,\
                                          self.lst, self.lptr, self.lend)
 
         return gradX, gradY
 
 
-    def smoothing(self, f, w, sm, smtol, gstol):
+    def smoothing(self, f, w, sm, smtol, gstol, sigma=None):
         r&#34;&#34;&#34;
         Smooths a surface `f` by choosing nodal function values and gradients to
         minimize the linearized curvature of F subject to a bound on the
@@ -476,6 +577,9 @@ class Triangulation(object):
             gstol : float
                 tolerance for convergence.
                 `gstol = 0.05*mean(sigma_f)**2` is a good rule of thumb.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             f_smooth : array of floats, shape (n,)
@@ -491,11 +595,9 @@ class Triangulation(object):
             raise ValueError(&#39;f and w should be the same size as mesh&#39;)
 
         f, w = self._shuffle_field(f, w)
+        sigma, iflgs = self._check_sigma(sigma)
 
-        sigma = self.sigma
-        iflgs = self.iflgs
-
-        f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, f, self.lst, self.lptr, self.lend,\
+        f_smooth, df, ierr = _srfpack.smsurf(self._x, self._y, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol)
 
         import warnings
@@ -513,10 +615,10 @@ class Triangulation(object):
                   F, FX, and FY are the values and partials of a linear function \
                   which minimizes Q2(F), and Q1 = 0.&#34;)
 
-        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1]), ierr
+        return self._deshuffle_field(f_smooth),  self._deshuffle_field(df[0], df[1]), ierr
 
 
-    def interpolate_to_grid(self, xi, yi, zdata, grad=None):
+    def interpolate_to_grid(self, xi, yi, zdata, grad=None, sigma=None):
         &#34;&#34;&#34;
         Interplates the data values to a uniform grid defined by
         longitude and latitudinal arrays. The interpolant is once
@@ -534,7 +636,10 @@ class Triangulation(object):
                 must be the same size of the mesh
             grad : array of floats, shape(3,n)
                 precomputed gradient of zdata or if not provided,
-                the result of `self.gradient(zdata)`.
+                the result of `gradient(zdata)`.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             zgrid : array of floats, shape(nj,ni)
@@ -545,13 +650,11 @@ class Triangulation(object):
                  -3: &#34;extrapolation failed due to the uniform grid extending \
                       too far beyond the triangulation boundary&#34;}
 
-        sigma = self.sigma
-        iflgs = self.iflgs
-
         if zdata.size != self.npoints:
             raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
         grad, iflgg = self._check_gradient(zdata, grad)
+        sigma, iflgs = self._check_sigma(sigma)
         zdata = self._shuffle_field(zdata)
 
         sflag = False
@@ -571,7 +674,7 @@ class Triangulation(object):
         return ff.T
 
 
-    def interpolate(self, xi, yi, zdata, order=1, grad=None):
+    def interpolate(self, xi, yi, zdata, order=1, grad=None, sigma=None):
         &#34;&#34;&#34;
         Base class to handle nearest neighbour, linear, and cubic interpolation.
         Given a triangulation of a set of nodes and values at the nodes,
@@ -587,9 +690,12 @@ class Triangulation(object):
                 must be the same size of the mesh
             order : int (default=1)
                 order of the interpolatory function used:
-                    0 = nearest-neighbour,
-                    1 = linear,
-                    3 = cubic
+                - `order=0` = nearest-neighbour
+                - `order=1` = linear
+                - `order=3` = cubic
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             zi : float / array of floats, shape (l,)
@@ -617,8 +723,7 @@ class Triangulation(object):
                                                 self._x,self._y, zdata, \
                                                 self.lst, self.lptr, self.lend)
         elif order == 3:
-            sigma = self.sigma
-            iflgs = self.iflgs
+            sigma, iflgs = self._check_sigma(sigma)
             grad, iflgg = self._check_gradient(zdata, grad)
             zdata = self._shuffle_field(zdata)
 
@@ -651,12 +756,12 @@ class Triangulation(object):
         &#34;&#34;&#34;
         return self.interpolate(xi, yi, zdata, order=1)
 
-    def interpolate_cubic(self, xi, yi, zdata, grad=None):
+    def interpolate_cubic(self, xi, yi, zdata, grad=None, sigma=None):
         &#34;&#34;&#34;
         Interpolate using cubic spline approximation
-        Returns the same as `interpolate(xi,yi,zdata,order=3)`
+        Returns the same as `interpolate(xi,yi,zdata,order=3,sigma=sigma)`
         &#34;&#34;&#34;
-        return self.interpolate(xi, yi, zdata, order=3, grad=grad)
+        return self.interpolate(xi, yi, zdata, order=3, grad=grad, sigma=sigma)
 
 
     def neighbour_simplices(self):
@@ -1187,6 +1292,131 @@ class Triangulation(object):
         return dxy, vertices
 
 
+    def voronoi_points(self, return_circumradius=False, return_triangle_area=False, return_aspect_ratio=False):
+        &#34;&#34;&#34;
+        Calculates the voronoi points from the triangulation.
+
+        This routine returns the circumcentre, circumradius, signed triangle area,
+        and aspect ratio of each triangle.
+
+        Args:
+            return_circumradius : bool
+                optionally return circumradius of each circumcentre
+            return_triangle_area : bool
+                optionally return triangle area
+            return_aspect_ratio : bool
+                optionally return the aspect ratio of each triangle
+
+        Returns:
+            xc : ndarray of floats
+                x coordinates of the Voronoi
+            yc : ndarray of floats
+                y coordinates of the Voronoi
+            cr : ndarray of floats (optional)
+                coordinates of the circumcentre (centre of the circle
+                defined by three points in a triangle)
+            sa : ndarray of floats (optional)
+                signed triangle area with positive value if the vertices
+                are specified in anticlockwise order.
+            ar : ndarray of floats (optional)
+                aspect ratio $r/c_r$ where $r$ is the radius of the
+                inscribed circle in the range [0,0.5] with 0 if `sa=0`
+                and `sa=0.5` if the vertices form an equilateral triangle
+        &#34;&#34;&#34;
+        simplices = self.simplices
+
+        # get x,y coordinates of each triangle
+        xt = self.x[simplices]
+        yt = self.y[simplices]
+
+        # get coordinate vectors
+        u = np.empty_like(xt)
+        v = np.empty_like(yt)
+        u[:,0] = xt[:,2] - xt[:,1]
+        u[:,1] = xt[:,0] - xt[:,2]
+        u[:,2] = xt[:,1] - xt[:,0]
+        v[:,0] = yt[:,2] - yt[:,1]
+        v[:,1] = yt[:,0] - yt[:,2]
+        v[:,2] = yt[:,1] - yt[:,0]
+
+        # signed area is triangle area
+        sa = 0.5*(u[:,0]*v[:,1] - u[:,1]*v[:,0])
+
+        # squared distance from the origin to the vertex k
+        ds = xt**2 + yt**2
+
+        # compute factors of xc and yc
+        fx = -(ds*v).sum(axis=1)
+        fy =  (ds*u).sum(axis=1)
+
+        xc = fx / (4.0*sa)
+        yc = fy / (4.0*sa)
+
+        out = [xc, yc]
+
+        if return_circumradius:
+            cr = np.hypot(xc - xt[:,0], yc - yt[:,0])
+            out.append( cr )
+
+        if return_triangle_area:
+            out.append( sa )
+
+        if return_aspect_ratio:
+            # compute square edge lengths and aspect ratio
+            ds = u**2 + v**2
+            ar = 2.0*np.abs(sa)/(np.sqrt(ds).sum(axis=1)*cr)
+            ar[sa==0.0] = 0.0
+            out.append( ar )
+
+        return tuple(out)
+
+
+    def voronoi_points_and_regions(self):
+        &#34;&#34;&#34;
+        Calculates the voronoi points from the triangulation
+        and constructs the region enclosed by them.
+
+        Returns:
+            xc : ndarray of floats
+                x coordinates of the Voronoi
+            yc : ndarray of floats
+                y coordinates of the Voronoi
+            regions : list of ints
+                a nested list of all Voronoi indices that
+                enclose a region.
+
+        Notes:
+            Inifinite regions are not indicated.
+        &#34;&#34;&#34;
+
+        vx, vy = self.voronoi_points()
+
+        # store these to avoid any shuffle/reshuffle later
+        simplices = self.simplices
+        x = self.x
+        y = self.y
+
+        # empty placeholder array for vertices
+        voronoi_regions = [[] for i in range(0, self.npoints)]
+
+        # create regions for each point in the Delaunay triangulation
+        for i, (t0,t1,t2) in enumerate(simplices):
+            voronoi_regions[t0].append(i)
+            voronoi_regions[t1].append(i)
+            voronoi_regions[t2].append(i)
+
+        # sort the vertices around each site
+        # there is probably a more efficient way using the neighbour adjacency info
+        for i in range(0, self.npoints):
+            region = np.array(voronoi_regions[i])
+            dx = vx[region] - x[i]
+            dy = vy[region] - y[i]
+            idx = np.arctan2(dx, dy).argsort()
+            voronoi_regions[i] = region[idx]
+
+        return vx, vy, voronoi_regions
+
+
 def remove_duplicates(vector_tuple):
     &#34;&#34;&#34;
     Remove duplicates rows from N equally-sized arrays
@@ -1437,9 +1667,8 @@ however, the node ordering will remain identical.</p></div>
         self.lptr = lptr
         self.lend = lend
 
-        # initialise with zero tension factors
-        self.sigma = np.zeros(self.lptr.size)
-        self.iflgs = 0
+        # initialise dummy array with zero tension factors
+        self._sigma = np.zeros(self.lptr.size)
 
         # Convert a triangulation to a triangle list form (human readable)
         # Uses an optimised version of trlist that returns triangles
@@ -1515,6 +1744,13 @@ however, the node ordering will remain identical.</p></div>
         else:
             return fields
 
+    def _shuffle_simplices(self, simplices):
+        &#34;&#34;&#34;
+        Permute ordering
+        &#34;&#34;&#34;
+        ip = self._invpermutation
+        return ip[simplices]
+
     def _deshuffle_simplices(self, simplices):
         &#34;&#34;&#34;
         Return to original ordering
@@ -1523,7 +1759,7 @@ however, the node ordering will remain identical.</p></div>
         return p[simplices]
 
 
-    def _check_gradient(self, zdata, grad):
+    def _check_gradient(self, zdata, grad, **kwargs):
         &#34;&#34;&#34;
         Error checking on the gradient operator
         `grad` must be (2,n) array that is permuted
@@ -1538,7 +1774,7 @@ however, the node ordering will remain identical.</p></div>
         iflgg = False
 
         if grad is None:
-            grad = np.vstack(self.gradient(zdata))
+            grad = np.vstack(self.gradient(zdata, **kwargs))
             grad = grad[:,p]
 
         elif grad.shape == (2,self.npoints):
@@ -1549,8 +1785,33 @@ however, the node ordering will remain identical.</p></div>
 
         return grad, iflgg
 
+    def _check_sigma(self, sigma):
+        &#34;&#34;&#34;
+        Error checking on sigma
+        `sigma` must be of length 6n-12.
+        &#34;&#34;&#34;
+        if sigma is None:
+            iflgs = 0
+            sigma = self._sigma
+        else:
+            assert len(sigma) == 6*self.npoints-12, &#34;sigma must be of length 6n-12&#34;
+            iflgs = int(np.any(sigma))
+
+        return sigma, iflgs
+
 
     def update_tension_factors(self, zdata, tol=1e-3, grad=None):
+        &#34;&#34;&#34;
+        WARNING: this is deprecated in favour of `get_spline_tension_factors`
+        &#34;&#34;&#34;
+        import warnings
+        message = &#34;Use get_spline_tension_factors and supply tension factors to interpolation/gradient arrays&#34;
+        message += &#34;\nsigma stored on this mesh object no longer does anything as of v2.0&#34;
+        warnings.warn(message, DeprecationWarning, stacklevel=2)
+        return self.get_spline_tension_factors(zdata, tol, grad)
+
+
+    def get_spline_tension_factors(self, zdata, tol=1e-3, grad=None):
         &#34;&#34;&#34;
         Determines, for each triangulation arc, the smallest (nonnegative) tension factor `sigma`
         such that the Hermite interpolatory tension spline, defined by `sigma` and specified
@@ -1569,14 +1830,28 @@ however, the node ordering will remain identical.</p></div>
 
         Returns:
             sigma : array of floats, shape(6n-12)
-                tension factors applied to `zdata`.
+                tension factors which preserves the local properties of `zdata` on each
+                triangulation arc with the restriction that `sigma[i] &lt;= 85`.
+
+                - `sigma[i] = 85` if infinite tension is required on an arc.
+                - `sigma[i] = 0` if the result should be cubic on the arc.
+
+        Notes:
+            Supply sigma to gradient, interpolate, derivative, or smoothing
+            methods for tensioned splines. Here is a list of compatible methods:
+
+            - `interpolate(xi, yi, zdata, order=3, grad=None, sigma=None)`
+            - `interpolate_cubic(xi, yi, zdata, grad=None, sigma=None)`
+            - `interpolate_to_grid(xi, yi, zdata, grad=None, sigma=None)`
+            - `gradient(f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
+            - `smoothing(f, w, sm, smtol, gstol, sigma=None)`
+
         &#34;&#34;&#34;
-        sigma = self.sigma
 
         if zdata.size != self.npoints:
             raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
-        grad, iflgg = self._check_gradient(zdata, grad)
+        grad, iflgg = self._check_gradient(zdata, grad, tol=tol)
         zdata = self._shuffle_field(zdata)
 
 
@@ -1590,15 +1865,72 @@ however, the node ordering will remain identical.</p></div>
         elif ierr == -2:
             raise ValueError(&#34;Duplicate nodes were encountered.&#34;)
 
-        self.sigma = sigma
-        self.iflgs = int(sigma.any())
-
-        return self.sigma
+        return sigma
 
 
-    def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
+    def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None):
         &#34;&#34;&#34;
         Return the gradient of an n-dimensional array.
+
+        The method consists of minimizing a quadratic functional Q(G) over
+        gradient vectors (in x and y directions), where Q is an approximation
+        to the linearized curvature over the triangulation of a C-1 bivariate
+        function \\(F(x,y)\\) which interpolates the nodal values and gradients.
+
+        Args:
+            f : array of floats, shape (n,)
+                field over which to evaluate the gradient
+            nit : int (default: 3)
+                number of iterations to reach a convergence tolerance,
+                tol nit &gt;= 1
+            tol: float (default: 1e-3)
+                maximum change in gradient between iterations.
+                convergence is reached when this condition is met.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
+
+        Returns:
+            dfdx : array of floats, shape (n,)
+                derivative of f in the x direction
+            dfdy : array of floats, shape (n,)
+                derivative of f in the y direction
+
+        Notes:
+            For SIGMA = 0, optimal efficiency was achieved in testing with
+            tol = 0, and nit = 3 or 4.
+
+            The restriction of F to an arc of the triangulation is taken to be
+            the Hermite interpolatory tension spline defined by the data values
+            and tangential gradient components at the endpoints of the arc, and
+            Q is the sum over the triangulation arcs, excluding interior
+            constraint arcs, of the linearized curvatures of F along the arcs --
+            the integrals over the arcs of \\( (d^2 F / dT^2)^2\\), where \\( d^2 F / dT^2\\)is the second
+            derivative of \\(F\\) with respect to distance \\(T\\) along the arc.
+        &#34;&#34;&#34;
+        if f.size != self.npoints:
+            raise ValueError(&#39;f should be the same size as mesh&#39;)
+
+        gradient = np.zeros((2,self.npoints), order=&#39;F&#39;, dtype=np.float32)
+        sigma, iflgs = self._check_sigma(sigma)
+
+        f = self._shuffle_field(f)
+
+        ierr = 1
+        while ierr == 1:
+            ierr = _srfpack.gradg(self._x, self._y, f, self.lst, self.lptr, self.lend,\
+                                  iflgs, sigma, gradient, nit=nit, dgmax=tol)
+            if not guarantee_convergence:
+                break
+
+        if ierr &lt; 0:
+            raise ValueError(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
+
+        return self._deshuffle_field(gradient[0], gradient[1])
+
+    def second_gradient_local(self, f, index):
+        &#34;&#34;&#34;
+        Return the gradient / 2nd partials of an n-dimensional array.
 
         The method consists of minimizing a quadratic functional Q(G) over
         gradient vectors (in x and y directions), where Q is an approximation
@@ -1633,28 +1965,27 @@ however, the node ordering will remain identical.</p></div>
             the integrals over the arcs of \\( (d^2 F / dT^2)^2\\), where \\( d^2 F / dT^2\\)is the second
             derivative of \\(F\\) with respect to distance \\(T\\) along the arc.
         &#34;&#34;&#34;
+
         if f.size != self.npoints:
             raise ValueError(&#39;f should be the same size as mesh&#39;)
 
-        gradient = np.zeros((2,self.npoints), order=&#39;F&#39;, dtype=np.float32)
-        sigma = self.sigma
-        iflgs = self.iflgs
-
         f = self._shuffle_field(f)
+        index = self._shuffle_simplices(index)
 
-        ierr = 1
-        while ierr == 1:
-            ierr = _srfpack.gradg(self._x, self._y, f, self.lst, self.lptr, self.lend,\
-                                  iflgs, sigma, gradient, nit=nit, dgmax=tol)
-            if not guarantee_convergence:
-                break
+        ## wrapping: 
 
+        # subroutine gradc(k,ncc,lcc,n,x,y,z,list,lptr,lend,dx,dy,dxx,dxy,dyy,ier) ! in :_srfpack:srfpack.f
+        # subroutine gradg(  ncc,lcc,n,x,y,z,list,lptr,lend,iflgs,sigma,nit,dgmax,grad,ier) ! in :_srfpack:srfpack.f
+
+        dx, dy, dxx, dxy, dyy, ierr = _srfpack.gradcs(index+1, self._x, self._y, f, self.lst, self.lptr, self.lend)
+    
         if ierr &lt; 0:
-            raise ValueError(&#39;ierr={} in gradg\n{}&#39;.format(ierr, _ier_codes[ierr]))
+            raise ValueError(&#39;ierr={} in gradc\n{}&#39;.format(ierr, _ier_codes[ierr]))
 
-        return self._deshuffle_field(gradient[0], gradient[1])
+        return dx, dy, dxx, dxy, dyy
 
 
+    # TODO: check if index should be subject to self._permutation / self._invpermutation
     def gradient_local(self, f, index):
         &#34;&#34;&#34;
         Return the gradient at a specified node.
@@ -1669,15 +2000,15 @@ however, the node ordering will remain identical.</p></div>
             raise ValueError(&#39;f should be the same size as mesh&#39;)
 
         f = self._shuffle_field(f)
+        index = self._shuffle_simplices(index)
 
-
-        gradX, gradY, l = _srfpack.gradl(index + 1, self._x, self._y, f,\
+        gradX, gradY, l = _srfpack.gradls(index + 1, self._x, self._y, f,\
                                          self.lst, self.lptr, self.lend)
 
         return gradX, gradY
 
 
-    def smoothing(self, f, w, sm, smtol, gstol):
+    def smoothing(self, f, w, sm, smtol, gstol, sigma=None):
         r&#34;&#34;&#34;
         Smooths a surface `f` by choosing nodal function values and gradients to
         minimize the linearized curvature of F subject to a bound on the
@@ -1699,6 +2030,9 @@ however, the node ordering will remain identical.</p></div>
             gstol : float
                 tolerance for convergence.
                 `gstol = 0.05*mean(sigma_f)**2` is a good rule of thumb.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             f_smooth : array of floats, shape (n,)
@@ -1714,11 +2048,9 @@ however, the node ordering will remain identical.</p></div>
             raise ValueError(&#39;f and w should be the same size as mesh&#39;)
 
         f, w = self._shuffle_field(f, w)
+        sigma, iflgs = self._check_sigma(sigma)
 
-        sigma = self.sigma
-        iflgs = self.iflgs
-
-        f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, f, self.lst, self.lptr, self.lend,\
+        f_smooth, df, ierr = _srfpack.smsurf(self._x, self._y, f, self.lst, self.lptr, self.lend,\
                                              iflgs, sigma, w, sm, smtol, gstol)
 
         import warnings
@@ -1736,10 +2068,10 @@ however, the node ordering will remain identical.</p></div>
                   F, FX, and FY are the values and partials of a linear function \
                   which minimizes Q2(F), and Q1 = 0.&#34;)
 
-        return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1]), ierr
+        return self._deshuffle_field(f_smooth),  self._deshuffle_field(df[0], df[1]), ierr
 
 
-    def interpolate_to_grid(self, xi, yi, zdata, grad=None):
+    def interpolate_to_grid(self, xi, yi, zdata, grad=None, sigma=None):
         &#34;&#34;&#34;
         Interplates the data values to a uniform grid defined by
         longitude and latitudinal arrays. The interpolant is once
@@ -1757,7 +2089,10 @@ however, the node ordering will remain identical.</p></div>
                 must be the same size of the mesh
             grad : array of floats, shape(3,n)
                 precomputed gradient of zdata or if not provided,
-                the result of `self.gradient(zdata)`.
+                the result of `gradient(zdata)`.
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             zgrid : array of floats, shape(nj,ni)
@@ -1768,13 +2103,11 @@ however, the node ordering will remain identical.</p></div>
                  -3: &#34;extrapolation failed due to the uniform grid extending \
                       too far beyond the triangulation boundary&#34;}
 
-        sigma = self.sigma
-        iflgs = self.iflgs
-
         if zdata.size != self.npoints:
             raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
         grad, iflgg = self._check_gradient(zdata, grad)
+        sigma, iflgs = self._check_sigma(sigma)
         zdata = self._shuffle_field(zdata)
 
         sflag = False
@@ -1794,7 +2127,7 @@ however, the node ordering will remain identical.</p></div>
         return ff.T
 
 
-    def interpolate(self, xi, yi, zdata, order=1, grad=None):
+    def interpolate(self, xi, yi, zdata, order=1, grad=None, sigma=None):
         &#34;&#34;&#34;
         Base class to handle nearest neighbour, linear, and cubic interpolation.
         Given a triangulation of a set of nodes and values at the nodes,
@@ -1810,9 +2143,12 @@ however, the node ordering will remain identical.</p></div>
                 must be the same size of the mesh
             order : int (default=1)
                 order of the interpolatory function used:
-                    0 = nearest-neighbour,
-                    1 = linear,
-                    3 = cubic
+                - `order=0` = nearest-neighbour
+                - `order=1` = linear
+                - `order=3` = cubic
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
         Returns:
             zi : float / array of floats, shape (l,)
@@ -1840,8 +2176,7 @@ however, the node ordering will remain identical.</p></div>
                                                 self._x,self._y, zdata, \
                                                 self.lst, self.lptr, self.lend)
         elif order == 3:
-            sigma = self.sigma
-            iflgs = self.iflgs
+            sigma, iflgs = self._check_sigma(sigma)
             grad, iflgg = self._check_gradient(zdata, grad)
             zdata = self._shuffle_field(zdata)
 
@@ -1874,12 +2209,12 @@ however, the node ordering will remain identical.</p></div>
         &#34;&#34;&#34;
         return self.interpolate(xi, yi, zdata, order=1)
 
-    def interpolate_cubic(self, xi, yi, zdata, grad=None):
+    def interpolate_cubic(self, xi, yi, zdata, grad=None, sigma=None):
         &#34;&#34;&#34;
         Interpolate using cubic spline approximation
-        Returns the same as `interpolate(xi,yi,zdata,order=3)`
+        Returns the same as `interpolate(xi,yi,zdata,order=3,sigma=sigma)`
         &#34;&#34;&#34;
-        return self.interpolate(xi, yi, zdata, order=3, grad=grad)
+        return self.interpolate(xi, yi, zdata, order=3, grad=grad, sigma=sigma)
 
 
     def neighbour_simplices(self):
@@ -2407,10 +2742,136 @@ however, the node ordering will remain identical.</p></div>
         if k == 1:   # force this to be a 2D array
             vertices = np.reshape(vertices, (-1, 1))
 
-        return dxy, vertices</code></pre>
+        return dxy, vertices
+
+
+    def voronoi_points(self, return_circumradius=False, return_triangle_area=False, return_aspect_ratio=False):
+        &#34;&#34;&#34;
+        Calculates the voronoi points from the triangulation.
+
+        This routine returns the circumcentre, circumradius, signed triangle area,
+        and aspect ratio of each triangle.
+
+        Args:
+            return_circumradius : bool
+                optionally return circumradius of each circumcentre
+            return_triangle_area : bool
+                optionally return triangle area
+            return_aspect_ratio : bool
+                optionally return the aspect ratio of each triangle
+
+        Returns:
+            xc : ndarray of floats
+                x coordinates of the Voronoi
+            yc : ndarray of floats
+                y coordinates of the Voronoi
+            cr : ndarray of floats (optional)
+                coordinates of the circumcentre (centre of the circle
+                defined by three points in a triangle)
+            sa : ndarray of floats (optional)
+                signed triangle area with positive value if the vertices
+                are specified in anticlockwise order.
+            ar : ndarray of floats (optional)
+                aspect ratio $r/c_r$ where $r$ is the radius of the
+                inscribed circle in the range [0,0.5] with 0 if `sa=0`
+                and `sa=0.5` if the vertices form an equilateral triangle
+        &#34;&#34;&#34;
+        simplices = self.simplices
+
+        # get x,y coordinates of each triangle
+        xt = self.x[simplices]
+        yt = self.y[simplices]
+
+        # get coordinate vectors
+        u = np.empty_like(xt)
+        v = np.empty_like(yt)
+        u[:,0] = xt[:,2] - xt[:,1]
+        u[:,1] = xt[:,0] - xt[:,2]
+        u[:,2] = xt[:,1] - xt[:,0]
+        v[:,0] = yt[:,2] - yt[:,1]
+        v[:,1] = yt[:,0] - yt[:,2]
+        v[:,2] = yt[:,1] - yt[:,0]
+
+        # signed area is triangle area
+        sa = 0.5*(u[:,0]*v[:,1] - u[:,1]*v[:,0])
+
+        # squared distance from the origin to the vertex k
+        ds = xt**2 + yt**2
+
+        # compute factors of xc and yc
+        fx = -(ds*v).sum(axis=1)
+        fy =  (ds*u).sum(axis=1)
+
+        xc = fx / (4.0*sa)
+        yc = fy / (4.0*sa)
+
+        out = [xc, yc]
+
+        if return_circumradius:
+            cr = np.hypot(xc - xt[:,0], yc - yt[:,0])
+            out.append( cr )
+
+        if return_triangle_area:
+            out.append( sa )
+
+        if return_aspect_ratio:
+            # compute square edge lengths and aspect ratio
+            ds = u**2 + v**2
+            ar = 2.0*np.abs(sa)/(np.sqrt(ds).sum(axis=1)*cr)
+            ar[sa==0.0] = 0.0
+            out.append( ar )
+
+        return tuple(out)
+
+
+    def voronoi_points_and_regions(self):
+        &#34;&#34;&#34;
+        Calculates the voronoi points from the triangulation
+        and constructs the region enclosed by them.
+
+        Returns:
+            xc : ndarray of floats
+                x coordinates of the Voronoi
+            yc : ndarray of floats
+                y coordinates of the Voronoi
+            regions : list of ints
+                a nested list of all Voronoi indices that
+                enclose a region.
+
+        Notes:
+            Inifinite regions are not indicated.
+        &#34;&#34;&#34;
+
+        vx, vy = self.voronoi_points()
+
+        # store these to avoid any shuffle/reshuffle later
+        simplices = self.simplices
+        x = self.x
+        y = self.y
+
+        # empty placeholder array for vertices
+        voronoi_regions = [[] for i in range(0, self.npoints)]
+
+        # create regions for each point in the Delaunay triangulation
+        for i, (t0,t1,t2) in enumerate(simplices):
+            voronoi_regions[t0].append(i)
+            voronoi_regions[t1].append(i)
+            voronoi_regions[t2].append(i)
+
+        # sort the vertices around each site
+        # there is probably a more efficient way using the neighbour adjacency info
+        for i in range(0, self.npoints):
+            region = np.array(voronoi_regions[i])
+            dx = vx[region] - x[i]
+            dy = vy[region] - y[i]
+            idx = np.arctan2(dx, dy).argsort()
+            voronoi_regions[i] = region[idx]
+
+        return vx, vy, voronoi_regions</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="stripy.cartesian_meshes.elliptical_equispaced_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.elliptical_equispaced_mesh">elliptical_equispaced_mesh</a></li>
 <li><a title="stripy.cartesian_meshes.elliptical_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.elliptical_mesh">elliptical_mesh</a></li>
 <li><a title="stripy.cartesian_meshes.random_mesh" href="cartesian_meshes.html#stripy.cartesian_meshes.random_mesh">random_mesh</a></li>
 <li><a title="stripy.cartesian_meshes.square_border" href="cartesian_meshes.html#stripy.cartesian_meshes.square_border">square_border</a></li>
@@ -2853,8 +3314,111 @@ simplices is given then the centroids of only those simplices is returned.</p></
     return mid_xpt, mid_ypt</code></pre>
 </details>
 </dd>
+<dt id="stripy.cartesian.Triangulation.get_spline_tension_factors"><code class="name flex">
+<span>def <span class="ident">get_spline_tension_factors</span></span>(<span>self, zdata, tol=0.001, grad=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Determines, for each triangulation arc, the smallest (nonnegative) tension factor <code>sigma</code>
+such that the Hermite interpolatory tension spline, defined by <code>sigma</code> and specified
+endpoint data, preserves local shape properties (monotonicity and convexity) of <code>zdata</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats, shape(n,)</code></dt>
+<dd>value at each point in the triangulation
+must be the same size of the mesh</dd>
+<dt><strong><code>tol</code></strong> :&ensp;<code>float</code></dt>
+<dd>tolerance of each tension factor to its optimal value
+when nonzero finite tension is necessary.</dd>
+<dt><strong><code>grad</code></strong> :&ensp;<code>array</code> of <code>floats, shape(3,n)</code></dt>
+<dd>precomputed gradient of zdata or if not provided,
+the result of <code>self.gradient(zdata)</code>.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>sigma </code></dt>
+<dd>
+<p>array of floats, shape(6n-12)
+tension factors which preserves the local properties of <code>zdata</code> on each
+triangulation arc with the restriction that <code>sigma[i] &lt;= 85</code>.</p>
+<ul>
+<li><code>sigma[i] = 85</code> if infinite tension is required on an arc.</li>
+<li><code>sigma[i] = 0</code> if the result should be cubic on the arc.</li>
+</ul>
+</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Supply sigma to gradient, interpolate, derivative, or smoothing
+methods for tensioned splines. Here is a list of compatible methods:</p>
+<ul>
+<li><code>interpolate(xi, yi, zdata, order=3, grad=None, sigma=None)</code></li>
+<li><code>interpolate_cubic(xi, yi, zdata, grad=None, sigma=None)</code></li>
+<li><code>interpolate_to_grid(xi, yi, zdata, grad=None, sigma=None)</code></li>
+<li><code>gradient(f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)</code></li>
+<li><code>smoothing(f, w, sm, smtol, gstol, sigma=None)</code></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_spline_tension_factors(self, zdata, tol=1e-3, grad=None):
+    &#34;&#34;&#34;
+    Determines, for each triangulation arc, the smallest (nonnegative) tension factor `sigma`
+    such that the Hermite interpolatory tension spline, defined by `sigma` and specified
+    endpoint data, preserves local shape properties (monotonicity and convexity) of `zdata`.
+
+    Args:
+        zdata : array of floats, shape(n,)
+            value at each point in the triangulation
+            must be the same size of the mesh
+        tol : float
+            tolerance of each tension factor to its optimal value
+            when nonzero finite tension is necessary.
+        grad : array of floats, shape(3,n)
+            precomputed gradient of zdata or if not provided,
+            the result of `self.gradient(zdata)`.
+
+    Returns:
+        sigma : array of floats, shape(6n-12)
+            tension factors which preserves the local properties of `zdata` on each
+            triangulation arc with the restriction that `sigma[i] &lt;= 85`.
+
+            - `sigma[i] = 85` if infinite tension is required on an arc.
+            - `sigma[i] = 0` if the result should be cubic on the arc.
+
+    Notes:
+        Supply sigma to gradient, interpolate, derivative, or smoothing
+        methods for tensioned splines. Here is a list of compatible methods:
+
+        - `interpolate(xi, yi, zdata, order=3, grad=None, sigma=None)`
+        - `interpolate_cubic(xi, yi, zdata, grad=None, sigma=None)`
+        - `interpolate_to_grid(xi, yi, zdata, grad=None, sigma=None)`
+        - `gradient(f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None)`
+        - `smoothing(f, w, sm, smtol, gstol, sigma=None)`
+
+    &#34;&#34;&#34;
+
+    if zdata.size != self.npoints:
+        raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
+
+    grad, iflgg = self._check_gradient(zdata, grad, tol=tol)
+    zdata = self._shuffle_field(zdata)
+
+
+    sigma, dsmax, ierr = _srfpack.getsig(self._x, self._y, zdata,\
+                                         self.lst, self.lptr, self.lend,\
+                                         grad, tol)
+
+    if ierr == -1:
+        import warnings
+        warnings.warn(&#34;sigma is not altered.&#34;)
+    elif ierr == -2:
+        raise ValueError(&#34;Duplicate nodes were encountered.&#34;)
+
+    return sigma</code></pre>
+</details>
+</dd>
 <dt id="stripy.cartesian.Triangulation.gradient"><code class="name flex">
-<span>def <span class="ident">gradient</span></span>(<span>self, f, nit=3, tol=0.001, guarantee_convergence=False)</span>
+<span>def <span class="ident">gradient</span></span>(<span>self, f, nit=3, tol=0.001, guarantee_convergence=False, sigma=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Return the gradient of an n-dimensional array.</p>
@@ -2873,6 +3437,9 @@ tol nit &gt;= 1</dd>
 <dd>float (default: 1e-3)
 maximum change in gradient between iterations.
 convergence is reached when this condition is met.</dd>
+<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
+<dd>precomputed array of spline tension factors from
+<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2897,7 +3464,7 @@ derivative of <span><span class="MathJax_Preview">F</span><script type="math/tex
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False):
+<pre><code class="python">def gradient(self, f, nit=3, tol=1e-3, guarantee_convergence=False, sigma=None):
     &#34;&#34;&#34;
     Return the gradient of an n-dimensional array.
 
@@ -2915,6 +3482,9 @@ derivative of <span><span class="MathJax_Preview">F</span><script type="math/tex
         tol: float (default: 1e-3)
             maximum change in gradient between iterations.
             convergence is reached when this condition is met.
+        sigma : array of floats, shape (6n-12)
+            precomputed array of spline tension factors from
+            `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
     Returns:
         dfdx : array of floats, shape (n,)
@@ -2938,8 +3508,7 @@ derivative of <span><span class="MathJax_Preview">F</span><script type="math/tex
         raise ValueError(&#39;f should be the same size as mesh&#39;)
 
     gradient = np.zeros((2,self.npoints), order=&#39;F&#39;, dtype=np.float32)
-    sigma = self.sigma
-    iflgs = self.iflgs
+    sigma, iflgs = self._check_sigma(sigma)
 
     f = self._shuffle_field(f)
 
@@ -2983,9 +3552,9 @@ to compute gradients at all of the nodes. Both routines have similar accuracy.</
         raise ValueError(&#39;f should be the same size as mesh&#39;)
 
     f = self._shuffle_field(f)
+    index = self._shuffle_simplices(index)
 
-
-    gradX, gradY, l = _srfpack.gradl(index + 1, self._x, self._y, f,\
+    gradX, gradY, l = _srfpack.gradls(index + 1, self._x, self._y, f,\
                                      self.lst, self.lptr, self.lend)
 
     return gradX, gradY</code></pre>
@@ -3066,7 +3635,7 @@ Searches <code>self.simplices</code> for vertex entries and sorts neighbours</p>
 </details>
 </dd>
 <dt id="stripy.cartesian.Triangulation.interpolate"><code class="name flex">
-<span>def <span class="ident">interpolate</span></span>(<span>self, xi, yi, zdata, order=1, grad=None)</span>
+<span>def <span class="ident">interpolate</span></span>(<span>self, xi, yi, zdata, order=1, grad=None, sigma=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Base class to handle nearest neighbour, linear, and cubic interpolation.
@@ -3083,9 +3652,12 @@ this method interpolates the value at the given xi,yi coordinates.</p>
 must be the same size of the mesh</dd>
 <dt><strong><code>order</code></strong> :&ensp;<code>int (default=1)</code></dt>
 <dd>order of the interpolatory function used:
-0 = nearest-neighbour,
-1 = linear,
-3 = cubic</dd>
+- <code>order=0</code> = nearest-neighbour
+- <code>order=1</code> = linear
+- <code>order=3</code> = cubic</dd>
+<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
+<dd>precomputed array of spline tension factors from
+<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3100,7 +3672,7 @@ whether interpolation (0), extrapolation (1) or error (other)</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def interpolate(self, xi, yi, zdata, order=1, grad=None):
+<pre><code class="python">def interpolate(self, xi, yi, zdata, order=1, grad=None, sigma=None):
     &#34;&#34;&#34;
     Base class to handle nearest neighbour, linear, and cubic interpolation.
     Given a triangulation of a set of nodes and values at the nodes,
@@ -3116,9 +3688,12 @@ whether interpolation (0), extrapolation (1) or error (other)</dd>
             must be the same size of the mesh
         order : int (default=1)
             order of the interpolatory function used:
-                0 = nearest-neighbour,
-                1 = linear,
-                3 = cubic
+            - `order=0` = nearest-neighbour
+            - `order=1` = linear
+            - `order=3` = cubic
+        sigma : array of floats, shape (6n-12)
+            precomputed array of spline tension factors from
+            `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
     Returns:
         zi : float / array of floats, shape (l,)
@@ -3146,8 +3721,7 @@ whether interpolation (0), extrapolation (1) or error (other)</dd>
                                             self._x,self._y, zdata, \
                                             self.lst, self.lptr, self.lend)
     elif order == 3:
-        sigma = self.sigma
-        iflgs = self.iflgs
+        sigma, iflgs = self._check_sigma(sigma)
         grad, iflgg = self._check_gradient(zdata, grad)
         zdata = self._shuffle_field(zdata)
 
@@ -3167,21 +3741,21 @@ whether interpolation (0), extrapolation (1) or error (other)</dd>
 </details>
 </dd>
 <dt id="stripy.cartesian.Triangulation.interpolate_cubic"><code class="name flex">
-<span>def <span class="ident">interpolate_cubic</span></span>(<span>self, xi, yi, zdata, grad=None)</span>
+<span>def <span class="ident">interpolate_cubic</span></span>(<span>self, xi, yi, zdata, grad=None, sigma=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Interpolate using cubic spline approximation
-Returns the same as <code>interpolate(xi,yi,zdata,order=3)</code></p></div>
+Returns the same as <code>interpolate(xi,yi,zdata,order=3,sigma=sigma)</code></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def interpolate_cubic(self, xi, yi, zdata, grad=None):
+<pre><code class="python">def interpolate_cubic(self, xi, yi, zdata, grad=None, sigma=None):
     &#34;&#34;&#34;
     Interpolate using cubic spline approximation
-    Returns the same as `interpolate(xi,yi,zdata,order=3)`
+    Returns the same as `interpolate(xi,yi,zdata,order=3,sigma=sigma)`
     &#34;&#34;&#34;
-    return self.interpolate(xi, yi, zdata, order=3, grad=grad)</code></pre>
+    return self.interpolate(xi, yi, zdata, order=3, grad=grad, sigma=sigma)</code></pre>
 </details>
 </dd>
 <dt id="stripy.cartesian.Triangulation.interpolate_linear"><code class="name flex">
@@ -3221,7 +3795,7 @@ Returns the same as <code>interpolate(xi,yi,zdata,order=0)</code></p></div>
 </details>
 </dd>
 <dt id="stripy.cartesian.Triangulation.interpolate_to_grid"><code class="name flex">
-<span>def <span class="ident">interpolate_to_grid</span></span>(<span>self, xi, yi, zdata, grad=None)</span>
+<span>def <span class="ident">interpolate_to_grid</span></span>(<span>self, xi, yi, zdata, grad=None, sigma=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Interplates the data values to a uniform grid defined by
@@ -3240,7 +3814,10 @@ do not cover the entire sphere.</p>
 must be the same size of the mesh</dd>
 <dt><strong><code>grad</code></strong> :&ensp;<code>array</code> of <code>floats, shape(3,n)</code></dt>
 <dd>precomputed gradient of zdata or if not provided,
-the result of <code>self.gradient(zdata)</code>.</dd>
+the result of <code>gradient(zdata)</code>.</dd>
+<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
+<dd>precomputed array of spline tension factors from
+<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3252,7 +3829,7 @@ interpolated values defined by gridded lons/lats</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def interpolate_to_grid(self, xi, yi, zdata, grad=None):
+<pre><code class="python">def interpolate_to_grid(self, xi, yi, zdata, grad=None, sigma=None):
     &#34;&#34;&#34;
     Interplates the data values to a uniform grid defined by
     longitude and latitudinal arrays. The interpolant is once
@@ -3270,7 +3847,10 @@ interpolated values defined by gridded lons/lats</dd>
             must be the same size of the mesh
         grad : array of floats, shape(3,n)
             precomputed gradient of zdata or if not provided,
-            the result of `self.gradient(zdata)`.
+            the result of `gradient(zdata)`.
+        sigma : array of floats, shape (6n-12)
+            precomputed array of spline tension factors from
+            `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
     Returns:
         zgrid : array of floats, shape(nj,ni)
@@ -3281,13 +3861,11 @@ interpolated values defined by gridded lons/lats</dd>
              -3: &#34;extrapolation failed due to the uniform grid extending \
                   too far beyond the triangulation boundary&#34;}
 
-    sigma = self.sigma
-    iflgs = self.iflgs
-
     if zdata.size != self.npoints:
         raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
     grad, iflgg = self._check_gradient(zdata, grad)
+    sigma, iflgs = self._check_sigma(sigma)
     zdata = self._shuffle_field(zdata)
 
     sflag = False
@@ -3554,6 +4132,107 @@ For simplices at the boundary, -1 denotes no neighbour.</p></div>
     return ltri.T[:nt,3:] - 1</code></pre>
 </details>
 </dd>
+<dt id="stripy.cartesian.Triangulation.second_gradient_local"><code class="name flex">
+<span>def <span class="ident">second_gradient_local</span></span>(<span>self, f, index)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the gradient / 2nd partials of an n-dimensional array.</p>
+<p>The method consists of minimizing a quadratic functional Q(G) over
+gradient vectors (in x and y directions), where Q is an approximation
+to the linearized curvature over the triangulation of a C-1 bivariate
+function <span><span class="MathJax_Preview">F(x,y)</span><script type="math/tex">F(x,y)</script></span> which interpolates the nodal values and gradients.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>f</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
+<dd>field over which to evaluate the gradient</dd>
+<dt><strong><code>nit</code></strong> :&ensp;<code>int (default: 3)</code></dt>
+<dd>number of iterations to reach a convergence tolerance,
+tol nit &gt;= 1</dd>
+<dt><strong><code>tol</code></strong></dt>
+<dd>float (default: 1e-3)
+maximum change in gradient between iterations.
+convergence is reached when this condition is met.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dfdx </code></dt>
+<dd>array of floats, shape (n,)
+derivative of f in the x direction</dd>
+<dt><code>dfdy </code></dt>
+<dd>array of floats, shape (n,)
+derivative of f in the y direction</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>For SIGMA = 0, optimal efficiency was achieved in testing with
+tol = 0, and nit = 3 or 4.</p>
+<p>The restriction of F to an arc of the triangulation is taken to be
+the Hermite interpolatory tension spline defined by the data values
+and tangential gradient components at the endpoints of the arc, and
+Q is the sum over the triangulation arcs, excluding interior
+constraint arcs, of the linearized curvatures of F along the arcs &ndash;
+the integrals over the arcs of <span><span class="MathJax_Preview"> (d^2 F / dT^2)^2</span><script type="math/tex"> (d^2 F / dT^2)^2</script></span>, where <span><span class="MathJax_Preview"> d^2 F / dT^2</span><script type="math/tex"> d^2 F / dT^2</script></span>is the second
+derivative of <span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span> with respect to distance <span><span class="MathJax_Preview">T</span><script type="math/tex">T</script></span> along the arc.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def second_gradient_local(self, f, index):
+    &#34;&#34;&#34;
+    Return the gradient / 2nd partials of an n-dimensional array.
+
+    The method consists of minimizing a quadratic functional Q(G) over
+    gradient vectors (in x and y directions), where Q is an approximation
+    to the linearized curvature over the triangulation of a C-1 bivariate
+    function \\(F(x,y)\\) which interpolates the nodal values and gradients.
+
+    Args:
+        f : array of floats, shape (n,)
+            field over which to evaluate the gradient
+        nit : int (default: 3)
+            number of iterations to reach a convergence tolerance,
+            tol nit &gt;= 1
+        tol: float (default: 1e-3)
+            maximum change in gradient between iterations.
+            convergence is reached when this condition is met.
+
+    Returns:
+        dfdx : array of floats, shape (n,)
+            derivative of f in the x direction
+        dfdy : array of floats, shape (n,)
+            derivative of f in the y direction
+
+    Notes:
+        For SIGMA = 0, optimal efficiency was achieved in testing with
+        tol = 0, and nit = 3 or 4.
+
+        The restriction of F to an arc of the triangulation is taken to be
+        the Hermite interpolatory tension spline defined by the data values
+        and tangential gradient components at the endpoints of the arc, and
+        Q is the sum over the triangulation arcs, excluding interior
+        constraint arcs, of the linearized curvatures of F along the arcs --
+        the integrals over the arcs of \\( (d^2 F / dT^2)^2\\), where \\( d^2 F / dT^2\\)is the second
+        derivative of \\(F\\) with respect to distance \\(T\\) along the arc.
+    &#34;&#34;&#34;
+
+    if f.size != self.npoints:
+        raise ValueError(&#39;f should be the same size as mesh&#39;)
+
+    f = self._shuffle_field(f)
+    index = self._shuffle_simplices(index)
+
+    ## wrapping: 
+
+    # subroutine gradc(k,ncc,lcc,n,x,y,z,list,lptr,lend,dx,dy,dxx,dxy,dyy,ier) ! in :_srfpack:srfpack.f
+    # subroutine gradg(  ncc,lcc,n,x,y,z,list,lptr,lend,iflgs,sigma,nit,dgmax,grad,ier) ! in :_srfpack:srfpack.f
+
+    dx, dy, dxx, dxy, dyy, ierr = _srfpack.gradcs(index+1, self._x, self._y, f, self.lst, self.lptr, self.lend)
+
+    if ierr &lt; 0:
+        raise ValueError(&#39;ierr={} in gradc\n{}&#39;.format(ierr, _ier_codes[ierr]))
+
+    return dx, dy, dxx, dxy, dyy</code></pre>
+</details>
+</dd>
 <dt id="stripy.cartesian.Triangulation.segment_midpoints"><code class="name flex">
 <span>def <span class="ident">segment_midpoints</span></span>(<span>self, segments=None)</span>
 </code></dt>
@@ -3645,7 +4324,7 @@ list / array provided.</p></div>
 </details>
 </dd>
 <dt id="stripy.cartesian.Triangulation.smoothing"><code class="name flex">
-<span>def <span class="ident">smoothing</span></span>(<span>self, f, w, sm, smtol, gstol)</span>
+<span>def <span class="ident">smoothing</span></span>(<span>self, f, w, sm, smtol, gstol, sigma=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Smooths a surface <code>f</code> by choosing nodal function values and gradients to
@@ -3668,6 +4347,9 @@ generally <code>n-sqrt(2n) &lt;= sm &lt;= n+sqrt(2n)</code></dd>
 <dt><strong><code>gstol</code></strong> :&ensp;<code>float</code></dt>
 <dd>tolerance for convergence.
 <code>gstol = 0.05*mean(sigma_f)**2</code> is a good rule of thumb.</dd>
+<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
+<dd>precomputed array of spline tension factors from
+<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3686,7 +4368,7 @@ of <code>f_smooth</code> in the x and y directions</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def smoothing(self, f, w, sm, smtol, gstol):
+<pre><code class="python">def smoothing(self, f, w, sm, smtol, gstol, sigma=None):
     r&#34;&#34;&#34;
     Smooths a surface `f` by choosing nodal function values and gradients to
     minimize the linearized curvature of F subject to a bound on the
@@ -3708,6 +4390,9 @@ of <code>f_smooth</code> in the x and y directions</dd>
         gstol : float
             tolerance for convergence.
             `gstol = 0.05*mean(sigma_f)**2` is a good rule of thumb.
+        sigma : array of floats, shape (6n-12)
+            precomputed array of spline tension factors from
+            `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
 
     Returns:
         f_smooth : array of floats, shape (n,)
@@ -3723,11 +4408,9 @@ of <code>f_smooth</code> in the x and y directions</dd>
         raise ValueError(&#39;f and w should be the same size as mesh&#39;)
 
     f, w = self._shuffle_field(f, w)
+    sigma, iflgs = self._check_sigma(sigma)
 
-    sigma = self.sigma
-    iflgs = self.iflgs
-
-    f_smooth, df, ierr = _srfpack.smsurf(self.x, self.y, f, self.lst, self.lptr, self.lend,\
+    f_smooth, df, ierr = _srfpack.smsurf(self._x, self._y, f, self.lst, self.lptr, self.lend,\
                                          iflgs, sigma, w, sm, smtol, gstol)
 
     import warnings
@@ -3745,7 +4428,7 @@ of <code>f_smooth</code> in the x and y directions</dd>
               F, FX, and FY are the values and partials of a linear function \
               which minimizes Q2(F), and Q1 = 0.&#34;)
 
-    return self._deshuffle_field(f_smooth), self._deshuffle_field(df[0], df[1]), ierr</code></pre>
+    return self._deshuffle_field(f_smooth),  self._deshuffle_field(df[0], df[1]), ierr</code></pre>
 </details>
 </dd>
 <dt id="stripy.cartesian.Triangulation.uniformly_refine_triangulation"><code class="name flex">
@@ -3780,75 +4463,212 @@ in the triangulation</p></div>
 <span>def <span class="ident">update_tension_factors</span></span>(<span>self, zdata, tol=0.001, grad=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Determines, for each triangulation arc, the smallest (nonnegative) tension factor <code>sigma</code>
-such that the Hermite interpolatory tension spline, defined by <code>sigma</code> and specified
-endpoint data, preserves local shape properties (monotonicity and convexity) of <code>zdata</code>.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats, shape(n,)</code></dt>
-<dd>value at each point in the triangulation
-must be the same size of the mesh</dd>
-<dt><strong><code>tol</code></strong> :&ensp;<code>float</code></dt>
-<dd>tolerance of each tension factor to its optimal value
-when nonzero finite tension is necessary.</dd>
-<dt><strong><code>grad</code></strong> :&ensp;<code>array</code> of <code>floats, shape(3,n)</code></dt>
-<dd>precomputed gradient of zdata or if not provided,
-the result of <code>self.gradient(zdata)</code>.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>sigma </code></dt>
-<dd>array of floats, shape(6n-12)
-tension factors applied to <code>zdata</code>.</dd>
-</dl></div>
+<div class="desc"><p>WARNING: this is deprecated in favour of <code>get_spline_tension_factors</code></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def update_tension_factors(self, zdata, tol=1e-3, grad=None):
     &#34;&#34;&#34;
-    Determines, for each triangulation arc, the smallest (nonnegative) tension factor `sigma`
-    such that the Hermite interpolatory tension spline, defined by `sigma` and specified
-    endpoint data, preserves local shape properties (monotonicity and convexity) of `zdata`.
+    WARNING: this is deprecated in favour of `get_spline_tension_factors`
+    &#34;&#34;&#34;
+    import warnings
+    message = &#34;Use get_spline_tension_factors and supply tension factors to interpolation/gradient arrays&#34;
+    message += &#34;\nsigma stored on this mesh object no longer does anything as of v2.0&#34;
+    warnings.warn(message, DeprecationWarning, stacklevel=2)
+    return self.get_spline_tension_factors(zdata, tol, grad)</code></pre>
+</details>
+</dd>
+<dt id="stripy.cartesian.Triangulation.voronoi_points"><code class="name flex">
+<span>def <span class="ident">voronoi_points</span></span>(<span>self, return_circumradius=False, return_triangle_area=False, return_aspect_ratio=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculates the voronoi points from the triangulation.</p>
+<p>This routine returns the circumcentre, circumradius, signed triangle area,
+and aspect ratio of each triangle.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>return_circumradius</code></strong> :&ensp;<code>bool</code></dt>
+<dd>optionally return circumradius of each circumcentre</dd>
+<dt><strong><code>return_triangle_area</code></strong> :&ensp;<code>bool</code></dt>
+<dd>optionally return triangle area</dd>
+<dt><strong><code>return_aspect_ratio</code></strong> :&ensp;<code>bool</code></dt>
+<dd>optionally return the aspect ratio of each triangle</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>xc </code></dt>
+<dd>ndarray of floats
+x coordinates of the Voronoi</dd>
+<dt><code>yc </code></dt>
+<dd>ndarray of floats
+y coordinates of the Voronoi</dd>
+<dt><code>cr </code></dt>
+<dd>ndarray of floats (optional)
+coordinates of the circumcentre (centre of the circle
+defined by three points in a triangle)</dd>
+<dt><code>sa </code></dt>
+<dd>ndarray of floats (optional)
+signed triangle area with positive value if the vertices
+are specified in anticlockwise order.</dd>
+<dt><code>ar </code></dt>
+<dd>ndarray of floats (optional)
+aspect ratio $r/c_r$ where $r$ is the radius of the
+inscribed circle in the range [0,0.5] with 0 if <code>sa=0</code>
+and <code>sa=0.5</code> if the vertices form an equilateral triangle</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def voronoi_points(self, return_circumradius=False, return_triangle_area=False, return_aspect_ratio=False):
+    &#34;&#34;&#34;
+    Calculates the voronoi points from the triangulation.
+
+    This routine returns the circumcentre, circumradius, signed triangle area,
+    and aspect ratio of each triangle.
 
     Args:
-        zdata : array of floats, shape(n,)
-            value at each point in the triangulation
-            must be the same size of the mesh
-        tol : float
-            tolerance of each tension factor to its optimal value
-            when nonzero finite tension is necessary.
-        grad : array of floats, shape(3,n)
-            precomputed gradient of zdata or if not provided,
-            the result of `self.gradient(zdata)`.
+        return_circumradius : bool
+            optionally return circumradius of each circumcentre
+        return_triangle_area : bool
+            optionally return triangle area
+        return_aspect_ratio : bool
+            optionally return the aspect ratio of each triangle
 
     Returns:
-        sigma : array of floats, shape(6n-12)
-            tension factors applied to `zdata`.
+        xc : ndarray of floats
+            x coordinates of the Voronoi
+        yc : ndarray of floats
+            y coordinates of the Voronoi
+        cr : ndarray of floats (optional)
+            coordinates of the circumcentre (centre of the circle
+            defined by three points in a triangle)
+        sa : ndarray of floats (optional)
+            signed triangle area with positive value if the vertices
+            are specified in anticlockwise order.
+        ar : ndarray of floats (optional)
+            aspect ratio $r/c_r$ where $r$ is the radius of the
+            inscribed circle in the range [0,0.5] with 0 if `sa=0`
+            and `sa=0.5` if the vertices form an equilateral triangle
     &#34;&#34;&#34;
-    sigma = self.sigma
+    simplices = self.simplices
 
-    if zdata.size != self.npoints:
-        raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
+    # get x,y coordinates of each triangle
+    xt = self.x[simplices]
+    yt = self.y[simplices]
 
-    grad, iflgg = self._check_gradient(zdata, grad)
-    zdata = self._shuffle_field(zdata)
+    # get coordinate vectors
+    u = np.empty_like(xt)
+    v = np.empty_like(yt)
+    u[:,0] = xt[:,2] - xt[:,1]
+    u[:,1] = xt[:,0] - xt[:,2]
+    u[:,2] = xt[:,1] - xt[:,0]
+    v[:,0] = yt[:,2] - yt[:,1]
+    v[:,1] = yt[:,0] - yt[:,2]
+    v[:,2] = yt[:,1] - yt[:,0]
 
+    # signed area is triangle area
+    sa = 0.5*(u[:,0]*v[:,1] - u[:,1]*v[:,0])
 
-    sigma, dsmax, ierr = _srfpack.getsig(self._x, self._y, zdata,\
-                                         self.lst, self.lptr, self.lend,\
-                                         grad, tol)
+    # squared distance from the origin to the vertex k
+    ds = xt**2 + yt**2
 
-    if ierr == -1:
-        import warnings
-        warnings.warn(&#34;sigma is not altered.&#34;)
-    elif ierr == -2:
-        raise ValueError(&#34;Duplicate nodes were encountered.&#34;)
+    # compute factors of xc and yc
+    fx = -(ds*v).sum(axis=1)
+    fy =  (ds*u).sum(axis=1)
 
-    self.sigma = sigma
-    self.iflgs = int(sigma.any())
+    xc = fx / (4.0*sa)
+    yc = fy / (4.0*sa)
 
-    return self.sigma</code></pre>
+    out = [xc, yc]
+
+    if return_circumradius:
+        cr = np.hypot(xc - xt[:,0], yc - yt[:,0])
+        out.append( cr )
+
+    if return_triangle_area:
+        out.append( sa )
+
+    if return_aspect_ratio:
+        # compute square edge lengths and aspect ratio
+        ds = u**2 + v**2
+        ar = 2.0*np.abs(sa)/(np.sqrt(ds).sum(axis=1)*cr)
+        ar[sa==0.0] = 0.0
+        out.append( ar )
+
+    return tuple(out)</code></pre>
+</details>
+</dd>
+<dt id="stripy.cartesian.Triangulation.voronoi_points_and_regions"><code class="name flex">
+<span>def <span class="ident">voronoi_points_and_regions</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculates the voronoi points from the triangulation
+and constructs the region enclosed by them.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>xc </code></dt>
+<dd>ndarray of floats
+x coordinates of the Voronoi</dd>
+<dt><code>yc </code></dt>
+<dd>ndarray of floats
+y coordinates of the Voronoi</dd>
+<dt><code>regions </code></dt>
+<dd>list of ints
+a nested list of all Voronoi indices that
+enclose a region.</dd>
+</dl>
+<h2 id="notes">Notes</h2>
+<p>Inifinite regions are not indicated.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def voronoi_points_and_regions(self):
+    &#34;&#34;&#34;
+    Calculates the voronoi points from the triangulation
+    and constructs the region enclosed by them.
+
+    Returns:
+        xc : ndarray of floats
+            x coordinates of the Voronoi
+        yc : ndarray of floats
+            y coordinates of the Voronoi
+        regions : list of ints
+            a nested list of all Voronoi indices that
+            enclose a region.
+
+    Notes:
+        Inifinite regions are not indicated.
+    &#34;&#34;&#34;
+
+    vx, vy = self.voronoi_points()
+
+    # store these to avoid any shuffle/reshuffle later
+    simplices = self.simplices
+    x = self.x
+    y = self.y
+
+    # empty placeholder array for vertices
+    voronoi_regions = [[] for i in range(0, self.npoints)]
+
+    # create regions for each point in the Delaunay triangulation
+    for i, (t0,t1,t2) in enumerate(simplices):
+        voronoi_regions[t0].append(i)
+        voronoi_regions[t1].append(i)
+        voronoi_regions[t2].append(i)
+
+    # sort the vertices around each site
+    # there is probably a more efficient way using the neighbour adjacency info
+    for i in range(0, self.npoints):
+        region = np.array(voronoi_regions[i])
+        dx = vx[region] - x[i]
+        dy = vy[region] - y[i]
+        idx = np.arctan2(dx, dy).argsort()
+        voronoi_regions[i] = region[idx]
+
+    return vx, vy, voronoi_regions</code></pre>
 </details>
 </dd>
 </dl>
@@ -3887,6 +4707,7 @@ tension factors applied to <code>zdata</code>.</dd>
 <li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles" href="#stripy.cartesian.Triangulation.edge_refine_triangulation_by_triangles">edge_refine_triangulation_by_triangles</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices" href="#stripy.cartesian.Triangulation.edge_refine_triangulation_by_vertices">edge_refine_triangulation_by_vertices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.face_midpoints" href="#stripy.cartesian.Triangulation.face_midpoints">face_midpoints</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.get_spline_tension_factors" href="#stripy.cartesian.Triangulation.get_spline_tension_factors">get_spline_tension_factors</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.gradient" href="#stripy.cartesian.Triangulation.gradient">gradient</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.gradient_local" href="#stripy.cartesian.Triangulation.gradient_local">gradient_local</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.identify_segments" href="#stripy.cartesian.Triangulation.identify_segments">identify_segments</a></code></li>
@@ -3904,6 +4725,7 @@ tension factors applied to <code>zdata</code>.</dd>
 <li><code><a title="stripy.cartesian.Triangulation.neighbour_and_arc_simplices" href="#stripy.cartesian.Triangulation.neighbour_and_arc_simplices">neighbour_and_arc_simplices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.neighbour_simplices" href="#stripy.cartesian.Triangulation.neighbour_simplices">neighbour_simplices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.points" href="#stripy.cartesian.Triangulation.points">points</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.second_gradient_local" href="#stripy.cartesian.Triangulation.second_gradient_local">second_gradient_local</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.segment_midpoints" href="#stripy.cartesian.Triangulation.segment_midpoints">segment_midpoints</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.segment_midpoints_by_vertices" href="#stripy.cartesian.Triangulation.segment_midpoints_by_vertices">segment_midpoints_by_vertices</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.segment_tripoints" href="#stripy.cartesian.Triangulation.segment_tripoints">segment_tripoints</a></code></li>
@@ -3911,6 +4733,8 @@ tension factors applied to <code>zdata</code>.</dd>
 <li><code><a title="stripy.cartesian.Triangulation.smoothing" href="#stripy.cartesian.Triangulation.smoothing">smoothing</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.uniformly_refine_triangulation" href="#stripy.cartesian.Triangulation.uniformly_refine_triangulation">uniformly_refine_triangulation</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.update_tension_factors" href="#stripy.cartesian.Triangulation.update_tension_factors">update_tension_factors</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.voronoi_points" href="#stripy.cartesian.Triangulation.voronoi_points">voronoi_points</a></code></li>
+<li><code><a title="stripy.cartesian.Triangulation.voronoi_points_and_regions" href="#stripy.cartesian.Triangulation.voronoi_points_and_regions">voronoi_points_and_regions</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.x" href="#stripy.cartesian.Triangulation.x">x</a></code></li>
 <li><code><a title="stripy.cartesian.Triangulation.y" href="#stripy.cartesian.Triangulation.y">y</a></code></li>
 </ul>
