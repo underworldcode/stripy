@@ -35,7 +35,7 @@ if "Windows" in platform.system():
     link_args = ["-static"]
 
 # in development set version to none and ...
-PYPI_VERSION = "2.0"
+PYPI_VERSION = "2.0.2"
 
 # Return the git revision as a string (from numpy)
 
