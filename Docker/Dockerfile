@@ -2,11 +2,12 @@
 #  Short docker file to distribute some notebooks
 #################################################
 
-ARG FROMIMG_ARG=underworldcode/py3-lavavu-notebook-bundle:0.9.4-debian
+ARG FROMIMG_ARG=underworldcode/py3-lavavu-notebook-bundle:latest
 FROM ${FROMIMG_ARG}
 
-##################################################
+################################################## 
 # Non standard as the files come from the packages
+##################################################
 
 USER root
 
@@ -14,6 +15,12 @@ RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
     gettext && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m pip install --no-cache-dir --upgrade \
+    jupyterhub \
+    pytest \
+    imageio \
+    litho1pt0 
 
 ### Stripy - Notebooks
 
@@ -25,14 +32,7 @@ RUN   cd $MODULE_DIR && python3 -m pip install --no-cache-dir --no-deps --upgrad
 # This should overwrite any existing Notebooks directory
 
 RUN ipython3 -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
-
-
-RUN python3 -m pip install --no-cache-dir --upgrade \
-    jupyterhub \
-    pytest \
-    imageio \
-    litho1pt0 \
-    lavavu==1.4.2
+RUN ipython3 -c 'import litho1pt0; litho1pt0.documentation.install_documentation(path="Notebooks")'
 
 # This file is too big to bundle with the pip installation
 
