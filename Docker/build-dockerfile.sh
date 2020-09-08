@@ -3,7 +3,7 @@
 # Don't forget to increment the version number if you want to keep the old stuff
 
 FROM_IMG="underworldcode/py3-lavavu-notebook-bundle:latest"
-IMAGENAME=underworldcode/stripy:0.7
+IMAGENAME=underworldcode/stripy:2.0
 PROJ_NAME=stripy
 NB_PORT=8888
 NB_PASSWD=""
