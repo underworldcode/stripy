@@ -20,8 +20,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade \
     jupyterhub \
     pytest \
     imageio \
-    litho1pt0 \
-    lavavu==1.4.2
+    litho1pt0 
 
 ### Stripy - Notebooks
 
@@ -33,6 +32,7 @@ RUN   cd $MODULE_DIR && python3 -m pip install --no-cache-dir --no-deps --upgrad
 # This should overwrite any existing Notebooks directory
 
 RUN ipython3 -c 'import stripy; stripy.documentation.install_documentation(path="Notebooks")'
+RUN ipython3 -c 'import litho1pt0; litho1pt0.documentation.install_documentation(path="Notebooks")'
 
 # This file is too big to bundle with the pip installation
 

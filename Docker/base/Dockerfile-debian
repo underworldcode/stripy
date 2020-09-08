@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:stable-20200803-slim
 MAINTAINER https://github.com/underworldcode/stripy
 ENV IMAGENAME=underworldcode/py3-lavavu-notebook-bundle
 ENV PROJ_NAME=py3-lavavu-notebook-bundle
@@ -67,12 +67,13 @@ RUN python3 -m pip install --no-cache-dir setuptools wheel && \
     pandas \
     stripy \
     litho1pt0 \
-    lavavu==1.2.52 && \
+    lavavu && \
     USE_SETUPCFG=0 \
     HDF5_INCDIR=/usr/include/hdf5/serial \
     HDF5_LIBDIR=/usr/lib/x86_64-linux-gnu/hdf5/serial \
     python3 -m pip install --no-cache-dir git+https://github.com/Unidata/netcdf4-python
 
+# previously lavavu==1.2.52
 
 # Jovyan user / group
 
