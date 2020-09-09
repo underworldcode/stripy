@@ -6,10 +6,8 @@ package:
   version: "{{ version }}"
 
 source:
-  path: .. 
-  
-  # url: "https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz"
-  # sha256: 312d1ecefc8164f3b6bdf709408ed6ef794b786cdd524bc5d67f04037b0336c8
+    - git_url: https://github.com/underworldcode/stripy.git
+    - git_rev: v1.1.2b
 
 build:
   number: 0
@@ -24,7 +22,7 @@ requirements:
     - scipy>=1.4.1
     - {{ compiler('fortran')}}
     - {{ compiler('c')}}
-    
+
   run:
     - python
     - numpy==1.18.1
@@ -44,3 +42,4 @@ extra:
   recipe-maintainers:
     - lmoresi
     - brmather
+    - rbeucher

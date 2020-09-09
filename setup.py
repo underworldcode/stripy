@@ -15,7 +15,8 @@
 # (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
 
-from setuptools import setup, find_packages
+from setuptools import dist, setup, find_packages
+dist.Distribution().fetch_build_eggs(['numpy>=1.16'])
 from numpy.distutils.core import setup, Extension
 try: 
     from distutils.command import bdist_conda
@@ -34,7 +35,7 @@ if "Windows" in platform.system():
     link_args = ["-static"]
 
 # in development set version to none and ...
-PYPI_VERSION = "1.3"
+PYPI_VERSION = "2.0.2"
 
 # Return the git revision as a string (from numpy)
 

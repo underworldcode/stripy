@@ -21,7 +21,9 @@ RUN python3 -m pip install --no-cache-dir --upgrade \
     pytest \
     imageio 
 
-# Get the most recent notebooks if possible.
+# Get the most recent litho1pt0 - there is a circular dependency here 
+# 
+
 RUN python3 -m pip install --no-cache-dir --upgrade --force-reinstall git+https://github.com/underworldcode/litho1pt0.git@master
 
 ### Stripy - Notebooks
@@ -29,7 +31,6 @@ RUN python3 -m pip install --no-cache-dir --upgrade --force-reinstall git+https:
 ENV MODULE_DIR="stripy-src"
 ADD --chown=jovyan:jovyan . / stripy-src/
 RUN   cd $MODULE_DIR && python3 -m pip install --no-cache-dir --no-deps --upgrade .
-
 
 # This should overwrite any existing Notebooks directory
 
