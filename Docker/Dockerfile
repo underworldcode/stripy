@@ -19,8 +19,10 @@ RUN apt-get update -qq && \
 RUN python3 -m pip install --no-cache-dir --upgrade \
     jupyterhub \
     pytest \
-    imageio \
-    litho1pt0 
+    imageio 
+
+# Get the most recent notebooks if possible.
+RUN python3 -m pip install --no-cache-dir --upgrade --force-reinstall git+https://github.com/underworldcode/litho1pt0.git@master
 
 ### Stripy - Notebooks
 
