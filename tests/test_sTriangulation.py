@@ -187,15 +187,13 @@ def test_cubic_interpolation_grid(permute):
     sigma = mesh.get_spline_tension_factors(Z)
     Zi_cubic_grid_S = mesh.interpolate_to_grid(ilons, ilats, Z, sigma=sigma)
 
-    if np.abs(Zi_cubic.reshape(shape) - Zi_cubic_grid).sum() < \
-       np.abs(Zi_cubic.reshape(shape) - Zi_cubic_grid_S).sum():
+    err_msg = "Interpolate to grid - cubic tensioned splines"
+    np.testing.assert_allclose(Zi_cubic.reshape(shape), Zi_cubic_grid, atol=0.1, err_msg=err_msg)
+    np.testing.assert_allclose(Zi_cubic_grid_S, Zi_cubic_grid, atol=0.5)
+    assert (Zi_cubic_grid_S != Zi_cubic_grid).any(), err_msg
 
-       # unstructured and grid interpolation works
-       # and applying tension alters the result
-
-       print("PASS! (Interpolate to grid - cubic tensioned splines")
-    else:
-        assert False, "FAIL! (Interpolate to grid - cubic tensioned splines)"
+    # unstructured and grid interpolation works
+    # and applying tension alters the result
 
 
 @pytest.mark.parametrize("permute", [False, True])

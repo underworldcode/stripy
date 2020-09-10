@@ -168,15 +168,10 @@ def test_cubic_interpolation_grid(permute):
     sigma = mesh.get_spline_tension_factors(Z)
     Zi_cubic_grid_S = mesh.interpolate_to_grid(xi, yi, Z, sigma=sigma)
 
-    if np.abs(Zi_cubic.reshape(shape) - Zi_cubic_grid).sum() < \
-       np.abs(Zi_cubic.reshape(shape) - Zi_cubic_grid_S).sum():
-
-       # unstructured and grid interpolation works
-       # and applying tension alters the result
-
-       print("PASS! (Interpolate to grid - cubic tensioned splines")
-    else:
-        assert False, "FAIL! (Interpolate to grid - cubic tensioned splines)"
+    err_msg = "Interpolate to grid - cubic tensioned splines"
+    np.testing.assert_allclose(Zi_cubic.reshape(shape), Zi_cubic_grid, atol=0.1, err_msg=err_msg)
+    np.testing.assert_allclose(Zi_cubic_grid_S, Zi_cubic_grid, atol=0.5)
+    assert (Zi_cubic_grid_S != Zi_cubic_grid).any(), err_msg
 
 
 @pytest.mark.parametrize("permute", [False, True])
@@ -226,11 +221,15 @@ def test_derivative(permute):
 @pytest.mark.parametrize("permute", [False, True])
 def test_smoothing(permute):
 
+    # we need more points for cubic interpolation
     coords = np.array([[0.0, 0.0], \
                        [0.0, 1.0], \
                        [1.0, 0.0], \
                        [1.0, 1.0], \
-                       [0.5, 0.5]])
+                       [0.1, 0.1], \
+                       [0.1, 0.9], \
+                       [0.9, 0.1], \
+                       [0.9, 0.9]])
 
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y, permute=permute)
