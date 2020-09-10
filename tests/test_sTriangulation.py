@@ -184,12 +184,12 @@ def test_cubic_interpolation_grid(permute):
     Zi_cubic, zierr = mesh.interpolate_cubic(lonq.ravel(), latq.ravel(), Z)
     Zi_cubic_grid = mesh.interpolate_to_grid(ilons, ilats, Z)
 
-    sigma = mesh.get_spline_tension_factors(Z)
+    sigma = mesh.get_spline_tension_factors(Z, tol=1e-5)
     Zi_cubic_grid_S = mesh.interpolate_to_grid(ilons, ilats, Z, sigma=sigma)
 
     err_msg = "Interpolate to grid - cubic tensioned splines"
     np.testing.assert_allclose(Zi_cubic.reshape(shape), Zi_cubic_grid, atol=0.1, err_msg=err_msg)
-    np.testing.assert_allclose(Zi_cubic_grid_S, Zi_cubic_grid, atol=0.5)
+    np.testing.assert_allclose(Zi_cubic_grid_S, Zi_cubic_grid, atol=0.5, err_msg=err_msg)
     assert (Zi_cubic_grid_S != Zi_cubic_grid).any(), err_msg
 
     # unstructured and grid interpolation works

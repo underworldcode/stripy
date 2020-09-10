@@ -157,20 +157,20 @@ def test_cubic_interpolation_grid(permute):
     Z = mesh.x**2
 
     npts = 7
-    xi = np.linspace(0.0, 1.0, npts)
-    yi = np.linspace(0.0, 1.0, npts)
+    xi = np.linspace(-0.1, 1.1, npts)
+    yi = np.linspace(-0.1, 1.1, npts)
     xq, yq = np.meshgrid(xi,yi)
     shape = (npts, npts)
 
     Zi_cubic,  ierr = mesh.interpolate_cubic(xq.ravel(), yq.ravel(), Z)
     Zi_cubic_grid = mesh.interpolate_to_grid(xi, yi, Z)
 
-    sigma = mesh.get_spline_tension_factors(Z)
+    sigma = mesh.get_spline_tension_factors(Z, tol=1e-5)
     Zi_cubic_grid_S = mesh.interpolate_to_grid(xi, yi, Z, sigma=sigma)
 
     err_msg = "Interpolate to grid - cubic tensioned splines"
     np.testing.assert_allclose(Zi_cubic.reshape(shape), Zi_cubic_grid, atol=0.1, err_msg=err_msg)
-    np.testing.assert_allclose(Zi_cubic_grid_S, Zi_cubic_grid, atol=0.5)
+    np.testing.assert_allclose(Zi_cubic_grid_S, Zi_cubic_grid, atol=0.5, err_msg=err_msg)
     assert (Zi_cubic_grid_S != Zi_cubic_grid).any(), err_msg
 
 

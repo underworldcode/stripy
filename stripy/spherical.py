@@ -780,9 +780,15 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                 must be the same size of the mesh
             order : int (default=1)
                 order of the interpolatory function used
-                    0 = nearest-neighbour
-                    1 = linear
-                    3 = cubic
+
+                - `order=0` = nearest-neighbour
+                - `order=1` = linear
+                - `order=3` = cubic
+
+            sigma : array of floats, shape (6n-12)
+                precomputed array of spline tension factors from
+                `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
+                (only used in cubic interpolation)
 
         Returns:
             zi : float / array of floats, shape (l,)
