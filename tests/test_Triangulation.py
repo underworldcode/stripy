@@ -2,7 +2,8 @@ import pytest
 import stripy
 import numpy as np
 
-def test_nearest_nd_interpolation():
+@pytest.mark.parametrize("permute", [False, True])
+def test_nearest_nd_interpolation(permute):
 
     coords = np.array([[0.0, 0.0], \
                        [0.0, 1.0], \
@@ -10,7 +11,7 @@ def test_nearest_nd_interpolation():
                        [1.0, 1.0]])
 
     x, y = coords[:,0], coords[:,1]
-    mesh = stripy.Triangulation(x, y)
+    mesh = stripy.Triangulation(x, y, permute=permute)
 
     Z = np.linspace(0.0, 10.0, mesh.npoints)
 
@@ -25,7 +26,8 @@ def test_nearest_nd_interpolation():
         assert False, "FAIL! (Interpolation - nearest neighbour)"
 
 
-def test_linear_interpolation():
+@pytest.mark.parametrize("permute", [False, True])
+def test_linear_interpolation(permute):
 
     coords = np.array([[0.0, 0.0], \
                        [0.0, 1.0], \
@@ -34,7 +36,7 @@ def test_linear_interpolation():
                        [0.5, 0.5]])
 
     x, y = coords[:,0], coords[:,1]
-    mesh = stripy.Triangulation(x, y)
+    mesh = stripy.Triangulation(x, y, permute=permute)
 
     Z = mesh.x
 
@@ -57,7 +59,8 @@ def test_linear_interpolation():
         assert False, "FAIL! (Interpolation - linear)"
 
 
-def test_cubic_interpolation():
+@pytest.mark.parametrize("permute", [False, True])
+def test_cubic_interpolation(permute):
 
     # we need more points for cubic interpolation
     coords = np.array([[0.0, 0.0], \
@@ -70,7 +73,7 @@ def test_cubic_interpolation():
                        [0.9, 0.9]])
 
     x, y = coords[:,0], coords[:,1]
-    mesh = stripy.Triangulation(x, y)
+    mesh = stripy.Triangulation(x, y, permute=permute)
 
     Z = mesh.x**2
 
@@ -91,7 +94,8 @@ def test_cubic_interpolation():
         assert False, "FAIL! (Interpolation - cubic)"
 
 
-def test_cubic_interpolation_tension():
+@pytest.mark.parametrize("permute", [False, True])
+def test_cubic_interpolation_tension(permute):
 
     # we need more points for cubic interpolation
     coords = np.array([[0.0, 0.0], \
@@ -104,7 +108,7 @@ def test_cubic_interpolation_tension():
                        [0.9, 0.9]])
 
     x, y = coords[:,0], coords[:,1]
-    mesh = stripy.Triangulation(x, y)
+    mesh = stripy.Triangulation(x, y, permute=permute)
 
     Z = mesh.x**2
 
@@ -134,7 +138,8 @@ def test_cubic_interpolation_tension():
         assert False, "FAIL! (Interpolation - cubic tensioned splines)"
 
 
-def test_cubic_interpolation_grid():
+@pytest.mark.parametrize("permute", [False, True])
+def test_cubic_interpolation_grid(permute):
 
     # we need more points for cubic interpolation
     coords = np.array([[0.0, 0.0], \
@@ -147,7 +152,7 @@ def test_cubic_interpolation_grid():
                        [0.9, 0.9]])
 
     x, y = coords[:,0], coords[:,1]
-    mesh = stripy.Triangulation(x, y)
+    mesh = stripy.Triangulation(x, y, permute=permute)
 
     Z = mesh.x**2
 
@@ -174,7 +179,8 @@ def test_cubic_interpolation_grid():
         assert False, "FAIL! (Interpolate to grid - cubic tensioned splines)"
 
 
-def test_derivative():
+@pytest.mark.parametrize("permute", [False, True])
+def test_derivative(permute):
 
     p0 = 0.0
     p1 = 1.0
@@ -195,7 +201,7 @@ def test_derivative():
                        [p0 ,  p0]])
 
     x, y = coords[:,0], coords[:,1]
-    mesh = stripy.Triangulation(x, y)
+    mesh = stripy.Triangulation(x, y, permute=permute)
 
     # create a soup bowl
     Z = mesh.x**2 + mesh.y**2
@@ -217,7 +223,8 @@ def test_derivative():
         assert False, "FAIL! (Derivatives)"
 
 
-def test_smoothing():
+@pytest.mark.parametrize("permute", [False, True])
+def test_smoothing(permute):
 
     coords = np.array([[0.0, 0.0], \
                        [0.0, 1.0], \
@@ -226,7 +233,7 @@ def test_smoothing():
                        [0.5, 0.5]])
 
     x, y = coords[:,0], coords[:,1]
-    mesh = stripy.Triangulation(x, y)
+    mesh = stripy.Triangulation(x, y, permute=permute)
 
     Z = np.ones_like(x)
     Z[-1] = 0.0
