@@ -71,6 +71,11 @@ this_directory = path.abspath(path.dirname(__file__))
 with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+# What works on github does not work elsewhere
+long_description = long_description.replace('(stripy/Notebooks','(https://github.com/underworldcode/stripy/blob/master/stripy/Notebooks')
+
+print(long_description)
+
 # interface for Renka's algorithm 772 fortran code
 ext1 = Extension(name    = 'stripy._stripack',
                  sources = ['src/stripack.pyf','src/stripack.f90'],

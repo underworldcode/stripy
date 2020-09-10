@@ -79,11 +79,11 @@ package itself:
 The first three notebooks are an introduction to `litho1pt0` that does not explicitly mention `stripy` but
 the next two worked examples show how to search, interpolate and plot with the help of `stripy` routines.
 
-  - [Ex1-Litho1Layers.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Ex1-Litho1Layers.ipynb)
-  - [Ex2-Litho1Properties.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Ex2-Litho1Properties.ipynb)
-  - [Ex3-CrustalRegionalisation.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Ex3-CrustalRegionalisation.ipynb)
-  - [WorkEx1-CratonAverageProperties.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/WorkEx1-CratonAverageProperties.ipynb)
-  - [WorkEx2-OceanDepthAge.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/WorkEx2-OceanDepthAge.ipynb)
+  - [Ex1-Litho1Layers.ipynb](https://github.com/underworldcode/litho1pt0/blob/master/litho1pt0/Notebooks/litho1pt0/Ex1-Litho1Layers.ipynb)
+  - [Ex2-Litho1Properties.ipynb](https://github.com/underworldcode/litho1pt0/blob/master/litho1pt0/Notebooks/litho1pt0/Ex2-Litho1Properties.ipynb)
+  - [Ex3-CrustalRegionalisation.ipynb](https://github.com/underworldcode/litho1pt0/blob/master/litho1pt0/Notebooks/litho1pt0/Ex3-CrustalRegionalisation.ipynb)
+  - [WorkEx1-CratonAverageProperties.ipynb](https://github.com/underworldcode/litho1pt0/blob/master/litho1pt0/Notebooks/litho1pt0/WorkEx1-CratonAverageProperties.ipynb)
+  - [WorkEx2-OceanDepthAge.ipynb](https://github.com/underworldcode/litho1pt0/blob/master/litho1pt0/Notebooks/litho1pt0/WorkEx2-OceanDepthAge.ipynb)
 
 
 ## Installation
