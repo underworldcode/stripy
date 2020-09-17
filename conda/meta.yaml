@@ -7,7 +7,7 @@ package:
 
 source:
     - git_url: https://github.com/underworldcode/stripy.git
-    - git_rev: v1.1.2b
+    - git_rev: v2.0.2
 
 build:
   number: 0
@@ -25,8 +25,8 @@ requirements:
 
   run:
     - python
-    - numpy==1.18.1
-    - scipy >=1.4.1
+    - numpy >= 1.18.1
+    - scipy >= 1.4.1
 
 
 about:
