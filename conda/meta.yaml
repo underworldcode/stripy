@@ -1,5 +1,5 @@
 {% set name = "stripy" %}
-{% set version = "2.0.2" %}
+{% set version = "2.0.3" %}
 
 package:
   name: "{{ name|lower }}"
@@ -18,15 +18,15 @@ requirements:
   host:
     - python
     - pip
-    - numpy>=1.18.1
-    - scipy>=1.4.1
+    - numpy>=1.16.0
+    - scipy>=1.0.0
     - {{ compiler('fortran')}}
     - {{ compiler('c')}}
 
   run:
     - python
-    - numpy >= 1.18.1
-    - scipy >= 1.4.1
+    - numpy >= 1.16.0
+    - scipy >= 1.0.0
 
 
 about:

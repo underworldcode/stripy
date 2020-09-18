@@ -16,7 +16,7 @@
 
 
 from setuptools import dist, setup, find_packages
-dist.Distribution().fetch_build_eggs(['numpy>=1.16'])
+dist.Distribution().fetch_build_eggs(['numpy>=1.16.0'])
 from numpy.distutils.core import setup, Extension
 try: 
     from distutils.command import bdist_conda
