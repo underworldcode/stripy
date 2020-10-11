@@ -5346,7 +5346,7 @@ subroutine trmesh ( n, x, y, z, list, lptr, lend, ier )
   if ( nn < 3 ) then
     ier = -1
     write ( *, '(a)' ) ' '
-    write ( *, '(a)' ) 'TRMESH - Fatal error!'
+    write ( *, '(a)' ) 'sTRMESH - Fatal error!'
     write ( *, '(a)' ) '  N < 3.'
     stop
   end if
@@ -5405,7 +5405,7 @@ subroutine trmesh ( n, x, y, z, list, lptr, lend, ier )
 
     ier = -2
     write ( *, '(a)' ) ' '
-    write ( *, '(a)' ) 'TRMESH - Fatal error!'
+    write ( *, '(a)' ) 'sTRMESH - Fatal error!'
     write ( *, '(a)' ) '  The first 3 nodes are collinear.'
     write ( *, '(a)' ) '  Try reordering the data.'
     return
@@ -5484,7 +5484,7 @@ subroutine trmesh ( n, x, y, z, list, lptr, lend, ier )
 
     if ( ier /= 0 ) then
       write ( *, '(a)' ) ' '
-      write ( *, '(a)' ) 'TRMESH - Fatal error!'
+      write ( *, '(a)' ) 'sTRMESH - Fatal error!'
       write ( *, '(a,i8)' ) '  ADDNOD returned error code IER = ', ier
       return
     end if
