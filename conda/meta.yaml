@@ -29,9 +29,15 @@ requirements:
     - scipy >= 1.0.0
 
 
+test:
+  imports:
+    - stripy
+
+
+
 about:
   home: "https://github.com/underworldcode/stripy"
-  license: UNKNOWN
+  license: LGPL
   license_family: OTHER
   license_file: 
   summary: "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere"
