@@ -21,9 +21,14 @@ _Sample images created with `stripy` illustrating the meshing capability: ocean 
 
 #### Binder
 
-Launch the demonstration at [links.underworldcode.org/stripy-live (mybinder.org)](http://links.underworldcode.org/stripy-live)
+Launch the demonstration <!-- at [links.underworldcode.org/stripy-live (mybinder.org)](http://links.underworldcode.org/stripy-live) -->
 
 [![Binder](https://mybinder.org/badge_logo.svg)](http://links.underworldcode.org/stripy-live)
+
+(This is the development branch)
+
+[![Binder-dev](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/underworldcode/stripy/dev?filepath=Notebooks%2F0-StartHere.ipynb)
+
 
 #### Citation
 

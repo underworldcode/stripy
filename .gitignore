@@ -4,6 +4,7 @@ __pycache__
 *.so*
 *checkpoint.ipynb
 .ipynb_checkpoints
+.pytest_cache
 *.png
 
 .coverage
@@ -15,6 +16,8 @@ dist/*
 
 litho1pt0-src/build/*
 litho1pt0-src/dist/*
+/build/
+/fixed-wheels/
 
 *.egg
 .eggs

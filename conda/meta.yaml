@@ -1,5 +1,5 @@
 {% set name = "stripy" %}
-{% set version = "1.2.3" %}
+{% set version = "2.0.3" %}
 
 package:
   name: "{{ name|lower }}"
@@ -7,7 +7,7 @@ package:
 
 source:
     - git_url: https://github.com/underworldcode/stripy.git
-    - git_rev: v1.1.2b
+    - git_rev: v2.0.2
 
 build:
   number: 0
@@ -18,20 +18,26 @@ requirements:
   host:
     - python
     - pip
-    - numpy>=1.18.1
-    - scipy>=1.4.1
+    - numpy>=1.16.0
+    - scipy>=1.0.0
     - {{ compiler('fortran')}}
     - {{ compiler('c')}}
 
   run:
     - python
-    - numpy==1.18.1
-    - scipy >=1.4.1
+    - numpy >= 1.16.0
+    - scipy >= 1.0.0
+
+
+test:
+  imports:
+    - stripy
+
 
 
 about:
   home: "https://github.com/underworldcode/stripy"
-  license: UNKNOWN
+  license: LGPL
   license_family: OTHER
   license_file: 
   summary: "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere"
