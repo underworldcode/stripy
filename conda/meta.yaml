@@ -28,12 +28,16 @@ requirements:
     - scipy >=1.0.0
 
 test:
-  imports:
-    - stripy
-    - stripy.spherical_meshes
-    - stripy.cartesian_meshes
-    - stripy.sTriangulation
-    - stripy.Triangulation
+  requires:
+    - pytest 
+
+  source_files:
+      - tests
+
+  commands:
+    - pwd
+    - pytest
+
 
 about:
   home: "https://github.com/underworldcode/stripy"

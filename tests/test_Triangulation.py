@@ -5,10 +5,10 @@ import numpy as np
 @pytest.mark.parametrize("permute", [False, True])
 def test_nearest_nd_interpolation(permute):
 
-    coords = np.array([[0.0, 0.0], \
-                       [0.0, 1.0], \
-                       [1.0, 0.0], \
-                       [1.0, 1.0]])
+    coords = np.array([[0.0, 0.0+np.random.random()*1.0e-16], 
+                       [0.0, 1.0+np.random.random()*1.0e-16], 
+                       [1.0, 0.0+np.random.random()*1.0e-16], 
+                       [1.0, 1.0+np.random.random()*1.0e-16]])
 
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y, permute=permute)
@@ -29,11 +29,11 @@ def test_nearest_nd_interpolation(permute):
 @pytest.mark.parametrize("permute", [False, True])
 def test_linear_interpolation(permute):
 
-    coords = np.array([[0.0, 0.0], \
-                       [0.0, 1.0], \
-                       [1.0, 0.0], \
-                       [1.0, 1.0], \
-                       [0.5, 0.5]])
+    coords = np.array([[0.0, 0.0+np.random.random()*1.0e-16], 
+                       [0.0, 1.0+np.random.random()*1.0e-16], 
+                       [1.0, 0.0+np.random.random()*1.0e-16], 
+                       [1.0, 1.0+np.random.random()*1.0e-16], 
+                       [0.5, 0.5+np.random.random()*1.0e-16]])
 
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y, permute=permute)
@@ -63,14 +63,14 @@ def test_linear_interpolation(permute):
 def test_cubic_interpolation(permute):
 
     # we need more points for cubic interpolation
-    coords = np.array([[0.0, 0.0], \
-                       [0.0, 1.0], \
-                       [1.0, 0.0], \
-                       [1.0, 1.0], \
-                       [0.1, 0.1], \
-                       [0.1, 0.9], \
-                       [0.9, 0.1], \
-                       [0.9, 0.9]])
+    coords = np.array([[0.0, 0.0+np.random.random()*1.0e-16], 
+                       [0.0, 1.0+np.random.random()*1.0e-16], 
+                       [1.0, 0.0+np.random.random()*1.0e-16], 
+                       [1.0, 1.0+np.random.random()*1.0e-16], 
+                       [0.1, 0.1+np.random.random()*1.0e-16], 
+                       [0.1, 0.9+np.random.random()*1.0e-16], 
+                       [0.9, 0.1+np.random.random()*1.0e-16], 
+                       [0.9, 0.9+np.random.random()*1.0e-16]])
 
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y, permute=permute)
@@ -98,16 +98,18 @@ def test_cubic_interpolation(permute):
 def test_cubic_interpolation_tension(permute):
 
     # we need more points for cubic interpolation
-    coords = np.array([[0.0, 0.0], \
-                       [0.0, 1.0], \
-                       [1.0, 0.0], \
-                       [1.0, 1.0], \
-                       [0.1, 0.1], \
-                       [0.1, 0.9], \
-                       [0.9, 0.1], \
-                       [0.9, 0.9]])
+    coords = np.array([[0.0, 0.0+np.random.random()*1.0e-16], 
+                       [0.0, 1.0+np.random.random()*1.0e-16], 
+                       [1.0, 0.0+np.random.random()*1.0e-16], 
+                       [1.0, 1.0+np.random.random()*1.0e-16], 
+                       [0.1, 0.1+np.random.random()*1.0e-16], 
+                       [0.1, 0.9+np.random.random()*1.0e-16], 
+                       [0.9, 0.1+np.random.random()*1.0e-16], 
+                       [0.9, 0.9+np.random.random()*1.0e-16]])
 
     x, y = coords[:,0], coords[:,1]
+
+
     mesh = stripy.Triangulation(x, y, permute=permute)
 
     Z = mesh.x**2
@@ -138,18 +140,18 @@ def test_cubic_interpolation_tension(permute):
         assert False, "FAIL! (Interpolation - cubic tensioned splines)"
 
 
-@pytest.mark.parametrize("permute", [False, True])
+@pytest.mark.parametrize("permute", [False])
 def test_cubic_interpolation_grid(permute):
 
     # we need more points for cubic interpolation
-    coords = np.array([[0.0, 0.0], \
-                       [0.0, 1.0], \
-                       [1.0, 0.0], \
-                       [1.0, 1.0], \
-                       [0.1, 0.1], \
-                       [0.1, 0.9], \
-                       [0.9, 0.1], \
-                       [0.9, 0.9]])
+    coords = np.array([[0.0, 0.0+np.random.random()*1.0e-16], 
+                       [0.0, 1.0+np.random.random()*1.0e-16], 
+                       [1.0, 0.0+np.random.random()*1.0e-16], 
+                       [1.0, 1.0+np.random.random()*1.0e-16], 
+                       [0.1, 0.1+np.random.random()*1.0e-16], 
+                       [0.1, 0.9+np.random.random()*1.0e-16], 
+                       [0.9, 0.1+np.random.random()*1.0e-16], 
+                       [0.9, 0.9+np.random.random()*1.0e-16]])
 
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y, permute=permute)
@@ -171,6 +173,7 @@ def test_cubic_interpolation_grid(permute):
     err_msg = "Interpolate to grid - cubic tensioned splines"
     np.testing.assert_allclose(Zi_cubic.reshape(shape), Zi_cubic_grid, atol=0.1, err_msg=err_msg)
     np.testing.assert_allclose(Zi_cubic_grid_S, Zi_cubic_grid, atol=0.5, err_msg=err_msg)
+    
     assert (Zi_cubic_grid_S != Zi_cubic_grid).any(), err_msg
 
 
@@ -181,19 +184,19 @@ def test_derivative(permute):
     p1 = 1.0
     p2 = 2.0
 
-    coords = np.array([[p0 , -p2], \
-                       [-p2,  p0], \
-                       [p0 ,  p2], \
-                       [p2 ,  p0], \
-                       [p0 , -p1], \
-                       [-p1,  p0], \
-                       [p0 ,  p1], \
-                       [p1 ,  p0], \
-                       [-p1, -p1], \
-                       [-p1,  p1], \
-                       [p1 ,  p1], \
-                       [p1 , -p1], \
-                       [p0 ,  p0]])
+    coords = np.array([[p0 , -p2+np.random.random()*1.0e-16], 
+                       [-p2,  p0+np.random.random()*1.0e-16], 
+                       [p0 ,  p2+np.random.random()*1.0e-16], 
+                       [p2 ,  p0+np.random.random()*1.0e-16], 
+                       [p0 , -p1+np.random.random()*1.0e-16], 
+                       [-p1,  p0+np.random.random()*1.0e-16], 
+                       [p0 ,  p1+np.random.random()*1.0e-16], 
+                       [p1 ,  p0+np.random.random()*1.0e-16], 
+                       [-p1, -p1+np.random.random()*1.0e-16], 
+                       [-p1,  p1+np.random.random()*1.0e-16], 
+                       [p1 ,  p1+np.random.random()*1.0e-16], 
+                       [p1 , -p1+np.random.random()*1.0e-16], 
+                       [p0 ,  p0+np.random.random()*1.0e-16]])
 
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y, permute=permute)
@@ -222,14 +225,14 @@ def test_derivative(permute):
 def test_smoothing(permute):
 
     # we need more points for cubic interpolation
-    coords = np.array([[0.0, 0.0], \
-                       [0.0, 1.0], \
-                       [1.0, 0.0], \
-                       [1.0, 1.0], \
-                       [0.1, 0.1], \
-                       [0.1, 0.9], \
-                       [0.9, 0.1], \
-                       [0.9, 0.9]])
+    coords = np.array([[0.0, 0.0+np.random.random()*1.0e-16],
+                       [0.0, 1.0+np.random.random()*1.0e-16],
+                       [1.0, 0.0+np.random.random()*1.0e-16],
+                       [1.0, 1.0+np.random.random()*1.0e-16],
+                       [0.1, 0.1+np.random.random()*1.0e-16],
+                       [0.1, 0.9+np.random.random()*1.0e-16], 
+                       [0.9, 0.1+np.random.random()*1.0e-16], 
+                       [0.9, 0.9+np.random.random()*1.0e-16]])
 
     x, y = coords[:,0], coords[:,1]
     mesh = stripy.Triangulation(x, y, permute=permute)
