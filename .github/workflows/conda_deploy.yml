@@ -26,5 +26,5 @@ jobs:
             conda install --channel conda-forge conda-build anaconda-client conda-verify
             conda config --set anaconda_upload yes
             anaconda login --hostname github-actions-${{ matrix.os  }}-$RANDOM --username ${{ secrets.ANACONDA_USERNAME }} --password ${{ secrets.ANACONDA_PASSWORD }}
-            conda-build --channel conda-forge --user underworldcode conda
+            conda-build --channel conda-forge --user geo-down-under conda
             anaconda logout

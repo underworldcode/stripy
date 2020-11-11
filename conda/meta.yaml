@@ -1,13 +1,12 @@
 {% set name = "stripy" %}
-{% set version = "2.0.3" %}
+{% set data = load_setup_py_data() %}
 
 package:
   name: "{{ name|lower }}"
-  version: "{{ version }}"
+  version: {{ data.get('version') }}
 
 source:
-    - git_url: https://github.com/underworldcode/stripy.git
-    - git_rev: v2.0.2
+    path: ..
 
 build:
   number: 0
@@ -18,28 +17,29 @@ requirements:
   host:
     - python
     - pip
-    - numpy>=1.16.0
-    - scipy>=1.0.0
+    - numpy >=1.16.0
+    - scipy >=1.0.0
     - {{ compiler('fortran')}}
     - {{ compiler('c')}}
 
   run:
     - python
-    - numpy >= 1.16.0
-    - scipy >= 1.0.0
-
+    - numpy >=1.16.0
+    - scipy >=1.0.0
 
 test:
   imports:
     - stripy
-
-
+    - stripy.spherical_meshes
+    - stripy.cartesian_meshes
+    - stripy.sTriangulation
+    - stripy.Triangulation
 
 about:
   home: "https://github.com/underworldcode/stripy"
   license: LGPL
-  license_family: OTHER
-  license_file: 
+  license_family: GPL
+  # license_file: LICENCE
   summary: "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere"
   doc_url: 
   dev_url: 
