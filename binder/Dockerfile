@@ -44,7 +44,7 @@ USER jovyan
 # Run PyTest
 ############
 
-RUN cd $MODULE_DIR/tests && pytest *.py
+RUN cd $MODULE_DIR/stripy/tests && pytest *.py
 
 # Non standard as the files come from the packages
 ##################################################

@@ -34,6 +34,10 @@ jobs:
           mkdir -p docs
           pdoc --config latex_math=True --html -o docs --force stripy
 
+      # Here we can add an action to build the jupyter book to a different directory 
+      # and then they can be uploaded together. The jupyter book can contain a link to the
+      # API docs.
+
       # Note deploy key needs the ----BEGIN ... KEY---- lines too
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

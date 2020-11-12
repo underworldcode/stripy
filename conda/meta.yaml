@@ -32,10 +32,9 @@ test:
     - pytest 
 
   source_files:
-      - tests
+      - stripy/tests
 
   commands:
-    - pwd
     - pytest
 
 
@@ -43,7 +42,7 @@ about:
   home: "https://github.com/underworldcode/stripy"
   license: LGPL
   license_family: GPL
-  # license_file: LICENCE
+  license_file: ../COPYING.LESSER
   summary: "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere"
   doc_url: 
   dev_url: 
