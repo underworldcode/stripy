@@ -14,6 +14,8 @@ swpcom.mod
 build/*
 dist/*
 
+jupyterbook/_build
+
 litho1pt0-src/build/*
 litho1pt0-src/dist/*
 /build/

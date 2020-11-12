@@ -1,0 +1,10 @@
+name: stripy-binder
+channels: 
+  - conda-forge
+  - geo-down-under 
+  - underworldcode
+dependencies:
+  - numpy
+  - scipy
+  - geo-down-under::stripy
+  - underworldcode::litho1pt0
