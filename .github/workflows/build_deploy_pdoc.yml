@@ -34,10 +34,15 @@ jobs:
             use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
 
           
-      - name: Install stripy
+      - name: Build stripy
         shell: bash -l {0}
         run: |
           conda-build conda
+
+
+      - name: Install stripy
+        shell: bash -l {0}
+        run: |
           conda install stripy --use-local
    
       - name: Build docs with pdoc
