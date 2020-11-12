@@ -38,7 +38,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda-build conda
-          conda install -c local stripy
+          conda install stripy --use-local
    
       - name: Build docs with pdoc
         shell: bash -l {0}
