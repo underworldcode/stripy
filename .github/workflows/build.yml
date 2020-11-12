@@ -5,7 +5,6 @@ on: [push, pull_request]
 env:
   CIBW_SKIP: "cp27-* cp36-win*"
 
-
 jobs:
   build_wheels:
     name: Build wheel on ${{ matrix.os }}

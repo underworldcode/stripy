@@ -1,8 +1,9 @@
-name: Conda Deployment 
+# This is a simple conda build which only succeeds when the built-in tests pass.
 
-on:
-  release:
-    types: [created, edited]
+name: Conda Test Build 
+
+on: 
+  push
     
 jobs:
 
@@ -20,11 +21,12 @@ jobs:
         with:
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
+
       - name: Conda Upload
         shell: bash -l {0}
         run: |
-            conda install --channel conda-forge conda-build anaconda-client conda-verify
-            conda config --set anaconda_upload yes
-            anaconda login --hostname github-actions-${{ matrix.os  }}-$RANDOM --username ${{ secrets.ANACONDA_USERNAME }} --password ${{ secrets.ANACONDA_PASSWORD }}
-            conda-build --channel conda-forge --user geo-down-under conda
-            anaconda logout
+            conda install --channel conda-forge conda-build conda-verify
+            conda config --set anaconda_upload no
+            # anaconda login --hostname github-actions-${{ matrix.os  }}-$RANDOM --username ${{ secrets.ANACONDA_USERNAME }} --password ${{ secrets.ANACONDA_PASSWORD }}
+            conda-build --channel conda-forge  conda
+            # anaconda logout
