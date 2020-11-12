@@ -5,6 +5,7 @@ name: conda-build
 channels: 
   - conda-forge
 dependencies:
+  - compilers
   - numpy>=1.16.0
   - scipy>=1.0.0
   - conda-build 
