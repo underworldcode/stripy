@@ -32,16 +32,15 @@ jobs:
             
           key: ${{ matrix.os }}-conda-${{ env.CACHE_NUMBER }}   # -${{ hashFiles('conda_packages.yml') }}
 
-
-    - name: Miniconda 
-      uses: conda-incubator/setup-miniconda@v1
-      with:
-          miniconda-version: "latest"
-          # environment-file: conda_packages.yml
-          # activate-environment: jupyter-book 
-          python-version: ${{ matrix.python-version }}
-          add_pip_as_python_dependency: False
-          use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
+      - name: Miniconda 
+        uses: conda-incubator/setup-miniconda@v1
+        with:
+            miniconda-version: "latest"
+            # environment-file: conda_packages.yml
+            # activate-environment: jupyter-book 
+            python-version: ${{ matrix.python-version }}
+            add_pip_as_python_dependency: False
+            use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
 
 
       # - uses: goanpeca/setup-miniconda@v1
