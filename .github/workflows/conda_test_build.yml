@@ -26,8 +26,8 @@ jobs:
         with:
           path: |
             ~/conda_pkgs_dir
+            ~/.cache/pip
             # /usr/share/miniconda3/envs/jupyter-book
-            # ~/.cache/pip
             # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
             
           key: ${{ matrix.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_build_environment.yml') }}
@@ -40,12 +40,6 @@ jobs:
             activate-environment: conda-build
             python-version: ${{ matrix.python-version }}
             use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
-
-
-      # - uses: goanpeca/setup-miniconda@v1
-      #   with:
-      #     auto-update-conda: true
-      #     python-version: ${{ matrix.python-version }}
 
       - name: Conda build (no upload)
         shell: bash -l {0}

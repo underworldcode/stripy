@@ -2,7 +2,7 @@ name: API docs
 
 on:
   push:
-    branches: [master]
+    branches: [master, dev]
 
 jobs:
   deploy:
@@ -10,23 +10,35 @@ jobs:
     steps:
       - uses: actions/checkout@v2
   
-      - uses: actions/checkout@v2
-      - uses: goanpeca/setup-miniconda@v1
+      - name: Cache conda
+        uses: actions/cache@v1
+        env:
+        # Increase this value to reset cache if etc/example-environment.yml has not changed
+          CACHE_NUMBER: 0
         with:
-          python-version: 3.7
+          path: |
+            ~/conda_pkgs_dir
+            ~/.cache/pip
+            # /usr/share/miniconda3/envs/jupyter-book
+            # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
+            
+          key: ${{ matrix.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_docs_environment.yml') }}
 
-      - name: Install dependencies with conda
-        shell: bash -l {0}
-        run: |
-          conda install pip 
-          conda install -c conda-forge compilers numpy scipy 
-          conda install pytest 
-          conda install -c conda-forge pdoc3
+      - name: Miniconda + Cache
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+            miniconda-version: "latest"
+            environment-file: .github/workflows/resources/conda_docs_environment.yml
+            activate-environment: conda-build-docs
+            python-version: ${{ matrix.python-version }}
+            use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
+
           
       - name: Install stripy
         shell: bash -l {0}
         run: |
-          pip install -e .
+          conda-build conda
+          conda install -c local stripy
    
       - name: Build docs with pdoc
         shell: bash -l {0}
