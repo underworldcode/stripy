@@ -6,6 +6,12 @@ on:
   push:
     branches: [master, dev]
 
+  workflow_run:
+    workflows: ["Conda Deployment"]
+    branches: [main]
+    types: 
+      - completed
+
 jobs:
   deploy:
     runs-on: macos-latest

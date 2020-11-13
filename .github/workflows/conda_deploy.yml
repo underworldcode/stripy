@@ -3,7 +3,11 @@ name: Conda Deployment
 on:
   release:
     types: [created, edited]
-  branch:
+  push:
+    branches:
+      - dev
+
+
     
 jobs:
 
