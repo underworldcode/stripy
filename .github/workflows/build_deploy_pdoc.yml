@@ -41,14 +41,16 @@ jobs:
           conda-build conda
           echo "Conda Prefix = " ${CONDA_PREFIX}
           ls /usr/share/miniconda3/envs/conda-build-docs/conda-bld/linux-64/
-          conda search stripy --use-local
+        
+          # conda search stripy --use-local
 
 
       - name: Install stripy from local build
         shell: bash -l {0}
         run: |
-          conda search stripy --use-local
-          conda install -c local stripy --use-local
+          # conda search stripy --use-local
+          # conda install -c local stripy --use-local
+          conda install -c /usr/share/miniconda3/envs/conda-build-docs/conda-bld/linux-64/ stripy
    
       - name: Build docs with pdoc
         shell: bash -l {0}
