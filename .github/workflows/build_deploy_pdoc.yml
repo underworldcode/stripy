@@ -39,6 +39,8 @@ jobs:
         run: |
           conda update conda 
           conda-build conda
+          echo "Conda Prefix = " ${CONDA_PREFIX}
+          ls /usr/share/miniconda3/envs/conda-build-docs/conda-bld/linux-64/
           conda search stripy --use-local
 
 
