@@ -17,13 +17,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           
-      - name: Install gfortran (ubuntu)
-        if: matrix.os == 'ubuntu-latest' 
-        run: |
-          sudo apt-get install -y gfortran
 
       - name: Install gfortran (macos)
-        if: matrix.os == 'macos-latest' 
         run: |
           brew cask install gfortran
 
