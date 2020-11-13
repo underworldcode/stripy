@@ -45,9 +45,10 @@ jobs:
       - name: Install stripy from most recent upload
         shell: bash -l {0}
         run: |
+          VERSION=`python setup.py --version`
           # conda search stripy --use-local
           # conda install -c local stripy --use-local
-          conda install -c geo-down-under stripy
+          conda install -c geo-down-under stripy==$VERSION  # will explicity request this version and fail otherwise
    
       - name: Build docs with pdoc
         shell: bash -l {0}
@@ -64,6 +65,5 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          VERSION=`python setup.py --version`
           deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
-          publish_dir: docs/$VERSION/stripy
+          publish_dir: docs
