@@ -11,7 +11,9 @@ dependencies:
   - scipy>=1.0.0
   - conda-build 
   - pdoc3
-  
+  - cartopy
+  - xarray
+
   - pip:
     - jupyter-book
 
