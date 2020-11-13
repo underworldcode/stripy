@@ -38,13 +38,21 @@ jobs:
           pip install pytest
           pytest
 
-   
       - name: Build docs with pdoc
-        shell: bash -l {0}
         run: |
           pip install pdoc3
           mkdir -p docs
           pdoc3 --config latex_math=True --html -o docs --force stripy
+
+      - name: jupyter-book
+        run: |
+          pip install xarray
+          pip install cartopy
+          pip install jupyter-book 
+
+          cd jupyterbook 
+          jupyter-book build .
+
 
       # Here we can add an action to build the jupyter book to a different directory 
       # and then they can be uploaded together. The jupyter book can contain a link to the
