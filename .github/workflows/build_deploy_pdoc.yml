@@ -45,8 +45,8 @@ jobs:
         shell: bash -l {0}
         run: |
           # conda search stripy --use-local
-          conda install -c local stripy --use-local
-          # conda install -c ${CONDA_PREFIX} stripy
+          # conda install -c local stripy --use-local
+          conda install -c ${CONDA_PREFIX} stripy
    
       - name: Build docs with pdoc
         shell: bash -l {0}
