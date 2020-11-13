@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout  
@@ -15,12 +15,11 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.8
           
-
-      - name: Install gfortran (macos)
+      - name: Install gfortran (ubuntu)
         run: |
-          brew cask install gfortran
+          sudo apt-get install -y gfortran
 
       - name: Install Python dependencies
         run: |
