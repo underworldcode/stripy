@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
   
@@ -37,20 +37,16 @@ jobs:
       - name: Build stripy
         shell: bash -l {0}
         run: |
-          conda update conda 
+          # conda update conda 
           conda-build conda
-          echo "Conda Prefix = " ${CONDA_PREFIX}
-          ls /usr/share/miniconda3/envs/conda-build-docs/conda-bld/linux-64/
-        
-          # conda search stripy --use-local
-
+          echo "Conda Prefix = " ${CONDA_PREFIX}    
 
       - name: Install stripy from local build
         shell: bash -l {0}
         run: |
           # conda search stripy --use-local
-          # conda install -c local stripy --use-local
-          conda install -c /usr/share/miniconda3/envs/conda-build-docs/conda-bld/linux-64/ stripy
+          conda install -c local stripy --use-local
+          # conda install -c ${CONDA_PREFIX} stripy
    
       - name: Build docs with pdoc
         shell: bash -l {0}
