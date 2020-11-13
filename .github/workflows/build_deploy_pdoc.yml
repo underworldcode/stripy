@@ -39,11 +39,11 @@ jobs:
         run: |
           conda-build conda
 
-
-      - name: Install stripy
+      - name: Install stripy from local build
         shell: bash -l {0}
         run: |
-          conda install stripy --use-local
+          conda search stripy --use-local
+          conda install -c local stripy --use-local
    
       - name: Build docs with pdoc
         shell: bash -l {0}
