@@ -1,4 +1,6 @@
-name: API docs 
+name: API docs / jupyterbook 
+
+# We should trigger this from an upload event 
 
 on:
   push:
@@ -34,25 +36,25 @@ jobs:
             use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
 
           
-      - name: Build stripy
-        shell: bash -l {0}
-        run: |
-          # conda update conda 
-          conda-build conda
-          echo "Conda Prefix = " ${CONDA_PREFIX}    
+      # - name: Build stripy
+      #   shell: bash -l {0}
+      #   run: |
+      #     conda-build conda
+      #     echo "Conda Prefix = " ${CONDA_PREFIX}    
 
-      - name: Install stripy from local build
+      - name: Install stripy from most recent upload
         shell: bash -l {0}
         run: |
           # conda search stripy --use-local
           # conda install -c local stripy --use-local
-          conda install -c ${CONDA_PREFIX}/conda-bld stripy
+          conda install -c geo-down-under stripy
    
       - name: Build docs with pdoc
         shell: bash -l {0}
         run: |
-          mkdir -p docs
-          pdoc --config latex_math=True --html -o docs --force stripy
+          VERSION=`python setup.py --version`
+          mkdir -p docs/$VERSION
+          pdoc --config latex_math=True --html -o docs/$VERSION --force stripy
 
       # Here we can add an action to build the jupyter book to a different directory 
       # and then they can be uploaded together. The jupyter book can contain a link to the
@@ -62,5 +64,6 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
+          VERSION=`python setup.py --version`
           deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
-          publish_dir: docs/stripy
+          publish_dir: docs/$VERSION/stripy
