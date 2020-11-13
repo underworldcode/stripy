@@ -1,0 +1,63 @@
+name: API docs 
+
+on:
+  push:
+    branches: [master, dev]
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+     steps:
+      - name: Checkout  
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+          
+      - name: Install gfortran (ubuntu)
+        if: matrix.os == 'ubuntu-latest' 
+        run: |
+          sudo apt-get install -y gfortran
+
+      - name: Install gfortran (macos)
+        if: matrix.os == 'macos-latest' 
+        run: |
+          brew cask install gfortran
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy 
+          pip install scipy 
+          pip install Cython
+          
+      - name: Install (self)
+        run: |
+          pip install -e . 
+          
+      - name: Test with pytest
+        run: |
+          python -c 'import stripy;'
+          pip install pytest
+          pytest
+
+   
+      - name: Build docs with pdoc
+        shell: bash -l {0}
+        run: |
+          pip install pdoc3
+          mkdir -p docs
+          pdoc3 --config latex_math=True --html -o docs --force stripy
+
+      # Here we can add an action to build the jupyter book to a different directory 
+      # and then they can be uploaded together. The jupyter book can contain a link to the
+      # API docs.
+
+      # Note deploy key needs the ----BEGIN ... KEY---- lines too
+      # - name: Deploy
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
+      #     publish_dir: docs/stripy
