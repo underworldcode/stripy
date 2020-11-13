@@ -37,7 +37,10 @@ jobs:
       - name: Build stripy
         shell: bash -l {0}
         run: |
+          conda update conda 
           conda-build conda
+          conda search stripy --use-local
+
 
       - name: Install stripy from local build
         shell: bash -l {0}
