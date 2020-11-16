@@ -36,7 +36,7 @@ if "Windows" in platform.system():
     link_args = ["-static"]
 
 # in development set version to none and ...
-PYPI_VERSION = "2.0.5b1"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
+PYPI_VERSION = "2.0.5b2"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
 
 # Return the git revision as a string (from numpy)
 
