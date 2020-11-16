@@ -6,17 +6,15 @@ on:
 
   workflow_dispatch:
 
-
   push:
     branches:
       - conda-testing
 
-
 jobs:
-
   conda_build_test_deploy:
     name: Conda Build (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+    
     strategy:
       fail-fast: false
       matrix:
