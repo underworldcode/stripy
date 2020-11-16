@@ -26,7 +26,7 @@ jobs:
         uses: actions/cache@v1
         env:
         # Increase this value to reset cache if etc/example-environment.yml has not changed
-          CACHE_NUMBER: 0
+          CACHE_NUMBER: 1
         with:
           path: |
             ~/conda_pkgs_dir
@@ -34,7 +34,7 @@ jobs:
             # /usr/share/miniconda3/envs/jupyter-book
             # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
             
-          key: macos-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_api_docs_environment.yml') }}
+          key: macos-pdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_api_docs_environment.yml') }}
 
       - name: Miniconda + Cache
         uses: conda-incubator/setup-miniconda@v2

@@ -6,11 +6,9 @@ channels:
   - conda-forge
   - geo-down-under
 dependencies:
-  - compilers
   - pytest
   - numpy>=1.16.0
   - scipy>=1.0.0
-  - conda-build 
   - pdoc3
   # - cartopy
   # - xarray
