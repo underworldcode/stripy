@@ -32,7 +32,7 @@ jobs:
             # /usr/share/miniconda3/envs/jupyter-book
             # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
             
-          key: macos-pdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_jb_docs_environment.yml') }}
+          key: macos-jbdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_jb_docs_environment.yml') }}
 
       - name: Miniconda + Cache
         uses: conda-incubator/setup-miniconda@v2
@@ -51,11 +51,9 @@ jobs:
           cd jupyterbook
           jupyter-book build .
 
-      # Here we can add an action to build the jupyter book to a different directory 
-      # and then they can be uploaded together. The jupyter book can contain a link to the
-      # API docs.
-
       # Note deploy key needs the ----BEGIN ... KEY---- lines too
+
+      ## Always deploy to version directory
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         
@@ -63,3 +61,18 @@ jobs:
           deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
           destination_dir: ${{ env.VERSION }}
           publish_dir: jupyterbook/_build/html
+
+      ## Sometimes deploy to latest directory
+      ## (Check if this is part of an actual release)
+      
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        
+        with:
+          deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
+          destination_dir: latest
+          publish_dir: jupyterbook/_build/html
+        
+
+
+ 

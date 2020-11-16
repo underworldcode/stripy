@@ -68,11 +68,22 @@ jobs:
       # and then they can be uploaded together. The jupyter book can contain a link to the
       # API docs.
 
+
+
+
       # Note deploy key needs the ----BEGIN ... KEY---- lines too
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         
         with:
           deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
-          destination_dir: ${{ env.VERSION }}/api
+          destination_dir: ${{ env.VERSION }}_api
+          publish_dir: docs/api/stripy
+
+      - name: Deploy as latest (will overwrite)
+        uses: peaceiris/actions-gh-pages@v3
+        
+        with:
+          deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
+          destination_dir: latest_api
           publish_dir: docs/api/stripy
