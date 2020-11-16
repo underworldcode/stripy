@@ -1,0 +1,36 @@
+# Book settings
+title: Stripy
+author: Louis Moresi, Ben Mather
+# logo: Diagrams/MundusSubterraneus.png
+# exclude_patterns: ["README.md", "Notes/*", "Scripts/*"]
+
+latex:
+  latex_documents:
+    targetname: Stripy.tex
+
+html:
+#  home_page_in_navbar option: true
+  use_repository_button: true
+
+parse:
+  myst_extended_syntax: true
+
+sphinx:
+  config:
+    mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+
+repository:
+  url                       : "https://github.com/underworldcode/stripy"  # Online location of your book's source code
+  branch                    : "master"                                    # Which branch of the repository should be used when creating links (optional)
+
+launch_buttons:
+  # jupyterhub_url: "https://phys3070.rses.geoscience.education"  # The URL for your JupyterHub. 
+  notebook_interface: "classic" # "jupyterlab" or "classic"
+  binderhub_url:  "https://mybinder.org"  # The URL of the BinderHub (e.g., https://mybinder.org)
+
+execute:
+  allow_errors : true # If `False`, when a code cell raises an error the execution is stopped, otherwise all cells are always run.
+
+
+

@@ -1,42 +1,77 @@
-name: API docs 
+name: API docs / pdoc3 
+
+# We should trigger this from an upload event 
 
 on:
   push:
     branches: [master]
 
+  workflow_run:
+    workflows: ["Conda Deployment"]
+    branches: [master]
+    types: 
+      - completed
+
+  workflow_dispatch:
+
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
   
-      - uses: actions/checkout@v2
-      - uses: goanpeca/setup-miniconda@v1
+      - name: Cache conda
+        uses: actions/cache@v1
+        env:
+        # Increase this value to reset cache if etc/example-environment.yml has not changed
+          CACHE_NUMBER: 1
         with:
-          python-version: 3.7
+          path: |
+            ~/conda_pkgs_dir
+            ~/.cache/pip
+            
+          key: macos-pdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_api_docs_environment.yml') }}
 
-      - name: Install dependencies with conda
+      - name: Miniconda + Cache
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+            miniconda-version: "latest"
+            environment-file: .github/workflows/resources/conda_api_docs_environment.yml
+            activate-environment: conda-build-docs
+            python-version: 3.8
+            use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
+
+
+      - name: Install stripy from most recent upload
         shell: bash -l {0}
         run: |
-          conda install pip 
-          conda install -c conda-forge compilers numpy scipy 
-          conda install pytest 
-          conda install -c conda-forge pdoc3
-          
-      - name: Install stripy
-        shell: bash -l {0}
-        run: |
-          pip install -e .
+          VERSION=`python setup.py --version`
+          conda search stripy
+          conda install -c geo-down-under stripy==$VERSION  # will explicity request this version and fail otherwise
+          # mkdir test 
+          # cd test
+          # python -c "import stripy"
+
    
       - name: Build docs with pdoc
         shell: bash -l {0}
         run: |
+          VERSION=`python setup.py --version`
+          echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
           mkdir -p docs
-          pdoc --config latex_math=True --html -o docs --force stripy
+          cd docs
+          pdoc --config latex_math=True --html -o api --force stripy
+
+      # Here we can add an action to build the jupyter book to a different directory 
+      # and then they can be uploaded together. The jupyter book can contain a link to the
+      # API docs.
 
       # Note deploy key needs the ----BEGIN ... KEY---- lines too
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
+        
         with:
           deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
-          publish_dir: docs/stripy
+          destination_dir: ${{ env.VERSION }}_api
+          publish_dir: docs/api/stripy
+

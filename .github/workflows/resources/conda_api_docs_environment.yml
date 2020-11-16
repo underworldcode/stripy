@@ -1,0 +1,11 @@
+# This is the environment needed to build stripy. As this will be cached, we can include any stripy dependencies
+# so they are not downloaded again - this should save a bit of time
+
+name: conda-build-docs
+channels: 
+  - conda-forge
+  - geo-down-under
+dependencies:
+  - numpy>=1.16.0
+  - scipy>=1.0.0
+  - pdoc3

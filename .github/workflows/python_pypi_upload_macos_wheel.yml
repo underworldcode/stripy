@@ -3,9 +3,9 @@ name: PYPI wheels macos
 on: 
   release:
     types: [created, edited]
-  push:
-    branches:
-      - dev
+  # push:
+  #   branches:
+  #     - dev
 
 
 jobs:

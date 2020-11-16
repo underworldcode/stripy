@@ -1,3 +1,6 @@
+# A workflow that uses standard platform-dependent compilation paths etc
+# and then builds with pip / setup.py on top of that.
+
 name: pip builds 
 
 on: 
