@@ -18,7 +18,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
   
@@ -34,7 +34,7 @@ jobs:
             # /usr/share/miniconda3/envs/jupyter-book
             # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
             
-          key: ubu-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_docs_environment.yml') }}
+          key: macos-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_docs_environment.yml') }}
 
       - name: Miniconda + Cache
         uses: conda-incubator/setup-miniconda@v2
@@ -57,7 +57,7 @@ jobs:
         run: |
           VERSION=`python setup.py --version`
           conda search stripy
-          conda install -c geo-down-under stripy   # ==$VERSION  # will explicity request this version and fail otherwise
+          conda install -c geo-down-under stripy==$VERSION  # will explicity request this version and fail otherwise
           python -c "import stripy"
 
    
