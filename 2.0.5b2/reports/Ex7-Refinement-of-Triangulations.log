@@ -32,6 +32,8 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-triangles = mesh.containing_triangle(lons, lats)
+['import matplotlib.pyplot as plt', '', '%matplotlib inline', '', 'import cartopy']
+...
+['mesh_fig(ico3,        ico3mv,     "EdgeByVertex1to10" )', 'mesh_fig(ico3,        ico3ev,     "EdgeByVertexT1to10" )', 'mesh_fig(ico3,        ico3cv,     "CentroidByVertexT1to10" )', 'mesh_fig(ico3,        ico3et,     "EdgeByTriangle1to10" )', 'mesh_fig(ico3,        ico3ct,     "CentroidByTriangle1to10" )']
 -------------------
 
