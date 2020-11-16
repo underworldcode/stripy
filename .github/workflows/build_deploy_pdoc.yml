@@ -60,6 +60,7 @@ jobs:
         shell: bash -l {0}
         run: |
           VERSION=`python setup.py --version`
+          echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
           mkdir -p docs/$VERSION
           cd docs
           pdoc --config latex_math=True --html -o $VERSION --force stripy
@@ -71,6 +72,8 @@ jobs:
       # Note deploy key needs the ----BEGIN ... KEY---- lines too
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
+        
         with:
           deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
+          destination_dir: ${{ env.VERSION }}
           publish_dir: docs
