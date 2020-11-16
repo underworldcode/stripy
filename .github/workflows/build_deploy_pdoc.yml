@@ -57,6 +57,8 @@ jobs:
           VERSION=`python setup.py --version`
           conda search stripy
           conda install -c geo-down-under stripy==$VERSION  # will explicity request this version and fail otherwise
+          mkdir test 
+          cd test
           python -c "import stripy"
 
    
