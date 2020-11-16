@@ -56,7 +56,8 @@ jobs:
         shell: bash -l {0}
         run: |
           VERSION=`python setup.py --version`
-          conda install -c geo-down-under stripy==$VERSION  # will explicity request this version and fail otherwise
+          conda search stripy
+          conda install -c geo-down-under stripy   # ==$VERSION  # will explicity request this version and fail otherwise
    
       - name: Build docs with pdoc
         shell: bash -l {0}
