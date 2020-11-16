@@ -18,7 +18,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
   
@@ -34,7 +34,7 @@ jobs:
             # /usr/share/miniconda3/envs/jupyter-book
             # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
             
-          key: macos-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_docs_environment.yml') }}
+          key: ubu-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_docs_environment.yml') }}
 
       - name: Miniconda + Cache
         uses: conda-incubator/setup-miniconda@v2
