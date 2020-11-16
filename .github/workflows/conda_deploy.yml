@@ -7,6 +7,10 @@ on:
   # Make manual/github.com triggers available 
   workflow_dispatch:
 
+  push:
+    branches:
+      - dev
+
 
     
 jobs:
