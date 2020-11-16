@@ -4,14 +4,14 @@ on:
   release:
     types: [created, edited]
 
+  workflow_dispatch:
+
+
   push:
     branches:
       - conda-testing
 
-  # Make manual/github.com triggers available 
-  workflow_dispatch:
-    
-  
+
 jobs:
 
   conda_build_test_deploy:
