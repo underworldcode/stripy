@@ -10,6 +10,9 @@ dependencies:
   - pdoc3
   - cartopy
   - xarray
+  - numpy
+  - scipy
+  - matplotlib
 
   - pip:
     - jupyter-book
