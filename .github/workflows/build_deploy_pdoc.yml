@@ -63,7 +63,7 @@ jobs:
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
           mkdir -p docs/$VERSION
           cd docs
-          pdoc --config latex_math=True --html -o $VERSION --force stripy
+          pdoc --config latex_math=True --html --force stripy
 
       # Here we can add an action to build the jupyter book to a different directory 
       # and then they can be uploaded together. The jupyter book can contain a link to the
