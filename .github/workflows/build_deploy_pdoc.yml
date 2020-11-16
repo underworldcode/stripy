@@ -58,13 +58,16 @@ jobs:
           VERSION=`python setup.py --version`
           conda search stripy
           conda install -c geo-down-under stripy   # ==$VERSION  # will explicity request this version and fail otherwise
+          python -c "import stripy"
+
    
       - name: Build docs with pdoc
         shell: bash -l {0}
         run: |
           VERSION=`python setup.py --version`
           mkdir -p docs/$VERSION
-          pdoc --config latex_math=True --html -o docs/$VERSION --force stripy
+          cd docs
+          pdoc --config latex_math=True --html -o $VERSION --force stripy
 
       # Here we can add an action to build the jupyter book to a different directory 
       # and then they can be uploaded together. The jupyter book can contain a link to the
