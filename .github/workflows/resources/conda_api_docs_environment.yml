@@ -6,11 +6,15 @@ channels:
   - conda-forge
   - geo-down-under
 dependencies:
-  - stripy 
+  - compilers
+  - pytest
+  - numpy>=1.16.0
+  - scipy>=1.0.0
+  - conda-build 
   - pdoc3
-  - cartopy
-  - xarray
+  # - cartopy
+  # - xarray
 
-  - pip:
-    - jupyter-book
+  # - pip:
+  #   - jupyter-book
 

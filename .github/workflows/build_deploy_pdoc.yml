@@ -1,4 +1,4 @@
-name: API docs / jupyterbook 
+name: API docs / pdoc3 
 
 # We should trigger this from an upload event 
 
@@ -34,18 +34,17 @@ jobs:
             # /usr/share/miniconda3/envs/jupyter-book
             # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
             
-          key: macos-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_docs_environment.yml') }}
+          key: macos-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_api_docs_environment.yml') }}
 
       - name: Miniconda + Cache
         uses: conda-incubator/setup-miniconda@v2
         with:
             miniconda-version: "latest"
-            environment-file: .github/workflows/resources/conda_docs_environment.yml
+            environment-file: .github/workflows/resources/conda_api_docs_environment.yml
             activate-environment: conda-build-docs
             python-version: 3.8
             use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
 
-          
       # - name: Build stripy
       #   shell: bash -l {0}
       #   run: |
