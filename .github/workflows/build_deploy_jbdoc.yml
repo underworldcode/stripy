@@ -42,15 +42,7 @@ jobs:
             activate-environment: conda-build-docs
             python-version: 3.8
             use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
-
-
-      - name: Install stripy from most recent upload
-        shell: bash -l {0}
-        run: |
-          VERSION=`python setup.py --version`
-          conda search stripy
-          conda install -c geo-down-under stripy==$VERSION  # will explicity request this version and fail otherwise
-   
+  
       - name: Build docs with jupyterbook
         shell: bash -l {0}
         run: |

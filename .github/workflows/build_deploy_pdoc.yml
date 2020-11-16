@@ -60,6 +60,7 @@ jobs:
         run: |
           VERSION=`python setup.py --version`
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
+          mkdir -p docs
           cd docs
           pdoc --config latex_math=True --html -o api --force stripy
 
