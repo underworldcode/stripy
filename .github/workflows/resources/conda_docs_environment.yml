@@ -4,6 +4,7 @@
 name: conda-build-docs
 channels: 
   - conda-forge
+  - geo-down-under
 dependencies:
   - compilers
   - pytest
