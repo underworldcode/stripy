@@ -63,7 +63,7 @@ jobs:
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
           mkdir -p docs/$VERSION
           cd docs
-          pdoc --config latex_math=True --html --force stripy
+          pdoc --config latex_math=True --html -o docs/api --force stripy
 
       # Here we can add an action to build the jupyter book to a different directory 
       # and then they can be uploaded together. The jupyter book can contain a link to the
@@ -75,5 +75,5 @@ jobs:
         
         with:
           deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
-          destination_dir: ${{ env.VERSION }}
-          publish_dir: docs
+          destination_dir: ${{ env.VERSION }}/api
+          publish_dir: docs/api
