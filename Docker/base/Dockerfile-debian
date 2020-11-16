@@ -65,6 +65,8 @@ RUN python3 -m pip install --no-cache-dir setuptools wheel && \
     obspy \
     seaborn \
     pandas \
+    xarray \
+    h5netcdf \
     stripy \
     litho1pt0 \
     lavavu && \
@@ -74,6 +76,10 @@ RUN python3 -m pip install --no-cache-dir setuptools wheel && \
     python3 -m pip install --no-cache-dir git+https://github.com/Unidata/netcdf4-python
 
 # previously lavavu==1.2.52
+
+
+RUN python3 -m pip  install shapely --no-binary shapely --upgrade --no-cache-dir --force-reinstall
+
 
 # Jovyan user / group
 

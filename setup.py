@@ -18,10 +18,11 @@
 from setuptools import dist, setup, find_packages
 dist.Distribution().fetch_build_eggs(['numpy>=1.16.0'])
 from numpy.distutils.core import setup, Extension
-try: 
-    from distutils.command import bdist_conda
-except ImportError:
-    pass
+
+# try: 
+#     from distutils.command import bdist_conda
+# except ImportError:
+#     pass
 
 from os import path
 import io
@@ -35,7 +36,7 @@ if "Windows" in platform.system():
     link_args = ["-static"]
 
 # in development set version to none and ...
-PYPI_VERSION = "2.0.2"
+PYPI_VERSION = "2.0.5b2"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
 
 # Return the git revision as a string (from numpy)
 
@@ -71,6 +72,11 @@ if PYPI_VERSION is None:
 this_directory = path.abspath(path.dirname(__file__))
 with io.open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
+
+# What works on github does not work elsewhere
+long_description = long_description.replace('(stripy/Notebooks','(https://github.com/underworldcode/stripy/blob/master/stripy/Notebooks')
+
+# print(long_description)
 
 # interface for Renka's algorithm 772 fortran code
 ext1 = Extension(name    = 'stripy._stripack',

@@ -1,0 +1,65 @@
+name: API docs / jupyterbook
+
+# We should trigger this from an upload event 
+
+on:
+  push:
+    branches: [master]
+
+  workflow_run:
+    workflows: ["Conda Deployment"]
+    branches: [master]
+    types: 
+      - completed
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+  
+      - name: Cache conda
+        uses: actions/cache@v1
+        env:
+        # Increase this value to reset cache if etc/example-environment.yml has not changed
+          CACHE_NUMBER: 1
+        with:
+          path: |
+            ~/conda_pkgs_dir
+            ~/.cache/pip
+            /usr/share/miniconda3/envs/jupyter-book
+            ~/stripy/jupyterbook/_build
+            
+          key: macos-jbdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_jb_docs_environment.yml') }}
+
+      - name: Miniconda + Cache
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+            miniconda-version: "latest"
+            environment-file: .github/workflows/resources/conda_jb_docs_environment.yml
+            activate-environment: conda-build-docs
+            python-version: 3.8
+            use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
+  
+      - name: Build docs with jupyterbook
+        shell: bash -l {0}
+        run: |
+          VERSION=`python setup.py --version`
+          echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
+          cd jupyterbook
+          jupyter-book build .
+
+      # Note deploy key needs the ----BEGIN ... KEY---- lines too
+
+      ## Always deploy to version directory
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        
+        with:
+          deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
+          destination_dir: ${{ env.VERSION }}
+          publish_dir: jupyterbook/_build/html
+
+ 

@@ -6,9 +6,6 @@
 [![pip builds](https://github.com/underworldcode/stripy/workflows/pip%20builds/badge.svg)](https://github.com/underworldcode/stripy/actions?query=workflow%3A%22pip+builds%22)
 
 
-
-
-
 A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives (Renka 1996a,b and 1997a,b).
 
 `stripy` is bundled with `litho1pt0` which is a python interface to the _crust 1.0_ dataset and the lithospheric part of the _litho 1.0_ dataset (Laske et al, 2013 and Pasyanos et al, 2014) which both requires and demonstrates the triangulation / searching and interpolation on the sphere that is provided by `stripy`.
@@ -18,6 +15,24 @@ A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triang
 
 _Sample images created with `stripy` illustrating the meshing capability: ocean age data can be triangulated on the sphere with no need for points on land. Once `stripy` ingests your data points, you can sample another dataset to your grid (bathymetry on the right), smooth, find the derivatives of your data, or interpolate to another set of points._
 
+## Documentation
+
+There are two matching sets of `stripy` notebooks - one set for [Cartesian Triangulations](#Cartesian) and one for [Spherical Triangulations](#Spherical). For most geographical applications, the spherical triangulations are the natural choice as they expect longitude and latitude coordinates (admittedly in radians).  There are some worked examples
+which use the companion package litho1pt0
+
+### Stable code 
+
+  - Documentation / Notebooks [https://underworldcode.github.io/stripy/2.0.5b2](https://underworldcode.github.io/stripy/2.0.5b2)
+  - API documentation [https://underworldcode.github.io/stripy/2.0.5b2_api](https://underworldcode.github.io/stripy/2.0.5b2_api)
+
+### Bleeding edge code 
+
+  - Documentation / Notebooks [https://underworldcode.github.io/stripy/2.0.5b2](https://underworldcode.github.io/stripy/2.0.5b2)
+  - API documentation [https://underworldcode.github.io/stripy/2.0.5b2_api](https://underworldcode.github.io/stripy/2.0.5b2_api)
+
+For previous versions, see the [changelog](Changelog.md)
+
+### Installation & Running in the cloud
 
 #### Binder
 
@@ -84,11 +99,11 @@ package itself:
 The first three notebooks are an introduction to `litho1pt0` that does not explicitly mention `stripy` but
 the next two worked examples show how to search, interpolate and plot with the help of `stripy` routines.
 
-  - [Ex1-Litho1Layers.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Ex1-Litho1Layers.ipynb)
-  - [Ex2-Litho1Properties.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Ex2-Litho1Properties.ipynb)
-  - [Ex3-CrustalRegionalisation.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/Ex3-CrustalRegionalisation.ipynb)
-  - [WorkEx1-CratonAverageProperties.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/WorkEx1-CratonAverageProperties.ipynb)
-  - [WorkEx2-OceanDepthAge.ipynb](litho1pt0-src/litho1pt0/Notebooks/litho1pt0/WorkEx2-OceanDepthAge.ipynb)
+  - [Ex1-Litho1Layers.ipynb](https://github.com/underworldcode/litho1pt0/blob/master/litho1pt0/Notebooks/litho1pt0/Ex1-Litho1Layers.ipynb)
+  - [Ex2-Litho1Properties.ipynb](https://github.com/underworldcode/litho1pt0/blob/master/litho1pt0/Notebooks/litho1pt0/Ex2-Litho1Properties.ipynb)
+  - [Ex3-CrustalRegionalisation.ipynb](https://github.com/underworldcode/litho1pt0/blob/master/litho1pt0/Notebooks/litho1pt0/Ex3-CrustalRegionalisation.ipynb)
+  - [WorkEx1-CratonAverageProperties.ipynb](https://github.com/underworldcode/litho1pt0/blob/master/litho1pt0/Notebooks/litho1pt0/WorkEx1-CratonAverageProperties.ipynb)
+  - [WorkEx2-OceanDepthAge.ipynb](https://github.com/underworldcode/litho1pt0/blob/master/litho1pt0/Notebooks/litho1pt0/WorkEx2-OceanDepthAge.ipynb)
 
 
 ## Installation
@@ -213,10 +228,6 @@ git checkout https://github.com/underworldcode/stripy.git
 cd stripy
 pytest -v
 ```
-
-### API Documentation
-
-The API for all functions and classes in `stripy` can be accessed from [https://underworldcode.github.io/stripy/](https://underworldcode.github.io/stripy/).
 
 
 ## References
