@@ -29,8 +29,8 @@ jobs:
           path: |
             ~/conda_pkgs_dir
             ~/.cache/pip
-            # /usr/share/miniconda3/envs/jupyter-book
-            # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
+            /usr/share/miniconda3/envs/jupyter-book
+            ~/stripy/jupyterbook/_build
             
           key: macos-jbdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_jb_docs_environment.yml') }}
 
@@ -61,18 +61,5 @@ jobs:
           deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
           destination_dir: ${{ env.VERSION }}
           publish_dir: jupyterbook/_build/html
-
-      ## Sometimes deploy to latest directory
-      ## (Check if this is part of an actual release)
-      
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        
-        with:
-          deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
-          destination_dir: latest
-          publish_dir: jupyterbook/_build/html
-        
-
 
  
