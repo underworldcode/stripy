@@ -690,12 +690,15 @@ class Triangulation(object):
                 must be the same size of the mesh
             order : int (default=1)
                 order of the interpolatory function used:
+
                 - `order=0` = nearest-neighbour
                 - `order=1` = linear
                 - `order=3` = cubic
+
             sigma : array of floats, shape (6n-12)
                 precomputed array of spline tension factors from
                 `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
+                (only used in cubic interpolation)
 
         Returns:
             zi : float / array of floats, shape (l,)
@@ -2143,12 +2146,15 @@ however, the node ordering will remain identical.</p></div>
                 must be the same size of the mesh
             order : int (default=1)
                 order of the interpolatory function used:
+
                 - `order=0` = nearest-neighbour
                 - `order=1` = linear
                 - `order=3` = cubic
+
             sigma : array of floats, shape (6n-12)
                 precomputed array of spline tension factors from
                 `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
+                (only used in cubic interpolation)
 
         Returns:
             zi : float / array of floats, shape (l,)
@@ -3651,13 +3657,18 @@ this method interpolates the value at the given xi,yi coordinates.</p>
 <dd>value at each point in the triangulation
 must be the same size of the mesh</dd>
 <dt><strong><code>order</code></strong> :&ensp;<code>int (default=1)</code></dt>
-<dd>order of the interpolatory function used:
-- <code>order=0</code> = nearest-neighbour
-- <code>order=1</code> = linear
-- <code>order=3</code> = cubic</dd>
+<dd>
+<p>order of the interpolatory function used:</p>
+<ul>
+<li><code>order=0</code> = nearest-neighbour</li>
+<li><code>order=1</code> = linear</li>
+<li><code>order=3</code> = cubic</li>
+</ul>
+</dd>
 <dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
 <dd>precomputed array of spline tension factors from
-<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></dd>
+<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code>
+(only used in cubic interpolation)</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3688,12 +3699,15 @@ whether interpolation (0), extrapolation (1) or error (other)</dd>
             must be the same size of the mesh
         order : int (default=1)
             order of the interpolatory function used:
+
             - `order=0` = nearest-neighbour
             - `order=1` = linear
             - `order=3` = cubic
+
         sigma : array of floats, shape (6n-12)
             precomputed array of spline tension factors from
             `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
+            (only used in cubic interpolation)
 
     Returns:
         zi : float / array of floats, shape (l,)
