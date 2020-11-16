@@ -4,11 +4,11 @@ name: API docs / pdoc3
 
 on:
   push:
-    branches: [master, dev]
+    branches: [master]
 
   workflow_run:
     workflows: ["Conda Deployment"]
-    branches: [main]
+    branches: [master]
     types: 
       - completed
 
@@ -29,8 +29,6 @@ jobs:
           path: |
             ~/conda_pkgs_dir
             ~/.cache/pip
-            # /usr/share/miniconda3/envs/jupyter-book
-            # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
             
           key: macos-pdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_api_docs_environment.yml') }}
 

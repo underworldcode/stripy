@@ -6,7 +6,6 @@ on:
 
   push:
     branches:
-      - dev
       - conda-testing
 
   # Make manual/github.com triggers available 
@@ -34,9 +33,7 @@ jobs:
         with:
           path: |
             ~/conda_pkgs_dir
-            # /usr/share/miniconda3/envs/jupyter-book
-            # ~/.cache/pip
-            # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
+
             
           key: ${{ matrix.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_build_environment.yml') }}
 
