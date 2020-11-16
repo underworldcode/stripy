@@ -7,7 +7,11 @@ channels:
   - geo-down-under
 dependencies:
   - stripy 
+  - litho1pt0
+  - lavavu
+  - xvfbwrapper 
   - pdoc3
+  - pyepsg
   - cartopy
   - xarray
   - numpy

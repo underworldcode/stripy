@@ -1,21 +1,18 @@
-# Geodynamics with Underworld
+# Introdution to Stripy
 
 
 
-```{figure} Diagrams/MundusSubterraneus.png
+```{figure} https://github.com/underworldcode/stripy/blob/master/stripy/Notebooks/Images/seafloor-age-topo.png?raw=true
+
 ---
 width: 150mm
-name: mundus-subterraneus
+name: seafloor age mapped to equispaced points in the ocean
 ---
-Athanasius Kircher, Mundus subterraneus (1664/65): "Systema Ideale PYRO-
-PHYLACIORUM Subterraneorum, quorum montes *Vulcanii, veluti spiracula
-quaedam existant*"
+_Sample images created with `stripy` illustrating the meshing capability: ocean age data can be triangulated on the sphere with no need for points on land. Once `stripy` ingests your data points, you can sample another dataset to your grid (bathymetry on the right), smooth, find the derivatives of your data, or interpolate to another set of points._
+
 ```
 
-## Chapters
 
-  1. [Background Material](Part0-Introduction/Introduction.md)
-  2. [Fluid and Solid Mechanics](Part1-FluidDynamics/ContinuumMechanics.md)
-  3. [Numerical, Computational Methods](NumpyAndScipy/1-IntroductionToNumpy.md)
-  3. [Python in the Earth Sciences](Part2-Python/0-StartHere.md)
+## Links
 
+  - [Stripy on Github](https://github.com/underworldcode/stripy)
