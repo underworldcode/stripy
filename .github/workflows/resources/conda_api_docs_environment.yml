@@ -6,13 +6,6 @@ channels:
   - conda-forge
   - geo-down-under
 dependencies:
-  - pytest
   - numpy>=1.16.0
   - scipy>=1.0.0
   - pdoc3
-  # - cartopy
-  # - xarray
-
-  # - pip:
-  #   - jupyter-book
-

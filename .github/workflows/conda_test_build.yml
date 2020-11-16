@@ -3,7 +3,16 @@
 name: Conda Test Build 
 
 on: 
-  push
+
+  # pip will run pytest, this catches problems 
+  # with conda building as an extra step when we commit to master
+
+  push:
+    branches:
+      - master
+
+  workflow_dispatch:
+      
     
 jobs:
 
