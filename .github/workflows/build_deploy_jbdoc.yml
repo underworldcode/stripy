@@ -1,4 +1,4 @@
-name: API docs / pdoc3 
+name: API docs / jupyterbook
 
 # We should trigger this from an upload event 
 
@@ -32,13 +32,13 @@ jobs:
             # /usr/share/miniconda3/envs/jupyter-book
             # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
             
-          key: macos-pdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_api_docs_environment.yml') }}
+          key: macos-pdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_jb_docs_environment.yml') }}
 
       - name: Miniconda + Cache
         uses: conda-incubator/setup-miniconda@v2
         with:
             miniconda-version: "latest"
-            environment-file: .github/workflows/resources/conda_api_docs_environment.yml
+            environment-file: .github/workflows/resources/conda_jb_docs_environment.yml
             activate-environment: conda-build-docs
             python-version: 3.8
             use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
@@ -50,18 +50,14 @@ jobs:
           VERSION=`python setup.py --version`
           conda search stripy
           conda install -c geo-down-under stripy==$VERSION  # will explicity request this version and fail otherwise
-          # mkdir test 
-          # cd test
-          # python -c "import stripy"
-
    
-      - name: Build docs with pdoc
+      - name: Build docs with jupyterbook
         shell: bash -l {0}
         run: |
           VERSION=`python setup.py --version`
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
-          cd docs
-          pdoc --config latex_math=True --html -o api --force stripy
+          cd jupyterbook
+          jupyter-book build .
 
       # Here we can add an action to build the jupyter book to a different directory 
       # and then they can be uploaded together. The jupyter book can contain a link to the
@@ -73,5 +69,5 @@ jobs:
         
         with:
           deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
-          destination_dir: ${{ env.VERSION }}/api
-          publish_dir: docs/api/stripy
+          destination_dir: ${{ env.VERSION }}
+          publish_dir: jupyterbook/_build/html
