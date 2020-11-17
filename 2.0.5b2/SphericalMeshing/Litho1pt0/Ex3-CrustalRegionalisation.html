@@ -386,21 +386,8 @@
 <p>Crust 1.0 is built on a regular grid — it is also wrapped in the <code class="docutils literal notranslate"><span class="pre">litho1pt0</span></code> module</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gdal</span>
-<span class="kn">import</span> <span class="nn">litho1pt0</span> <span class="k">as</span> <span class="nn">litho</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">litho1pt0</span> <span class="k">as</span> <span class="nn">litho</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">a028cfc3e88c</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">gdal</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">litho1pt0</span> <span class="k">as</span> <span class="nn">litho</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;gdal&#39;
 </pre></div>
 </div>
 </div>
@@ -418,16 +405,15 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="mf">1511094434e7</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># The full descriptions of the numbers in the table</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="nb">print</span> <span class="p">(</span><span class="n">litho</span><span class="o">.</span><span class="n">c1_region_descriptor</span> <span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> 
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># The table of data</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">crust_type</span> <span class="o">=</span> <span class="n">litho</span><span class="o">.</span><span class="n">_c1_crust_type_lat_lon</span>
-
-<span class="ne">NameError</span>: name &#39;litho&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Platform&#39;, &#39;Slow, thin Platform&#39;, &#39;Archean (Antarctica)&#39;, &#39;Early Archean&#39;, &#39;Late Archean&#39;, &#39;Early/mid  Proter.,&#39;, &#39;Early/mid  Proter. (Antarctica, slow)&#39;, &#39;Late Proter.&#39;, &#39;Slow late Proter.&#39;, &#39;Island arc&#39;, &#39;Forearc&#39;, &#39;Continental arc&#39;, &#39;Slow continental arc&#39;, &#39;Extended crust&#39;, &#39;Fast extended crust (Antarctica)&#39;, &#39;Orogen (Antarctica), thick upper, thin lower crust&#39;, &#39;Orogen, thick upper crust, very thin lower crust&#39;, &#39;Orogen, thick upper crust, fast middle crust&#39;, &#39;Orogen with slow lower crust (Andes)&#39;, &#39;Slow orogen (Himalaya)&#39;, &#39;Margin-continent/shield  transition&#39;, &#39;Slow Margin/Shield (Antarctica)&#39;, &#39;Rift&#39;, &#39;Phanerozoic&#39;, &#39;Fast Phanerozoic (E. Australia, S. Africa, N. Siberia)&#39;, &#39;Normal oceanic&#39;, &#39;Oceans 3 Myrs and younger&#39;, &#39;Melt affected o.c. and oceanic plateaus&#39;, &#39;Continental shelf&#39;, &#39;Continental slope, margin, transition&#39;, &#39;Inactive ridge, Alpha Ridge&#39;, &#39;Thinned cont. crust, Red Sea&#39;, &#39;Oceanic plateau with cont. crust&#39;, &#39;Caspian depression&#39;, &#39;Intermed. cont./oc. crust, Black Sea&#39;, &#39;Caspian Sea oceanic&#39;]
+Resolution:  (180, 360)
+[[25 25 25 ... 25 25 25]
+ [25 25 25 ... 25 25 25]
+ [25 25 25 ... 25 25 25]
+ ...
+ [23 23 23 ... 23 23 23]
+ [23 23 23 ... 23 23 23]
+ [23 23 23 ... 23 23 23]]
 </pre></div>
 </div>
 </div>
@@ -440,36 +426,12 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">3</span><span class="o">-</span><span class="mi">0</span><span class="n">b747229f9f5</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">gridlonv</span><span class="p">,</span> <span class="n">gridlatv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">360</span><span class="p">,</span><span class="mi">720</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">360</span><span class="p">),</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;xy&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> 
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">crust_type_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">gridlonv</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;np&#39; is not defined
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">gridlonv</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">gridlonv</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
         <span class="n">crust_type_i</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span><span class="o">=</span> <span class="n">litho</span><span class="o">.</span><span class="n">crust_type_at</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">gridlonv</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="n">lat</span><span class="o">=</span><span class="n">gridlatv</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">4</span><span class="o">-</span><span class="mi">4865</span><span class="n">f425dbaa</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">gridlonv</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">gridlonv</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>         <span class="n">crust_type_i</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span><span class="o">=</span> <span class="n">litho</span><span class="o">.</span><span class="n">crust_type_at</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">gridlonv</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">],</span> <span class="n">lat</span><span class="o">=</span><span class="n">gridlatv</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">])</span>
-
-<span class="ne">NameError</span>: name &#39;gridlonv&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -670,34 +632,10 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="mi">12140</span><span class="n">adab572</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">65</span> <span class="c1"># map the image with the colors</span>
-<span class="g g-Whitespace">     </span><span class="mi">66</span> 
-<span class="ne">---&gt; </span><span class="mi">67</span> <span class="n">crust_color_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">crust_type_i</span><span class="o">.</span><span class="n">shape</span><span class="o">+</span><span class="p">(</span><span class="mi">3</span><span class="p">,)))</span>
-<span class="g g-Whitespace">     </span><span class="mi">68</span> 
-<span class="g g-Whitespace">     </span><span class="mi">69</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">crust_type_i</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-
-<span class="ne">NameError</span>: name &#39;np&#39; is not defined
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crust_color_image2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">crust_color_image</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="n">f229ec177d3e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">crust_color_image2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">crust_color_image</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;np&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -714,7 +652,7 @@
 <span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mi">0</span><span class="n">fe784acb100</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">crust_color_image</span> <span class="o">=</span> <span class="n">crust_color_image2</span><span class="o">**</span><span class="mf">0.333</span> <span class="o">*</span> <span class="n">hillshade</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 
-<span class="ne">NameError</span>: name &#39;crust_color_image2&#39; is not defined
+<span class="ne">NameError</span>: name &#39;hillshade&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -740,16 +678,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">77928</span><span class="n">c3d48cb</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> 
-<span class="ne">----&gt; </span><span class="mi">8</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">crust_color_image</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">base_projection</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span>           <span class="n">extent</span><span class="o">=</span><span class="n">global_extent</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> 
-
-<span class="ne">NameError</span>: name &#39;crust_color_image&#39; is not defined
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x7ffa6b6b0cd0&gt;
 </pre></div>
 </div>
 <img alt="../../_images/Ex3-CrustalRegionalisation_12_1.png" src="../../_images/Ex3-CrustalRegionalisation_12_1.png" />
@@ -763,13 +692,42 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">0</span><span class="n">c516d24c01a</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">litho</span><span class="o">.</span><span class="n">c1_region_descriptor</span><span class="p">):</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2"> </span><span class="si">{:2d}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">desc</span><span class="p">))</span>
-
-<span class="ne">NameError</span>: name &#39;litho&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>	  0: Platform
+	  1: Slow, thin Platform
+	  2: Archean (Antarctica)
+	  3: Early Archean
+	  4: Late Archean
+	  5: Early/mid  Proter.,
+	  6: Early/mid  Proter. (Antarctica, slow)
+	  7: Late Proter.
+	  8: Slow late Proter.
+	  9: Island arc
+	 10: Forearc
+	 11: Continental arc
+	 12: Slow continental arc
+	 13: Extended crust
+	 14: Fast extended crust (Antarctica)
+	 15: Orogen (Antarctica), thick upper, thin lower crust
+	 16: Orogen, thick upper crust, very thin lower crust
+	 17: Orogen, thick upper crust, fast middle crust
+	 18: Orogen with slow lower crust (Andes)
+	 19: Slow orogen (Himalaya)
+	 20: Margin-continent/shield  transition
+	 21: Slow Margin/Shield (Antarctica)
+	 22: Rift
+	 23: Phanerozoic
+	 24: Fast Phanerozoic (E. Australia, S. Africa, N. Siberia)
+	 25: Normal oceanic
+	 26: Oceans 3 Myrs and younger
+	 27: Melt affected o.c. and oceanic plateaus
+	 28: Continental shelf
+	 29: Continental slope, margin, transition
+	 30: Inactive ridge, Alpha Ridge
+	 31: Thinned cont. crust, Red Sea
+	 32: Oceanic plateau with cont. crust
+	 33: Caspian depression
+	 34: Intermed. cont./oc. crust, Black Sea
+	 35: Caspian Sea oceanic
 </pre></div>
 </div>
 </div>
@@ -828,16 +786,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">13</span><span class="o">-</span><span class="n">f0f21b6aa72f</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="c1"># Platforms, Archean, Proterozoic</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span> 
-<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">crust_type</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">,</span> <span class="mf">8.5</span><span class="p">],</span> 
-<span class="g g-Whitespace">     </span><span class="mi">16</span>                 <span class="n">colors</span><span class="o">=</span><span class="p">[</span> <span class="s2">&quot;#FF4400&quot;</span><span class="p">,</span> <span class="s2">&quot;#ff751a&quot;</span><span class="p">,</span> <span class="s2">&quot;#9999FF&quot;</span><span class="p">,</span> <span class="s2">&quot;#4da6ff&quot;</span><span class="p">],</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span>                 <span class="n">hatches</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;/////&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">],</span>
-
-<span class="ne">NameError</span>: name &#39;crust_type&#39; is not defined
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.mpl.feature_artist.FeatureArtist at 0x7ffa513f3090&gt;
 </pre></div>
 </div>
 <img alt="../../_images/Ex3-CrustalRegionalisation_14_1.png" src="../../_images/Ex3-CrustalRegionalisation_14_1.png" />

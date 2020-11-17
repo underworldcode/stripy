@@ -16,7 +16,6 @@ kernelspec:
 Crust 1.0 is built on a regular grid — it is also wrapped in the `litho1pt0` module
 
 ```{code-cell} ipython3
-import gdal
 import litho1pt0 as litho
 import numpy as np
 ```
