@@ -6,10 +6,10 @@ channels:
   - conda-forge
   - geo-down-under
 dependencies:
-  - cartopy
-  - xarray
   - geo-down-under::stripy==2.0.5b2
   - geo-down-under::litho1pt0
+  - pip 
+  
 
   - pip:
     - jupyter-book
