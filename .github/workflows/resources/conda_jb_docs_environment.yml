@@ -7,6 +7,8 @@ channels:
 dependencies:
   - geo-down-under::stripy==2.0.5b2
   - geo-down-under::litho1pt0
+  - cartopy
+  - xarray
   - pip 
   
   - pip:
