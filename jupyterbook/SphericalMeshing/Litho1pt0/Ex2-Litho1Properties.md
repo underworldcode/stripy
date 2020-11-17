@@ -97,7 +97,6 @@ ids, density_at_1km = litho.property_at_lat_lon_depth_points(latv, lonv, depths,
 %matplotlib inline
 
 import cartopy
-import gdal
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 
