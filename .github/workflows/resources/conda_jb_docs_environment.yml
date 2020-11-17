@@ -1,5 +1,4 @@
-# This is the environment needed to build stripy. As this will be cached, we can include any stripy dependencies
-# so they are not downloaded again - this should save a bit of time
+# This is the environment needed to run the stripy examples
 
 name: conda-build-docs
 channels: 
@@ -10,7 +9,6 @@ dependencies:
   - geo-down-under::litho1pt0
   - pip 
   
-
   - pip:
     - jupyter-book
 
