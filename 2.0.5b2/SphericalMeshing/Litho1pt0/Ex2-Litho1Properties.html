@@ -404,20 +404,6 @@ a great circle.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">6</span><span class="n">c162c08c482</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">import</span> <span class="nn">cartopy</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
-<span class="ne">---&gt; </span><span class="mi">10</span> <span class="kn">import</span> <span class="nn">pyproj</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> 
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="kn">import</span> <span class="nn">stripy</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;pyproj&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -680,32 +666,6 @@ odict_items([(&#39;DEPTH&#39;, 0), (&#39;DENSITY&#39;, 1), (&#39;VP&#39;, 2), (&
 <span class="n">endlonlat</span>  <span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">80.0</span><span class="p">,</span><span class="mf">45.0</span><span class="p">])</span>
 
 <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">great_circle_profile</span><span class="p">(</span><span class="n">startlonlat</span><span class="p">,</span> <span class="n">endlonlat</span><span class="p">,</span> <span class="n">depths</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s2">&quot;DENSITY&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="n">c02b4db45b22</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">endlonlat</span>  <span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">80.0</span><span class="p">,</span><span class="mf">45.0</span><span class="p">])</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> 
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">great_circle_profile</span><span class="p">(</span><span class="n">startlonlat</span><span class="p">,</span> <span class="n">endlonlat</span><span class="p">,</span> <span class="n">depths</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s2">&quot;DENSITY&quot;</span><span class="p">)</span>
-
-<span class="nn">&lt;ipython-input-7-8cffd0a947a8&gt;</span> in <span class="ni">great_circle_profile</span><span class="nt">(startlonlat, endlonlat, depths, resolution, QID)</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span>     <span class="kn">import</span> <span class="nn">stripy</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> 
-<span class="ne">---&gt; </span><span class="mi">12</span>     <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span> <span class="o">=</span> <span class="n">great_circle_Npoints</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">startlonlat</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">endlonlat</span><span class="p">),</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> 
-<span class="g g-Whitespace">     </span><span class="mi">14</span>     <span class="c1">## Would be useful to have distance measure here to map resolutions ...</span>
-
-<span class="nn">&lt;ipython-input-7-8cffd0a947a8&gt;</span> in <span class="ni">great_circle_Npoints</span><span class="nt">(lonlat1, lonlat2, N)</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> 
-<span class="g g-Whitespace">     </span><span class="mi">37</span> 
-<span class="ne">---&gt; </span><span class="mi">38</span>     <span class="n">xyz1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stripy</span><span class="o">.</span><span class="n">spherical</span><span class="o">.</span><span class="n">lonlat2xyz</span><span class="p">(</span><span class="n">lonlat1r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lonlat1r</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">T</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span>     <span class="n">xyz2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stripy</span><span class="o">.</span><span class="n">spherical</span><span class="o">.</span><span class="n">lonlat2xyz</span><span class="p">(</span><span class="n">lonlat2r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lonlat2r</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">T</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span> 
-
-<span class="ne">NameError</span>: name &#39;stripy&#39; is not defined
 </pre></div>
 </div>
 </div>
