@@ -89,7 +89,7 @@
     <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../../FrontPage.html">
-   Geodynamics with Underworld
+   Introdution to Stripy
   </a>
  </li>
 </ul>
@@ -403,32 +403,10 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">7</span><span class="n">ed4be77a6c1</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">litho1pt0</span> <span class="k">as</span> <span class="nn">litho1pt0</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">stripy</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;litho1pt0&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">even_mesh</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">spherical_meshes</span><span class="o">.</span><span class="n">icosahedral_mesh</span><span class="p">(</span><span class="n">include_face_points</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">refinement_levels</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="mi">8662</span><span class="n">c73f36ea</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">even_mesh</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">spherical_meshes</span><span class="o">.</span><span class="n">icosahedral_mesh</span><span class="p">(</span><span class="n">include_face_points</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">refinement_levels</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;stripy&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -442,14 +420,8 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">3</span><span class="o">-</span><span class="mi">5</span><span class="n">ecaa8023603</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">number_of_mesh_points</span> <span class="o">=</span> <span class="n">even_mesh</span><span class="o">.</span><span class="n">npoints</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span> <span class="p">(</span><span class="n">number_of_mesh_points</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="nb">print</span> <span class="p">(</span><span class="n">even_mesh</span><span class="o">.</span><span class="n">lats</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;even_mesh&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>30722
+(30722,)
 </pre></div>
 </div>
 </div>
@@ -464,20 +436,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">4</span><span class="o">-</span><span class="mi">6</span><span class="n">d0c5be3b892</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">latitudes_in_radians</span> <span class="o">=</span> <span class="n">even_mesh</span><span class="o">.</span><span class="n">lats</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">latitudes_in_degrees</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">latitudes_in_radians</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> 
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">longitudes_in_radians</span> <span class="o">=</span> <span class="n">even_mesh</span><span class="o">.</span><span class="n">lons</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">longitudes_in_degrees</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">longitudes_in_radians</span><span class="p">)</span><span class="o">%</span><span class="k">360</span>.0 - 180.0
-
-<span class="ne">NameError</span>: name &#39;even_mesh&#39; is not defined
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -489,15 +447,8 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="mf">8e98</span><span class="n">a98b9e88</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">## Plot these points to check the mesh is reasonable</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> 
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="nb">print</span> <span class="p">(</span><span class="n">latitudes_in_degrees</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">latitudes_in_degrees</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="nb">print</span> <span class="p">(</span><span class="n">longitudes_in_degrees</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">longitudes_in_degrees</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-
-<span class="ne">NameError</span>: name &#39;latitudes_in_degrees&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-90.0 90.0
+-180.0 180.0
 </pre></div>
 </div>
 </div>
@@ -521,16 +472,43 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="n">c5fb0b504eec</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> 
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Make an empty array with the same size as the number of mesh points</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">crustype2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">number_of_mesh_points</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">crustype2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">even_mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> 
-
-<span class="ne">NameError</span>: name &#39;np&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration: 0
+Iteration: 1000
+Iteration: 2000
+Iteration: 3000
+Iteration: 4000
+Iteration: 5000
+Iteration: 6000
+Iteration: 7000
+Iteration: 8000
+Iteration: 9000
+Iteration: 10000
+Iteration: 11000
+Iteration: 12000
+Iteration: 13000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration: 14000
+Iteration: 15000
+Iteration: 16000
+Iteration: 17000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration: 18000
+Iteration: 19000
+Iteration: 20000
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration: 21000
+Iteration: 22000
+Iteration: 23000
+Iteration: 24000
+Iteration: 25000
+Iteration: 26000
+Iteration: 27000
+Iteration: 28000
+Iteration: 29000
+Iteration: 30000
 </pre></div>
 </div>
 </div>
@@ -544,14 +522,25 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">7</span><span class="o">-</span><span class="mf">01e43</span><span class="n">e77cc0d</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">## Now need depth values from litho1pt0 geophysical model</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> 
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">litho1pt0</span><span class="o">.</span><span class="n">l1_layer_decode</span>
-
-<span class="ne">NameError</span>: name &#39;litho1pt0&#39; is not defined
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OrderedDict([(&#39;ASTHENO-TOP&#39;, 0),
+             (&#39;LID-BOTTOM&#39;, 1),
+             (&#39;LID-TOP&#39;, 2),
+             (&#39;CRUST3-BOTTOM&#39;, 3),
+             (&#39;CRUST3-TOP&#39;, 4),
+             (&#39;CRUST2-BOTTOM&#39;, 5),
+             (&#39;CRUST2-TOP&#39;, 6),
+             (&#39;CRUST1-BOTTOM&#39;, 7),
+             (&#39;CRUST1-TOP&#39;, 8),
+             (&#39;SEDS3-BOTTOM&#39;, 9),
+             (&#39;SEDS3-TOP&#39;, 10),
+             (&#39;SEDS2-BOTTOM&#39;, 11),
+             (&#39;SEDS2-TOP&#39;, 12),
+             (&#39;SEDS1-BOTTOM&#39;, 13),
+             (&#39;SEDS1-TOP&#39;, 14),
+             (&#39;WATER-BOTTOM&#39;, 15),
+             (&#39;WATER-TOP&#39;, 16),
+             (&#39;ICE-BOTTOM&#39;, 17),
+             (&#39;ICE-TOP&#39;, 18)])
 </pre></div>
 </div>
 </div>
@@ -568,16 +557,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="mi">3</span><span class="n">ff80925d08e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">l1</span> <span class="o">=</span> <span class="n">litho1pt0</span><span class="o">.</span><span class="n">layer_depth</span><span class="p">(</span><span class="n">latitudes_in_degrees</span><span class="p">,</span> <span class="n">longitudes_in_degrees</span><span class="p">,</span> <span class="s2">&quot;LID-BOTTOM&quot;</span><span class="p">)</span> <span class="o">*</span><span class="mf">0.001</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">litho1pt0</span><span class="o">.</span><span class="n">layer_depth</span><span class="p">(</span><span class="n">latitudes_in_degrees</span><span class="p">,</span> <span class="n">longitudes_in_degrees</span><span class="p">,</span> <span class="s2">&quot;LID-TOP&quot;</span><span class="p">)</span> <span class="o">*</span><span class="mf">0.001</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> 
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">lthickness</span> <span class="o">=</span> <span class="p">(</span><span class="n">l1</span> <span class="o">-</span> <span class="n">l2</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> 
-
-<span class="ne">NameError</span>: name &#39;litho1pt0&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Litho thickness - 0.18207070637822653, 270.3819536048926
 </pre></div>
 </div>
 </div>
@@ -597,16 +577,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="mi">76</span><span class="n">acc2acd0bb</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">c1</span> <span class="o">=</span> <span class="n">litho1pt0</span><span class="o">.</span><span class="n">layer_depth</span><span class="p">(</span><span class="n">latitudes_in_degrees</span><span class="p">,</span> <span class="n">longitudes_in_degrees</span><span class="p">,</span> <span class="s2">&quot;CRUST3-BOTTOM&quot;</span><span class="p">)</span> <span class="o">*</span><span class="mf">0.001</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">litho1pt0</span><span class="o">.</span><span class="n">layer_depth</span><span class="p">(</span><span class="n">latitudes_in_degrees</span><span class="p">,</span> <span class="n">longitudes_in_degrees</span><span class="p">,</span> <span class="s2">&quot;CRUST1-TOP&quot;</span><span class="p">)</span> <span class="o">*</span><span class="mf">0.001</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> 
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">s0</span> <span class="o">=</span> <span class="n">litho1pt0</span><span class="o">.</span><span class="n">layer_depth</span><span class="p">(</span><span class="n">latitudes_in_degrees</span><span class="p">,</span> <span class="n">longitudes_in_degrees</span><span class="p">,</span> <span class="s2">&quot;SEDS1-TOP&quot;</span><span class="p">)</span> <span class="o">*</span><span class="mf">0.001</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> 
-
-<span class="ne">NameError</span>: name &#39;litho1pt0&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Crust thickness - 0.6228762225032689, 80.13736217341494
 </pre></div>
 </div>
 </div>
@@ -647,33 +618,59 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
 <span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="n">a211d65f54ae</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="n">colormap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;RdYlBu_r&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> 
-<span class="ne">---&gt; </span><span class="mi">23</span> <span class="n">m</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">longitudes_in_degrees</span><span class="p">,</span> <span class="n">latitudes_in_degrees</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">sthickness</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span>                <span class="n">s</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span> 
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">## Is that sensible ?</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">&#39;matplotlib&#39;</span><span class="p">,</span> <span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">cartopy</span>
 
-<span class="ne">NameError</span>: name &#39;longitudes_in_degrees&#39; is not defined
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/interactiveshell.py</span> in <span class="ni">run_line_magic</span><span class="nt">(self, magic_name, line, _stack_depth)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2325</span>                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;local_ns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_scope</span><span class="p">(</span><span class="n">stack_depth</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2326</span>             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">builtin_trap</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">2327</span>                 <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2328</span>             <span class="k">return</span> <span class="n">result</span>
+<span class="g g-Whitespace">   </span><span class="mi">2329</span> 
+
+<span class="nn">&lt;decorator-gen-101&gt;</span> in <span class="ni">matplotlib</span><span class="nt">(self, line)</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/magic.py</span> in <span class="ni">&lt;lambda&gt;</span><span class="nt">(f, *a, **k)</span>
+<span class="g g-Whitespace">    </span><span class="mi">185</span>     <span class="c1"># but it&#39;s overkill for just that one bit of state.</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span>     <span class="k">def</span> <span class="nf">magic_deco</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">187</span>         <span class="n">call</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">188</span> 
+<span class="g g-Whitespace">    </span><span class="mi">189</span>         <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/magics/pylab.py</span> in <span class="ni">matplotlib</span><span class="nt">(self, line)</span>
+<span class="g g-Whitespace">     </span><span class="mi">97</span>             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available matplotlib backends: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">backends_list</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span>         <span class="k">else</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">99</span>             <span class="n">gui</span><span class="p">,</span> <span class="n">backend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">enable_matplotlib</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gui</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">args</span><span class="o">.</span><span class="n">gui</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">100</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_show_matplotlib_backend</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gui</span><span class="p">,</span> <span class="n">backend</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">101</span> 
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/interactiveshell.py</span> in <span class="ni">enable_matplotlib</span><span class="nt">(self, gui)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3492</span>         <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">3493</span><span class="sd">         from IPython.core import pylabtools as pt</span>
+<span class="ne">-&gt; </span><span class="mi">3494</span><span class="sd">         gui, backend = pt.find_gui_and_backend(gui, self.pylab_gui_select)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3495</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">3496</span><span class="sd">         if gui != &#39;inline&#39;:</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/pylabtools.py</span> in <span class="ni">find_gui_and_backend</span><span class="nt">(gui, gui_select)</span>
+<span class="g g-Whitespace">    </span><span class="mi">278</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">279</span> 
+<span class="ne">--&gt; </span><span class="mi">280</span>     <span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="g g-Whitespace">    </span><span class="mi">281</span> 
+<span class="g g-Whitespace">    </span><span class="mi">282</span>     <span class="k">if</span> <span class="n">gui</span> <span class="ow">and</span> <span class="n">gui</span> <span class="o">!=</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;matplotlib&#39;
 </pre></div>
 </div>
-<img alt="../../_images/WorkEx1-CratonAverageProperties_10_1.png" src="../../_images/WorkEx1-CratonAverageProperties_10_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crustype</span> <span class="o">=</span> <span class="n">litho1pt0</span><span class="o">.</span><span class="n">crust_type_at</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">even_mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">even_mesh</span><span class="o">.</span><span class="n">lons</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">90403</span><span class="n">c4a2149</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">crustype</span> <span class="o">=</span> <span class="n">litho1pt0</span><span class="o">.</span><span class="n">crust_type_at</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">even_mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">even_mesh</span><span class="o">.</span><span class="n">lons</span><span class="p">))</span>
-
-<span class="ne">NameError</span>: name &#39;litho1pt0&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -692,20 +689,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="n">f8d096bef2f6</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># litho1pt0.c1_region_descriptor in 2,3,4 are Archean terranes - this is an easy way to get those values</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> 
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">craton_cthickness</span> <span class="o">=</span> <span class="n">cthickness</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">crustype</span><span class="o">&lt;=</span><span class="mi">4</span><span class="p">,</span> <span class="n">crustype</span><span class="o">&gt;=</span><span class="mi">2</span><span class="p">)]</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">craton_lthickness</span> <span class="o">=</span> <span class="n">lthickness</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">crustype</span><span class="o">&lt;=</span><span class="mi">4</span><span class="p">,</span> <span class="n">crustype</span><span class="o">&gt;=</span><span class="mi">2</span><span class="p">)]</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> 
-
-<span class="ne">NameError</span>: name &#39;cthickness&#39; is not defined
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -715,13 +698,8 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">13</span><span class="o">-</span><span class="n">a0af16cdcdbe</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="nb">print</span><span class="p">(</span><span class="n">craton_lthickness</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="n">proton_lthickness</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
-
-<span class="ne">NameError</span>: name &#39;craton_lthickness&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>153.74762011937815
+129.33684776802465
 </pre></div>
 </div>
 </div>
@@ -735,14 +713,9 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="n">cb4365af838d</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">crustName</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">litho1pt0</span><span class="o">.</span><span class="n">c1_region_descriptor</span><span class="p">):</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="k">if</span> <span class="s2">&quot;Archean&quot;</span> <span class="ow">in</span> <span class="n">crustName</span><span class="p">:</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>         <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">,</span><span class="n">crustName</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;litho1pt0&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2 - Archean (Antarctica)
+3 - Early Archean
+4 - Late Archean
 </pre></div>
 </div>
 </div>

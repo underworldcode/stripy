@@ -87,7 +87,7 @@
     <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../../../FrontPage.html">
-   Geodynamics with Underworld
+   Introdution to Stripy
   </a>
  </li>
 </ul>
@@ -472,10 +472,18 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fe73d5bf760&gt;
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="mi">5</span><span class="n">d3b499f4faf</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">&#39;matplotlib&#39;</span><span class="p">,</span> <span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;matplotlib&#39;
 </pre></div>
 </div>
-<img alt="../../../_images/Notebook-5_3_1.png" src="../../../_images/Notebook-5_3_1.png" />
 </div>
 </div>
 </div>
@@ -545,6 +553,20 @@ to define the interpolation routine again.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">4</span><span class="o">-</span><span class="mi">91</span><span class="n">cdccefc6be</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">xarray</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">age_dataset</span> <span class="o">=</span> <span class="s2">&quot;../Data/age.3.6.nc&quot;</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">age_data</span> <span class="o">=</span> <span class="n">xarray</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">age_dataset</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">subs_data</span> <span class="o">=</span> <span class="n">age_data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;xarray&#39;
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="interpolate-height-data-to-fine-triangular-grid">
@@ -583,27 +605,7 @@ to define the interpolation routine again.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.8/site-packages/xarray/backends/api.py</span> in <span class="ni">_get_default_engine_remote_uri</span><span class="nt">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">45</span>     <span class="k">try</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">46</span>         <span class="kn">import</span> <span class="nn">netCDF4</span>  <span class="c1"># noqa: F401</span>
-<span class="g g-Whitespace">     </span><span class="mi">47</span> 
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;netCDF4&#39;
-
-<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
-
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.8/site-packages/xarray/backends/api.py</span> in <span class="ni">_get_default_engine_remote_uri</span><span class="nt">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">50</span>         <span class="k">try</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">51</span>             <span class="kn">import</span> <span class="nn">pydap</span>  <span class="c1"># noqa: F401</span>
-<span class="g g-Whitespace">     </span><span class="mi">52</span> 
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;pydap&#39;
-
-<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
-
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
 <span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="n">e0148dc94a30</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> 
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">etopo_dataset</span> <span class="o">=</span> <span class="s2">&quot;http://thredds.socib.es/thredds/dodsC/ancillary_data/bathymetry/ETOPO1_Bed_g_gmt4.nc&quot;</span>
@@ -611,28 +613,7 @@ to define the interpolation routine again.</p>
 <span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">subs_data</span> <span class="o">=</span> <span class="n">etopo_data</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">left</span><span class="p">,</span><span class="n">right</span><span class="p">,</span> <span class="mi">180</span><span class="p">),</span> <span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">bottom</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="mi">180</span><span class="p">))</span>
 <span class="g g-Whitespace">      </span><span class="mi">7</span> 
 
-<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.8/site-packages/xarray/backends/api.py</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, group, decode_cf, mask_and_scale, decode_times, autoclose, concat_characters, decode_coords, engine, chunks, lock, cache, drop_variables, backend_kwargs, use_cftime, decode_timedelta)</span>
-<span class="g g-Whitespace">    </span><span class="mi">504</span> 
-<span class="g g-Whitespace">    </span><span class="mi">505</span>         <span class="k">if</span> <span class="n">engine</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">506</span>             <span class="n">engine</span> <span class="o">=</span> <span class="n">_get_default_engine</span><span class="p">(</span><span class="n">filename_or_obj</span><span class="p">,</span> <span class="n">allow_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">507</span>         <span class="k">if</span> <span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;netcdf4&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">508</span>             <span class="n">store</span> <span class="o">=</span> <span class="n">backends</span><span class="o">.</span><span class="n">NetCDF4DataStore</span><span class="o">.</span><span class="n">open</span><span class="p">(</span>
-
-<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.8/site-packages/xarray/backends/api.py</span> in <span class="ni">_get_default_engine</span><span class="nt">(path, allow_remote)</span>
-<span class="g g-Whitespace">    </span><span class="mi">143</span> <span class="k">def</span> <span class="nf">_get_default_engine</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">allow_remote</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">144</span>     <span class="k">if</span> <span class="n">allow_remote</span> <span class="ow">and</span> <span class="n">is_remote_uri</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">145</span>         <span class="n">engine</span> <span class="o">=</span> <span class="n">_get_default_engine_remote_uri</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">146</span>     <span class="k">elif</span> <span class="n">is_grib_path</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">147</span>         <span class="n">engine</span> <span class="o">=</span> <span class="n">_get_default_engine_grib</span><span class="p">()</span>
-
-<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.8/site-packages/xarray/backends/api.py</span> in <span class="ni">_get_default_engine_remote_uri</span><span class="nt">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">53</span>             <span class="n">engine</span> <span class="o">=</span> <span class="s2">&quot;pydap&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span>         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">55</span>             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">56</span>                 <span class="s2">&quot;netCDF4 or pydap is required for accessing &quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">57</span>                 <span class="s2">&quot;remote datasets via OPeNDAP&quot;</span>
-
-<span class="ne">ValueError</span>: netCDF4 or pydap is required for accessing remote datasets via OPeNDAP
+<span class="ne">NameError</span>: name &#39;xarray&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -653,15 +634,15 @@ to define the interpolation routine again.</p>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
 <span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">07</span><span class="n">fb7969acaf</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">150</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">7000</span><span class="p">,</span><span class="o">-</span><span class="mi">2000</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">5</span> 
-<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span> <span class="n">meshages</span><span class="p">[</span><span class="n">meshheights</span><span class="o">&lt;-</span><span class="mi">2000</span><span class="p">],</span> <span class="n">meshheights</span><span class="p">[</span><span class="n">meshheights</span><span class="o">&lt;-</span><span class="mi">2000</span><span class="p">])</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;MyAwesomePlot.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
 
-<span class="ne">NameError</span>: name &#39;meshheights&#39; is not defined
+<span class="ne">NameError</span>: name &#39;plt&#39; is not defined
 </pre></div>
 </div>
-<img alt="../../../_images/Notebook-5_10_1.png" src="../../../_images/Notebook-5_10_1.png" />
 </div>
 </div>
 </div>

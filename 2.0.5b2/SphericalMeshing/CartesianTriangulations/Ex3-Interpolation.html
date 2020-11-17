@@ -89,7 +89,7 @@
     <ul class="nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="../../FrontPage.html">
-   Geodynamics with Underworld
+   Introdution to Stripy
   </a>
  </li>
 </ul>
@@ -548,7 +548,55 @@ interpolate(xi, yi, zdata, order=1, grad=None, sigma=None) method of stripy.cart
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Ex3-Interpolation_4_0.png" src="../../_images/Ex3-Interpolation_4_0.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">3</span><span class="o">-</span><span class="mi">0</span><span class="n">b734ff4167e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">&#39;matplotlib&#39;</span><span class="p">,</span> <span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/interactiveshell.py</span> in <span class="ni">run_line_magic</span><span class="nt">(self, magic_name, line, _stack_depth)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2325</span>                 <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;local_ns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_scope</span><span class="p">(</span><span class="n">stack_depth</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2326</span>             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">builtin_trap</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">2327</span>                 <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2328</span>             <span class="k">return</span> <span class="n">result</span>
+<span class="g g-Whitespace">   </span><span class="mi">2329</span> 
+
+<span class="nn">&lt;decorator-gen-101&gt;</span> in <span class="ni">matplotlib</span><span class="nt">(self, line)</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/magic.py</span> in <span class="ni">&lt;lambda&gt;</span><span class="nt">(f, *a, **k)</span>
+<span class="g g-Whitespace">    </span><span class="mi">185</span>     <span class="c1"># but it&#39;s overkill for just that one bit of state.</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span>     <span class="k">def</span> <span class="nf">magic_deco</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">187</span>         <span class="n">call</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">188</span> 
+<span class="g g-Whitespace">    </span><span class="mi">189</span>         <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/magics/pylab.py</span> in <span class="ni">matplotlib</span><span class="nt">(self, line)</span>
+<span class="g g-Whitespace">     </span><span class="mi">97</span>             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Available matplotlib backends: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">backends_list</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span>         <span class="k">else</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">99</span>             <span class="n">gui</span><span class="p">,</span> <span class="n">backend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell</span><span class="o">.</span><span class="n">enable_matplotlib</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gui</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">args</span><span class="o">.</span><span class="n">gui</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">100</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_show_matplotlib_backend</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gui</span><span class="p">,</span> <span class="n">backend</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">101</span> 
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/interactiveshell.py</span> in <span class="ni">enable_matplotlib</span><span class="nt">(self, gui)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3492</span>         <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">3493</span><span class="sd">         from IPython.core import pylabtools as pt</span>
+<span class="ne">-&gt; </span><span class="mi">3494</span><span class="sd">         gui, backend = pt.find_gui_and_backend(gui, self.pylab_gui_select)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3495</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">3496</span><span class="sd">         if gui != &#39;inline&#39;:</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/pylabtools.py</span> in <span class="ni">find_gui_and_backend</span><span class="nt">(gui, gui_select)</span>
+<span class="g g-Whitespace">    </span><span class="mi">278</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">279</span> 
+<span class="ne">--&gt; </span><span class="mi">280</span>     <span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="g g-Whitespace">    </span><span class="mi">281</span> 
+<span class="g g-Whitespace">    </span><span class="mi">282</span>     <span class="k">if</span> <span class="n">gui</span> <span class="ow">and</span> <span class="n">gui</span> <span class="o">!=</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;matplotlib&#39;
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -562,6 +610,26 @@ interpolate(xi, yi, zdata, order=1, grad=None, sigma=None) method of stripy.cart
 
 <span class="n">coarse_afn</span> <span class="o">=</span> <span class="n">analytic</span><span class="p">(</span><span class="n">cmesh</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">cmesh</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 <span class="n">fine_afn</span>   <span class="o">=</span> <span class="n">analytic</span><span class="p">(</span><span class="n">fmesh</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fmesh</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">4</span><span class="o">-</span><span class="mi">05</span><span class="n">c7ff223c17</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>      <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">k1</span><span class="o">*</span><span class="n">xs</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k2</span><span class="o">*</span><span class="n">ys</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">coarse_afn</span> <span class="o">=</span> <span class="n">analytic</span><span class="p">(</span><span class="n">cmesh</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">cmesh</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">fine_afn</span>   <span class="o">=</span> <span class="n">analytic</span><span class="p">(</span><span class="n">fmesh</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fmesh</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+<span class="nn">&lt;ipython-input-4-05c7ff223c17&gt;</span> in <span class="ni">analytic</span><span class="nt">(xs, ys, k1, k2)</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">def</span> <span class="nf">analytic</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">):</span>
+<span class="ne">----&gt; </span><span class="mi">2</span>      <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">k1</span><span class="o">*</span><span class="n">xs</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k2</span><span class="o">*</span><span class="n">ys</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">coarse_afn</span> <span class="o">=</span> <span class="n">analytic</span><span class="p">(</span><span class="n">cmesh</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">cmesh</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">fine_afn</span>   <span class="o">=</span> <span class="n">analytic</span><span class="p">(</span><span class="n">fmesh</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fmesh</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;np&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -590,8 +658,17 @@ interpolate(xi, yi, zdata, order=1, grad=None, sigma=None) method of stripy.cart
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Ex3-Interpolation_8_0.png" src="../../_images/Ex3-Interpolation_8_0.png" />
-<img alt="../../_images/Ex3-Interpolation_8_1.png" src="../../_images/Ex3-Interpolation_8_1.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="mi">6588</span><span class="n">cd742ef1</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="k">return</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> 
+<span class="ne">---&gt; </span><span class="mi">13</span> <span class="n">mesh_field_fig</span><span class="p">(</span><span class="n">cmesh</span><span class="p">,</span> <span class="n">coarse_afn</span><span class="p">,</span> <span class="s2">&quot;coarse analytic&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">mesh_field_fig</span><span class="p">(</span><span class="n">fmesh</span><span class="p">,</span> <span class="n">fine_afn</span><span class="p">,</span> <span class="s2">&quot;fine analytic&quot;</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;coarse_afn&#39; is not defined
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -612,6 +689,20 @@ It returns an array of interpolated values and a status array that states whethe
 
 <span class="n">err_c2f1</span> <span class="o">=</span> <span class="n">interp_c2f1</span><span class="o">-</span><span class="n">fine_afn</span>
 <span class="n">err_c2f3</span> <span class="o">=</span> <span class="n">interp_c2f3</span><span class="o">-</span><span class="n">fine_afn</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="n">eab08ad2629d</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">interp_c2f1</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">cmesh</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">fmesh</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fmesh</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">zdata</span><span class="o">=</span><span class="n">coarse_afn</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">interp_c2f3</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">cmesh</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">fmesh</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">fmesh</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">zdata</span><span class="o">=</span><span class="n">coarse_afn</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">err_c2f1</span> <span class="o">=</span> <span class="n">interp_c2f1</span><span class="o">-</span><span class="n">fine_afn</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">err_c2f3</span> <span class="o">=</span> <span class="n">interp_c2f3</span><span class="o">-</span><span class="n">fine_afn</span>
+
+<span class="ne">NameError</span>: name &#39;coarse_afn&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -641,7 +732,18 @@ It returns an array of interpolated values and a status array that states whethe
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Ex3-Interpolation_11_0.png" src="../../_images/Ex3-Interpolation_11_0.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">7</span><span class="o">-</span><span class="n">b9eb7dd6bba3</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> 
+<span class="g g-Whitespace">     </span><span class="mi">13</span> 
+<span class="ne">---&gt; </span><span class="mi">14</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> 
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">axis_mesh_field</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">fmesh</span><span class="p">,</span> <span class="n">interp_c2f1</span><span class="p">,</span> <span class="s2">&quot;interp1&quot;</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;plt&#39; is not defined
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -668,6 +770,20 @@ It returns an array of interpolated values and a status array that states whethe
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="mf">82e492</span><span class="n">e102ed</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">resX</span> <span class="o">=</span> <span class="n">resY</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">grid_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">resX</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">grid_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">,</span> <span class="n">resY</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+
+<span class="ne">NameError</span>: name &#39;np&#39; is not defined
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -686,7 +802,18 @@ It returns an array of interpolated values and a status array that states whethe
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/Ex3-Interpolation_14_0.png" src="../../_images/Ex3-Interpolation_14_0.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="mi">928809</span><span class="n">ab42d5</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span><span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">im1</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">grid_z1</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">im2</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">grid_z2</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+
+<span class="ne">NameError</span>: name &#39;plt&#39; is not defined
+</pre></div>
+</div>
 </div>
 </div>
 <p>The next example is <a class="reference internal" href="Ex4-Gradients.html"><span class="doc std std-doc">Ex4-Gradients</span></a></p>

@@ -110,7 +110,6 @@ is through a standard map projection of the sphere to the plane.
 ```{code-cell} ipython3
 %matplotlib inline
 
-import gdal
 import cartopy
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
