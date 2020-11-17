@@ -4,7 +4,7 @@ name: API docs / jupyterbook
 
 on:
   push:
-    branches: [master]
+    branches: [master, dev]
 
   workflow_run:
     workflows: ["Conda Deployment"]
