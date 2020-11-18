@@ -36,8 +36,6 @@ jobs:
           path: |
             ~/conda_pkgs_dir
             ~/.cache/pip
-            # /usr/share/miniconda3/envs/jupyter-book
-            # ~/GeodynamicsJupyterBook/GeodynamicsJupyterBook/_build
             
           key: ${{ matrix.os }}-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_build_environment.yml') }}
 
