@@ -25,7 +25,7 @@ There are different ways to map point data to a smooth field. One way is to tria
    - [Visualisation](#Visualisation)
    
    
-The next example is [Ex7-Refinement-of-Triangulations](./Ex7-Refinement-of-Triangulations.ipynb)
+The next example is [Ex7-Refinement-of-Triangulations](./Ex7-Refinement-of-Triangulations.md)
 
 +++
 
@@ -312,4 +312,4 @@ lv.control.show()
 vdisplay.stop()
 ```
 
-The next example is [Ex7-Refinement-of-Triangulations](./Ex7-Refinement-of-Triangulations.ipynb)
+The next example is [Ex7-Refinement-of-Triangulations](./Ex7-Refinement-of-Triangulations.md)

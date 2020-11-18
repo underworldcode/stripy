@@ -1,0 +1,8 @@
+freeglut3-dev
+xvfb
+x11-utils
+libgl1-mesa-dri 
+libgl1-mesa-glx 
+
+
+

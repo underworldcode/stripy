@@ -5,6 +5,8 @@
 
 [![pip builds](https://github.com/underworldcode/stripy/workflows/pip%20builds/badge.svg)](https://github.com/underworldcode/stripy/actions?query=workflow%3A%22pip+builds%22)
 
+![Conda Deployment](https://github.com/underworldcode/stripy/workflows/Conda%20Deployment/badge.svg)
+
 
 A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives (Renka 1996a,b and 1997a,b).
 

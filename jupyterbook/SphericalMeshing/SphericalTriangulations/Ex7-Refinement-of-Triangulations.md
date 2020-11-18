@@ -422,4 +422,4 @@ print ("CBT", T.simplices.shape[0], equant.max(), equant.min(), size_ratio)
 
 ```
 
-The next example is [Ex8-Spline-Tension](./Ex8-Spline-Tension.ipynb)
+The next example is [Ex8-Spline-Tension](./Ex8-Spline-Tension.md)

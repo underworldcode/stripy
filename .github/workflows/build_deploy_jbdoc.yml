@@ -4,7 +4,9 @@ name: API docs / jupyterbook
 
 on:
   push:
-    branches: [master]
+    branches: 
+      - master 
+      - dev
 
   workflow_run:
     workflows: ["Conda Deployment"]
@@ -38,9 +40,10 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
             miniconda-version: "latest"
+            auto-update-conda: true
             environment-file: .github/workflows/resources/conda_jb_docs_environment.yml
             activate-environment: conda-build-docs
-            python-version: 3.8
+            python-version: 3.7
             use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
   
       - name: Build docs with jupyterbook

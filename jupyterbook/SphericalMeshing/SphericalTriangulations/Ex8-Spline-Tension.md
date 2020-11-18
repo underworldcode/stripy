@@ -207,7 +207,7 @@ tris.control.List(options=["original", "dlon", "dlat", "dlon_tension", "dlat_ten
 lv.control.show()
 ```
 
-The next notebook is [Ex9-Voronoi-Diagram](Ex9-Voronoi-Diagram.ipynb)
+The next notebook is [Ex9-Voronoi-Diagram](Ex9-Voronoi-Diagram.md)
 
 ```{code-cell} ipython3
 vdisplay.stop()

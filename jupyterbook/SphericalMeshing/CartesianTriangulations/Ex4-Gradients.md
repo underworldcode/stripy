@@ -21,7 +21,7 @@ SRFPACK is a Fortran 77 software package that constructs a smooth interpolatory 
    - [Evaluating accuracy](#Derivatives-of-solution-compared-to-analytic-values)
 
 
-The next example is [Ex5-Smoothing](./Ex5-Smoothing.ipynb)
+The next example is [Ex5-Smoothing](./Ex5-Smoothing.md)
 
 +++
 
@@ -263,7 +263,7 @@ ax[0,1].axis('off')
 plt.show()
 ```
 
-The next example is [Ex5-Smoothing](./Ex5-Smoothing.ipynb)
+The next example is [Ex5-Smoothing](./Ex5-Smoothing.md)
 
 ```{code-cell} ipython3
 dsdx, dsdy = mesh.gradient(analytic_sol)
@@ -287,4 +287,4 @@ ax[0,1].axis('off')
 plt.show()
 ```
 
-The next notebook is [Ex5-Smoothing](./Ex5-Smoothing.ipynb)
+The next notebook is [Ex5-Smoothing](./Ex5-Smoothing.md)

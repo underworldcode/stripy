@@ -38,11 +38,6 @@ test:
     - pytest
 
 
-test:
-  imports:
-    - stripy
-
-
 
 about:
   home: "https://github.com/underworldcode/stripy"
