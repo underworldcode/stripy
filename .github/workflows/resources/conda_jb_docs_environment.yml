@@ -1,4 +1,4 @@
-# This is the environment needed to run the stripy examples
+# This is the environment needed to run the stripy examples / build the jbook
 
 name: conda-build-docs
 channels: 
@@ -18,4 +18,5 @@ dependencies:
   - pip:
     - jupyter-book
     - xvfbwrapper
+    - lavavu
 
