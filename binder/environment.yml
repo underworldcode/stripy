@@ -1,10 +1,1 @@
-name: stripy-binder
-channels: 
-  - conda-forge
-  - geo-down-under 
-  - underworldcode
-dependencies:
-  - numpy
-  - scipy
-  - geo-down-under::stripy
-  - underworldcode::litho1pt0
+../.github/workflows/resources/conda_jb_docs_environment.yml

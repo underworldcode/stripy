@@ -9,6 +9,7 @@ dependencies:
   - geo-down-under::litho1pt0
   - matplotlib
   - pyproj
+  - pyepsg
   - h5netcdf
   - netcdf4
   - cartopy
