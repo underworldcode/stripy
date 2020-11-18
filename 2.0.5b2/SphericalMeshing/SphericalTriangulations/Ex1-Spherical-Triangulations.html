@@ -50,9 +50,9 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
     </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -357,7 +357,7 @@
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/master?urlpath=tree/SphericalMeshing/SphericalTriangulations/Ex1-Spherical-Triangulations.md"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/master?urlpath=tree/jupyterbook/SphericalMeshing/SphericalTriangulations/Ex1-Spherical-Triangulations.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../../_static/images/logo_binder.svg"
@@ -365,6 +365,9 @@
         
         
         
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
         
     </div>
 </div>
@@ -3054,30 +3057,30 @@ var defaultcolourmaps = ["diverge", "isolum", "isorainbow", "cubelaw", "cubelaw2
 
 </script>
 </div><div class="output text_html"><script type="text/javascript">
-function init(viewerid) {_wi[viewerid] = new WindowInteractor(viewerid, 140471059655664, 8080);
+function init(viewerid) {_wi[viewerid] = new WindowInteractor(viewerid, 140266955385744, 8080);
 _wi[viewerid].actions = {
-  "gGWXMvu2wf" : "select; hide triangles; hide points; show ghost; show fine_nodes; show coarse; show coarsew; show coarse_nodes; redraw ---VAL---",
-  "5jFu2K7DWz" : "select; hide triangles; hide points; show ghost; show coarse_nodes; show fine; show finew; show fine_nodes; redraw ---VAL---"};
+  "2Z8eMGNVRp" : "select; hide triangles; hide points; show ghost; show fine_nodes; show coarse; show coarsew; show coarse_nodes; redraw ---VAL---",
+  "E1gwtUYiSP" : "select; hide triangles; hide points; show ghost; show coarse_nodes; show fine; show finew; show fine_nodes; redraw ---VAL---"};
 }
 </script>
 <form novalidate><div style="padding:0px; margin: 0px; position: relative;" class="lvctrl">
 </div>
 <div style="min-height: 50px; min-width: 50px; position: relative; display: inline-block; float: right;">
-<img id="imgtarget_zh4JTxu6ZJ" draggable=false style="margin: 0px; border: 1px solid #aaa; display: inline-block;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAPUlEQVR42u3OMQEAAAgDINe/iSU1xh5IQPamKgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLtwAMBsGqBDct9xQAAAABJRU5ErkJggg==">
+<img id="imgtarget_BYpqolitpT" draggable=false style="margin: 0px; border: 1px solid #aaa; display: inline-block;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAPUlEQVR42u3OMQEAAAgDINe/iSU1xh5IQPamKgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLtwAMBsGqBDct9xQAAAABJRU5ErkJggg==">
 
            <div style="display: none; z-index: 200; position: absolute; top: 5px; right: 5px;">
-             <select onchange="_wi['zh4JTxu6ZJ'].box.mode = this.value;">
+             <select onchange="_wi['BYpqolitpT'].box.mode = this.value;">
                <option>Rotate</option>
                <option>Translate</option>
                <option>Zoom</option>
              </select>
-             <input type="button" value="Reset" onclick="_wi['zh4JTxu6ZJ'].execute('reset');">
+             <input type="button" value="Reset" onclick="_wi['BYpqolitpT'].execute('reset');">
            </div></div>
 <div style="padding:0px; margin: 0px; position: relative;" class="lvctrl">
-<input class="lvctrl_gGWXMvu2wf" type="button" value="Coarse" onclick="_wi['zh4JTxu6ZJ'].do_action('gGWXMvu2wf', '', this);" ><br>
-<input class="lvctrl_5jFu2K7DWz" type="button" value="Fine" onclick="_wi['zh4JTxu6ZJ'].do_action('5jFu2K7DWz', '', this);" ><br>
+<input class="lvctrl_2Z8eMGNVRp" type="button" value="Coarse" onclick="_wi['BYpqolitpT'].do_action('2Z8eMGNVRp', '', this);" ><br>
+<input class="lvctrl_E1gwtUYiSP" type="button" value="Fine" onclick="_wi['BYpqolitpT'].do_action('E1gwtUYiSP', '', this);" ><br>
 </div>
-</form><!-- CREATION TIMESTAMP 20201118023345 --><script>init('zh4JTxu6ZJ');</script></div></div>
+</form><!-- CREATION TIMESTAMP 20201118023822 --><script>init('BYpqolitpT');</script></div></div>
 </div>
 </div>
 </div>
@@ -3114,7 +3117,7 @@ _wi[viewerid].actions = {
     {
         requestKernel: true,
         binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
+            repo: "underworldcode/stripy",
             ref: "master",
         },
         codeMirrorConfig: {

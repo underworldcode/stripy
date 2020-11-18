@@ -50,9 +50,9 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
     </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -356,7 +356,7 @@
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/master?urlpath=tree/SphericalMeshing/Litho1pt0/WorkEx2-OceanDepthAge.md"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/master?urlpath=tree/jupyterbook/SphericalMeshing/Litho1pt0/WorkEx2-OceanDepthAge.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../../_static/images/logo_binder.svg"
@@ -364,6 +364,9 @@
         
         
         
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
         
     </div>
 </div>
@@ -490,7 +493,7 @@ points, and we also will need to filter out parts of the Earth’s surface that 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fc61bed78d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.PathCollection at 0x7fa1cf6dcfd0&gt;
 </pre></div>
 </div>
 <img alt="../../_images/WorkEx2-OceanDepthAge_5_1.png" src="../../_images/WorkEx2-OceanDepthAge_5_1.png" />
@@ -613,7 +616,7 @@ points, and we also will need to filter out parts of the Earth’s surface that 
     {
         requestKernel: true,
         binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
+            repo: "underworldcode/stripy",
             ref: "master",
         },
         codeMirrorConfig: {

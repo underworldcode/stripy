@@ -50,9 +50,9 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
     </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -357,7 +357,7 @@
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/master?urlpath=tree/SphericalMeshing/CartesianTriangulations/Ex5-Smoothing.md"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/master?urlpath=tree/jupyterbook/SphericalMeshing/CartesianTriangulations/Ex5-Smoothing.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../../_static/images/logo_binder.svg"
@@ -365,6 +365,9 @@
         
         
         
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
         
     </div>
 </div>
@@ -595,12 +598,12 @@ smoothing(f, w, sm, smtol, gstol, sigma=None) method of stripy.cartesian.Triangu
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.69032836, -0.6272767 , -0.7439353 , ...,  0.18464868,
-        -0.0419706 , -0.1376771 ], dtype=float32),
- [array([0.067327  , 0.01721556, 0.02240061, ..., 0.00152165, 0.01487316,
-         0.00284094], dtype=float32),
-  array([ 0.23167834,  0.39833632,  0.06990667, ..., -0.4187832 ,
-         -0.3630792 , -0.30413055], dtype=float32)])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.70308036, -0.63223404, -0.7527189 , ...,  0.1552831 ,
+        -0.07541969, -0.17200364], dtype=float32),
+ [array([ 0.05541143,  0.00539451,  0.00717225, ..., -0.02900684,
+         -0.01049577, -0.0196385 ], dtype=float32),
+  array([ 0.243807  ,  0.4066668 ,  0.07680428, ..., -0.43314585,
+         -0.35812268, -0.28967646], dtype=float32)])
 </pre></div>
 </div>
 </div>
@@ -651,7 +654,7 @@ smoothing(f, w, sm, smtol, gstol, sigma=None) method of stripy.cartesian.Triangu
     {
         requestKernel: true,
         binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
+            repo: "underworldcode/stripy",
             ref: "master",
         },
         codeMirrorConfig: {

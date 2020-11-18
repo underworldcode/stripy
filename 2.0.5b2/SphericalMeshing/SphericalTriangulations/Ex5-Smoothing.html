@@ -50,9 +50,9 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
     </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -357,7 +357,7 @@
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/master?urlpath=tree/SphericalMeshing/SphericalTriangulations/Ex5-Smoothing.md"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/master?urlpath=tree/jupyterbook/SphericalMeshing/SphericalTriangulations/Ex5-Smoothing.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../../_static/images/logo_binder.svg"
@@ -365,6 +365,9 @@
         
         
         
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
         
     </div>
 </div>
@@ -3039,44 +3042,44 @@ var defaultcolourmaps = ["diverge", "isolum", "isorainbow", "cubelaw", "cubelaw2
 
 </script>
 </div><div class="output text_html"><script type="text/javascript">
-function init(viewerid) {_wi[viewerid] = new WindowInteractor(viewerid, 140552941150384, 8080);
+function init(viewerid) {_wi[viewerid] = new WindowInteractor(viewerid, 140562889957296, 8080);
 _wi[viewerid].actions = {
-  "T42PjxwJDt" : "select; specular=---VAL---; ",
-  "OZ1UubbTo8" : "select; axis=---VAL---; ",
-  "GgOffQal9H" : "<nodes>colour=---VAL---; ",
-  "pgmZxum052" : "<nodes>visible=---VAL---; ",
-  "hUt5JSUC2O" : "<triangles>colour=---VAL---; ",
-  "vPHTYso33D" : "<triangles>visible=---VAL---; ",
-  "Kvb2MGi0cH" : "<triangles_colourbar>colour=---VAL---; ",
-  "qkbPo9KD9R" : "<triangles_colourbar>visible=---VAL---; ",
-  "9FrgmwVHWz" : "<triangles>colourby=---VAL---; redraw ---VAL---"};
+  "1koVWNswGe" : "select; specular=---VAL---; ",
+  "iRlU13ubwf" : "select; axis=---VAL---; ",
+  "NAYQj6sLM2" : "<nodes>colour=---VAL---; ",
+  "BHIKANn9ZH" : "<nodes>visible=---VAL---; ",
+  "8D9tZgrguH" : "<triangles>colour=---VAL---; ",
+  "mtPwwZGz3H" : "<triangles>visible=---VAL---; ",
+  "vMnnDQfsXT" : "<triangles_colourbar>colour=---VAL---; ",
+  "3cBBMjSvLw" : "<triangles_colourbar>visible=---VAL---; ",
+  "nwGJKXGCz3" : "<triangles>colourby=---VAL---; redraw ---VAL---"};
 }
 </script>
 <form novalidate><div style="padding:0px; margin: 0px; position: relative;" class="lvctrl">
 </div>
 <div style="min-height: 50px; min-width: 50px; position: relative; display: inline-block; float: right;">
-<img id="imgtarget_6ycnKcIyin" draggable=false style="margin: 0px; border: 1px solid #aaa; display: inline-block;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAPUlEQVR42u3OMQEAAAgDINe/iSU1xh5IQPamKgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLtwAMBsGqBDct9xQAAAABJRU5ErkJggg==">
+<img id="imgtarget_vzWekfqtYE" draggable=false style="margin: 0px; border: 1px solid #aaa; display: inline-block;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAPUlEQVR42u3OMQEAAAgDINe/iSU1xh5IQPamKgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLtwAMBsGqBDct9xQAAAABJRU5ErkJggg==">
 
            <div style="display: none; z-index: 200; position: absolute; top: 5px; right: 5px;">
-             <select onchange="_wi['6ycnKcIyin'].box.mode = this.value;">
+             <select onchange="_wi['vzWekfqtYE'].box.mode = this.value;">
                <option>Rotate</option>
                <option>Translate</option>
                <option>Zoom</option>
              </select>
-             <input type="button" value="Reset" onclick="_wi['6ycnKcIyin'].execute('reset');">
+             <input type="button" value="Reset" onclick="_wi['vzWekfqtYE'].execute('reset');">
            </div></div>
 <div style="padding:0px; margin: 0px; position: relative;" class="lvctrl">
 <p>Specular:</p>
-<input id="lvctrl_T42PjxwJDt_number" class="lvctrl_T42PjxwJDt" type="number"min="0" max="1" step="0.1" data-property="specular" value="0.4" onchange="this.nextElementSibling.value=this.value; _wi['6ycnKcIyin'].do_action('T42PjxwJDt', this.value, this);" >
-<input id="lvctrl_T42PjxwJDt_range" class="lvctrl_T42PjxwJDt" type="range"min="0" max="1" step="0.1" data-property="specular" value="0.4" onchange="this.previousElementSibling.value=this.value; _wi['6ycnKcIyin'].do_action('T42PjxwJDt', this.value, this);" >
+<input id="lvctrl_1koVWNswGe_number" class="lvctrl_1koVWNswGe" type="number"min="0" max="1" step="0.1" data-property="specular" value="0.4" onchange="this.nextElementSibling.value=this.value; _wi['vzWekfqtYE'].do_action('1koVWNswGe', this.value, this);" >
+<input id="lvctrl_1koVWNswGe_range" class="lvctrl_1koVWNswGe" type="range"min="0" max="1" step="0.1" data-property="specular" value="0.4" onchange="this.previousElementSibling.value=this.value; _wi['vzWekfqtYE'].do_action('1koVWNswGe', this.value, this);" >
 <br>
 <label>
-<input id="lvctrl_OZ1UubbTo8_checkbox" class="lvctrl_OZ1UubbTo8" type="checkbox"checked="checked" step="any" data-property="axis" value="True" onchange="; _wi['6ycnKcIyin'].do_action('OZ1UubbTo8', this.checked ? 1 : 0, this);" >
+<input id="lvctrl_iRlU13ubwf_checkbox" class="lvctrl_iRlU13ubwf" type="checkbox"checked="checked" step="any" data-property="axis" value="True" onchange="; _wi['vzWekfqtYE'].do_action('iRlU13ubwf', this.checked ? 1 : 0, this);" >
  Axis</label><br>
 <p>Objects:</p>
 
         <div class="colourbg checkerboard" style="border: #888 1px solid; display: inline-block; width: 20px; height: 20px;">
-          <div id="lvctrl_GgOffQal9H" data-target="nodes" data-property="colour"  class="colour lvctrl_GgOffQal9H" onclick="
+          <div id="lvctrl_NAYQj6sLM2" data-target="nodes" data-property="colour"  class="colour lvctrl_NAYQj6sLM2" onclick="
             var col = new Colour(this.style.backgroundColor);
             var offset = [this.getBoundingClientRect().left, this.getBoundingClientRect().top];
             var el = this;
@@ -3084,24 +3087,24 @@ _wi[viewerid].actions = {
               var c = new Colour(0);
               c.setHSV(val);
               el.style.backgroundColor = c.html();
-              _wi['6ycnKcIyin'].do_action('GgOffQal9H', c.html(), el);
+              _wi['vzWekfqtYE'].do_action('NAYQj6sLM2', c.html(), el);
             }
             el.picker = new ColourPicker(savefn);
             el.picker.pick(col, offset[0], offset[1]);">
           </div>
         </div>
         <script>
-        var el = document.getElementById("lvctrl_GgOffQal9H");
+        var el = document.getElementById("lvctrl_NAYQj6sLM2");
         //Set the initial colour
         var col = new Colour('#448080');
         el.style.backgroundColor = col.html();
         </script>
         <label>
-<input id="lvctrl_pgmZxum052_checkbox" class="lvctrl_pgmZxum052" type="checkbox"checked="checked" step="any" data-target="nodes" data-property="visible" value="True" onchange="; _wi['6ycnKcIyin'].do_action('pgmZxum052', this.checked ? 1 : 0, this);" >
+<input id="lvctrl_BHIKANn9ZH_checkbox" class="lvctrl_BHIKANn9ZH" type="checkbox"checked="checked" step="any" data-target="nodes" data-property="visible" value="True" onchange="; _wi['vzWekfqtYE'].do_action('BHIKANn9ZH', this.checked ? 1 : 0, this);" >
  nodes</label><br>
 
         <div class="colourbg checkerboard" style="border: #888 1px solid; display: inline-block; width: 20px; height: 20px;">
-          <div id="lvctrl_hUt5JSUC2O" data-target="triangles" data-property="colour"  class="colour lvctrl_hUt5JSUC2O" onclick="
+          <div id="lvctrl_8D9tZgrguH" data-target="triangles" data-property="colour"  class="colour lvctrl_8D9tZgrguH" onclick="
             var col = new Colour(this.style.backgroundColor);
             var offset = [this.getBoundingClientRect().left, this.getBoundingClientRect().top];
             var el = this;
@@ -3109,24 +3112,24 @@ _wi[viewerid].actions = {
               var c = new Colour(0);
               c.setHSV(val);
               el.style.backgroundColor = c.html();
-              _wi['6ycnKcIyin'].do_action('hUt5JSUC2O', c.html(), el);
+              _wi['vzWekfqtYE'].do_action('8D9tZgrguH', c.html(), el);
             }
             el.picker = new ColourPicker(savefn);
             el.picker.pick(col, offset[0], offset[1]);">
           </div>
         </div>
         <script>
-        var el = document.getElementById("lvctrl_hUt5JSUC2O");
+        var el = document.getElementById("lvctrl_8D9tZgrguH");
         //Set the initial colour
         var col = new Colour('#77ff88');
         el.style.backgroundColor = col.html();
         </script>
         <label>
-<input id="lvctrl_vPHTYso33D_checkbox" class="lvctrl_vPHTYso33D" type="checkbox"checked="checked" step="any" data-target="triangles" data-property="visible" value="True" onchange="; _wi['6ycnKcIyin'].do_action('vPHTYso33D', this.checked ? 1 : 0, this);" >
+<input id="lvctrl_mtPwwZGz3H_checkbox" class="lvctrl_mtPwwZGz3H" type="checkbox"checked="checked" step="any" data-target="triangles" data-property="visible" value="True" onchange="; _wi['vzWekfqtYE'].do_action('mtPwwZGz3H', this.checked ? 1 : 0, this);" >
  triangles</label><br>
 
         <div class="colourbg checkerboard" style="border: #888 1px solid; display: inline-block; width: 20px; height: 20px;">
-          <div id="lvctrl_Kvb2MGi0cH" data-target="triangles_colourbar" data-property="colour"  class="colour lvctrl_Kvb2MGi0cH" onclick="
+          <div id="lvctrl_vMnnDQfsXT" data-target="triangles_colourbar" data-property="colour"  class="colour lvctrl_vMnnDQfsXT" onclick="
             var col = new Colour(this.style.backgroundColor);
             var offset = [this.getBoundingClientRect().left, this.getBoundingClientRect().top];
             var el = this;
@@ -3134,23 +3137,23 @@ _wi[viewerid].actions = {
               var c = new Colour(0);
               c.setHSV(val);
               el.style.backgroundColor = c.html();
-              _wi['6ycnKcIyin'].do_action('Kvb2MGi0cH', c.html(), el);
+              _wi['vzWekfqtYE'].do_action('vMnnDQfsXT', c.html(), el);
             }
             el.picker = new ColourPicker(savefn);
             el.picker.pick(col, offset[0], offset[1]);">
           </div>
         </div>
         <script>
-        var el = document.getElementById("lvctrl_Kvb2MGi0cH");
+        var el = document.getElementById("lvctrl_vMnnDQfsXT");
         //Set the initial colour
         var col = new Colour('[0, 0, 0, 255]');
         el.style.backgroundColor = col.html();
         </script>
         <label>
-<input id="lvctrl_qkbPo9KD9R_checkbox" class="lvctrl_qkbPo9KD9R" type="checkbox"checked="checked" step="any" data-target="triangles_colourbar" data-property="visible" value="True" onchange="; _wi['6ycnKcIyin'].do_action('qkbPo9KD9R', this.checked ? 1 : 0, this);" >
+<input id="lvctrl_3cBBMjSvLw_checkbox" class="lvctrl_3cBBMjSvLw" type="checkbox"checked="checked" step="any" data-target="triangles_colourbar" data-property="visible" value="True" onchange="; _wi['vzWekfqtYE'].do_action('3cBBMjSvLw', this.checked ? 1 : 0, this);" >
  triangles_colourbar</label><br>
 <p>Colourby:</p>
-<select class="lvctrl_9FrgmwVHWz" id="lvctrl_9FrgmwVHWz" value="" data-target="triangles" data-property="colourby" onchange="_wi['6ycnKcIyin'].do_action('9FrgmwVHWz', this.value, this);">
+<select class="lvctrl_nwGJKXGCz3" id="lvctrl_nwGJKXGCz3" value="" data-target="triangles" data-property="colourby" onchange="_wi['vzWekfqtYE'].do_action('nwGJKXGCz3', this.value, this);">
 <option>original</option>
 <option>smoothed</option>
 <option>smoothed2</option>
@@ -3163,7 +3166,7 @@ _wi[viewerid].actions = {
 <option>delta_ns3</option>
 </select><br>
 </div>
-</form><!-- CREATION TIMESTAMP 20201118023451 --><script>init('6ycnKcIyin');</script></div></div>
+</form><!-- CREATION TIMESTAMP 20201118023926 --><script>init('vzWekfqtYE');</script></div></div>
 </div>
 <p>The next example is <a class="reference internal" href="Ex6-Scattered-Data.html"><span class="doc std std-doc">Ex6-Scattered-Data</span></a></p>
 <div class="cell docutils container">
@@ -3190,7 +3193,7 @@ _wi[viewerid].actions = {
     {
         requestKernel: true,
         binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
+            repo: "underworldcode/stripy",
             ref: "master",
         },
         codeMirrorConfig: {

@@ -50,9 +50,9 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
     </script>
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -357,7 +357,7 @@
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/master?urlpath=tree/SphericalMeshing/SphericalTriangulations/Ex3-Interpolation.md"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/master?urlpath=tree/jupyterbook/SphericalMeshing/SphericalTriangulations/Ex3-Interpolation.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="../../_static/images/logo_binder.svg"
@@ -365,6 +365,9 @@
         
         
         
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
         
     </div>
 </div>
@@ -3042,30 +3045,30 @@ var defaultcolourmaps = ["diverge", "isolum", "isorainbow", "cubelaw", "cubelaw2
 
 </script>
 </div><div class="output text_html"><script type="text/javascript">
-function init(viewerid) {_wi[viewerid] = new WindowInteractor(viewerid, 140372027162160, 8080);
+function init(viewerid) {_wi[viewerid] = new WindowInteractor(viewerid, 140306380664464, 8080);
 _wi[viewerid].actions = {
-  "VDUEeqTU3G" : "select; hide triangles; hide points; show cnodes; show ctriangles; show ctriangulation; redraw ---VAL---",
-  "k0ic9QDW4N" : "select; hide triangles; hide points; show fnodes; show ftriangles; show ftriangulation; redraw ---VAL---"};
+  "Cej2TXMTs3" : "select; hide triangles; hide points; show cnodes; show ctriangles; show ctriangulation; redraw ---VAL---",
+  "I13Omuh4wT" : "select; hide triangles; hide points; show fnodes; show ftriangles; show ftriangulation; redraw ---VAL---"};
 }
 </script>
 <form novalidate><div style="padding:0px; margin: 0px; position: relative;" class="lvctrl">
 </div>
 <div style="min-height: 50px; min-width: 50px; position: relative; display: inline-block; float: right;">
-<img id="imgtarget_axeyCjlQAX" draggable=false style="margin: 0px; border: 1px solid #aaa; display: inline-block;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAPUlEQVR42u3OMQEAAAgDINe/iSU1xh5IQPamKgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLtwAMBsGqBDct9xQAAAABJRU5ErkJggg==">
+<img id="imgtarget_QoR2IjKqaD" draggable=false style="margin: 0px; border: 1px solid #aaa; display: inline-block;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAPUlEQVR42u3OMQEAAAgDINe/iSU1xh5IQPamKgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLtwAMBsGqBDct9xQAAAABJRU5ErkJggg==">
 
            <div style="display: none; z-index: 200; position: absolute; top: 5px; right: 5px;">
-             <select onchange="_wi['axeyCjlQAX'].box.mode = this.value;">
+             <select onchange="_wi['QoR2IjKqaD'].box.mode = this.value;">
                <option>Rotate</option>
                <option>Translate</option>
                <option>Zoom</option>
              </select>
-             <input type="button" value="Reset" onclick="_wi['axeyCjlQAX'].execute('reset');">
+             <input type="button" value="Reset" onclick="_wi['QoR2IjKqaD'].execute('reset');">
            </div></div>
 <div style="padding:0px; margin: 0px; position: relative;" class="lvctrl">
-<input class="lvctrl_VDUEeqTU3G" type="button" value="Coarse" onclick="_wi['axeyCjlQAX'].do_action('VDUEeqTU3G', '', this);" ><br>
-<input class="lvctrl_k0ic9QDW4N" type="button" value="Fine" onclick="_wi['axeyCjlQAX'].do_action('k0ic9QDW4N', '', this);" ><br>
+<input class="lvctrl_Cej2TXMTs3" type="button" value="Coarse" onclick="_wi['QoR2IjKqaD'].do_action('Cej2TXMTs3', '', this);" ><br>
+<input class="lvctrl_I13Omuh4wT" type="button" value="Fine" onclick="_wi['QoR2IjKqaD'].do_action('I13Omuh4wT', '', this);" ><br>
 </div>
-</form><!-- CREATION TIMESTAMP 20201118023440 --><script>init('axeyCjlQAX');</script></div></div>
+</form><!-- CREATION TIMESTAMP 20201118023914 --><script>init('QoR2IjKqaD');</script></div></div>
 </div>
 </div>
 <div class="section" id="interpolation-from-coarse-to-fine">
@@ -5500,44 +5503,44 @@ var defaultcolourmaps = ["diverge", "isolum", "isorainbow", "cubelaw", "cubelaw2
 
 </script>
 </div><div class="output text_html"><script type="text/javascript">
-function init(viewerid) {_wi[viewerid] = new WindowInteractor(viewerid, 140372039711920, 8081);
+function init(viewerid) {_wi[viewerid] = new WindowInteractor(viewerid, 140306389568688, 8081);
 _wi[viewerid].actions = {
-  "4lqI4xH26v" : "select; specular=---VAL---; ",
-  "dVBgQsjjJz" : "select; axis=---VAL---; ",
-  "b41ySVA4tW" : "<fnodes>colour=---VAL---; ",
-  "fG9kexBd8P" : "<fnodes>visible=---VAL---; ",
-  "6N682b47R4" : "<ftriangles>colour=---VAL---; ",
-  "PqzRdoysQN" : "<ftriangles>visible=---VAL---; ",
-  "gCzXk1k4Zh" : "<ftriangles_colourbar>colour=---VAL---; ",
-  "fSqtRPQRBk" : "<ftriangles_colourbar>visible=---VAL---; ",
-  "3q4a5o81ll" : "<ftriangles>colourby=---VAL---; redraw ---VAL---"};
+  "rTMtahM4T4" : "select; specular=---VAL---; ",
+  "gPnwrfatIU" : "select; axis=---VAL---; ",
+  "h7kRy3onaH" : "<fnodes>colour=---VAL---; ",
+  "bJOG9zclDA" : "<fnodes>visible=---VAL---; ",
+  "hwBmHYZg8x" : "<ftriangles>colour=---VAL---; ",
+  "ID4YoF6mNC" : "<ftriangles>visible=---VAL---; ",
+  "lKSxqIsJ7e" : "<ftriangles_colourbar>colour=---VAL---; ",
+  "FnUBG9CwBA" : "<ftriangles_colourbar>visible=---VAL---; ",
+  "oqWxTn4acl" : "<ftriangles>colourby=---VAL---; redraw ---VAL---"};
 }
 </script>
 <form novalidate><div style="padding:0px; margin: 0px; position: relative;" class="lvctrl">
 </div>
 <div style="min-height: 50px; min-width: 50px; position: relative; display: inline-block; float: right;">
-<img id="imgtarget_DaVJAy2aDD" draggable=false style="margin: 0px; border: 1px solid #aaa; display: inline-block;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAPUlEQVR42u3OMQEAAAgDINe/iSU1xh5IQPamKgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLtwAMBsGqBDct9xQAAAABJRU5ErkJggg==">
+<img id="imgtarget_hEjrVhlwMP" draggable=false style="margin: 0px; border: 1px solid #aaa; display: inline-block;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAPUlEQVR42u3OMQEAAAgDINe/iSU1xh5IQPamKgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLtwAMBsGqBDct9xQAAAABJRU5ErkJggg==">
 
            <div style="display: none; z-index: 200; position: absolute; top: 5px; right: 5px;">
-             <select onchange="_wi['DaVJAy2aDD'].box.mode = this.value;">
+             <select onchange="_wi['hEjrVhlwMP'].box.mode = this.value;">
                <option>Rotate</option>
                <option>Translate</option>
                <option>Zoom</option>
              </select>
-             <input type="button" value="Reset" onclick="_wi['DaVJAy2aDD'].execute('reset');">
+             <input type="button" value="Reset" onclick="_wi['hEjrVhlwMP'].execute('reset');">
            </div></div>
 <div style="padding:0px; margin: 0px; position: relative;" class="lvctrl">
 <p>Specular:</p>
-<input id="lvctrl_4lqI4xH26v_number" class="lvctrl_4lqI4xH26v" type="number"min="0" max="1" step="0.1" data-property="specular" value="0.4" onchange="this.nextElementSibling.value=this.value; _wi['DaVJAy2aDD'].do_action('4lqI4xH26v', this.value, this);" >
-<input id="lvctrl_4lqI4xH26v_range" class="lvctrl_4lqI4xH26v" type="range"min="0" max="1" step="0.1" data-property="specular" value="0.4" onchange="this.previousElementSibling.value=this.value; _wi['DaVJAy2aDD'].do_action('4lqI4xH26v', this.value, this);" >
+<input id="lvctrl_rTMtahM4T4_number" class="lvctrl_rTMtahM4T4" type="number"min="0" max="1" step="0.1" data-property="specular" value="0.4" onchange="this.nextElementSibling.value=this.value; _wi['hEjrVhlwMP'].do_action('rTMtahM4T4', this.value, this);" >
+<input id="lvctrl_rTMtahM4T4_range" class="lvctrl_rTMtahM4T4" type="range"min="0" max="1" step="0.1" data-property="specular" value="0.4" onchange="this.previousElementSibling.value=this.value; _wi['hEjrVhlwMP'].do_action('rTMtahM4T4', this.value, this);" >
 <br>
 <label>
-<input id="lvctrl_dVBgQsjjJz_checkbox" class="lvctrl_dVBgQsjjJz" type="checkbox"checked="checked" step="any" data-property="axis" value="True" onchange="; _wi['DaVJAy2aDD'].do_action('dVBgQsjjJz', this.checked ? 1 : 0, this);" >
+<input id="lvctrl_gPnwrfatIU_checkbox" class="lvctrl_gPnwrfatIU" type="checkbox"checked="checked" step="any" data-property="axis" value="True" onchange="; _wi['hEjrVhlwMP'].do_action('gPnwrfatIU', this.checked ? 1 : 0, this);" >
  Axis</label><br>
 <p>Objects:</p>
 
         <div class="colourbg checkerboard" style="border: #888 1px solid; display: inline-block; width: 20px; height: 20px;">
-          <div id="lvctrl_b41ySVA4tW" data-target="fnodes" data-property="colour"  class="colour lvctrl_b41ySVA4tW" onclick="
+          <div id="lvctrl_h7kRy3onaH" data-target="fnodes" data-property="colour"  class="colour lvctrl_h7kRy3onaH" onclick="
             var col = new Colour(this.style.backgroundColor);
             var offset = [this.getBoundingClientRect().left, this.getBoundingClientRect().top];
             var el = this;
@@ -5545,24 +5548,24 @@ _wi[viewerid].actions = {
               var c = new Colour(0);
               c.setHSV(val);
               el.style.backgroundColor = c.html();
-              _wi['DaVJAy2aDD'].do_action('b41ySVA4tW', c.html(), el);
+              _wi['hEjrVhlwMP'].do_action('h7kRy3onaH', c.html(), el);
             }
             el.picker = new ColourPicker(savefn);
             el.picker.pick(col, offset[0], offset[1]);">
           </div>
         </div>
         <script>
-        var el = document.getElementById("lvctrl_b41ySVA4tW");
+        var el = document.getElementById("lvctrl_h7kRy3onaH");
         //Set the initial colour
         var col = new Colour('#448080');
         el.style.backgroundColor = col.html();
         </script>
         <label>
-<input id="lvctrl_fG9kexBd8P_checkbox" class="lvctrl_fG9kexBd8P" type="checkbox"checked="checked" step="any" data-target="fnodes" data-property="visible" value="True" onchange="; _wi['DaVJAy2aDD'].do_action('fG9kexBd8P', this.checked ? 1 : 0, this);" >
+<input id="lvctrl_bJOG9zclDA_checkbox" class="lvctrl_bJOG9zclDA" type="checkbox"checked="checked" step="any" data-target="fnodes" data-property="visible" value="True" onchange="; _wi['hEjrVhlwMP'].do_action('bJOG9zclDA', this.checked ? 1 : 0, this);" >
  fnodes</label><br>
 
         <div class="colourbg checkerboard" style="border: #888 1px solid; display: inline-block; width: 20px; height: 20px;">
-          <div id="lvctrl_6N682b47R4" data-target="ftriangles" data-property="colour"  class="colour lvctrl_6N682b47R4" onclick="
+          <div id="lvctrl_hwBmHYZg8x" data-target="ftriangles" data-property="colour"  class="colour lvctrl_hwBmHYZg8x" onclick="
             var col = new Colour(this.style.backgroundColor);
             var offset = [this.getBoundingClientRect().left, this.getBoundingClientRect().top];
             var el = this;
@@ -5570,24 +5573,24 @@ _wi[viewerid].actions = {
               var c = new Colour(0);
               c.setHSV(val);
               el.style.backgroundColor = c.html();
-              _wi['DaVJAy2aDD'].do_action('6N682b47R4', c.html(), el);
+              _wi['hEjrVhlwMP'].do_action('hwBmHYZg8x', c.html(), el);
             }
             el.picker = new ColourPicker(savefn);
             el.picker.pick(col, offset[0], offset[1]);">
           </div>
         </div>
         <script>
-        var el = document.getElementById("lvctrl_6N682b47R4");
+        var el = document.getElementById("lvctrl_hwBmHYZg8x");
         //Set the initial colour
         var col = new Colour('#77ff88');
         el.style.backgroundColor = col.html();
         </script>
         <label>
-<input id="lvctrl_PqzRdoysQN_checkbox" class="lvctrl_PqzRdoysQN" type="checkbox"checked="checked" step="any" data-target="ftriangles" data-property="visible" value="True" onchange="; _wi['DaVJAy2aDD'].do_action('PqzRdoysQN', this.checked ? 1 : 0, this);" >
+<input id="lvctrl_ID4YoF6mNC_checkbox" class="lvctrl_ID4YoF6mNC" type="checkbox"checked="checked" step="any" data-target="ftriangles" data-property="visible" value="True" onchange="; _wi['hEjrVhlwMP'].do_action('ID4YoF6mNC', this.checked ? 1 : 0, this);" >
  ftriangles</label><br>
 
         <div class="colourbg checkerboard" style="border: #888 1px solid; display: inline-block; width: 20px; height: 20px;">
-          <div id="lvctrl_gCzXk1k4Zh" data-target="ftriangles_colourbar" data-property="colour"  class="colour lvctrl_gCzXk1k4Zh" onclick="
+          <div id="lvctrl_lKSxqIsJ7e" data-target="ftriangles_colourbar" data-property="colour"  class="colour lvctrl_lKSxqIsJ7e" onclick="
             var col = new Colour(this.style.backgroundColor);
             var offset = [this.getBoundingClientRect().left, this.getBoundingClientRect().top];
             var el = this;
@@ -5595,23 +5598,23 @@ _wi[viewerid].actions = {
               var c = new Colour(0);
               c.setHSV(val);
               el.style.backgroundColor = c.html();
-              _wi['DaVJAy2aDD'].do_action('gCzXk1k4Zh', c.html(), el);
+              _wi['hEjrVhlwMP'].do_action('lKSxqIsJ7e', c.html(), el);
             }
             el.picker = new ColourPicker(savefn);
             el.picker.pick(col, offset[0], offset[1]);">
           </div>
         </div>
         <script>
-        var el = document.getElementById("lvctrl_gCzXk1k4Zh");
+        var el = document.getElementById("lvctrl_lKSxqIsJ7e");
         //Set the initial colour
         var col = new Colour('[0, 0, 0, 255]');
         el.style.backgroundColor = col.html();
         </script>
         <label>
-<input id="lvctrl_fSqtRPQRBk_checkbox" class="lvctrl_fSqtRPQRBk" type="checkbox"checked="checked" step="any" data-target="ftriangles_colourbar" data-property="visible" value="True" onchange="; _wi['DaVJAy2aDD'].do_action('fSqtRPQRBk', this.checked ? 1 : 0, this);" >
+<input id="lvctrl_FnUBG9CwBA_checkbox" class="lvctrl_FnUBG9CwBA" type="checkbox"checked="checked" step="any" data-target="ftriangles_colourbar" data-property="visible" value="True" onchange="; _wi['hEjrVhlwMP'].do_action('FnUBG9CwBA', this.checked ? 1 : 0, this);" >
  ftriangles_colourbar</label><br>
 <p>Colourby:</p>
-<select class="lvctrl_3q4a5o81ll" id="lvctrl_3q4a5o81ll" value="" data-target="ftriangles" data-property="colourby" onchange="_wi['DaVJAy2aDD'].do_action('3q4a5o81ll', this.value, this);">
+<select class="lvctrl_oqWxTn4acl" id="lvctrl_oqWxTn4acl" value="" data-target="ftriangles" data-property="colourby" onchange="_wi['hEjrVhlwMP'].do_action('oqWxTn4acl', this.value, this);">
 <option>original</option>
 <option>interp1</option>
 <option>interp3</option>
@@ -5619,7 +5622,7 @@ _wi[viewerid].actions = {
 <option>interperr3</option>
 </select><br>
 </div>
-</form><!-- CREATION TIMESTAMP 20201118023440 --><script>init('DaVJAy2aDD');</script></div></div>
+</form><!-- CREATION TIMESTAMP 20201118023915 --><script>init('hEjrVhlwMP');</script></div></div>
 </div>
 </div>
 <div class="section" id="interpolate-to-grid">
@@ -5666,7 +5669,7 @@ _wi[viewerid].actions = {
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7faae9a8b510&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f9ba09ae4d0&gt;
 </pre></div>
 </div>
 <img alt="../../_images/Ex3-Interpolation_16_1.png" src="../../_images/Ex3-Interpolation_16_1.png" />
@@ -5697,7 +5700,7 @@ _wi[viewerid].actions = {
     {
         requestKernel: true,
         binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
+            repo: "underworldcode/stripy",
             ref: "master",
         },
         codeMirrorConfig: {
