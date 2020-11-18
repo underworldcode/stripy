@@ -97,6 +97,7 @@ ids, density_at_1km = litho.property_at_lat_lon_depth_points(latv, lonv, depths,
 %matplotlib inline
 
 import cartopy
+import gdal
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 
@@ -172,6 +173,16 @@ def great_circle_Npoints(lonlat1, lonlat2, N):
 ```
 
 ```{code-cell} ipython3
+depths = np.linspace(-10.0, 250, 100)
+startlonlat=np.array([80.0,5.0])
+endlonlat  =np.array([80.0,45.0])
+
+midlonlat = 0.5 * ( startlonlat + endlonlat)
+
+lons, lats, d = great_circle_profile(startlonlat, endlonlat, depths, 2.5, "DENSITY")
+```
+
+```{code-cell} ipython3
 lonlat1r = np.radians(startlonlat)
 lonlat2r = np.radians(endlonlat)
 xyz1 = np.array(stripy.spherical.lonlat2xyz(lonlat1r[0], lonlat1r[1])).T
@@ -180,14 +191,6 @@ xyz2 = np.array(stripy.spherical.lonlat2xyz(lonlat2r[0], lonlat2r[1])).T
 N=100
 ratio = np.linspace(0.0,1.0, N).reshape(-1,1)
 mids = ratio * xyz2 + (1.0-ratio) * xyz1
-```
-
-```{code-cell} ipython3
-depths = np.linspace(-10.0, 250, 100)
-startlonlat=np.array([80.0,5.0])
-endlonlat  =np.array([80.0,45.0])
-
-lons, lats, d = great_circle_profile(startlonlat, endlonlat, depths, 2.5, "DENSITY")
 ```
 
 ```{code-cell} ipython3
