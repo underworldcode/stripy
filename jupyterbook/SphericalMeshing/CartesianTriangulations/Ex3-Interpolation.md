@@ -26,7 +26,7 @@ The next three examples demonstrate the interface to SRFPACK provided through `s
    - [Interpolate to a grid](#Interpolate-to-grid)
 
 
-The next example is [Ex4-Gradients](./Ex4-Gradients.ipynb)
+The next example is [Ex4-Gradients](./Ex4-Gradients.md)
 
 ---
 
@@ -205,4 +205,4 @@ fig.colorbar(im2, ax=ax2)
 plt.show()
 ```
 
-The next example is [Ex4-Gradients](./Ex4-Gradients.ipynb)
+The next example is [Ex4-Gradients](./Ex4-Gradients.md)

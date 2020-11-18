@@ -47,7 +47,7 @@ In this notebook we introduce the `sTriangulation` class itself.
    4. Renka, R. J. (1996), Algorithm 752; SRFPACK: software for scattered data fitting with a constrained surface under tension, ACM Transactions on Mathematical Software, 22(1), 9–17, doi:10.1145/225545.225547.
 
 
-The next example is [Ex2-SphericalGrids](./Ex2-SphericalGrids.ipynb)
+The next example is [Ex2-SphericalGrids](./Ex2-SphericalGrids.md)
 
 +++
 
@@ -237,7 +237,7 @@ spherical_triangulation         = stripy.spherical_meshes.icosahedral_mesh(refin
 refined_spherical_triangulation = stripy.spherical_meshes.icosahedral_mesh(refinement_levels=3)
 ```
 
-This capability is shown in a companion notebook [Ex2-SphericalGrids](./Ex2-SphericalGrids.ipynb)
+This capability is shown in a companion notebook [Ex2-SphericalGrids](./Ex2-SphericalGrids.md)
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
