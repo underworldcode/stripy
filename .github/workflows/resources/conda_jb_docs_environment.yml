@@ -10,11 +10,12 @@ dependencies:
   - matplotlib
   - pyproj
   - h5netcdf
+  - netcdf4
   - cartopy
   - xarray
-  - h5netcdf
   - pip 
   
   - pip:
     - jupyter-book
+    - xvfbwrapper
 
