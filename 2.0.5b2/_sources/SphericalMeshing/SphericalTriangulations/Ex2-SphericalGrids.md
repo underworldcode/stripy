@@ -37,7 +37,7 @@ Any of the above meshes can be uniformly refined by specifying the `refinement_l
    - [Compare the predefined meshes](#Plot-and-compare-the-predefined-meshes)
 
 
-The next example is [Ex3-Interpolation](./Ex3-Interpolation.ipynb)
+The next example is [Ex3-Interpolation](./Ex3-Interpolation.md)
 
 ---
 
@@ -324,4 +324,4 @@ mesh_fig(rand0, rand2, "Random")
 
 ```
 
-The next example is [Ex3-Interpolation](./Ex3-Interpolation.ipynb)
+The next example is [Ex3-Interpolation](./Ex3-Interpolation.md)

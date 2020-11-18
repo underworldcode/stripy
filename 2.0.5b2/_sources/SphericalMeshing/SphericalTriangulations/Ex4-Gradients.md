@@ -23,7 +23,7 @@ SSRFPACK is a Fortran 77 software package that constructs a smooth interpolatory
    - [Evaluating accuracy](#Derivatives-of-solution-compared-to-analytic-values)
 
 
-The next example is [Ex5-Smoothing](./Ex5-Smoothing.ipynb)
+The next example is [Ex5-Smoothing](./Ex5-Smoothing.md)
 
 +++
 
@@ -138,7 +138,7 @@ tris.control.List(options=["original", "ddlon", "ddlat", "ddlonerr", "ddlaterr"]
 lv.control.show()
 ```
 
-The next example is [Ex5-Smoothing](./Ex5-Smoothing.ipynb)
+The next example is [Ex5-Smoothing](./Ex5-Smoothing.md)
 
 ```{code-cell} ipython3
 vdisplay.stop()

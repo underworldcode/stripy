@@ -25,7 +25,7 @@ The next three examples demonstrate the interface to SSRFPACK provided through `
    - [Interpolation](#Interpolation-from-coarse-to-fine)
 
 
-The next example is [Ex4-Gradients](./Ex4-Gradients.ipynb)
+The next example is [Ex4-Gradients](./Ex4-Gradients.md)
 
 ---
 

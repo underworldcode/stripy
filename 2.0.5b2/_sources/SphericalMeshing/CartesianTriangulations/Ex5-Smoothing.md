@@ -25,7 +25,7 @@ Here we demonstrate how to access SRFPACK smoothing through the `stripy` interfa
    - [Results of smoothing](#Results-of-smoothing-with-different-value-of-sm)
    
 
-The next example is [Ex6-Scattered-Data](./Ex6-Scattered-Data.ipynb)
+The next example is [Ex6-Scattered-Data](./Ex6-Scattered-Data.md)
 
 +++
 
@@ -139,7 +139,7 @@ axis_mesh_field(fig, ax[1,1], mesh, stripy_smoothed3, label="smoothed3")
 plt.show()
 ```
 
-The next example is [Ex6-Scattered-Data](./Ex6-Scattered-Data.ipynb)
+The next example is [Ex6-Scattered-Data](./Ex6-Scattered-Data.md)
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(2,2, figsize=(12,10), facecolor="none")
@@ -152,4 +152,4 @@ axis_mesh_field(fig, ax[1,1], mesh, dds3[1], label="smoothed3")
 plt.show()
 ```
 
-The next notebook is [Ex6-Scattered-Data](./Ex6-Scattered-Data.ipynb)
+The next notebook is [Ex6-Scattered-Data](./Ex6-Scattered-Data.md)

@@ -145,4 +145,4 @@ axes_mesh_field(fig, axes[1,1], mesh, dy2, "y derivative spline tension")
 axes_mesh_field(fig, axes[1,2], mesh, dy1 - dy2, "x derivative difference")
 ```
 
-The next notebook is [Ex9-Voronoi-Diagram](Ex9-Voronoi-Diagram.ipynb)
+The next notebook is [Ex9-Voronoi-Diagram](Ex9-Voronoi-Diagram.md)

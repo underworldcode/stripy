@@ -25,7 +25,7 @@ Here we demonstrate how to access SSRFPACK smoothing through the `stripy` interf
    - [Results of smoothing](#Results-of-smoothing-with-different-value-of-sm)
    
 
-The next example is [Ex6-Scattered-Data](./Ex6-Scattered-Data.ipynb)
+The next example is [Ex6-Scattered-Data](./Ex6-Scattered-Data.md)
 
 +++
 
@@ -211,7 +211,7 @@ tris.control.List(options=["original", "smoothed", "smoothed2", "smoothed3",
 lv.control.show()
 ```
 
-The next example is [Ex6-Scattered-Data](./Ex6-Scattered-Data.ipynb)
+The next example is [Ex6-Scattered-Data](./Ex6-Scattered-Data.md)
 
 ```{code-cell} ipython3
 

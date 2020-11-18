@@ -24,7 +24,7 @@ There are different ways to map point data to a smooth field. One way is to tria
    - [Distance weighting to vertices](#Inverse-distance-weighted-number-of-earthquakes)
    
    
-The next example is [Ex7-Refinement-of-Triangulations](./Ex7-Refinement-of-Triangulations.ipynb)
+The next example is [Ex7-Refinement-of-Triangulations](./Ex7-Refinement-of-Triangulations.md)
 
 +++
 
@@ -210,4 +210,4 @@ ax.gridlines(draw_labels=True)
 plt.show()
 ```
 
-The next example is [Ex7-Refinement-of-Triangulations](./Ex7-Refinement-of-Triangulations.ipynb)
+The next example is [Ex7-Refinement-of-Triangulations](./Ex7-Refinement-of-Triangulations.md)
