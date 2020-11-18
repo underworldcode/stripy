@@ -23,7 +23,7 @@ sphinx:
 repository:
   url                       : "https://github.com/underworldcode/stripy"  # Online location of your book's source code
   path_to_book              : "jupyterbook/"
-  branch                    : "master"                                    # Which branch of the repository should be used when creating links (optional)
+  branch                    : "dev"                                    # Which branch of the repository should be used when creating links (optional)
 
 launch_buttons:
   # jupyterhub_url: "https://phys3070.rses.geoscience.education"  # The URL for your JupyterHub. 

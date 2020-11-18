@@ -1,1 +1,25 @@
-../.github/workflows/resources/conda_jb_docs_environment.yml
+# This is the environment needed to run the stripy examples in binder / thebe 
+# Note jupytext and other extensions to the server
+
+name: conda-build-docs
+channels: 
+  - conda-forge
+  - geo-down-under
+dependencies:
+  - geo-down-under::stripy==2.0.5b2
+  - geo-down-under::litho1pt0
+  - matplotlib
+  - pyproj
+  - pyepsg
+  - h5netcdf
+  - netcdf4
+  - cartopy
+  - xarray
+  - xvfbwrapper  # to avoid errors 
+  - jupytext
+  - pip 
+  
+  - pip:
+    - jupyter-book
+    - lavavu
+
