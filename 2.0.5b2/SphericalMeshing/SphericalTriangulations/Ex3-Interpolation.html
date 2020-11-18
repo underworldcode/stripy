@@ -593,15 +593,22 @@ interpolate(lons, lats, zdata, order=1, grad=None, sigma=None) method of stripy.
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="ne">OSError</span><span class="g g-Whitespace">                                   </span>Traceback (most recent call last)
 <span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">5</span><span class="o">-</span><span class="mi">9769249</span><span class="n">b4715</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">## This can be an issue on jupyterhub</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> 
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">xvfbwrapper</span> <span class="kn">import</span> <span class="n">Xvfb</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">vdisplay</span> <span class="o">=</span> <span class="n">Xvfb</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span> <span class="nn">xvfbwrapper</span> <span class="kn">import</span> <span class="n">Xvfb</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">vdisplay</span> <span class="o">=</span> <span class="n">Xvfb</span><span class="p">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">vdisplay</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;xvfbwrapper&#39;
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/xvfbwrapper.py</span> in <span class="ni">__init__</span><span class="nt">(self, width, height, colordepth, tempdir, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span>         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">xvfb_exists</span><span class="p">():</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span>             <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Can not find Xvfb. Please install it and try again.&#39;</span>
+<span class="ne">---&gt; </span><span class="mi">41</span>             <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">42</span> 
+<span class="g g-Whitespace">     </span><span class="mi">43</span>         <span class="bp">self</span><span class="o">.</span><span class="n">extra_xvfb_args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-screen&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">x</span><span class="si">{}</span><span class="s1">x</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+
+<span class="ne">OSError</span>: Can not find Xvfb. Please install it and try again.
 </pre></div>
 </div>
 </div>
@@ -791,7 +798,7 @@ linear (order=1) or cubic spline (order=3).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f8944cd8110&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f96804baf90&gt;
 </pre></div>
 </div>
 <img alt="../../_images/Ex3-Interpolation_16_1.png" src="../../_images/Ex3-Interpolation_16_1.png" />
