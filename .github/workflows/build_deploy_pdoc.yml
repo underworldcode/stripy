@@ -3,8 +3,9 @@ name: API docs / pdoc3
 # We should trigger this from an upload event 
 
 on:
-  push:
-    branches: [master]
+  push:       # This is not really a great idea 
+    branches:
+      - master
 
   workflow_run:
     workflows: ["Conda Deployment"]
