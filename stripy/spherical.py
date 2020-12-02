@@ -310,7 +310,7 @@ class sTriangulation(object):
         Return the lon / lat components of the gradient
         of a scalar field on the surface of the UNIT sphere.
         (Note: the companion routine is derivatives_lonlat which returns
-        the components of the derivative in each direction - these differ by a factor of 
+        the components of the derivative in each direction - these differ by a factor of
         1/cos(lat) in the first component)
 
         The method consists of minimizing a quadratic functional Q(G) over
@@ -362,7 +362,7 @@ class sTriangulation(object):
         dlon = -dfxs * np.cos(lats) * np.sin(lons) + dfys * np.cos(lats) * np.cos(lons) # no z dependence
         dlat = -dfxs * np.sin(lats) * np.cos(lons) - dfys * np.sin(lats) * np.sin(lons) + dfzs * np.cos(lats)
 
-        corr = np.sqrt((1.0-z**2))  
+        corr = np.sqrt((1.0-z**2))
         valid = ~np.isclose(corr,0.0)
         dlon[valid] = dlon[valid] / corr[valid]
 
@@ -374,7 +374,7 @@ class sTriangulation(object):
         Return the lon / lat components of the derivatives
         of a scalar field on the surface of the UNIT sphere.
         (Note: the companion routine is gradient_lonlat which returns
-        the components of the surface gradient - these differ by a factor of 
+        the components of the surface gradient - these differ by a factor of
         1/cos(lat) in the first component)
 
 
@@ -748,7 +748,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         zdata = self._shuffle_field(zdata)
         grad, iflgg = self._check_gradient(zdata, grad)
         sigma, iflgs = self._check_sigma(sigma)
-        
+
         nrow = len(lats)
 
 
@@ -1001,22 +1001,12 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
     def identify_vertex_neighbours(self, vertex):
         """
         Find the neighbour-vertices in the triangulation for the given vertex
-        (from the data structures of the triangulation)
+        (from the self.simplices array)
         """
-        vertex = self._permutation[vertex]
+        triangles = np.nonzero(self.simplices == vertex)[0]
+        vertex_and_neighbours = np.unique(np.concatenate(self.simplices[triangles]))
 
-        lpl = self.lend[vertex-1]
-        lp = lpl
-
-        neighbours = []
-
-        while True:
-            lp = self.lptr[lp-1]
-            neighbours.append(np.abs(self.lst[lp-1])-1)
-            if (lp == lpl):
-                break
-
-        return self._deshuffle_simplices(neighbours)
+        return vertex_and_neighbours[vertex_and_neighbours != vertex]
 
 
     def identify_vertex_triangles(self, vertices):
