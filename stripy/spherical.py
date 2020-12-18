@@ -1597,7 +1597,7 @@ def xyz2lonlat(x,y,z):
     zs = np.array(z)
 
     lons = np.arctan2(ys, xs)
-    lats = np.arcsin(zs)
+    lats = np.arctan2(zs, np.hypot(ys, xs))
 
     return lons, lats
 
@@ -1613,7 +1613,7 @@ def dxyz2dlonlat(x,y,z, dfx, dfy, dfz):
     zs = np.array(z)
 
     lons = np.arctan2(ys, xs)
-    lats = np.arcsin(zs)
+    lats = np.arctan2(zs, np.hypot(ys, xs))
 
     dfxs = np.array(dfx)
     dfys = np.array(dfy)
