@@ -3,10 +3,10 @@ name: API docs / jupyterbook
 # We should trigger this from an upload event 
 
 on:
-  push:
+  push:   # This is not really what we want
     branches: 
       - master 
-      - dev
+      # - dev
 
   workflow_run:
     workflows: ["Conda Deployment"]
@@ -31,7 +31,6 @@ jobs:
           path: |
             ~/conda_pkgs_dir
             ~/.cache/pip
-            /usr/share/miniconda3/envs/jupyter-book
             ~/stripy/jupyterbook/_build
             
           key: macos-jbdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_jb_docs_environment.yml') }}
