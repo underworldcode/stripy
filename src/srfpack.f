@@ -7354,7 +7354,7 @@ C
       REAL xs(ns), ys(ns), odata(ns)
       REAL zdata(n), x(n), y(n), z(n)
       REAL pzx, pzy
-      INTEGER i, ierr1, ist, edata(ns), ncc, lcc
+      INTEGER i, ierr1, ist, edata(ns), ncc, lcc(1)
 
       ncc = 0
       ist = 1
@@ -7380,7 +7380,7 @@ C
       REAL xs(ns), ys(ns), odata(ns)
       REAL zdata(n), x(n), y(n), z(n), sigma(6*(n-2)), grad(2,n)
       REAL pzx, pzy
-      INTEGER i, ierr1, ist, iflgs, edata(ns), ncc, lcc
+      INTEGER i, ierr1, ist, iflgs, edata(ns), ncc, lcc(1)
       LOGICAL iflgg
 
       ncc = 0
