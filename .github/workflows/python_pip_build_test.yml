@@ -31,40 +31,69 @@ jobs:
       - name: Checkout  
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v1
+      - name: Cache conda
+        uses: actions/cache@v1
+        env:
+        # Increase this value to reset cache if etc/example-environment.yml has not changed
+          CACHE_NUMBER: 1
         with:
-          python-version: ${{ matrix.python-version }}
-          
-      - name: Install gfortran (ubuntu)
-        if: matrix.os == 'ubuntu-latest' 
-        run: |
-          sudo apt-get install -y gfortran
+          path: |
+            ~/conda_pkgs_dir
+            ~/.cache/pip
+            ~/stripy/jupyterbook/_build
+            
+          key: macos-test-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_test_environment.yml') }}
 
-      - name: Install gfortran (macos)
-        if: matrix.os == 'macos-latest' 
-        run: |
-          brew install gfortran
-          brew link gfortran
-          which gfortran
-          ls /usr/local/bin
-
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install numpy 
-          pip install scipy 
-          pip install Cython
-          
+      - name: Miniconda + Cache
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+            miniconda-version: "latest"
+            auto-update-conda: true
+            environment-file: .github/workflows/resources/conda_test_environment.yml
+            activate-environment: conda-test
+            python-version: 3.7
+            use-only-tar-bz2: true # IMPORTANT: This needs to be set for caching to work properly!
+  
       - name: Install (self)
-        run: |
-          pip install -e . 
+          run: |
+            pip install -e .      
+
+        name: Test with pytest
+          run: |
+            python -c 'import stripy;'
+            pip install pytest
+            pytest
+ 
           
-      - name: Test with pytest
-        run: |
-          python -c 'import stripy;'
-          pip install pytest
-          pytest
+      # - name: Install gfortran (ubuntu)
+      #   if: matrix.os == 'ubuntu-latest' 
+      #   run: |
+      #     sudo apt-get install -y gfortran
+
+      # - name: Install gfortran (macos)
+      #   if: matrix.os == 'macos-latest' 
+      #   run: |
+      #     brew install gfortran
+      #     brew link gfortran
+      #     which gfortran
+      #     ls /usr/local/bin
+
+      # - name: Install Python dependencies
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install numpy 
+      #     pip install scipy 
+      #     pip install Cython
+          
+      # - name: Install (self)
+      #   run: |
+      #     pip install -e . 
+          
+      # - name: Test with pytest
+      #   run: |
+      #     python -c 'import stripy;'
+      #     pip install pytest
+      #     pytest
 
 
         

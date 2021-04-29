@@ -1,0 +1,14 @@
+# This is the environment needed to build stripy for pip
+
+name: conda-test
+channels: 
+  - conda-forge
+dependencies:
+  # numpy is needed for some of the setup tools 
+  - compilers
+  - numpy
+  - scipy
+  - cython
+  - pip 
+
+  
