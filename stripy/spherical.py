@@ -479,7 +479,7 @@ class sTriangulation(object):
         if f.size != self.npoints:
             raise ValueError('f should be the same size as mesh')
 
-        # gradient = np.zeros((3,self.npoints), order='F', dtype=np.float32)
+        # gradient = np.zeros((3,self.npoints), order='F', dtype=float32)
         sigma, iflgs = self._check_sigma(sigma)
 
         f = self._shuffle_field(f)
@@ -909,8 +909,8 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         # translate to unit sphere
 
         xi = np.array(_stripack.trans(lats, lons))
-        idx = np.empty_like(xi[0,:], dtype=np.int)
-        dist = np.empty_like(xi[0,:], dtype=np.float)
+        idx = np.empty_like(xi[0,:], dtype=int)
+        dist = np.empty_like(xi[0,:], dtype=float)
 
         for pt in range(0, xi.shape[1]):
             xi0 = xi[:,pt]
@@ -983,8 +983,8 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
         pts = np.array(lonlat2xyz(lons,lats)).T
 
-        tri = np.empty((pts.shape[0], 3), dtype=np.int) # simplices
-        bcc = np.empty_like(tri, dtype=np.float) # barycentric coords
+        tri = np.empty((pts.shape[0], 3), dtype=int) # simplices
+        bcc = np.empty_like(tri, dtype=float) # barycentric coords
 
         for i, pt in enumerate(pts):
             t = _stripack.trfind(3, pt, self._x, self._y, self._z, self.lst, self.lptr, self.lend )
@@ -1043,7 +1043,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         lend = self.lend
         lptr = self.lptr
 
-        segments_array = np.empty((len(lptr),2),dtype=np.int)
+        segments_array = np.empty((len(lptr),2),dtype=int)
         segments_array[:,0] = lst[:] - 1
         segments_array[:,1] = lst[lptr[:]-1] - 1
 
@@ -1637,9 +1637,8 @@ def great_circle_Npoints(lonlat1r, lonlat2r, N):
 
     ratio = np.linspace(0.0,1.0, N).reshape(-1,1)
 
-
-    xyz1 = lonlat2xyz(lonlat1r[0], lonlat1r[1])
-    xyz2 = lonlat2xyz(lonlat2r[0], lonlat2r[1])
+    xyz1 = np.array(lonlat2xyz(lonlat1r[0], lonlat1r[1])).T
+    xyz2 = np.array(lonlat2xyz(lonlat2r[0], lonlat2r[1])).T
 
     mids = ratio * xyz2 + (1.0-ratio) * xyz1
     norm = np.sqrt((mids**2).sum(axis=1))
