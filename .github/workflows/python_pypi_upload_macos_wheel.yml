@@ -3,9 +3,12 @@ name: PYPI wheels macos
 on: 
   release:
     types: [created, edited]
+
   # push:
   #   branches:
   #     - dev
+
+  workflow_dispatch:
 
 
 jobs:
