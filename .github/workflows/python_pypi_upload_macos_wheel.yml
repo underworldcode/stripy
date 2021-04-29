@@ -30,7 +30,7 @@ jobs:
 
     - name: Install gfortran (macos)
       run: |
-        brew cask install gfortran
+        brew --cask install gfortran
 
     - name: Install dependencies
       run: |
