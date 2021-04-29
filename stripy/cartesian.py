@@ -673,7 +673,7 @@ class Triangulation(object):
 
         if order == 0:
             ierr = 0
-            ist = np.ones(shape, dtype=np.int)
+            ist = np.ones(shape, dtype=int)
             zdata = self._shuffle_field(zdata)
             ist, dist, zierr = _tripack.nearnds(xi, yi, ist, \
                                                 self._x, self._y, \
@@ -779,8 +779,8 @@ class Triangulation(object):
         xi = np.array(xi).reshape(n)
         yi = np.array(yi).reshape(n)
 
-        idx  = np.empty_like(xi, dtype=np.int)
-        dist = np.empty_like(xi, dtype=np.float)
+        idx  = np.empty_like(xi, dtype=int)
+        dist = np.empty_like(xi, dtype=float)
 
         for pt in range(0, n):
             # i is the node at which we start the search
@@ -847,8 +847,8 @@ class Triangulation(object):
 
         pts = np.column_stack([xi,yi])
 
-        tri = np.empty((pts.shape[0], 3), dtype=np.int) # simplices
-        bcc = np.empty_like(tri, dtype=np.float) # barycentric coords
+        tri = np.empty((pts.shape[0], 3), dtype=int) # simplices
+        bcc = np.empty_like(tri, dtype=float) # barycentric coords
 
         for i, pt in enumerate(pts):
             t = _tripack.trfind(3, pt[0], pt[1], self._x, self._y, self.lst, self.lptr, self.lend)
