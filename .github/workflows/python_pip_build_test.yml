@@ -66,36 +66,4 @@ jobs:
           pip install pytest
           pytest
  
-          
-      # - name: Install gfortran (ubuntu)
-      #   if: matrix.os == 'ubuntu-latest' 
-      #   run: |
-      #     sudo apt-get install -y gfortran
-
-      # - name: Install gfortran (macos)
-      #   if: matrix.os == 'macos-latest' 
-      #   run: |
-      #     brew install gfortran
-      #     brew link gfortran
-      #     which gfortran
-      #     ls /usr/local/bin
-
-      # - name: Install Python dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install numpy 
-      #     pip install scipy 
-      #     pip install Cython
-          
-      # - name: Install (self)
-      #   run: |
-      #     pip install -e . 
-          
-      # - name: Test with pytest
-      #   run: |
-      #     python -c 'import stripy;'
-      #     pip install pytest
-      #     pytest
-
-
-        
+     
