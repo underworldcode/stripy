@@ -44,8 +44,7 @@ jobs:
       - name: Install gfortran (macos)
         if: matrix.os == 'macos-latest' 
         run: |
-          brew install gcc
-          brew link gcc
+          brew install --cask gfortran
 
       - name: Install Python dependencies
         run: |
