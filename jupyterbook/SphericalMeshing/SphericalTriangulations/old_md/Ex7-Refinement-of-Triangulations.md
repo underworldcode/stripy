@@ -3,10 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.6.0
+    format_version: 0.13
+    jupytext_version: 1.10.3
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -248,87 +248,80 @@ centroid_t_triangulations = triangulations[:]
 ## Visualisation of targetted refinement
 
 ```{code-cell} ipython3
-import lavavu
+import k3d
 
-from xvfbwrapper import Xvfb
-vdisplay = Xvfb()
-try:
-    vdisplay.start()
-    xvfb = True
-
-except:
-    xvfb = False
 
 ## The four different triangulation strategies
 
-t1 = edge_triangulations[-1]
-t2 = edge_t_triangulations[-1]
-t3 = centroid_triangulations[-1]
-t4 = centroid_t_triangulations[-1]
+t = [ edge_triangulations[-1],
+      edge_t_triangulations[-1],
+      centroid_triangulations[-1],
+      centroid_t_triangulations[-1] ]
 
-## Fire up the viewer 
+plot = k3d.plot(camera_auto_fit=False, grid_visible=False, 
+                menu_visibility=True, axes_helper=False )
 
-lv = lavavu.Viewer(border=False, background="#FFFFFF", resolution=[1000,600], near=-10.0)
 
-## Add the nodes to mark the original triangulation
+mesh_viewer = []
+wire_viewer = []
 
-nodes = lv.points("nodes", pointsize=10.0, pointtype="shiny", colour="#448080", opacity=0.75)
-nodes.vertices(ico1.points*1.01)
-nodes2 = lv.points("SplitPoints", pointsize=2.0, pointtype="shiny", colour="#FF3300", opacity=1.0) 
-nodes2.vertices(np.array(stripy.spherical.lonlat2xyz(points[:,0], points[:,1])).T * 1.01)
 
-## 
+for i in range(0,4):
+    
+    
+    indices = t[i].simplices.astype(np.uint32)
+    points  = np.column_stack(t[i].points.T).astype(np.float32)
 
-tris1w = lv.triangles("t1w",  wireframe=True, colour="#444444", opacity=0.8)
-tris1w.vertices(t1.points)
-tris1w.indices(t1.simplices)
 
-tris1s = lv.triangles("t1s",  wireframe=False, colour="#77ff88", opacity=0.8)
-tris1s.vertices(t1.points*0.999)
-tris1s.indices(t1.simplices)
+    mesh_viewer.append(k3d.mesh(points, indices, wireframe=False, 
+                   color=0x99AABB, 
+                   name="mesh viewer {}".format(i+1),
+                   flat_shading=True, opacity=1.0  ))
 
-tris2w = lv.triangles("t2w",  wireframe=True, colour="#444444", opacity=0.8)
-tris2w.vertices(t2.points)
-tris2w.indices(t2.simplices)
+    wire_viewer.append(k3d.mesh(points, indices, wireframe=True, 
+                   color=0x002244, 
+                   name="wire frame viewer {}".format(i+1),
+                   flat_shading=True, opacity=1.0  ))
 
-tris2s = lv.triangles("t2s",  wireframe=False, colour="#77ff88", opacity=0.8)
-tris2s.vertices(t2.points*0.999)
-tris2s.indices(t2.simplices)
+    plot += mesh_viewer[i]
+    plot += wire_viewer[i]
+    
 
-tris3w = lv.triangles("t3w",  wireframe=True, colour="#444444", opacity=0.8)
-tris3w.vertices(t3.points)
-tris3w.indices(t3.simplices)
+## This helps to manage the wireframe / transparency
 
-tris3s = lv.triangles("t3s",  wireframe=False, colour="#77ff88", opacity=0.8)
-tris3s.vertices(t3.points*0.999)
-tris3s.indices(t3.simplices)
 
-tris4w = lv.triangles("t4w",  wireframe=True, colour="#444444", opacity=0.8)
-tris4w.vertices(t4.points)
-tris4w.indices(t4.simplices)
+indices = ico3.simplices.astype(np.uint32)
+points  = np.column_stack(ico3.points.T).astype(np.float32)
 
-tris4s = lv.triangles("t4s",  wireframe=False, colour="#77ff88", opacity=0.8)
-tris4s.vertices(t4.points*0.999)
-tris4s.indices(t4.simplices)
 
-lv.hide("t1s")
-lv.hide("t1w")
-lv.hide("t2s")
-lv.hide("t2w")
-lv.hide("t4s")
-lv.hide("t4w")
+background = k3d.mesh(points*0.9, indices, wireframe=False, 
+                   color=0xBBBBBB, opacity=1.0, flat_shading=False  )
 
-lv.translation(0.0, 0.0, -3.748)
-lv.rotation(37.5, -90.0, -37.5)
+plot += background
+plot.display()
 
-lv.control.Panel()
-lv.control.Button(command="hide triangles; show t1s; show t1w; redraw", label="EBV")
-lv.control.Button(command="hide triangles; show t2s; show t2w; redraw", label="EBT")
-lv.control.Button(command="hide triangles; show t3s; show t3w; redraw", label="CBV")
-lv.control.Button(command="hide triangles; show t4s; show t4w; redraw", label="CBT")
-lv.control.show()
+## ## ## 
 
-vdisplay.stop()
+from ipywidgets import interact, interactive
+import ipywidgets as widgets
+
+choices = {  "edge triangulation": 0,
+             "edge t triangulation": 1, 
+             "centroid triangulation": 2, 
+             "centroid t triangulation": 3  }
+
+@interact(choice=choices.keys())
+def chooser(choice):
+
+    for i in range(0,4):
+        mesh_viewer[i].visible = False
+        wire_viewer[i].visible = False
+
+    mesh_viewer[choices[choice]].visible = True
+    wire_viewer[choices[choice]].visible = True
+    
+    return 
+
 ```
 
 ```{code-cell} ipython3
@@ -417,7 +410,6 @@ A = np.array(T.areas()).T
 equant = np.max(E, axis=1) / np.min(E, axis=1)
 size_ratio = np.sqrt(np.max(A) / np.min(A))
 print ("CBT", T.simplices.shape[0], equant.max(), equant.min(), size_ratio)
-
 
 
 ```

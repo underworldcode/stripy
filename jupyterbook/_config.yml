@@ -10,6 +10,7 @@ latex:
 
 html:
 #  home_page_in_navbar option: true
+  extra_navbar: <button type="button" onclick="legibleFontSwitcher()">Switch Font</button>&nbsp;&nbsp;<button type="button" onclick="fontScaler(1.1)">&#10133;</button><button type="button" onclick="fontScaler(0.0)">&#9679;</button><button type="button" onclick="fontScaler(0.909)">&#10134;</button>  
   use_repository_button: true
 
 parse:

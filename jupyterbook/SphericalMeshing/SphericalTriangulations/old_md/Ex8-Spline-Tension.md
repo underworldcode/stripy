@@ -3,10 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.6.0
+    format_version: 0.13
+    jupytext_version: 1.10.3
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -64,46 +64,41 @@ stripy_smoothed2, dds, err = mesh.smoothing(data, np.ones_like(data_n), 10.0, 0.
 ```
 
 ```{code-cell} ipython3
-import lavavu
+import k3d
 
-from xvfbwrapper import Xvfb
-vdisplay = Xvfb()
-try:
-    vdisplay.start()
-    xvfb = True
+plot = k3d.plot(camera_auto_fit=False, grid_visible=False, 
+                menu_visibility=True, axes_helper=False )
 
-except:
-    xvfb = False
+indices = mesh.simplices.astype(np.uint32)
+points = np.column_stack(mesh.points.T).astype(np.float32)
 
-lv = lavavu.Viewer(border=False, background="#FFFFFF", resolution=[666,666], near=-10.0)
-
-nodes = lv.points("nodes", pointsize=3.0, pointtype="shiny", colour="#448080", opacity=0.75)
-nodes.vertices(mesh.points)
-
-tris = lv.triangles("triangles",  wireframe=False, colour="#77ff88", opacity=1.0)
-tris.vertices(mesh.points)
-tris.indices(mesh.simplices)
-tris.values(stripy_smoothed, label="smoothed")
-tris.values(stripy_smoothed2, label="smoothed_tension")
-tris.values(stripy_smoothed - stripy_smoothed2, label="delta")
-
-tris.colourmap("#990000 #FFFFFF #000099")
-cb = tris.colourbar()
-
-# view the pole
-
-lv.translation(0.0, 0.0, -3.0)
-lv.rotation(-20, 0.0, 0.0)
+mesh_viewer = k3d.mesh(points, indices, wireframe=False, attribute=data_n,
+                   color_map=k3d.colormaps.paraview_color_maps.Cool_to_Warm, 
+                   name="splines",
+                   flat_shading=False, opacity=1.0  )
 
 
+plot   += mesh_viewer
+plot += background
+plot.display()
 
-lv.control.Panel()
-lv.control.Range('specular', range=(0,1), step=0.1, value=0.4)
-lv.control.Checkbox(property='axis')
-lv.control.ObjectList()
-tris.control.List(options=["original", "smoothed", "smoothed_tension", "delta"],
-                  property="colourby", value="original", command="redraw")
-lv.control.show()
+## ## ## 
+
+from ipywidgets import interact, interactive
+import ipywidgets as widgets
+
+choices = { "original": data_n,
+             "smoothed": stripy_smoothed, 
+             "smooth with tension": stripy_smoothed2, 
+             "delta": stripy_smoothed - stripy_smoothed2  }
+
+@interact(choice=choices.keys())
+def chooser(choice):
+    mesh_viewer.attribute = choices[choice].astype(np.float32)
+    range = choices[choice].max() * 0.2
+    mesh_viewer.color_range = [0, range]
+    return 
+
 ```
 
 ## Interpolation with tension
@@ -126,35 +121,42 @@ grid_z2, ierr = cmesh.interpolate_cubic(mesh.lons, mesh.lats, cdata, sigma=csigm
 ```
 
 ```{code-cell} ipython3
-lv = lavavu.Viewer(border=False, background="#FFFFFF", resolution=[666,666], near=-10.0)
+import k3d
 
-nodes = lv.points("nodes", pointsize=3.0, pointtype="shiny", colour="#448080", opacity=0.75)
-nodes.vertices(mesh.points)
+plot = k3d.plot(camera_auto_fit=False, grid_visible=False, 
+                menu_visibility=True, axes_helper=False )
 
-tris = lv.triangles("triangles",  wireframe=False, colour="#77ff88", opacity=1.0)
-tris.vertices(mesh.points)
-tris.indices(mesh.simplices)
-tris.values(grid_z1, label="cubic")
-tris.values(grid_z2, label="cubic_tension")
-tris.values(grid_z1 - grid_z2, label="delta")
+indices = mesh.simplices.astype(np.uint32)
+points = np.column_stack(mesh.points.T).astype(np.float32)
 
-tris.colourmap("#990000 #FFFFFF #000099")
-cb = tris.colourbar()
-
-# view the pole
-
-lv.translation(0.0, 0.0, -3.0)
-lv.rotation(-20, 0.0, 0.0)
+mesh_viewer = k3d.mesh(points, indices, wireframe=False, attribute=data_n,
+                   color_map=k3d.colormaps.paraview_color_maps.Cool_to_Warm, 
+                   name="splines",
+                   flat_shading=False, opacity=1.0  )
 
 
+plot += mesh_viewer
+#plot += background
+plot.display()
 
-lv.control.Panel()
-lv.control.Range('specular', range=(0,1), step=0.1, value=0.4)
-lv.control.Checkbox(property='axis')
-lv.control.ObjectList()
-tris.control.List(options=["original", "cubic", "cubic_tension", "delta"],
-                  property="colourby", value="original", command="redraw")
-lv.control.show()
+## ## ## 
+
+from ipywidgets import interact, interactive
+import ipywidgets as widgets
+
+choices = {  
+             "cubic": grid_z1, 
+             "cubic with tension": grid_z2, 
+             "delta": grid_z1 - grid_z2  }
+
+@interact(choice=choices.keys())
+def chooser(choice):
+    mesh_viewer.attribute = choices[choice].astype(np.float32)
+    range = choices[choice].max() * 0.2
+    mesh_viewer.color_range = [-range, range]
+    return 
+
+
 ```
 
 ## Gradients with tension
@@ -173,42 +175,45 @@ dlon2, dlat2 = mesh.gradient_lonlat(data, nit=5, tol=1e-6, sigma=sigma) # tensio
 ```
 
 ```{code-cell} ipython3
-lv = lavavu.Viewer(border=False, background="#FFFFFF", resolution=[666,666], near=-10.0)
+import k3d
 
-nodes = lv.points("nodes", pointsize=3.0, pointtype="shiny", colour="#448080", opacity=0.75)
-nodes.vertices(mesh.points)
+plot = k3d.plot(camera_auto_fit=False, grid_visible=False, 
+                menu_visibility=True, axes_helper=False )
 
-tris = lv.triangles("triangles",  wireframe=False, colour="#77ff88", opacity=1.0)
-tris.vertices(mesh.points)
-tris.indices(mesh.simplices)
-tris.values(dlon1, label="dlon")
-tris.values(dlat1, label="dlat")
-tris.values(dlon2, label="dlon_tension")
-tris.values(dlat2, label="dlat_tension")
-tris.values(dlon1 - dlon2, label="dlon_err")
-tris.values(dlat1 - dlat2, label="dlat_err")
+indices = mesh.simplices.astype(np.uint32)
+points = np.column_stack(mesh.points.T).astype(np.float32)
 
-tris.colourmap("#990000 #FFFFFF #000099")
-cb = tris.colourbar()
-
-# view the pole
-
-lv.translation(0.0, 0.0, -3.0)
-lv.rotation(-20, 0.0, 0.0)
+mesh_viewer = k3d.mesh(points, indices, wireframe=False, attribute=data_n,
+                   color_map=k3d.colormaps.paraview_color_maps.Cool_to_Warm, 
+                   name="splines",
+                   flat_shading=False, opacity=1.0  )
 
 
+plot   += mesh_viewer
+plot += background
+plot.display()
 
-lv.control.Panel()
-lv.control.Range('specular', range=(0,1), step=0.1, value=0.4)
-lv.control.Checkbox(property='axis')
-lv.control.ObjectList()
-tris.control.List(options=["original", "dlon", "dlat", "dlon_tension", "dlat_tension", "dlon_err", "dlat_err"],
-                  property="colourby", value="original", command="redraw")
-lv.control.show()
+## ## ## 
+
+from ipywidgets import interact, interactive
+import ipywidgets as widgets
+
+choices = { "dlon": dlon1,
+            "dlat": dlat1,
+            "dlon + tension": dlon2,
+            "dlat + tension": dlat2,
+            "dlon delta": dlon1 - dlon2,
+            "dlat delta": dlat1 - dlat2 }
+
+
+@interact(choice=choices.keys())
+def chooser(choice):
+    mesh_viewer.attribute = choices[choice].astype(np.float32)
+    range = choices[choice].max() * 0.2
+    mesh_viewer.color_range = [-range, range]
+    return 
+
+
 ```
 
 The next notebook is [Ex9-Voronoi-Diagram](Ex9-Voronoi-Diagram.md)
-
-```{code-cell} ipython3
-vdisplay.stop()
-```

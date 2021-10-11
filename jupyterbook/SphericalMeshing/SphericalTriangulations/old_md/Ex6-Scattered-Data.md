@@ -3,10 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.6.0
+    format_version: 0.13
+    jupytext_version: 1.10.3
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -246,70 +246,45 @@ pass
 ## Visualisation
 
 ```{code-cell} ipython3
-import lavavu
+import k3d
 
-from xvfbwrapper import Xvfb
-vdisplay = Xvfb()
-try:
-    vdisplay.start()
-    xvfb = True
+plot = k3d.plot(camera_auto_fit=False, grid_visible=False, 
+                menu_visibility=True, axes_helper=False )
 
-except:
-    xvfb = False
+indices = mesh.simplices.astype(np.uint32)
+points = np.column_stack(mesh.points.T).astype(np.float32)
 
+mesh_viewer = k3d.mesh(points, indices, wireframe=False, attribute=hit_count,
+                   color_map=k3d.colormaps.paraview_color_maps.Cool_to_Warm, 
+                   name="heat map",
+                   flat_shading=False, opacity=1.0  )
 
-depth_range = depths.max()
-
-lv = lavavu.Viewer(border=False, background="#FFFFFF", resolution=[666,666], near=-10.0)
-
-
-tris = lv.triangles("triangles",  wireframe=False, colour="#77ff88", opacity=1.0)
-tris.vertices(mesh.points)
-tris.indices(mesh.simplices)
-
-tris.values(hit_count, label="hit_count")
-tris.values(hit_countn, label="hit_countn")
-tris.values(hit_countid, label="hit_countid")
-tris.values(hit_countidr, label="hit_countidr")
-tris.colourmap("#FFFFFF:0.0 (1.0)#FF0000:0.2 (50.0)#550044:0.5")
+## This helps to manage the wireframe / transparency
+background = k3d.mesh(points*0.95, indices, wireframe=False, 
+                   color=0xBBBBBB, opacity=1.0, flat_shading=False  )
 
 
-depth = lv.triangles("depth_field",  wireframe=False, colour="#FFFFFF", opacity=0.999)
-depth.vertices(mesh.points*(6370-depth_range*0.99) / 6370)
-depth.indices(mesh.simplices)
-depth.values(depth_idr, label="depths")
-depth.values(hit_countidr/hit_countidr.max(), label="weights")
-depth.colourmap("#550000 #0099FF #000055")
+plot   += mesh_viewer
+plot += background
+plot.display()
 
-depth["opacitymap"] = "#000000:0.0 (0.1)#000000:0.9 #000000:0.9"
-depth["opacityby"] = "weights"
-depth["colourby"]  = "depths"
- 
-bg = lv.triangles("background",  wireframe=False, colour="#FFFFFF", opacity=1.0)
-bg.vertices(mesh.points*(6370-depth_range) / 6370)
-bg.indices(mesh.simplices)
+## ## ## 
 
-ll = np.array(stripy.spherical.lonlat2xyz(lons, lats)).T
+from ipywidgets import interact, interactive
+import ipywidgets as widgets
 
-nodes = lv.points("events", pointsize=3.0, pointtype="shiny", colour="#448080", opacity=0.75)
-nodes.vertices(ll * (6370.0 - depths.reshape(-1,1)) / 6370.0 )
-nodes.values(depths, label="depths")
-nodes.colourmap("#550000 #0099FF #000055")
+choices = { "hit_count": hit_count,
+             "hit_countn": hit_countn, 
+             "hit_countid": hit_countid, 
+             "hit_countidr": hit_countidr,
+             "depth_idr": depth_idr  }
 
-# View from the pacific hemisphere 
-lv.translation(0.0, 0.0, -3.0)
-lv.rotation(0.0,90.0, 90.0)
-
-
-lv.control.Panel()
-lv.control.Range('specular', range=(0,1), step=0.1, value=0.4)
-lv.control.Checkbox(property='axis')
-lv.control.ObjectList()
-tris.control.List(property="colourby", options=["hit_count", "hit_countn", "hit_countid", "hit_countidr"], value="hit_count", command="redraw")
-
-
-lv.control.show()
-vdisplay.stop()
+@interact(choice=choices.keys())
+def chooser(choice):
+    mesh_viewer.attribute = choices[choice].astype(np.float32)
+    range = choices[choice].max() * 0.2
+    mesh_viewer.color_range = [0, range]
+    return 
 ```
 
 The next example is [Ex7-Refinement-of-Triangulations](./Ex7-Refinement-of-Triangulations.md)

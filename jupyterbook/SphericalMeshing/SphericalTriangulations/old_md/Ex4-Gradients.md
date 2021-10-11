@@ -3,10 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.6.0
+    format_version: 0.13
+    jupytext_version: 1.10.3
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -91,55 +91,49 @@ stripy_ddlon, stripy_ddlat = mesh.gradient_lonlat(analytic_sol)
 ```
 
 ```{code-cell} ipython3
-## This can be an issue on jupyterhub
+:tags: []
 
-from xvfbwrapper import Xvfb
-vdisplay = Xvfb()
-try:
-    vdisplay.start()
-    xvfb = True
+import k3d
+plot = k3d.plot(camera_auto_fit=False, grid_visible=False, 
+                menu_visibility=True, axes_helper=False )
 
-except:
-    xvfb = False
-```
+indices = mesh.simplices.astype(np.uint32)
+points = np.column_stack(mesh.points.T).astype(np.float32)
 
-```{code-cell} ipython3
-import lavavu
+mesh_viewer = k3d.mesh(points, indices, wireframe=False, attribute=analytic_sol,
+                   color_map=k3d.colormaps.basic_color_maps.CoolWarm, 
+                   name="original",
+                   flat_shading=False, opacity=1.0  )
 
-
-lv = lavavu.Viewer(border=False, background="#FFFFFF", resolution=[1000,600], near=-10.0)
-
-nodes = lv.points("nodes", pointsize=3.0, pointtype="shiny", colour="#448080", opacity=0.75)
-nodes.vertices(mesh.points)
-
-tris = lv.triangles("triangles",  wireframe=False, colour="#77ff88", opacity=1.0)
-tris.vertices(mesh.points)
-tris.indices(mesh.simplices)
-tris.values(analytic_sol, label="original")
-tris.values(stripy_ddlon, label="ddlon")
-tris.values(stripy_ddlat, label="ddlat")
-tris.values(stripy_ddlon-analytic_sol_ddlon, label="ddlonerr")
-tris.values(stripy_ddlat-analytic_sol_ddlat, label="ddlaterr")
+plot   += mesh_viewer
+plot   += k3d.points(points, point_size=0.01,color=0x779977)
 
 
-tris.colourmap("#990000 #FFFFFF #000099")
-cb = tris.colourbar()
+plot.display()
 
-# view the pole
+## ## ## 
 
-lv.translation(0.0, 0.0, -3.0)
-lv.rotation(-20, 0.0, 0.0)
+from ipywidgets import interact, interactive
+import ipywidgets as widgets
 
-lv.control.Panel()
-lv.control.Range('specular', range=(0,1), step=0.1, value=0.4)
-lv.control.Checkbox(property='axis')
-lv.control.ObjectList()
-tris.control.List(options=["original", "ddlon", "ddlat", "ddlonerr", "ddlaterr"], property="colourby", value="original", command="redraw", label="Display:")
-lv.control.show()
+choices = { "analytic": analytic_sol,
+             "stripy ddlon": stripy_ddlon, 
+             "stripy ddlat": stripy_ddlat, 
+             "error ddlon":  stripy_ddlon-analytic_sol_ddlon, 
+             "error ddlat":  stripy_ddlat-analytic_sol_ddlat }
+
+@interact(choice=choices.keys())
+def chooser(choice):
+    mesh_viewer.attribute = choices[choice].astype(np.float32)
+    range = np.sqrt((choices[choice]**2).mean()) * 0.5
+    mesh_viewer.color_range = [-range, range]
+    return 
+
+
+
+
+
+
 ```
 
 The next example is [Ex5-Smoothing](./Ex5-Smoothing.md)
-
-```{code-cell} ipython3
-vdisplay.stop()
-```

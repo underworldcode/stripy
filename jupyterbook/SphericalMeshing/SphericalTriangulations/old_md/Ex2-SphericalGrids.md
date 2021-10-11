@@ -3,10 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.6.0
+    format_version: 0.13
+    jupytext_version: 1.10.3
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -225,33 +225,32 @@ This produces triangles with a narrow area distribution. In three dimensions it 
 ```{code-cell} ipython3
 ## The icosahedron with faces in 3D view 
 
-import lavavu
 
-from xvfbwrapper import Xvfb
-with Xvfb() as xvfb:
+import k3d
+plot = k3d.plot(camera_auto_fit=True, grid_visible=False, 
+                menu_visibility=True, axes_helper=False )
 
-    ## or smesh = icoF0
-    smesh = icoFR
+smesh = icoFR # or isoF0
 
-    lv = lavavu.Viewer(border=False, background="#FFFFFF", resolution=[1000,600], near=-10.0)
+indices = smesh.simplices.astype(np.uint32)
+points  = np.column_stack(smesh.points.T).astype(np.float32)
 
-    tris = lv.triangles("triangulation",  wireframe=True, colour="#444444", opacity=0.8)
-    tris.vertices(smesh.points)
-    tris.indices(smesh.simplices)
+plot   += k3d.mesh(points, indices, wireframe=False, color=0x8888FF,
+                   flat_shading=True, opacity=0.5  )
 
-    tris2 = lv.triangles("triangles",  wireframe=False, colour="#77ff88", opacity=0.8)
-    tris2.vertices(smesh.points)
-    tris2.indices(smesh.simplices)
+plot   += k3d.mesh(points, indices, wireframe=True, color=0x3333BB,
+                   flat_shading=True, opacity=1.0  )
 
-    nodes = lv.points("nodes", pointsize=2.0, pointtype="shiny", colour="#448080", opacity=0.75)
-    nodes.vertices(smesh.points)
+## This helps to manage the wireframe / transparency
+plot   += k3d.mesh(points*0.98, indices, wireframe=False, 
+                   color=0xBBBBBB, opacity=1.0, flat_shading=False  )
 
 
-    lv.control.Panel()
-    lv.control.Range('specular', range=(0,1), step=0.1, value=0.4)
-    lv.control.Checkbox(property='axis')
-    lv.control.ObjectList()
-    lv.control.show()
+plot   += k3d.points(points, point_size=0.01, color=0xFF0000)
+
+
+plot.display()
+
 ```
 
 ```{code-cell} ipython3
@@ -268,8 +267,6 @@ projection2 = ccrs.Mollweide(central_longitude=-120)
 projection3 = ccrs.PlateCarree()
 base_projection = ccrs.PlateCarree()
 ```
-
-### Plot and compare the predefined meshes
 
 ```{code-cell} ipython3
 def mesh_fig(mesh, meshR, name):
@@ -321,7 +318,6 @@ mesh_fig(socc0, socc2, "SoccerBall")
 
 mesh_fig(ring0, ring2, "Ring")
 mesh_fig(rand0, rand2, "Random")
-
 ```
 
 The next example is [Ex3-Interpolation](./Ex3-Interpolation.md)

@@ -1,35 +1,35 @@
-- file: FrontPage.md
-  numbered: false
+format: jb-book
+root: FrontPage
+parts:
 
-- part: Cartesian Triangulations
+- caption: Spherical Triangulations
   chapters:
-  - file: SphericalMeshing/CartesianTriangulations/Ex1-Cartesian-Triangulations.md
-  - file: SphericalMeshing/CartesianTriangulations/Ex2-CartesianGrids.md
-  - file: SphericalMeshing/CartesianTriangulations/Ex3-Interpolation.md
-  - file: SphericalMeshing/CartesianTriangulations/Ex4-Gradients.md
-  - file: SphericalMeshing/CartesianTriangulations/Ex5-Smoothing.md
-  - file: SphericalMeshing/CartesianTriangulations/Ex6-Scattered-Data.md
-  - file: SphericalMeshing/CartesianTriangulations/Ex7-Refinement-of-Triangulations.md
-  - file: SphericalMeshing/CartesianTriangulations/Ex8-Spline-Tension.md
-  - file: SphericalMeshing/CartesianTriangulations/Ex9-Voronoi-Diagram.md
+  - file: SphericalMeshing/SphericalTriangulations/Ex1-Spherical-Triangulations
+  - file: SphericalMeshing/SphericalTriangulations/Ex2-SphericalGrids
+  - file: SphericalMeshing/SphericalTriangulations/Ex3-Interpolation
+  - file: SphericalMeshing/SphericalTriangulations/Ex4-Gradients
+  - file: SphericalMeshing/SphericalTriangulations/Ex5-Smoothing
+  - file: SphericalMeshing/SphericalTriangulations/Ex6-Scattered-Data
+  - file: SphericalMeshing/SphericalTriangulations/Ex7-Refinement-of-Triangulations
+  - file: SphericalMeshing/SphericalTriangulations/Ex8-Spline-Tension
+  - file: SphericalMeshing/SphericalTriangulations/Ex9-Voronoi-Diagram
 
-- part: Spherical Triangulations 
+- caption: Cartesian Triangulations
   chapters:
-  - file: SphericalMeshing/SphericalTriangulations/Ex1-Spherical-Triangulations.md
-  - file: SphericalMeshing/SphericalTriangulations/Ex2-SphericalGrids.md
-  - file: SphericalMeshing/SphericalTriangulations/Ex3-Interpolation.md
-  - file: SphericalMeshing/SphericalTriangulations/Ex4-Gradients.md
-  - file: SphericalMeshing/SphericalTriangulations/Ex5-Smoothing.md
-  - file: SphericalMeshing/SphericalTriangulations/Ex6-Scattered-Data.md
-  - file: SphericalMeshing/SphericalTriangulations/Ex7-Refinement-of-Triangulations.md
-  - file: SphericalMeshing/SphericalTriangulations/Ex8-Spline-Tension.md
-  - file: SphericalMeshing/SphericalTriangulations/Ex9-Voronoi-Diagram.md
+  - file: SphericalMeshing/CartesianTriangulations/Ex1-Cartesian-Triangulations
+  - file: SphericalMeshing/CartesianTriangulations/Ex2-CartesianGrids
+  - file: SphericalMeshing/CartesianTriangulations/Ex3-Interpolation
+  - file: SphericalMeshing/CartesianTriangulations/Ex4-Gradients
+  - file: SphericalMeshing/CartesianTriangulations/Ex5-Smoothing
+  - file: SphericalMeshing/CartesianTriangulations/Ex6-Scattered-Data
+  - file: SphericalMeshing/CartesianTriangulations/Ex7-Refinement-of-Triangulations
+  - file: SphericalMeshing/CartesianTriangulations/Ex8-Spline-Tension
+  - file: SphericalMeshing/CartesianTriangulations/Ex9-Voronoi-Diagram
 
-- part: Worked Examples (with litho 1.0)
+- caption: Worked Examples (with litho 1.0)
   chapters:
-  - file: SphericalMeshing/Litho1pt0/Ex1-Litho1Layers.md
-  - file: SphericalMeshing/Litho1pt0/Ex2-Litho1Properties.md
-  - file: SphericalMeshing/Litho1pt0/Ex3-CrustalRegionalisation.md
-  - file: SphericalMeshing/Litho1pt0/WorkEx1-CratonAverageProperties.md
-  - file: SphericalMeshing/Litho1pt0/WorkEx2-OceanDepthAge.md
-
+  - file: SphericalMeshing/Litho1pt0/Ex1-Litho1Layers
+  - file: SphericalMeshing/Litho1pt0/Ex2-Litho1Properties
+  - file: SphericalMeshing/Litho1pt0/Ex3-CrustalRegionalisation
+  - file: SphericalMeshing/Litho1pt0/WorkEx1-CratonAverageProperties
+  - file: SphericalMeshing/Litho1pt0/WorkEx2-OceanDepthAge

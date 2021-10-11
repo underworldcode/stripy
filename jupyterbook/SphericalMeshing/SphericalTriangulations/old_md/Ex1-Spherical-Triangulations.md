@@ -3,10 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.6.0
+    format_version: 0.13
+    jupytext_version: 1.10.3
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -156,6 +156,8 @@ for s1, s2 in segs:
     ax2.plot( [lons[s1], lons[s2]],
               [lats[s1], lats[s2]], 
               linewidth=0.5, color="black", transform=ccrs.Geodetic())
+    
+fig.savefig("icosohedron_map.png", dpi=150)
 ```
 
 ### `Lavavu` to view spherical information
@@ -164,67 +166,38 @@ We can view the same triangulation in an interactive form using the `lavavu` pac
 The list of simplices of the triangulation (`spherical_triangulation.simplices`) is compatible with the format expected by Lavavu.
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+import k3d
+plot = k3d.plot(camera_auto_fit=False, grid_visible=False, 
+                menu_visibility=False, axes_helper=False )
 
-## This can be an issue on jupyterhub
+indices = refined_spherical_triangulation.simplices.astype(np.uint32)
+points  = np.column_stack(refined_spherical_triangulation.points.T).astype(np.float32)
+pcoarse = np.column_stack(spherical_triangulation.points.T).astype(np.float32)
 
-from xvfbwrapper import Xvfb
-vdisplay = Xvfb()
-try:
-    vdisplay.start()
-    xvfb = True
+plot   += k3d.mesh(points, indices, wireframe=False, color=0x8888FF,
+                   flat_shading=True, opacity=0.5  )
 
-except:
-    xvfb = False
+plot   += k3d.mesh(points, indices, wireframe=True, color=0x3333BB,
+                   flat_shading=True, opacity=1.0  )
+
+## This helps to manage the wireframe / transparency
+plot   += k3d.mesh(points*0.98, indices, wireframe=False, 
+                   color=0xBBBBBB, opacity=1.0, flat_shading=False  )
+
+
+plot   += k3d.points(points, point_size=0.025, color=0xFF0000)
+
+plot   += k3d.points(pcoarse, point_size=0.04, color=0x00FF00)
+
+plot.display()
 ```
 
 ```{code-cell} ipython3
-import lavavu
+## Save this model as an interactive html file
 
-
-
-lv = lavavu.Viewer(border=False, resolution=[666,666], background="#FFFFFF")
-lv["axis"]=False
-lv['specular'] = 0.5
-
-ghost = lv.triangles("ghost",  wireframe=False, colour="#777777", opacity=0.1)
-ghost.vertices(refined_spherical_triangulation.points*0.99)
-ghost.indices(refined_spherical_triangulation.simplices)
-
-tris = lv.triangles("coarse",  wireframe=False, colour="#4444FF", opacity=0.8)
-tris.vertices(spherical_triangulation.points)
-tris.indices(spherical_triangulation.simplices)
-
-trisw = lv.triangles("coarsew",  wireframe=True, colour="#000000", opacity=0.8, linewidth=3.0)
-trisw.vertices(spherical_triangulation.points)
-trisw.indices(spherical_triangulation.simplices)
-
-nodes = lv.points("coarse_nodes", pointsize=10.0, pointtype="shiny", colour="#4444FF", opacity=0.95)
-nodes.vertices(spherical_triangulation.points)
-
-tris2 = lv.triangles("fine",  wireframe=False, colour="#007f00", opacity=0.25)
-tris2.vertices(refined_spherical_triangulation.points)
-tris2.indices(refined_spherical_triangulation.simplices)
-
-tris2w = lv.triangles("finew",  wireframe=True, colour="#444444", opacity=0.25, linewidth=0.5)
-tris2w.vertices(refined_spherical_triangulation.points)
-tris2w.indices(refined_spherical_triangulation.simplices)
-
-nodes2 = lv.points("fine_nodes", pointsize=3.0, pointtype="shiny", colour="FF0000", opacity=0.95)
-nodes2.vertices(refined_spherical_triangulation.points)
-
-lv.hide("fine")
-lv.hide("finew")
-
-lv.control.Panel()
-lv.control.Button(command="hide triangles; hide points; show ghost; show fine_nodes; show coarse; show coarsew; show coarse_nodes; redraw", label="Coarse")
-lv.control.Button(command="hide triangles; hide points; show ghost; show coarse_nodes; show fine; show finew; show fine_nodes; redraw", label="Fine")
-
-lv.control.show()
-```
-
-```{code-cell} ipython3
-
+html = plot.get_snapshot()
+with open('icosohedron_example.html','w') as fp:
+    fp.write(html)
 ```
 
 ## Predefined meshes

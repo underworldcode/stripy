@@ -3,10 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.6.0
+    format_version: 0.13
+    jupytext_version: 1.10.3
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -143,77 +143,46 @@ delta_n3  = analytic_sol_n - stripy_smoothed3
 delta_ns3 = analytic_sol   - stripy_smoothed3
 ```
 
-```{code-cell} ipython3
-## This can be an issue on jupyterhub
-
-from xvfbwrapper import Xvfb
-vdisplay = Xvfb()
-try:
-    vdisplay.start()
-    xvfb = True
-
-except:
-    xvfb = False
-```
-
 ## Results of smoothing with different value of `sm`
 
 ```{code-cell} ipython3
-import lavavu
+import k3d
 
-lv = lavavu.Viewer(border=False, background="#FFFFFF", resolution=[666,666], near=-10.0)
+plot = k3d.plot(camera_auto_fit=False, grid_visible=False, 
+                menu_visibility=True, axes_helper=False )
 
-nodes = lv.points("nodes", pointsize=3.0, pointtype="shiny", colour="#448080", opacity=0.75)
-nodes.vertices(mesh.points)
+indices = mesh.simplices.astype(np.uint32)
+points = np.column_stack(mesh.points.T).astype(np.float32)
 
-tris = lv.triangles("triangles",  wireframe=False, colour="#77ff88", opacity=1.0)
-tris.vertices(mesh.points)
-tris.indices(mesh.simplices)
-tris.values(analytic_sol_n, label="original")
-tris.values(stripy_smoothed, label="smoothed")
-tris.values(stripy_smoothed2, label="smoothed2")
-tris.values(stripy_smoothed3, label="smoothed3")
+mesh_viewer = k3d.mesh(points, indices, wireframe=False, attribute=stripy_smoothed,
+                   color_map=k3d.colormaps.basic_color_maps.CoolWarm, 
+                   name="original",
+                   flat_shading=False, opacity=1.0  )
 
+plot   += mesh_viewer
+plot   += k3d.points(points, point_size=0.01,color=0x779977)
+plot.display()
 
-tris.values(delta_n, label="delta_n")
-tris.values(delta_ns, label="delta_ns")
+## ## ## 
 
-tris.values(delta_n2, label="delta_n2")
-tris.values(delta_ns2, label="delta_ns2")
+from ipywidgets import interact, interactive
+import ipywidgets as widgets
 
-tris.values(delta_n3, label="delta_n3")
-tris.values(delta_ns3, label="delta_ns3")
+choices = { "unsmoothed": analytic_sol_n,
+             "smooth1": stripy_smoothed, 
+             "smooth2": stripy_smoothed2, 
+             "smooth3": stripy_smoothed3,              
+             "Delta smooth1": analytic_sol_n - stripy_smoothed, 
+             "Delta smooth2": analytic_sol_n - stripy_smoothed2, 
+             "Delta smooth3": analytic_sol_n - stripy_smoothed3, }
 
+@interact(choice=choices.keys())
+def chooser(choice):
+    mesh_viewer.attribute = choices[choice].astype(np.float32)
+    range = np.sqrt((choices[choice]**2).mean()) * 0.5
+    mesh_viewer.color_range = [-range, range]
+    return 
 
-
-# and the errors
-
-tris.colourmap("#990000 #FFFFFF #000099")
-
-
-cb = tris.colourbar()
-
-# view the pole
-
-lv.translation(0.0, 0.0, -3.0)
-lv.rotation(-20, 0.0, 0.0)
-
-
-
-lv.control.Panel()
-lv.control.Range('specular', range=(0,1), step=0.1, value=0.4)
-lv.control.Checkbox(property='axis')
-lv.control.ObjectList()
-tris.control.List(options=["original", "smoothed", "smoothed2", "smoothed3",
-                   "delta_n", "delta_ns", 
-                   "delta_n2", "delta_ns2", 
-                   "delta_n3", "delta_ns3"], property="colourby", value="original", command="redraw")
-lv.control.show()
 ```
 
 The next example is [Ex6-Scattered-Data](./Ex6-Scattered-Data.md)
-
-```{code-cell} ipython3
-
-vdisplay.stop()
-```

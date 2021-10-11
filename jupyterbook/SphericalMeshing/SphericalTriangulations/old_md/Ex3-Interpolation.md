@@ -3,10 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
-    format_version: 0.12
-    jupytext_version: 1.6.0
+    format_version: 0.13
+    jupytext_version: 1.10.3
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -111,10 +111,6 @@ coarse_afn = analytic(cmesh.lons, cmesh.lats, 5.0, 2.0)
 fine_afn   = analytic(fmesh.lons, fmesh.lats, 5.0, 2.0)
 ```
 
-```{code-cell} ipython3
-
-```
-
 ### The analytic function on the different samplings
 
 It is helpful to be able to view a mesh in 3D to verify that it is an appropriate choice. Here, for example, is the icosahedron with additional points in the centroid of the faces.
@@ -122,69 +118,29 @@ It is helpful to be able to view a mesh in 3D to verify that it is an appropriat
 This produces triangles with a narrow area distribution. In three dimensions it is easy to see the origin of the size variations.
 
 ```{code-cell} ipython3
-:tags: [hide-cell]
+:tags: []
 
-## This can be an issue on jupyterhub
+import k3d
+plot = k3d.plot(camera_auto_fit=False, grid_visible=False, 
+                menu_visibility=False, axes_helper=False )
 
-from xvfbwrapper import Xvfb
-vdisplay = Xvfb()
-try:
-    vdisplay.start()
-    xvfb = True
+findices = fmesh.simplices.astype(np.uint32)
+cindices = cmesh.simplices.astype(np.uint32)
+fpoints = np.column_stack(fmesh.points.T).astype(np.float32)
+cpoints = np.column_stack(cmesh.points.T).astype(np.float32)
 
-except:
-    xvfb = False
-```
-
-```{code-cell} ipython3
-import lavavu
+plot   += k3d.mesh(fpoints, findices, wireframe=False, color=0xBBBBBB,
+                   flat_shading=True, opacity=1.0 )
 
 
-lv = lavavu.Viewer(border=False, background="#FFFFFF", resolution=[600,600], near=-10.0)
-
-ctris = lv.triangles("ctriangulation",  wireframe=True, colour="#444444", opacity=0.8)
-ctris.vertices(cmesh.points)
-ctris.indices(cmesh.simplices)
-
-ctris2 = lv.triangles("ctriangles",  wireframe=False, colour="#77ff88", opacity=1.0)
-ctris2.vertices(cmesh.points)
-ctris2.indices(cmesh.simplices)
-ctris2.values(coarse_afn)
-ctris2.colourmap("#990000 #FFFFFF #000099")
-
-
-cnodes = lv.points("cnodes", pointsize=4.0, pointtype="shiny", colour="#448080", opacity=0.75)
-cnodes.vertices(cmesh.points)
-
-
-fnodes = lv.points("fnodes", pointsize=3.0, pointtype="shiny", colour="#448080", opacity=0.75)
-fnodes.vertices(fmesh.points)
-
-ftris2 = lv.triangles("ftriangulation",  wireframe=True, colour="#444444", opacity=0.8)
-ftris2.vertices(fmesh.points)
-ftris2.indices(fmesh.simplices)
-
-ftris = lv.triangles("ftriangles",  wireframe=False, colour="#77ff88", opacity=1.0)
-ftris.vertices(fmesh.points)
-ftris.indices(fmesh.simplices)
-ftris.values(fine_afn)
-ftris.colourmap("#990000 #FFFFFF #000099")
-
-# view the pole
-
-lv.translation(0.0, 0.0, -3.0)
-lv.rotation(-20, 0.0, 0.0)
-
-lv.hide("fnodes")
-lv.hide("ftriangulation")
-lv.hide("ftriangules")
+plot   += k3d.points(fpoints, point_size=0.01,color=0xFF0000)
 
 
 
-lv.control.Panel()
-lv.control.Button(command="hide triangles; hide points; show cnodes; show ctriangles; show ctriangulation; redraw", label="Coarse")
-lv.control.Button(command="hide triangles; hide points; show fnodes; show ftriangles; show ftriangulation; redraw", label="Fine")
-lv.control.show()
+
+plot   += k3d.points(cpoints, point_size=0.02,color=0x00FF00)
+
+plot.display()
 ```
 
 ### Interpolation from coarse to fine
@@ -203,40 +159,51 @@ err_c2f3 = interp_c2f3-fine_afn
 ```
 
 ```{code-cell} ipython3
-import lavavu
+interp_c2f1.max()
+```
+
+```{code-cell} ipython3
+import k3d
+plot = k3d.plot(camera_auto_fit=False, grid_visible=False, 
+                menu_visibility=True, axes_helper=False )
+
+findices = fmesh.simplices.astype(np.uint32)
+cindices = cmesh.simplices.astype(np.uint32)
+fpoints = np.column_stack(fmesh.points.T).astype(np.float32)
+cpoints = np.column_stack(cmesh.points.T).astype(np.float32)
 
 
-lv = lavavu.Viewer(border=False, background="#FFFFFF", resolution=[1000,600], near=-10.0)
-
-fnodes = lv.points("fnodes", pointsize=3.0, pointtype="shiny", colour="#448080", opacity=0.75)
-fnodes.vertices(fmesh.points)
-
-ftris = lv.triangles("ftriangles",  wireframe=False, colour="#77ff88", opacity=0.8)
-ftris.vertices(fmesh.points)
-ftris.indices(fmesh.simplices)
-ftris.values(fine_afn, label="original")
-ftris.values(interp_c2f1, label="interp1")
-ftris.values(interp_c2f3, label="interp3")
-ftris.values(err_c2f1, label="interperr1")
-ftris.values(err_c2f3, label="interperr3")
-ftris.colourmap("#990000 #FFFFFF #000099")
+plot   += k3d.mesh(fpoints, findices, wireframe=False, attribute=interp_c2f1,
+                   color_map=k3d.colormaps.basic_color_maps.CoolWarm, 
+                   name="1st order interpolant",
+                   flat_shading=False, opacity=1.0  )
 
 
-cb = ftris.colourbar()
-
-# view the pole
-
-lv.translation(0.0, 0.0, -3.0)
-lv.rotation(-20, 0.0, 0.0)
+plot   += k3d.mesh(fpoints, findices, wireframe=False, attribute=interp_c2f3,
+                   color_map=k3d.colormaps.basic_color_maps.CoolWarm, 
+                   name="3rd order interpolant",
+                   flat_shading=False, opacity=1.0  )
 
 
+plot   += k3d.mesh(fpoints, findices, wireframe=False, attribute=err_c2f1,
+                   color_map=k3d.colormaps.basic_color_maps.CoolWarm, 
+                   name="1st order error",
+                   flat_shading=False, opacity=1.0  )
 
-lv.control.Panel()
-lv.control.Range('specular', range=(0,1), step=0.1, value=0.4)
-lv.control.Checkbox(property='axis')
-lv.control.ObjectList()
-ftris.control.List(options=["original", "interp1", "interp3", "interperr1", "interperr3"], property="colourby", value="original", command="redraw")
-lv.control.show()
+
+plot   += k3d.mesh(fpoints, findices, wireframe=False, attribute=err_c2f3,
+                   color_map=k3d.colormaps.basic_color_maps.CoolWarm, 
+                   name="3rd order error",
+                   flat_shading=False, opacity=1.0  )
+
+
+
+plot   += k3d.points(fpoints, point_size=0.01,color=0x779977)
+
+
+plot.display()
+
+
 ```
 
 ### Interpolate to grid
@@ -278,9 +245,3 @@ ax2.imshow(grid_z2, extent=np.degrees(extent_globe), cmap='RdBu', transform=ccrs
 ```
 
 The next example is [Ex4-Gradients](./Ex4-Gradients.md)
-
-```{code-cell} ipython3
-:tags: [hide-cell]
-
-vdisplay.stop()
-```
