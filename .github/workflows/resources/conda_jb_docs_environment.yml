@@ -5,7 +5,7 @@ channels:
   - conda-forge
   - geo-down-under
 dependencies:
-  - geo-down-under::stripy==2.0.5b2
+  - geo-down-under::stripy==2.0.5b2  # this only works after the upload, of course
   - geo-down-under::litho1pt0
   - matplotlib
   - pyproj
@@ -14,10 +14,9 @@ dependencies:
   - netcdf4
   - cartopy
   - xarray
-  - xvfbwrapper
+  - k3d
   - pip 
   
   - pip:
     - jupyter-book
-    - lavavu
 
