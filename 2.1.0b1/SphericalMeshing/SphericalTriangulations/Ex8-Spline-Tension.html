@@ -1,0 +1,742 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Example 8 - Spline Tension &#8212; Stripy</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/customize.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/font_button.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Example 9 - Constructing the Voronoi diagram" href="Ex9-Voronoi-Diagram.html" />
+    <link rel="prev" title="Example 7 - Refining a triangulation" href="Ex7-Refinement-of-Triangulations.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Stripy</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../FrontPage.html">
+   Introduction to Stripy
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Spherical Triangulations
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex1-Spherical-Triangulations.html">
+   Example 1 - Triangulation of arbitrary points on the sphere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex2-SphericalGrids.html">
+   Example 2 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   predefined meshes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex3-Interpolation.html">
+   Example 3 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   interpolation on the sphere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex4-Gradients.html">
+   Example 4 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   gradients on the sphere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex5-Smoothing.html">
+   Example 5 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   smoothing operations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex6-Scattered-Data.html">
+   Example 6 - Scattered Data and ‘Heat Maps’
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex7-Refinement-of-Triangulations.html">
+   Example 7 - Refining a triangulation
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Example 8 - Spline Tension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex9-Voronoi-Diagram.html">
+   Example 9 - Constructing the Voronoi diagram
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Cartesian Triangulations
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex1-Cartesian-Triangulations.html">
+   Example 1 - Triangulation of arbitrary points
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex2-CartesianGrids.html">
+   Example 2 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   predefined meshes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex3-Interpolation.html">
+   Example 3 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   interpolation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex4-Gradients.html">
+   Example 4 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   gradients
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex5-Smoothing.html">
+   Example 5 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   smoothing operations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex6-Scattered-Data.html">
+   Example 6 - Scattered Data and ‘Heat Maps’
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex7-Refinement-of-Triangulations.html">
+   Example 7 - Refining a triangulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex8-Spline-Tension.html">
+   Example 8 - Spline Tension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex9-Voronoi-Diagram.html">
+   Example 9 - Constructing the Voronoi diagram
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Worked Examples (with litho 1.0)
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Litho1pt0/Ex1-Litho1Layers.html">
+   Introduction to the stripy/python wrapper for litho 1.0
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Litho1pt0/Ex2-Litho1Properties.html">
+   Litho 1.0 global sampling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Litho1pt0/Ex3-CrustalRegionalisation.html">
+   Crust 1.0 data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Litho1pt0/WorkEx1-CratonAverageProperties.html">
+   Properties of the cratons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Litho1pt0/WorkEx2-OceanDepthAge.html">
+   Age of the oceans / depth of the oceans
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <button type="button" onclick="legibleFontSwitcher()">Switch Font</button>&nbsp;&nbsp;<button type="button" onclick="fontScaler(1.1)">&#10133;</button><button type="button" onclick="fontScaler(0.0)">&#9679;</button><button type="button" onclick="fontScaler(0.909)">&#10134;</button>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/SphericalMeshing/SphericalTriangulations/Ex8-Spline-Tension.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/underworldcode/stripy"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/dev?urlpath=tree/jupyterbook/SphericalMeshing/SphericalTriangulations/Ex8-Spline-Tension.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#contents">
+   Contents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#smoothing-with-tension">
+   Smoothing with tension
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#interpolation-with-tension">
+   Interpolation with tension
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gradients-with-tension">
+   Gradients with tension
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="example-8-spline-tension">
+<h1>Example 8 - Spline Tension<a class="headerlink" href="#example-8-spline-tension" title="Permalink to this headline">¶</a></h1>
+<p>Apply spline tension to interpolaton, gradient, derivative, or smoothing routines to reduce the occurance of undershoot / overshoot inconsistencies in the solution.</p>
+<p>The values to determine the degree of tension is stored in <code class="docutils literal notranslate"><span class="pre">sigma</span></code>. Using the routine <code class="docutils literal notranslate"><span class="pre">get_spline_tension_factors</span></code> will determine the smallest tension factor such that the spline preserves the local shape properties (monotonicity and convexity) of the data. If <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is zero everywhere, then no tension is active.</p>
+<p>We walk through a number of routines that we have explored in previous notebooks, but in this case demonstrating the use of tensioned splines.</p>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="#Smoothing-with-tension">Smoothing with tension</a></p></li>
+<li><p><a class="reference external" href="#Interpolation-with-tension">Interpolation with tension</a></p></li>
+<li><p><a class="reference external" href="#Gradients-with-tension">Gradients with tension</a></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">stripy</span> <span class="k">as</span> <span class="nn">stripy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mesh</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">spherical_meshes</span><span class="o">.</span><span class="n">icosahedral_mesh</span><span class="p">(</span><span class="n">refinement_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">analytic</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">):</span>
+     <span class="k">return</span>  <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">k1</span><span class="o">*</span><span class="n">lons</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k2</span><span class="o">*</span><span class="n">lats</span><span class="p">)</span> 
+
+<span class="k">def</span> <span class="nf">analytic_noisy</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">noise</span><span class="p">,</span> <span class="n">short</span><span class="p">):</span>
+     <span class="k">return</span>  <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">k1</span><span class="o">*</span><span class="n">lons</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k2</span><span class="o">*</span><span class="n">lats</span><span class="p">)</span> <span class="o">+</span> <span class="n">short</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">k1</span><span class="o">*</span><span class="mf">5.0</span><span class="o">*</span><span class="n">lons</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k2</span><span class="o">*</span><span class="mf">5.0</span><span class="o">*</span><span class="n">lats</span><span class="p">))</span> <span class="o">+</span>  <span class="n">noise</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">lons</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">data</span>   <span class="o">=</span> <span class="n">analytic</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">lons</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="n">data_n</span> <span class="o">=</span> <span class="n">analytic_noisy</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">lons</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get tension factors from the data</span>
+<span class="n">sigma</span>   <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_spline_tension_factors</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+<span class="n">sigma_n</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_spline_tension_factors</span><span class="p">(</span><span class="n">data_n</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="smoothing-with-tension">
+<h2>Smoothing with tension<a class="headerlink" href="#smoothing-with-tension" title="Permalink to this headline">¶</a></h2>
+<p>Tension is applied simply by supplying <code class="docutils literal notranslate"><span class="pre">sigma</span></code>. It’s effect is most noticible near the poles where there are edge artefacts in the solution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stripy_smoothed</span><span class="p">,</span>  <span class="n">dds</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">smoothing</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">data_n</span><span class="p">),</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">stripy_smoothed2</span><span class="p">,</span> <span class="n">dds</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">smoothing</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">data_n</span><span class="p">),</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">k3d</span>
+
+<span class="n">plot</span> <span class="o">=</span> <span class="n">k3d</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">camera_auto_fit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grid_visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                <span class="n">menu_visibility</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes_helper</span><span class="o">=</span><span class="kc">False</span> <span class="p">)</span>
+
+<span class="n">indices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">simplices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">mesh_viewer</span> <span class="o">=</span> <span class="n">k3d</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">wireframe</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="n">data_n</span><span class="p">,</span>
+                   <span class="n">color_map</span><span class="o">=</span><span class="n">k3d</span><span class="o">.</span><span class="n">colormaps</span><span class="o">.</span><span class="n">paraview_color_maps</span><span class="o">.</span><span class="n">Cool_to_Warm</span><span class="p">,</span> 
+                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;splines&quot;</span><span class="p">,</span>
+                   <span class="n">flat_shading</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span>  <span class="p">)</span>
+
+
+<span class="n">plot</span>   <span class="o">+=</span> <span class="n">mesh_viewer</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+<span class="c1">## ## ## </span>
+
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">interactive</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="n">choices</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;original&quot;</span><span class="p">:</span> <span class="n">data_n</span><span class="p">,</span>
+             <span class="s2">&quot;smoothed&quot;</span><span class="p">:</span> <span class="n">stripy_smoothed</span><span class="p">,</span> 
+             <span class="s2">&quot;smooth with tension&quot;</span><span class="p">:</span> <span class="n">stripy_smoothed2</span><span class="p">,</span> 
+             <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="n">stripy_smoothed</span> <span class="o">-</span> <span class="n">stripy_smoothed2</span>  <span class="p">}</span>
+
+<span class="nd">@interact</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="n">choices</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">chooser</span><span class="p">(</span><span class="n">choice</span><span class="p">):</span>
+    <span class="n">mesh_viewer</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">choices</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="nb">range</span> <span class="o">=</span> <span class="n">choices</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.2</span>
+    <span class="n">mesh_viewer</span><span class="o">.</span><span class="n">color_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="nb">range</span><span class="p">]</span>
+    <span class="k">return</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "c9000fc89e8146bbabaae65361f4ead2"}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "b0d57c628c4041bcaf9ed35d7395ada9"}
+</script></div>
+</div>
+</div>
+<div class="section" id="interpolation-with-tension">
+<h2>Interpolation with tension<a class="headerlink" href="#interpolation-with-tension" title="Permalink to this headline">¶</a></h2>
+<p>Only applies to cubic interpolation. The effect of supplying a non-negative <code class="docutils literal notranslate"><span class="pre">sigma</span></code> is to produce a <em>more linear</em> interpolation. For regions that lie outside the hull, cubic extrapolation produces wild oscillations in the solution which can be mitigated with spline tension.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set up a discontinuous mesh</span>
+
+<span class="n">mask_points</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">lats</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>
+<span class="n">cmesh</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">sTriangulation</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">lons</span><span class="p">[</span><span class="n">mask_points</span><span class="p">],</span> <span class="n">mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">[</span><span class="n">mask_points</span><span class="p">])</span>
+
+<span class="n">cdata</span>   <span class="o">=</span> <span class="n">analytic</span><span class="p">(</span><span class="n">cmesh</span><span class="o">.</span><span class="n">lons</span><span class="p">,</span> <span class="n">cmesh</span><span class="o">.</span><span class="n">lats</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="n">csigma</span>  <span class="o">=</span> <span class="n">cmesh</span><span class="o">.</span><span class="n">get_spline_tension_factors</span><span class="p">(</span><span class="n">cdata</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_z1</span><span class="p">,</span> <span class="n">ierr</span> <span class="o">=</span> <span class="n">cmesh</span><span class="o">.</span><span class="n">interpolate_cubic</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">lons</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">,</span> <span class="n">cdata</span><span class="p">)</span> <span class="c1"># no tension</span>
+<span class="n">grid_z2</span><span class="p">,</span> <span class="n">ierr</span> <span class="o">=</span> <span class="n">cmesh</span><span class="o">.</span><span class="n">interpolate_cubic</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">lons</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">,</span> <span class="n">cdata</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">csigma</span><span class="p">)</span> <span class="c1"># tension</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">k3d</span>
+
+<span class="n">plot</span> <span class="o">=</span> <span class="n">k3d</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">camera_auto_fit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grid_visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                <span class="n">menu_visibility</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes_helper</span><span class="o">=</span><span class="kc">False</span> <span class="p">)</span>
+
+<span class="n">indices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">simplices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">mesh_viewer</span> <span class="o">=</span> <span class="n">k3d</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">wireframe</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="n">data_n</span><span class="p">,</span>
+                   <span class="n">color_map</span><span class="o">=</span><span class="n">k3d</span><span class="o">.</span><span class="n">colormaps</span><span class="o">.</span><span class="n">paraview_color_maps</span><span class="o">.</span><span class="n">Cool_to_Warm</span><span class="p">,</span> 
+                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;splines&quot;</span><span class="p">,</span>
+                   <span class="n">flat_shading</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span>  <span class="p">)</span>
+
+
+<span class="n">plot</span> <span class="o">+=</span> <span class="n">mesh_viewer</span>
+<span class="c1">#plot += background</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+<span class="c1">## ## ## </span>
+
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">interactive</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="n">choices</span> <span class="o">=</span> <span class="p">{</span>  
+             <span class="s2">&quot;cubic&quot;</span><span class="p">:</span> <span class="n">grid_z1</span><span class="p">,</span> 
+             <span class="s2">&quot;cubic with tension&quot;</span><span class="p">:</span> <span class="n">grid_z2</span><span class="p">,</span> 
+             <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="n">grid_z1</span> <span class="o">-</span> <span class="n">grid_z2</span>  <span class="p">}</span>
+
+<span class="nd">@interact</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="n">choices</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">chooser</span><span class="p">(</span><span class="n">choice</span><span class="p">):</span>
+    <span class="n">mesh_viewer</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">choices</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="nb">range</span> <span class="o">=</span> <span class="n">choices</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.2</span>
+    <span class="n">mesh_viewer</span><span class="o">.</span><span class="n">color_range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="nb">range</span><span class="p">,</span> <span class="nb">range</span><span class="p">]</span>
+    <span class="k">return</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "8dc45dac003a4c9780d90b4444a69cad"}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "bb24fab6b4084f8d8397f6e9b084a4cc"}
+</script></div>
+</div>
+</div>
+<div class="section" id="gradients-with-tension">
+<h2>Gradients with tension<a class="headerlink" href="#gradients-with-tension" title="Permalink to this headline">¶</a></h2>
+<p>Pass <code class="docutils literal notranslate"><span class="pre">sigma</span></code> to the following routines that involve derivatives:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">gradient_lonlat</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gradient_xyz</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">derivatives_lonlat</span></code></p></li>
+</ul>
+<p>Again, the largest difference is visible at the poles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dlon1</span><span class="p">,</span> <span class="n">dlat1</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">gradient_lonlat</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span> <span class="c1"># no tension</span>
+<span class="n">dlon2</span><span class="p">,</span> <span class="n">dlat2</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">gradient_lonlat</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">)</span> <span class="c1"># tension</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">k3d</span>
+
+<span class="n">plot</span> <span class="o">=</span> <span class="n">k3d</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">camera_auto_fit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grid_visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                <span class="n">menu_visibility</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes_helper</span><span class="o">=</span><span class="kc">False</span> <span class="p">)</span>
+
+<span class="n">indices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">simplices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">mesh_viewer</span> <span class="o">=</span> <span class="n">k3d</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">wireframe</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="n">data_n</span><span class="p">,</span>
+                   <span class="n">color_map</span><span class="o">=</span><span class="n">k3d</span><span class="o">.</span><span class="n">colormaps</span><span class="o">.</span><span class="n">paraview_color_maps</span><span class="o">.</span><span class="n">Cool_to_Warm</span><span class="p">,</span> 
+                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;splines&quot;</span><span class="p">,</span>
+                   <span class="n">flat_shading</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span>  <span class="p">)</span>
+
+
+<span class="n">plot</span> <span class="o">+=</span> <span class="n">mesh_viewer</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+<span class="c1">## ## ## </span>
+
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">interactive</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="n">choices</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;dlon&quot;</span><span class="p">:</span> <span class="n">dlon1</span><span class="p">,</span>
+            <span class="s2">&quot;dlat&quot;</span><span class="p">:</span> <span class="n">dlat1</span><span class="p">,</span>
+            <span class="s2">&quot;dlon + tension&quot;</span><span class="p">:</span> <span class="n">dlon2</span><span class="p">,</span>
+            <span class="s2">&quot;dlat + tension&quot;</span><span class="p">:</span> <span class="n">dlat2</span><span class="p">,</span>
+            <span class="s2">&quot;dlon delta&quot;</span><span class="p">:</span> <span class="n">dlon1</span> <span class="o">-</span> <span class="n">dlon2</span><span class="p">,</span>
+            <span class="s2">&quot;dlat delta&quot;</span><span class="p">:</span> <span class="n">dlat1</span> <span class="o">-</span> <span class="n">dlat2</span> <span class="p">}</span>
+
+
+<span class="nd">@interact</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="n">choices</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">chooser</span><span class="p">(</span><span class="n">choice</span><span class="p">):</span>
+    <span class="n">mesh_viewer</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">choices</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="nb">range</span> <span class="o">=</span> <span class="n">choices</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.2</span>
+    <span class="n">mesh_viewer</span><span class="o">.</span><span class="n">color_range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="nb">range</span><span class="p">,</span> <span class="nb">range</span><span class="p">]</span>
+    <span class="k">return</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "0cbd11fb9c5e472aa6474c41572f7710"}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "6ece86d25a92405c92da509b55aba900"}
+</script></div>
+</div>
+<p>The next notebook is <a class="reference internal" href="Ex9-Voronoi-Diagram.html"><span class="doc std std-doc">Ex9-Voronoi-Diagram</span></a></p>
+</div>
+</div>
+
+
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"77b43b2f575242209bb52106f3e42c78": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "9a9e805a875d46f29640d9ac088a4330": {"model_name": "PlotModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_backend_version": "2.11.0", "_dom_classes": [], "_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "PlotModel", "_view_count": null, "_view_module": "k3d", "_view_module_version": "2.11.0", "_view_name": "PlotView", "antialias": 3, "auto_rendering": true, "axes": ["x", "y", "z"], "axes_helper": 0.0, "background_color": 16777215, "camera": [], "camera_animation": [], "camera_auto_fit": false, "camera_damping_factor": 0.0, "camera_fov": 60.0, "camera_mode": "trackball", "camera_no_pan": false, "camera_no_rotate": false, "camera_no_zoom": false, "camera_pan_speed": 0.3, "camera_rotate_speed": 1.0, "camera_zoom_speed": 1.2, "clipping_planes": [], "colorbar_object_id": -1, "colorbar_scientific": false, "fps": 25.0, "fps_meter": false, "grid": [-1, -1, -1, 1, 1, 1], "grid_auto_fit": true, "grid_color": 15132390, "grid_visible": false, "height": 512, "label_color": 4473924, "layout": "IPY_MODEL_77b43b2f575242209bb52106f3e42c78", "lighting": 1.5, "manipulate_mode": "translate", "menu_visibility": true, "mode": "view", "name": null, "object_ids": [140446734485648], "rendering_steps": 1, "screenshot": "", "screenshot_scale": 2.0, "snapshot": "", "snapshot_type": "full", "time": 0.0, "voxel_paint_color": 0}}, "e688418e3b244c678a82871a937459d6": {"model_name": "ObjectModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "ObjectModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "attribute": {"dtype": "float32", "shape": [2562]}, "click_callback": false, "color": 255, "color_map": {"dtype": "float32", "shape": [12]}, "color_range": [0, 0.21828284448894053], "colors": {"dtype": "uint32", "shape": [0]}, "compression_level": 0, "flat_shading": false, "hover_callback": false, "id": 140446734485648, "indices": {"dtype": "uint32", "shape": [5120, 3]}, "model_matrix": {"dtype": "float32", "shape": [4, 4]}, "name": "splines", "opacity": 1.0, "opacity_function": {"dtype": "float32", "shape": [0]}, "side": "front", "texture": null, "texture_file_format": null, "triangles_attribute": {"dtype": "float32", "shape": [0]}, "type": "Mesh", "uvs": {"dtype": "float32", "shape": []}, "vertices": {"dtype": "float32", "shape": [2562, 3]}, "visible": true, "volume": {"dtype": "float32", "shape": [0]}, "volume_bounds": {"dtype": "float32", "shape": [0]}, "wireframe": false}, "buffers": [{"data": "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", "encoding": "base64", "path": ["attribute", "data"]}]}, "046a131eb5214ae19a54f3ce8eac2181": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "c9000fc89e8146bbabaae65361f4ead2": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_046a131eb5214ae19a54f3ce8eac2181", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Plot(antialias=3, axes=['x', 'y', 'z'], background_color=16777215, camera_animation=[], camera_auto_fit=False,\u2026", "application/vnd.jupyter.widget-view+json": {"version_major": 2, "version_minor": 0, "model_id": "9a9e805a875d46f29640d9ac088a4330"}}}]}}, "1d6a219f2a9b4eb199fa297fb4b71ea2": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b0d57c628c4041bcaf9ed35d7395ada9": {"model_name": "VBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": ["widget-interact"], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "VBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_7eaa916087de4962a16894f2c9365c74", "IPY_MODEL_b2032ae9df3444fc8b99e76318b1e1c3"], "layout": "IPY_MODEL_1d6a219f2a9b4eb199fa297fb4b71ea2"}}, "bd9abbf773674d33965cdf398ea23235": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "17ce0bfe9d754661ba193bebfd72a027": {"model_name": "DescriptionStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "7eaa916087de4962a16894f2c9365c74": {"model_name": "DropdownModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DropdownModel", "_options_labels": ["original", "smoothed", "smooth with tension", "delta"], "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "DropdownView", "description": "choice", "description_tooltip": null, "disabled": false, "index": 0, "layout": "IPY_MODEL_bd9abbf773674d33965cdf398ea23235", "style": "IPY_MODEL_17ce0bfe9d754661ba193bebfd72a027"}}, "60eaa34a15a14373a87e56f37027f530": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b2032ae9df3444fc8b99e76318b1e1c3": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_60eaa34a15a14373a87e56f37027f530", "msg_id": "", "outputs": []}}, "b87b481667914859833f49793e4b1d77": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "f1cf98ae3f9241ac885640387f4dee07": {"model_name": "PlotModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_backend_version": "2.11.0", "_dom_classes": [], "_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "PlotModel", "_view_count": null, "_view_module": "k3d", "_view_module_version": "2.11.0", "_view_name": "PlotView", "antialias": 3, "auto_rendering": true, "axes": ["x", "y", "z"], "axes_helper": 0.0, "background_color": 16777215, "camera": [], "camera_animation": [], "camera_auto_fit": false, "camera_damping_factor": 0.0, "camera_fov": 60.0, "camera_mode": "trackball", "camera_no_pan": false, "camera_no_rotate": false, "camera_no_zoom": false, "camera_pan_speed": 0.3, "camera_rotate_speed": 1.0, "camera_zoom_speed": 1.2, "clipping_planes": [], "colorbar_object_id": -1, "colorbar_scientific": false, "fps": 25.0, "fps_meter": false, "grid": [-1, -1, -1, 1, 1, 1], "grid_auto_fit": true, "grid_color": 15132390, "grid_visible": false, "height": 512, "label_color": 4473924, "layout": "IPY_MODEL_b87b481667914859833f49793e4b1d77", "lighting": 1.5, "manipulate_mode": "translate", "menu_visibility": true, "mode": "view", "name": null, "object_ids": [140446732902288], "rendering_steps": 1, "screenshot": "", "screenshot_scale": 2.0, "snapshot": "", "snapshot_type": "full", "time": 0.0, "voxel_paint_color": 0}}, "5f6bdf6d1f384a9eb1f043851b4d0fdb": {"model_name": "ObjectModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "ObjectModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "attribute": {"dtype": "float32", "shape": [2562]}, "click_callback": false, "color": 255, "color_map": {"dtype": "float32", "shape": [12]}, "color_range": [-0.19976519346237184, 0.19976519346237184], "colors": {"dtype": "uint32", "shape": [0]}, "compression_level": 0, "flat_shading": false, "hover_callback": false, "id": 140446732902288, "indices": {"dtype": "uint32", "shape": [5120, 3]}, "model_matrix": {"dtype": "float32", "shape": [4, 4]}, "name": "splines", "opacity": 1.0, "opacity_function": {"dtype": "float32", "shape": [0]}, "side": "front", "texture": null, "texture_file_format": null, "triangles_attribute": {"dtype": "float32", "shape": [0]}, "type": "Mesh", "uvs": {"dtype": "float32", "shape": []}, "vertices": {"dtype": "float32", "shape": [2562, 3]}, "visible": true, "volume": {"dtype": "float32", "shape": [0]}, "volume_bounds": {"dtype": "float32", "shape": [0]}, "wireframe": false}, "buffers": [{"data": "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", "encoding": "base64", "path": ["attribute", "data"]}]}, "ff1b8030b0da45bd84039047f48b770d": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "8dc45dac003a4c9780d90b4444a69cad": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_ff1b8030b0da45bd84039047f48b770d", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Plot(antialias=3, axes=['x', 'y', 'z'], background_color=16777215, camera_animation=[], camera_auto_fit=False,\u2026", "application/vnd.jupyter.widget-view+json": {"version_major": 2, "version_minor": 0, "model_id": "f1cf98ae3f9241ac885640387f4dee07"}}}]}}, "0db0a1626f3849e1907b8ec9114cec1d": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "bb24fab6b4084f8d8397f6e9b084a4cc": {"model_name": "VBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": ["widget-interact"], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "VBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_346c4d12f1c24df79db8a4186e194868", "IPY_MODEL_395e4141baf243b6b4a55881b2512459"], "layout": "IPY_MODEL_0db0a1626f3849e1907b8ec9114cec1d"}}, "ab05a1a04ac546b793753af0e4b934a4": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "2ecbd726e9c24e769bb94675b6b64c8c": {"model_name": "DescriptionStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "346c4d12f1c24df79db8a4186e194868": {"model_name": "DropdownModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DropdownModel", "_options_labels": ["cubic", "cubic with tension", "delta"], "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "DropdownView", "description": "choice", "description_tooltip": null, "disabled": false, "index": 0, "layout": "IPY_MODEL_ab05a1a04ac546b793753af0e4b934a4", "style": "IPY_MODEL_2ecbd726e9c24e769bb94675b6b64c8c"}}, "ae0ff7a6062b465a995af271b08118b0": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "395e4141baf243b6b4a55881b2512459": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_ae0ff7a6062b465a995af271b08118b0", "msg_id": "", "outputs": []}}, "64796b960f6649038b5f8f668797c384": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "37471b09f12b4a29863612be0427218b": {"model_name": "PlotModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_backend_version": "2.11.0", "_dom_classes": [], "_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "PlotModel", "_view_count": null, "_view_module": "k3d", "_view_module_version": "2.11.0", "_view_name": "PlotView", "antialias": 3, "auto_rendering": true, "axes": ["x", "y", "z"], "axes_helper": 0.0, "background_color": 16777215, "camera": [], "camera_animation": [], "camera_auto_fit": false, "camera_damping_factor": 0.0, "camera_fov": 60.0, "camera_mode": "trackball", "camera_no_pan": false, "camera_no_rotate": false, "camera_no_zoom": false, "camera_pan_speed": 0.3, "camera_rotate_speed": 1.0, "camera_zoom_speed": 1.2, "clipping_planes": [], "colorbar_object_id": -1, "colorbar_scientific": false, "fps": 25.0, "fps_meter": false, "grid": [-1, -1, -1, 1, 1, 1], "grid_auto_fit": true, "grid_color": 15132390, "grid_visible": false, "height": 512, "label_color": 4473924, "layout": "IPY_MODEL_64796b960f6649038b5f8f668797c384", "lighting": 1.5, "manipulate_mode": "translate", "menu_visibility": true, "mode": "view", "name": null, "object_ids": [140446720890448], "rendering_steps": 1, "screenshot": "", "screenshot_scale": 2.0, "snapshot": "", "snapshot_type": "full", "time": 0.0, "voxel_paint_color": 0}}, "0a5ddded3ae2421e9860b42826b919d0": {"model_name": "ObjectModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "ObjectModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "attribute": {"dtype": "float32", "shape": [2562]}, "click_callback": false, "color": 255, "color_map": {"dtype": "float32", "shape": [12]}, "color_range": [-1.8602447339672192, 1.8602447339672192], "colors": {"dtype": "uint32", "shape": [0]}, "compression_level": 0, "flat_shading": false, "hover_callback": false, "id": 140446720890448, "indices": {"dtype": "uint32", "shape": [5120, 3]}, "model_matrix": {"dtype": "float32", "shape": [4, 4]}, "name": "splines", "opacity": 1.0, "opacity_function": {"dtype": "float32", "shape": [0]}, "side": "front", "texture": null, "texture_file_format": null, "triangles_attribute": {"dtype": "float32", "shape": [0]}, "type": "Mesh", "uvs": {"dtype": "float32", "shape": []}, "vertices": {"dtype": "float32", "shape": [2562, 3]}, "visible": true, "volume": {"dtype": "float32", "shape": [0]}, "volume_bounds": {"dtype": "float32", "shape": [0]}, "wireframe": false}, "buffers": [{"data": "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", "encoding": "base64", "path": ["attribute", "data"]}]}, "c61cd0d23de64a4db85cceabbe16a4af": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "0cbd11fb9c5e472aa6474c41572f7710": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_c61cd0d23de64a4db85cceabbe16a4af", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Plot(antialias=3, axes=['x', 'y', 'z'], background_color=16777215, camera_animation=[], camera_auto_fit=False,\u2026", "application/vnd.jupyter.widget-view+json": {"version_major": 2, "version_minor": 0, "model_id": "37471b09f12b4a29863612be0427218b"}}}]}}, "7cbd8e47e8c3413a80c999a1bb2b2278": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "6ece86d25a92405c92da509b55aba900": {"model_name": "VBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": ["widget-interact"], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "VBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_13965268205f485fa7138ed0995cad43", "IPY_MODEL_fdcb1d74d83945ac8ab8991af7f61398"], "layout": "IPY_MODEL_7cbd8e47e8c3413a80c999a1bb2b2278"}}, "b9296b26b40e486cba622848962db033": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "39fd0b1bb91249b28822d6103ee80ddc": {"model_name": "DescriptionStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "13965268205f485fa7138ed0995cad43": {"model_name": "DropdownModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DropdownModel", "_options_labels": ["dlon", "dlat", "dlon + tension", "dlat + tension", "dlon delta", "dlat delta"], "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "DropdownView", "description": "choice", "description_tooltip": null, "disabled": false, "index": 0, "layout": "IPY_MODEL_b9296b26b40e486cba622848962db033", "style": "IPY_MODEL_39fd0b1bb91249b28822d6103ee80ddc"}}, "a46b00d9f4204a7b9070909a31a12caa": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "fdcb1d74d83945ac8ab8991af7f61398": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_a46b00d9f4204a7b9070909a31a12caa", "msg_id": "", "outputs": []}}}, "version_major": 2, "version_minor": 0}
+</script>
+
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "underworldcode/stripy",
+            ref: "dev",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./SphericalMeshing/SphericalTriangulations"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="Ex7-Refinement-of-Triangulations.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Example 7 - Refining a triangulation</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="Ex9-Voronoi-Diagram.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Example 9 - Constructing the Voronoi diagram</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Louis Moresi, Ben Mather<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

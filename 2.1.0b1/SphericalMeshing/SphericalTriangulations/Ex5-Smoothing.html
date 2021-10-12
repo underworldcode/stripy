@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Example 5 - stripy smoothing operations &#8212; Stripy</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet" />
+  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/customize.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/font_button.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../../_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe,.cell"
+        const thebe_selector_input = "pre,.cell_input div.highlight"
+        const thebe_selector_output = ".output,.cell_output"
+    </script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Example 6 - Scattered Data and ‘Heat Maps’" href="Ex6-Scattered-Data.html" />
+    <link rel="prev" title="Example 4 - stripy gradients on the sphere" href="Ex4-Gradients.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+      
+      
+      <h1 class="site-logo" id="site-title">Stripy</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../FrontPage.html">
+   Introduction to Stripy
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Spherical Triangulations
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex1-Spherical-Triangulations.html">
+   Example 1 - Triangulation of arbitrary points on the sphere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex2-SphericalGrids.html">
+   Example 2 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   predefined meshes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex3-Interpolation.html">
+   Example 3 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   interpolation on the sphere
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex4-Gradients.html">
+   Example 4 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   gradients on the sphere
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Example 5 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   smoothing operations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex6-Scattered-Data.html">
+   Example 6 - Scattered Data and ‘Heat Maps’
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex7-Refinement-of-Triangulations.html">
+   Example 7 - Refining a triangulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex8-Spline-Tension.html">
+   Example 8 - Spline Tension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Ex9-Voronoi-Diagram.html">
+   Example 9 - Constructing the Voronoi diagram
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Cartesian Triangulations
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex1-Cartesian-Triangulations.html">
+   Example 1 - Triangulation of arbitrary points
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex2-CartesianGrids.html">
+   Example 2 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   predefined meshes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex3-Interpolation.html">
+   Example 3 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   interpolation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex4-Gradients.html">
+   Example 4 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   gradients
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex5-Smoothing.html">
+   Example 5 -
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     stripy
+    </span>
+   </code>
+   smoothing operations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex6-Scattered-Data.html">
+   Example 6 - Scattered Data and ‘Heat Maps’
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex7-Refinement-of-Triangulations.html">
+   Example 7 - Refining a triangulation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex8-Spline-Tension.html">
+   Example 8 - Spline Tension
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../CartesianTriangulations/Ex9-Voronoi-Diagram.html">
+   Example 9 - Constructing the Voronoi diagram
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
+  Worked Examples (with litho 1.0)
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Litho1pt0/Ex1-Litho1Layers.html">
+   Introduction to the stripy/python wrapper for litho 1.0
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Litho1pt0/Ex2-Litho1Properties.html">
+   Litho 1.0 global sampling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Litho1pt0/Ex3-CrustalRegionalisation.html">
+   Crust 1.0 data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Litho1pt0/WorkEx1-CratonAverageProperties.html">
+   Properties of the cratons
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../Litho1pt0/WorkEx2-OceanDepthAge.html">
+   Age of the oceans / depth of the oceans
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  <button type="button" onclick="legibleFontSwitcher()">Switch Font</button>&nbsp;&nbsp;<button type="button" onclick="fontScaler(1.1)">&#10133;</button><button type="button" onclick="fontScaler(0.0)">&#9679;</button><button type="button" onclick="fontScaler(0.909)">&#10134;</button>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/SphericalMeshing/SphericalTriangulations/Ex5-Smoothing.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/underworldcode/stripy"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/underworldcode/stripy/dev?urlpath=tree/jupyterbook/SphericalMeshing/SphericalTriangulations/Ex5-Smoothing.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="../../_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        <button type="button" class="btn btn-secondary topbarbtn"
+            onclick="initThebeSBT()" title="Launch Thebe" data-toggle="tooltip" data-placement="left"><i
+                class="fas fa-play"></i><span style="margin-left: .4em;">Live Code</span></button>
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#notebook-contents">
+   Notebook contents
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#define-a-computational-mesh">
+   Define a computational mesh
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#analytic-function-with-noise-and-short-wavelengths">
+   Analytic function with noise and short wavelengths
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#smoothing-operations">
+   Smoothing operations
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#results-of-smoothing-with-different-value-of-sm">
+   Results of smoothing with different value of
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     sm
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="example-5-stripy-smoothing-operations">
+<h1>Example 5 - <code class="docutils literal notranslate"><span class="pre">stripy</span></code> smoothing operations<a class="headerlink" href="#example-5-stripy-smoothing-operations" title="Permalink to this headline">¶</a></h1>
+<p>SSRFPACK is a Fortran 77 software package that constructs a smooth interpolatory or approximating surface to data values associated with arbitrarily distributed points on the surface of a sphere. It employs automatically selected tension factors to preserve shape properties of the data and avoid overshoot and undershoot associated with steep gradients.</p>
+<p>Here we demonstrate how to access SSRFPACK smoothing through the <code class="docutils literal notranslate"><span class="pre">stripy</span></code> interface</p>
+<div class="section" id="notebook-contents">
+<h2>Notebook contents<a class="headerlink" href="#notebook-contents" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="#Define-a-computational-mesh">Computational mesh</a></p></li>
+<li><p><a class="reference external" href="#Analytic-function-with-noise-and-short-wavelengths">Function with noise</a></p></li>
+<li><p><a class="reference external" href="#Smoothing-operations">Smoothing operator</a></p></li>
+<li><p><a class="reference external" href="#Results-of-smoothing-with-different-value-of-sm">Results of smoothing</a></p></li>
+</ul>
+<p>The next example is <a class="reference internal" href="Ex6-Scattered-Data.html"><span class="doc std std-doc">Ex6-Scattered-Data</span></a></p>
+</div>
+<div class="section" id="define-a-computational-mesh">
+<h2>Define a computational mesh<a class="headerlink" href="#define-a-computational-mesh" title="Permalink to this headline">¶</a></h2>
+<p>Use the (usual) icosahedron with face points included.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">stripy</span> <span class="k">as</span> <span class="nn">stripy</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">spherical_meshes</span><span class="o">.</span><span class="n">icosahedral_mesh</span><span class="p">(</span><span class="n">refinement_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">include_face_points</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">npoints</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>7682
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="analytic-function-with-noise-and-short-wavelengths">
+<h2>Analytic function with noise and short wavelengths<a class="headerlink" href="#analytic-function-with-noise-and-short-wavelengths" title="Permalink to this headline">¶</a></h2>
+<p>Define a relatively smooth function that we can interpolate from the coarse mesh to the fine mesh and analyse</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">analytic</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">):</span>
+     <span class="k">return</span>  <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">k1</span><span class="o">*</span><span class="n">lons</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k2</span><span class="o">*</span><span class="n">lats</span><span class="p">)</span> 
+    
+<span class="k">def</span> <span class="nf">analytic_noisy</span><span class="p">(</span><span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">noise</span><span class="p">,</span> <span class="n">short</span><span class="p">):</span>
+     <span class="k">return</span>  <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">k1</span><span class="o">*</span><span class="n">lons</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k2</span><span class="o">*</span><span class="n">lats</span><span class="p">)</span> <span class="o">+</span> <span class="n">short</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">k1</span><span class="o">*</span><span class="mf">5.0</span><span class="o">*</span><span class="n">lons</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">k2</span><span class="o">*</span><span class="mf">5.0</span><span class="o">*</span><span class="n">lats</span><span class="p">))</span> <span class="o">+</span>  <span class="n">noise</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">lons</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># def analytic_ddlon(lons, lats, k1, k2):</span>
+<span class="c1">#      return -k1 * np.sin(k1*lons) * np.sin(k2*lats) / np.cos(lats)</span>
+
+<span class="c1"># def analytic_ddlat(lons, lats, k1, k2):</span>
+<span class="c1">#      return k2 * np.cos(k1*lons) * np.cos(k2*lats) </span>
+
+
+<span class="n">analytic_sol</span>   <span class="o">=</span> <span class="n">analytic</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">lons</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="n">analytic_sol_n</span> <span class="o">=</span> <span class="n">analytic_noisy</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">lons</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">cartopy</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+<span class="n">ax</span>  <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Orthographic</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">central_latitude</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">globe</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;#999999&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_global</span><span class="p">()</span>
+
+<span class="n">lons0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">lons</span><span class="p">)</span>
+<span class="n">lats0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">lats</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">lons0</span><span class="p">,</span> <span class="n">lats0</span><span class="p">,</span> 
+            <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">c</span><span class="o">=</span><span class="n">analytic_sol_n</span><span class="o">-</span><span class="n">analytic_sol</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu</span><span class="p">)</span>
+
+<span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/Ex5-Smoothing_5_01.png" src="../../_images/Ex5-Smoothing_5_01.png" />
+</div>
+</div>
+</div>
+<div class="section" id="smoothing-operations">
+<h2>Smoothing operations<a class="headerlink" href="#smoothing-operations" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">sTriangulation.smoothing</span></code> method directly wraps the SSRFPack smoother that smooths a surface f described
+by values on the mesh vertices to find a new surface f’ (also described on the mesh vertices) by choosing nodal function values and gradients to minimize the linearized curvature of F subject to a bound on the deviation from the data values.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">help</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">smoothing</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>smoothing(self, f, w, sm, smtol, gstol)
+
+method of stripy.spherical_meshes.icosahedral_mesh instance
+Smooths a surface f by choosing nodal function values and gradients to
+minimize the linearized curvature of F subject to a bound on the
+deviation from the data values. This is more appropriate than interpolation
+when significant errors are present in the data.
+
+Parameters
+----------
+ f : array of floats, shape (n,)
+    field to apply smoothing on
+ w : array of floats, shape (n,)
+    weights associated with data value in f
+    w[i] = 1/sigma_f^2 is a good rule of thumb.
+ sm : float
+    positive parameter specifying an upper bound on Q2(f).
+    generally n-sqrt(2n) &lt;= sm &lt;= n+sqrt(2n)
+ smtol : float
+    specifies relative error in satisfying the constraint
+    sm(1-smtol) &lt;= Q2 &lt;= sm(1+smtol) between 0 and 1.
+ gstol : float
+    tolerance for convergence.
+    gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
+
+Returns
+-------
+ f_smooth : array of floats, shape (n,)
+    smoothed version of f
+ (dfdx, dfdy, dfdz) : tuple of floats, tuple of 3 shape (n,) arrays
+    first derivatives of f_smooth in the x, y, and z directions
+ err : error indicator
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stripy_smoothed</span><span class="p">,</span>  <span class="n">dds</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">smoothing</span><span class="p">(</span><span class="n">analytic_sol_n</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">analytic_sol_n</span><span class="p">),</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">stripy_smoothed2</span><span class="p">,</span> <span class="n">dds</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">smoothing</span><span class="p">(</span><span class="n">analytic_sol_n</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">analytic_sol_n</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">stripy_smoothed3</span><span class="p">,</span> <span class="n">dds</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">smoothing</span><span class="p">(</span><span class="n">analytic_sol_n</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">analytic_sol_n</span><span class="p">),</span> <span class="mf">50.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+
+<span class="n">delta_n</span>  <span class="o">=</span> <span class="n">analytic_sol_n</span> <span class="o">-</span> <span class="n">stripy_smoothed</span>
+<span class="n">delta_ns</span> <span class="o">=</span> <span class="n">analytic_sol</span>   <span class="o">-</span> <span class="n">stripy_smoothed</span>
+
+<span class="n">delta_n2</span>  <span class="o">=</span> <span class="n">analytic_sol_n</span> <span class="o">-</span> <span class="n">stripy_smoothed2</span>
+<span class="n">delta_ns2</span> <span class="o">=</span> <span class="n">analytic_sol</span>   <span class="o">-</span> <span class="n">stripy_smoothed2</span>
+
+<span class="n">delta_n3</span>  <span class="o">=</span> <span class="n">analytic_sol_n</span> <span class="o">-</span> <span class="n">stripy_smoothed3</span>
+<span class="n">delta_ns3</span> <span class="o">=</span> <span class="n">analytic_sol</span>   <span class="o">-</span> <span class="n">stripy_smoothed3</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="results-of-smoothing-with-different-value-of-sm">
+<h2>Results of smoothing with different value of <code class="docutils literal notranslate"><span class="pre">sm</span></code><a class="headerlink" href="#results-of-smoothing-with-different-value-of-sm" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">k3d</span>
+
+<span class="n">plot</span> <span class="o">=</span> <span class="n">k3d</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">camera_auto_fit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grid_visible</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                <span class="n">menu_visibility</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes_helper</span><span class="o">=</span><span class="kc">False</span> <span class="p">)</span>
+
+<span class="n">indices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">simplices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
+<span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">mesh_viewer</span> <span class="o">=</span> <span class="n">k3d</span><span class="o">.</span><span class="n">mesh</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">wireframe</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="n">stripy_smoothed</span><span class="p">,</span>
+                   <span class="n">color_map</span><span class="o">=</span><span class="n">k3d</span><span class="o">.</span><span class="n">colormaps</span><span class="o">.</span><span class="n">basic_color_maps</span><span class="o">.</span><span class="n">CoolWarm</span><span class="p">,</span> 
+                   <span class="n">name</span><span class="o">=</span><span class="s2">&quot;original&quot;</span><span class="p">,</span>
+                   <span class="n">flat_shading</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span>  <span class="p">)</span>
+
+<span class="n">plot</span>   <span class="o">+=</span> <span class="n">mesh_viewer</span>
+<span class="n">plot</span>   <span class="o">+=</span> <span class="n">k3d</span><span class="o">.</span><span class="n">points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">point_size</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="mh">0x779977</span><span class="p">)</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+<span class="c1">## ## ## </span>
+
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">interactive</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+
+<span class="n">choices</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;unsmoothed&quot;</span><span class="p">:</span> <span class="n">analytic_sol_n</span><span class="p">,</span>
+             <span class="s2">&quot;smooth1&quot;</span><span class="p">:</span> <span class="n">stripy_smoothed</span><span class="p">,</span> 
+             <span class="s2">&quot;smooth2&quot;</span><span class="p">:</span> <span class="n">stripy_smoothed2</span><span class="p">,</span> 
+             <span class="s2">&quot;smooth3&quot;</span><span class="p">:</span> <span class="n">stripy_smoothed3</span><span class="p">,</span>              
+             <span class="s2">&quot;Delta smooth1&quot;</span><span class="p">:</span> <span class="n">analytic_sol_n</span> <span class="o">-</span> <span class="n">stripy_smoothed</span><span class="p">,</span> 
+             <span class="s2">&quot;Delta smooth2&quot;</span><span class="p">:</span> <span class="n">analytic_sol_n</span> <span class="o">-</span> <span class="n">stripy_smoothed2</span><span class="p">,</span> 
+             <span class="s2">&quot;Delta smooth3&quot;</span><span class="p">:</span> <span class="n">analytic_sol_n</span> <span class="o">-</span> <span class="n">stripy_smoothed3</span><span class="p">,</span> <span class="p">}</span>
+
+<span class="nd">@interact</span><span class="p">(</span><span class="n">choice</span><span class="o">=</span><span class="n">choices</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">chooser</span><span class="p">(</span><span class="n">choice</span><span class="p">):</span>
+    <span class="n">mesh_viewer</span><span class="o">.</span><span class="n">attribute</span> <span class="o">=</span> <span class="n">choices</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="nb">range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">choices</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">mesh_viewer</span><span class="o">.</span><span class="n">color_range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="nb">range</span><span class="p">,</span> <span class="nb">range</span><span class="p">]</span>
+    <span class="k">return</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "da692cc3fee04fa3abb542c305d29770"}
+</script><script type="application/vnd.jupyter.widget-view+json">
+{"version_major": 2, "version_minor": 0, "model_id": "d1d508b9123e403ab0e7391eeaeb9f0d"}
+</script></div>
+</div>
+<p>The next example is <a class="reference internal" href="Ex6-Scattered-Data.html"><span class="doc std std-doc">Ex6-Scattered-Data</span></a></p>
+</div>
+</div>
+
+
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"53d943b8176c44e18da3c4f150b24c5d": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b3c625fe43b948f5a0d3bd6fd4df133e": {"model_name": "PlotModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_backend_version": "2.11.0", "_dom_classes": [], "_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "PlotModel", "_view_count": null, "_view_module": "k3d", "_view_module_version": "2.11.0", "_view_name": "PlotView", "antialias": 3, "auto_rendering": true, "axes": ["x", "y", "z"], "axes_helper": 0.0, "background_color": 16777215, "camera": [], "camera_animation": [], "camera_auto_fit": false, "camera_damping_factor": 0.0, "camera_fov": 60.0, "camera_mode": "trackball", "camera_no_pan": false, "camera_no_rotate": false, "camera_no_zoom": false, "camera_pan_speed": 0.3, "camera_rotate_speed": 1.0, "camera_zoom_speed": 1.2, "clipping_planes": [], "colorbar_object_id": -1, "colorbar_scientific": false, "fps": 25.0, "fps_meter": false, "grid": [-1, -1, -1, 1, 1, 1], "grid_auto_fit": true, "grid_color": 15132390, "grid_visible": false, "height": 512, "label_color": 4473924, "layout": "IPY_MODEL_53d943b8176c44e18da3c4f150b24c5d", "lighting": 1.5, "manipulate_mode": "translate", "menu_visibility": true, "mode": "view", "name": null, "object_ids": [140193791287056, 140193789309136], "rendering_steps": 1, "screenshot": "", "screenshot_scale": 2.0, "snapshot": "", "snapshot_type": "full", "time": 0.0, "voxel_paint_color": 0}}, "f5d09b10cd0f427dbfca230bfcd58aaa": {"model_name": "ObjectModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "ObjectModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "attribute": {"dtype": "float32", "shape": [7682]}, "click_callback": false, "color": 255, "color_map": {"dtype": "float32", "shape": [12]}, "color_range": [-0.2597350227570594, 0.2597350227570594], "colors": {"dtype": "uint32", "shape": [0]}, "compression_level": 0, "flat_shading": false, "hover_callback": false, "id": 140193791287056, "indices": {"dtype": "uint32", "shape": [15360, 3]}, "model_matrix": {"dtype": "float32", "shape": [4, 4]}, "name": "original", "opacity": 1.0, "opacity_function": {"dtype": "float32", "shape": [0]}, "side": "front", "texture": null, "texture_file_format": null, "triangles_attribute": {"dtype": "float32", "shape": [0]}, "type": "Mesh", "uvs": {"dtype": "float32", "shape": []}, "vertices": {"dtype": "float32", "shape": [7682, 3]}, "visible": true, "volume": {"dtype": "float32", "shape": [0]}, "volume_bounds": {"dtype": "float32", "shape": [0]}, "wireframe": false}, "buffers": [{"data": "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", "encoding": "base64", "path": ["attribute", "data"]}]}, "8342f0e8f5614230bc75ead9e43196df": {"model_name": "ObjectModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "ObjectModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "attribute": {"dtype": "float32", "shape": [0]}, "color": 7838071, "color_map": {"dtype": "float32", "shape": [1024]}, "color_range": [], "colors": {"dtype": "uint32", "shape": [0]}, "compression_level": 0, "id": 140193789309136, "mesh_detail": 2, "model_matrix": {"dtype": "float32", "shape": [4, 4]}, "name": null, "opacities": {"dtype": "float32", "shape": [0]}, "opacity": 1.0, "opacity_function": {"dtype": "float32", "shape": [0]}, "point_size": 0.01, "point_sizes": {"dtype": "float32", "shape": [0]}, "positions": {"dtype": "float32", "shape": [7682, 3]}, "shader": "3dSpecular", "type": "Points", "visible": true}, "buffers": [{"data": "AACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPw==", "encoding": "base64", "path": ["model_matrix", "data"]}]}, "c3c562c1e8e844279963462ad6542e10": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "da692cc3fee04fa3abb542c305d29770": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_c3c562c1e8e844279963462ad6542e10", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Plot(antialias=3, axes=['x', 'y', 'z'], background_color=16777215, camera_animation=[], camera_auto_fit=False,\u2026", "application/vnd.jupyter.widget-view+json": {"version_major": 2, "version_minor": 0, "model_id": "b3c625fe43b948f5a0d3bd6fd4df133e"}}}]}}, "ccdc6b61d8d84dd78a3765a7781bd971": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "d1d508b9123e403ab0e7391eeaeb9f0d": {"model_name": "VBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": ["widget-interact"], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "VBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "VBoxView", "box_style": "", "children": ["IPY_MODEL_9216e2f00d53490c807cd440b1bdd8b4", "IPY_MODEL_4dfaa669643e402e96d6cc15441f2a74"], "layout": "IPY_MODEL_ccdc6b61d8d84dd78a3765a7781bd971"}}, "53bb8abed0e242699f45f277e930bd7b": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "2eda2affa1504707883b9be1d5f6517c": {"model_name": "DescriptionStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DescriptionStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "StyleView", "description_width": ""}}, "9216e2f00d53490c807cd440b1bdd8b4": {"model_name": "DropdownModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_model_name": "DropdownModel", "_options_labels": ["unsmoothed", "smooth1", "smooth2", "smooth3", "Delta smooth1", "Delta smooth2", "Delta smooth3"], "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "1.5.0", "_view_name": "DropdownView", "description": "choice", "description_tooltip": null, "disabled": false, "index": 0, "layout": "IPY_MODEL_53bb8abed0e242699f45f277e930bd7b", "style": "IPY_MODEL_2eda2affa1504707883b9be1d5f6517c"}}, "190e9a5d71a14cc7960cf05b5f993dc3": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "4dfaa669643e402e96d6cc15441f2a74": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_190e9a5d71a14cc7960cf05b5f993dc3", "msg_id": "", "outputs": []}}}, "version_major": 2, "version_minor": 0}
+</script>
+
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "underworldcode/stripy",
+            ref: "dev",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./SphericalMeshing/SphericalTriangulations"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+            
+
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="Ex4-Gradients.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">Example 4 - <code class="docutils literal notranslate"><span class="pre">stripy</span></code> gradients on the sphere</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="Ex6-Scattered-Data.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Example 6 - Scattered Data and ‘Heat Maps’</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Louis Moresi, Ben Mather<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>
