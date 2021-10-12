@@ -3,10 +3,10 @@ name: API docs / jupyterbook
 # We should trigger this from an upload event 
 
 on:
-  push:   # This is not really what we want
+  push:   # We publish the beta docs as well
     branches: 
       - master 
-      # - dev
+      - dev
 
   workflow_run:
     workflows: ["Conda Deployment"]
