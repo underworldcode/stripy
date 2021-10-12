@@ -697,7 +697,7 @@ measure of the uniformity of each mesh.</p>
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "ff90499788b847209aaa37afbad114e5"}
+{"version_major": 2, "version_minor": 0, "model_id": "857d0c2b4d694c7a93195920c18d5cb2"}
 </script></div>
 </div>
 <div class="cell docutils container">
@@ -779,19 +779,179 @@ measure of the uniformity of each mesh.</p>
 <img alt="../../_images/Ex2-SphericalGrids_9_3.png" src="../../_images/Ex2-SphericalGrids_9_3.png" />
 <img alt="../../_images/Ex2-SphericalGrids_9_4.png" src="../../_images/Ex2-SphericalGrids_9_4.png" />
 <img alt="../../_images/Ex2-SphericalGrids_9_5.png" src="../../_images/Ex2-SphericalGrids_9_5.png" />
-<img alt="../../_images/Ex2-SphericalGrids_9_6.png" src="../../_images/Ex2-SphericalGrids_9_6.png" />
-<img alt="../../_images/Ex2-SphericalGrids_9_7.png" src="../../_images/Ex2-SphericalGrids_9_7.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error in callback &lt;function flush_figures at 0x7fae1de99440&gt; (for post_execute):
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib_inline/backend_inline.py</span> in <span class="ni">flush_figures</span><span class="nt">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">119</span>         <span class="c1"># ignore the tracking, just draw and close all figures</span>
+<span class="g g-Whitespace">    </span><span class="mi">120</span>         <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">121</span>             <span class="k">return</span> <span class="n">show</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">122</span>         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">123</span>             <span class="c1"># safely show traceback if in IPython, else raise</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib_inline/backend_inline.py</span> in <span class="ni">show</span><span class="nt">(close, block)</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span>             <span class="n">display</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">42</span>                 <span class="n">figure_manager</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span>
+<span class="ne">---&gt; </span><span class="mi">43</span>                 <span class="n">metadata</span><span class="o">=</span><span class="n">_fetch_figure_metadata</span><span class="p">(</span><span class="n">figure_manager</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">figure</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">44</span>             <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span>     <span class="k">finally</span><span class="p">:</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/display.py</span> in <span class="ni">display</span><span class="nt">(include, exclude, metadata, transient, display_id, *objs, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">318</span>             <span class="n">publish_display_data</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">319</span>         <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">320</span>             <span class="n">format_dict</span><span class="p">,</span> <span class="n">md_dict</span> <span class="o">=</span> <span class="nb">format</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">321</span>             <span class="k">if</span> <span class="ow">not</span> <span class="n">format_dict</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">322</span>                 <span class="c1"># nothing to display (e.g. _ipython_display_ took over)</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/formatters.py</span> in <span class="ni">format</span><span class="nt">(self, obj, include, exclude)</span>
+<span class="g g-Whitespace">    </span><span class="mi">178</span>             <span class="n">md</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">    </span><span class="mi">179</span>             <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">180</span>                 <span class="n">data</span> <span class="o">=</span> <span class="n">formatter</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">181</span>             <span class="k">except</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">182</span>                 <span class="c1"># FIXME: log the exception</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/decorator.py</span> in <span class="ni">fun</span><span class="nt">(*args, **kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span>             <span class="k">if</span> <span class="ow">not</span> <span class="n">kwsyntax</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">231</span>                 <span class="n">args</span><span class="p">,</span> <span class="n">kw</span> <span class="o">=</span> <span class="n">fix</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">kw</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">232</span>             <span class="k">return</span> <span class="n">caller</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">extras</span> <span class="o">+</span> <span class="n">args</span><span class="p">),</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">233</span>     <span class="n">fun</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
+<span class="g g-Whitespace">    </span><span class="mi">234</span>     <span class="n">fun</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/formatters.py</span> in <span class="ni">catch_format_error</span><span class="nt">(method, self, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="sd">&quot;&quot;&quot;show traceback on failed format call&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">223</span>     <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">224</span>         <span class="n">r</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span>     <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span>         <span class="c1"># don&#39;t warn on NotImplementedErrors</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/formatters.py</span> in <span class="ni">__call__</span><span class="nt">(self, obj)</span>
+<span class="g g-Whitespace">    </span><span class="mi">339</span>                 <span class="k">pass</span>
+<span class="g g-Whitespace">    </span><span class="mi">340</span>             <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">341</span>                 <span class="k">return</span> <span class="n">printer</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">342</span>             <span class="c1"># Finally look for special method names</span>
+<span class="g g-Whitespace">    </span><span class="mi">343</span>             <span class="n">method</span> <span class="o">=</span> <span class="n">get_real_method</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_method</span><span class="p">)</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/pylabtools.py</span> in <span class="ni">&lt;lambda&gt;</span><span class="nt">(fig)</span>
+<span class="g g-Whitespace">    </span><span class="mi">251</span> 
+<span class="g g-Whitespace">    </span><span class="mi">252</span>     <span class="k">if</span> <span class="s1">&#39;png&#39;</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">253</span>         <span class="n">png_formatter</span><span class="o">.</span><span class="n">for_type</span><span class="p">(</span><span class="n">Figure</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">fig</span><span class="p">:</span> <span class="n">print_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">254</span>     <span class="k">if</span> <span class="s1">&#39;retina&#39;</span> <span class="ow">in</span> <span class="n">formats</span> <span class="ow">or</span> <span class="s1">&#39;png2x&#39;</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">255</span>         <span class="n">png_formatter</span><span class="o">.</span><span class="n">for_type</span><span class="p">(</span><span class="n">Figure</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">fig</span><span class="p">:</span> <span class="n">retina_figure</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/IPython/core/pylabtools.py</span> in <span class="ni">print_figure</span><span class="nt">(fig, fmt, bbox_inches, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">135</span>         <span class="n">FigureCanvasBase</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">136</span> 
+<span class="ne">--&gt; </span><span class="mi">137</span>     <span class="n">fig</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">print_figure</span><span class="p">(</span><span class="n">bytes_io</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">138</span>     <span class="n">data</span> <span class="o">=</span> <span class="n">bytes_io</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">139</span>     <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s1">&#39;svg&#39;</span><span class="p">:</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib/backend_bases.py</span> in <span class="ni">print_figure</span><span class="nt">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2233</span>                 <span class="k">if</span> <span class="n">bbox_inches</span> <span class="o">==</span> <span class="s2">&quot;tight&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2234</span>                     <span class="n">bbox_inches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span>
+<span class="ne">-&gt; </span><span class="mi">2235</span>                         <span class="n">renderer</span><span class="p">,</span> <span class="n">bbox_extra_artists</span><span class="o">=</span><span class="n">bbox_extra_artists</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2236</span>                     <span class="k">if</span> <span class="n">pad_inches</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2237</span>                         <span class="n">pad_inches</span> <span class="o">=</span> <span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;savefig.pad_inches&#39;</span><span class="p">]</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib/figure.py</span> in <span class="ni">get_tightbbox</span><span class="nt">(self, renderer, bbox_extra_artists)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1637</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1638</span>         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">artists</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1639</span>             <span class="n">bbox</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1640</span>             <span class="k">if</span> <span class="n">bbox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">bbox</span><span class="o">.</span><span class="n">width</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1641</span>                 <span class="n">bb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib/artist.py</span> in <span class="ni">get_tightbbox</span><span class="nt">(self, renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">304</span>             <span class="n">The</span> <span class="n">enclosing</span> <span class="n">bounding</span> <span class="n">box</span> <span class="p">(</span><span class="ow">in</span> <span class="n">figure</span> <span class="n">pixel</span> <span class="n">coordinates</span><span class="p">)</span><span class="o">.</span>
+<span class="g g-Whitespace">    </span><span class="mi">305</span>         <span class="sd">&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">306</span><span class="sd">         bbox = self.get_window_extent(renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">307</span><span class="sd">         if self.get_clip_on():</span>
+<span class="g g-Whitespace">    </span><span class="mi">308</span><span class="sd">             clip_box = self.get_clip_box()</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib/lines.py</span> in <span class="ni">get_window_extent</span><span class="nt">(self, renderer)</span>
+<span class="g g-Whitespace">    </span><span class="mi">622</span><span class="sd">         bbox = Bbox([[0, 0], [0, 0]])</span>
+<span class="g g-Whitespace">    </span><span class="mi">623</span><span class="sd">         trans_data_to_xy = self.get_transform().transform</span>
+<span class="ne">--&gt; </span><span class="mi">624</span><span class="sd">         bbox.update_from_data_xy(trans_data_to_xy(self.get_xydata()),</span>
+<span class="g g-Whitespace">    </span><span class="mi">625</span><span class="sd">                                  ignore=True)</span>
+<span class="g g-Whitespace">    </span><span class="mi">626</span><span class="sd">         # correct for marker size, if any</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib/transforms.py</span> in <span class="ni">transform</span><span class="nt">(self, values)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1468</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">1469</span><span class="sd">         # Transform the values</span>
+<span class="ne">-&gt; </span><span class="mi">1470</span><span class="sd">         res = self.transform_affine(self.transform_non_affine(values))</span>
+<span class="g g-Whitespace">   </span><span class="mi">1471</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">1472</span><span class="sd">         # Convert the result back to the shape of the input values.</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib/transforms.py</span> in <span class="ni">transform_non_affine</span><span class="nt">(self, points)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2384</span><span class="sd">             return points</span>
+<span class="g g-Whitespace">   </span><span class="mi">2385</span><span class="sd">         elif not self._a.is_affine and self._b.is_affine:</span>
+<span class="ne">-&gt; </span><span class="mi">2386</span><span class="sd">             return self._a.transform_non_affine(points)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2387</span><span class="sd">         else:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2388</span><span class="sd">             return self._b.transform_non_affine(</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py</span> in <span class="ni">transform_non_affine</span><span class="nt">(self, xy)</span>
+<span class="g g-Whitespace">    </span><span class="mi">133</span><span class="sd">         if isinstance(xy, np.ndarray):</span>
+<span class="g g-Whitespace">    </span><span class="mi">134</span><span class="sd">             return prj.transform_points(self.source_projection,</span>
+<span class="ne">--&gt; </span><span class="mi">135</span><span class="sd">                                         xy[:, 0], xy[:, 1])[:, 0:2]</span>
+<span class="g g-Whitespace">    </span><span class="mi">136</span><span class="sd">         else:</span>
+<span class="g g-Whitespace">    </span><span class="mi">137</span><span class="sd">             x, y = xy</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/cartopy/crs.py</span> in <span class="ni">transform_points</span><span class="nt">(self, src_crs, x, y, z, trap)</span>
+<span class="g g-Whitespace">    </span><span class="mi">399</span><span class="sd">             try:</span>
+<span class="g g-Whitespace">    </span><span class="mi">400</span><span class="sd">                 result[:, 0], result[:, 1], result[:, 2] = \</span>
+<span class="ne">--&gt; </span><span class="mi">401</span><span class="sd">                     _safe_pj_transform(src_crs, self, x, y, z, trap=trap)</span>
+<span class="g g-Whitespace">    </span><span class="mi">402</span><span class="sd">             except ProjError as err:</span>
+<span class="g g-Whitespace">    </span><span class="mi">403</span><span class="sd">                 msg = str(err).lower()</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/cartopy/crs.py</span> in <span class="ni">_safe_pj_transform</span><span class="nt">(src_crs, tgt_crs, x, y, z, trap)</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span><span class="sd"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">42</span><span class="sd"> def _safe_pj_transform(src_crs, tgt_crs, x, y, z=None, trap=True):</span>
+<span class="ne">---&gt; </span><span class="mi">43</span><span class="sd">     transformer = Transformer.from_crs(src_crs, tgt_crs, always_xy=True)</span>
+<span class="g g-Whitespace">     </span><span class="mi">44</span><span class="sd">     transformed_coords = transformer.transform(x, y, z, errcheck=trap)</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span><span class="sd">     if z is None:</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/pyproj/transformer.py</span> in <span class="ni">from_crs</span><span class="nt">(crs_from, crs_to, skip_equivalent, always_xy, area_of_interest, authority, accuracy, allow_ballpark)</span>
+<span class="g g-Whitespace">    </span><span class="mi">540</span><span class="sd">                 authority=authority,</span>
+<span class="g g-Whitespace">    </span><span class="mi">541</span><span class="sd">                 accuracy=accuracy if accuracy is None else str(accuracy),</span>
+<span class="ne">--&gt; </span><span class="mi">542</span><span class="sd">                 allow_ballpark=allow_ballpark,</span>
+<span class="g g-Whitespace">    </span><span class="mi">543</span><span class="sd">             )</span>
+<span class="g g-Whitespace">    </span><span class="mi">544</span><span class="sd">         )</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/pyproj/transformer.py</span> in <span class="ni">__init__</span><span class="nt">(self, transformer_maker)</span>
+<span class="g g-Whitespace">    </span><span class="mi">308</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">309</span><span class="sd">         self._local = TransformerLocal()</span>
+<span class="ne">--&gt; </span><span class="mi">310</span><span class="sd">         self._local.transformer = transformer_maker()</span>
+<span class="g g-Whitespace">    </span><span class="mi">311</span><span class="sd">         self._transformer_maker = transformer_maker</span>
+<span class="g g-Whitespace">    </span><span class="mi">312</span><span class="sd"> </span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/pyproj/transformer.py</span> in <span class="ni">__call__</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">102</span><span class="sd">             authority=self.authority,</span>
+<span class="g g-Whitespace">    </span><span class="mi">103</span><span class="sd">             accuracy=self.accuracy,</span>
+<span class="ne">--&gt; </span><span class="mi">104</span><span class="sd">             allow_ballpark=self.allow_ballpark,</span>
+<span class="g g-Whitespace">    </span><span class="mi">105</span><span class="sd">         )</span>
+<span class="g g-Whitespace">    </span><span class="mi">106</span><span class="sd"> </span>
+
+<span class="nn">pyproj/_transformer.pyx</span> in <span class="ni">pyproj._transformer._Transformer.from_crs</span><span class="nt">()</span>
+
+<span class="nn">pyproj/_transformer.pyx</span> in <span class="ni">pyproj._transformer._Transformer._init_from_crs</span><span class="nt">()</span>
+
+<span class="nn">pyproj/_transformer.pyx</span> in <span class="ni">pyproj._transformer._Transformer._initialize_from_projobj</span><span class="nt">()</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/pyproj/exceptions.py</span> in <span class="ni">clear</span><span class="nt">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span><span class="sd">         super().__init__(error_message)</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span><span class="sd"> </span>
+<span class="ne">---&gt; </span><span class="mi">19</span><span class="sd">     @staticmethod</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span><span class="sd">     def clear() -&gt; None:</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span><span class="sd">         &quot;&quot;&quot;</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
 </div>
 </div>
 <p>The next example is <a class="reference internal" href="Ex3-Interpolation.html"><span class="doc std std-doc">Ex3-Interpolation</span></a></p>
 </div>
 </div>
-
-
-<script type="application/vnd.jupyter.widget-state+json">
-{"state": {"d2b0ecaaae5247a1baf9f37ce02ec528": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b81ac838602e4f999726923ffebb227f": {"model_name": "PlotModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_backend_version": "2.11.0", "_dom_classes": [], "_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "PlotModel", "_view_count": null, "_view_module": "k3d", "_view_module_version": "2.11.0", "_view_name": "PlotView", "antialias": 3, "auto_rendering": true, "axes": ["x", "y", "z"], "axes_helper": 0.0, "background_color": 16777215, "camera": [], "camera_animation": [], "camera_auto_fit": true, "camera_damping_factor": 0.0, "camera_fov": 60.0, "camera_mode": "trackball", "camera_no_pan": false, "camera_no_rotate": false, "camera_no_zoom": false, "camera_pan_speed": 0.3, "camera_rotate_speed": 1.0, "camera_zoom_speed": 1.2, "clipping_planes": [], "colorbar_object_id": -1, "colorbar_scientific": false, "fps": 25.0, "fps_meter": false, "grid": [-1, -1, -1, 1, 1, 1], "grid_auto_fit": true, "grid_color": 15132390, "grid_visible": false, "height": 512, "label_color": 4473924, "layout": "IPY_MODEL_d2b0ecaaae5247a1baf9f37ce02ec528", "lighting": 1.5, "manipulate_mode": "translate", "menu_visibility": true, "mode": "view", "name": null, "object_ids": [140456461731792, 140456419696272, 140456422482320, 140456503874128], "rendering_steps": 1, "screenshot": "", "screenshot_scale": 2.0, "snapshot": "", "snapshot_type": "full", "time": 0.0, "voxel_paint_color": 0}}, "c25f13cd862745e799bed4c973977579": {"model_name": "ObjectModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "ObjectModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "attribute": {"dtype": "float32", "shape": [0]}, "click_callback": false, "color": 8947967, "color_map": {"dtype": "float32", "shape": [1024]}, "color_range": [], "colors": {"dtype": "uint32", "shape": [0]}, "compression_level": 0, "flat_shading": true, "hover_callback": false, "id": 140456461731792, "indices": {"dtype": "uint32", "shape": [15360, 3]}, "model_matrix": {"dtype": "float32", "shape": [4, 4]}, "name": null, "opacity": 0.5, "opacity_function": {"dtype": "float32", "shape": [0]}, "side": "front", "texture": null, "texture_file_format": null, "triangles_attribute": {"dtype": "float32", "shape": [0]}, "type": "Mesh", "uvs": {"dtype": "float32", "shape": []}, "vertices": {"dtype": "float32", "shape": [7682, 3]}, "visible": true, "volume": {"dtype": "float32", "shape": [0]}, "volume_bounds": {"dtype": "float32", "shape": [0]}, "wireframe": false}, "buffers": [{"data": "AACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPw==", "encoding": "base64", "path": ["model_matrix", "data"]}]}, "1de662ea52594f108572f8792d326650": {"model_name": "ObjectModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "ObjectModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "attribute": {"dtype": "float32", "shape": [0]}, "click_callback": false, "color": 3355579, "color_map": {"dtype": "float32", "shape": [1024]}, "color_range": [], "colors": {"dtype": "uint32", "shape": [0]}, "compression_level": 0, "flat_shading": true, "hover_callback": false, "id": 140456419696272, "indices": {"dtype": "uint32", "shape": [15360, 3]}, "model_matrix": {"dtype": "float32", "shape": [4, 4]}, "name": null, "opacity": 1.0, "opacity_function": {"dtype": "float32", "shape": [0]}, "side": "front", "texture": null, "texture_file_format": null, "triangles_attribute": {"dtype": "float32", "shape": [0]}, "type": "Mesh", "uvs": {"dtype": "float32", "shape": []}, "vertices": {"dtype": "float32", "shape": [7682, 3]}, "visible": true, "volume": {"dtype": "float32", "shape": [0]}, "volume_bounds": {"dtype": "float32", "shape": [0]}, "wireframe": true}, "buffers": [{"data": "AACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPw==", "encoding": "base64", "path": ["model_matrix", "data"]}]}, "1ffd591d26324e51aaabcb985658fe78": {"model_name": "ObjectModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "ObjectModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "attribute": {"dtype": "float32", "shape": [0]}, "click_callback": false, "color": 12303291, "color_map": {"dtype": "float32", "shape": [1024]}, "color_range": [], "colors": {"dtype": "uint32", "shape": [0]}, "compression_level": 0, "flat_shading": false, "hover_callback": false, "id": 140456422482320, "indices": {"dtype": "uint32", "shape": [15360, 3]}, "model_matrix": {"dtype": "float32", "shape": [4, 4]}, "name": null, "opacity": 1.0, "opacity_function": {"dtype": "float32", "shape": [0]}, "side": "front", "texture": null, "texture_file_format": null, "triangles_attribute": {"dtype": "float32", "shape": [0]}, "type": "Mesh", "uvs": {"dtype": "float32", "shape": []}, "vertices": {"dtype": "float32", "shape": [7682, 3]}, "visible": true, "volume": {"dtype": "float32", "shape": [0]}, "volume_bounds": {"dtype": "float32", "shape": [0]}, "wireframe": false}, "buffers": [{"data": "AACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPw==", "encoding": "base64", "path": ["model_matrix", "data"]}]}, "27517236e33b4f99be493a3ec0bb103f": {"model_name": "ObjectModel", "model_module": "k3d", "model_module_version": "2.11.0", "state": {"_model_module": "k3d", "_model_module_version": "2.11.0", "_model_name": "ObjectModel", "_view_count": null, "_view_module": null, "_view_module_version": "", "_view_name": null, "attribute": {"dtype": "float32", "shape": [0]}, "color": 16711680, "color_map": {"dtype": "float32", "shape": [1024]}, "color_range": [], "colors": {"dtype": "uint32", "shape": [0]}, "compression_level": 0, "id": 140456503874128, "mesh_detail": 2, "model_matrix": {"dtype": "float32", "shape": [4, 4]}, "name": null, "opacities": {"dtype": "float32", "shape": [0]}, "opacity": 1.0, "opacity_function": {"dtype": "float32", "shape": [0]}, "point_size": 0.01, "point_sizes": {"dtype": "float32", "shape": [0]}, "positions": {"dtype": "float32", "shape": [7682, 3]}, "shader": "3dSpecular", "type": "Points", "visible": true}, "buffers": [{"data": "AACAPwAAAAAAAAAAAAAAAAAAAAAAAIA/AAAAAAAAAAAAAAAAAAAAAAAAgD8AAAAAAAAAAAAAAAAAAAAAAACAPw==", "encoding": "base64", "path": ["model_matrix", "data"]}]}, "8cfd308c98524bfa9b2e5b55f249fadf": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "ff90499788b847209aaa37afbad114e5": {"model_name": "OutputModel", "model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_8cfd308c98524bfa9b2e5b55f249fadf", "msg_id": "", "outputs": [{"output_type": "display_data", "metadata": {}, "data": {"text/plain": "Plot(antialias=3, axes=['x', 'y', 'z'], background_color=16777215, camera_animation=[], camera_fov=60.0, camer\u2026", "application/vnd.jupyter.widget-view+json": {"version_major": 2, "version_minor": 0, "model_id": "b81ac838602e4f999726923ffebb227f"}}}]}}}, "version_major": 2, "version_minor": 0}
-</script>
-
 
     <script type="text/x-thebe-config">
     {
