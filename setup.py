@@ -39,7 +39,7 @@ if "Darwin"  in platform.system():
     link_args = ["-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"]
 
 # in development set version to none and ...
-PYPI_VERSION = "2.0.5b3"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
+PYPI_VERSION = "2.1.0b1"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
 
 # Return the git revision as a string (from numpy)
 
