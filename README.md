@@ -29,8 +29,10 @@ which use the companion package litho1pt0
 
 ### Bleeding edge code 
 
-  - Documentation / Notebooks [https://underworldcode.github.io/stripy/2.0.5b2](https://underworldcode.github.io/stripy/2.0.5b2)
-  - API documentation [https://underworldcode.github.io/stripy/2.0.5b2_api](https://underworldcode.github.io/stripy/2.0.5b2_api)
+
+https://github.com/underworldcode/stripy/blob/gh-pages/2.1.0b1/FrontPage.html
+  - Documentation / Notebooks [https://underworldcode.github.io/stripy/2.1.0b1](https://underworldcode.github.io/stripy/2.0.5b2)
+  - API documentation [https://underworldcode.github.io/stripy/2.1.0b1_api](https://underworldcode.github.io/stripy/2.0.5b2_api)
 
 For previous versions, see the [changelog](Changelog.md)
 
