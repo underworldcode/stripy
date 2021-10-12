@@ -51,7 +51,7 @@ jobs:
           VERSION=`python setup.py --version`
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
           cd jupyterbook
-          jupyter-book build .
+          ./build-book.sh 
 
       # Note deploy key needs the ----BEGIN ... KEY---- lines too
 
