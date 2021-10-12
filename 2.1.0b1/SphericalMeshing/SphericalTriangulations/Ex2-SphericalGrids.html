@@ -697,7 +697,7 @@ measure of the uniformity of each mesh.</p>
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"version_major": 2, "version_minor": 0, "model_id": "857d0c2b4d694c7a93195920c18d5cb2"}
+{"version_major": 2, "version_minor": 0, "model_id": "1fcdf921d62044358def0073b6dd63b3"}
 </script></div>
 </div>
 <div class="cell docutils container">
@@ -779,7 +779,7 @@ measure of the uniformity of each mesh.</p>
 <img alt="../../_images/Ex2-SphericalGrids_9_3.png" src="../../_images/Ex2-SphericalGrids_9_3.png" />
 <img alt="../../_images/Ex2-SphericalGrids_9_4.png" src="../../_images/Ex2-SphericalGrids_9_4.png" />
 <img alt="../../_images/Ex2-SphericalGrids_9_5.png" src="../../_images/Ex2-SphericalGrids_9_5.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error in callback &lt;function flush_figures at 0x7fae1de99440&gt; (for post_execute):
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error in callback &lt;function flush_figures at 0x7f88e969b440&gt; (for post_execute):
 </pre></div>
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
@@ -855,11 +855,25 @@ measure of the uniformity of each mesh.</p>
 <span class="g g-Whitespace">   </span><span class="mi">2237</span>                         <span class="n">pad_inches</span> <span class="o">=</span> <span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;savefig.pad_inches&#39;</span><span class="p">]</span>
 
 <span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib/figure.py</span> in <span class="ni">get_tightbbox</span><span class="nt">(self, renderer, bbox_extra_artists)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1637</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1638</span>         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">artists</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1639</span>             <span class="n">bbox</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1640</span>             <span class="k">if</span> <span class="n">bbox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">bbox</span><span class="o">.</span><span class="n">width</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1641</span>                 <span class="n">bb</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1647</span>                 <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1648</span>                     <span class="n">bbox</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span>
+<span class="ne">-&gt; </span><span class="mi">1649</span>                         <span class="n">renderer</span><span class="p">,</span> <span class="n">bbox_extra_artists</span><span class="o">=</span><span class="n">bbox_extra_artists</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1650</span>                 <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1651</span>                     <span class="n">bbox</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/cartopy/mpl/geoaxes.py</span> in <span class="ni">get_tightbbox</span><span class="nt">(self, renderer, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">529</span> 
+<span class="g g-Whitespace">    </span><span class="mi">530</span>         <span class="k">return</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">Axes</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span>
+<span class="ne">--&gt; </span><span class="mi">531</span>             <span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">532</span> 
+<span class="g g-Whitespace">    </span><span class="mi">533</span>     <span class="nd">@matplotlib</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">allow_rasterization</span>
+
+<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib/axes/_base.py</span> in <span class="ni">get_tightbbox</span><span class="nt">(self, renderer, call_axes_locator, bbox_extra_artists, for_layout_only)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4475</span>                     <span class="c1"># this artist</span>
+<span class="g g-Whitespace">   </span><span class="mi">4476</span>                     <span class="k">continue</span>
+<span class="ne">-&gt; </span><span class="mi">4477</span>             <span class="n">bbox</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">get_tightbbox</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4478</span>             <span class="k">if</span> <span class="p">(</span><span class="n">bbox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">4479</span>                     <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">bbox</span><span class="o">.</span><span class="n">width</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 
 <span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/matplotlib/artist.py</span> in <span class="ni">get_tightbbox</span><span class="nt">(self, renderer)</span>
 <span class="g g-Whitespace">    </span><span class="mi">304</span>             <span class="n">The</span> <span class="n">enclosing</span> <span class="n">bounding</span> <span class="n">box</span> <span class="p">(</span><span class="ow">in</span> <span class="n">figure</span> <span class="n">pixel</span> <span class="n">coordinates</span><span class="p">)</span><span class="o">.</span>
