@@ -35,6 +35,9 @@ link_args = []
 if "Windows" in platform.system():
     link_args = ["-static"]
 
+if "Darwin"  in platform.system():
+    link_args = ["-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"]
+
 # in development set version to none and ...
 PYPI_VERSION = "2.1.0"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
 
@@ -113,16 +116,13 @@ if __name__ == "__main__":
                                           'Notebooks/SphericalTriangulations/*ipynb',
                                           'Notebooks/Data/*'] },
           include_package_data = True,
-          classifiers       = ['Programming Language :: Python :: 2',
-                               'Programming Language :: Python :: 2.6',
-                               'Programming Language :: Python :: 2.7',
-                               'Programming Language :: Python :: 3',
+          classifiers       = ['Programming Language :: Python :: 2.7',
                                'Programming Language :: Python :: 3.3',
                                'Programming Language :: Python :: 3.4',
                                'Programming Language :: Python :: 3.5',
                                'Programming Language :: Python :: 3.6',
-                               'Programming Language :: Python :: 3.7'
-                               'Programming Language :: Python :: 3.8'
+                               'Programming Language :: Python :: 3.7',
+                               'Programming Language :: Python :: 3.8',
                                'Programming Language :: Python :: 3.9'
                                ]
           )

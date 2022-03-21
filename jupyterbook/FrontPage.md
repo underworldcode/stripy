@@ -9,6 +9,12 @@
 
 A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives (Renka 1996a,b and 1997a,b).
 
+---
+
+<iframe src="images/k3d/icosohedron_example.html" title="Icosohedron" width="80%" height="500px"></iframe>
+
+---
+
 `stripy` is bundled with `litho1pt0` which is a python interface to the _crust 1.0_ dataset and the lithospheric part of the _litho 1.0_ dataset (Laske et al, 2013 and Pasyanos et al, 2014) which both requires and demonstrates the triangulation / searching and interpolation on the sphere that is provided by `stripy`.
 
 
@@ -22,7 +28,20 @@ _Sample images created with `stripy` illustrating the meshing capability: ocean 
 
 ```
 
+
+
+
 ## Links
 
   - [Stripy on Github](https://github.com/underworldcode/stripy)
   - [API documentation](https://underworldcode.github.io/stripy/2.0.5b2_api)
+
+
+
+## Accessibility
+
+<button type="button" onclick="legibleFontSwitcher()">Switch Font</button>&nbsp;&nbsp;<button type="button" onclick="fontScaler(1.1)">&#10133;</button><button type="button" onclick="fontScaler(0.0)">&#9679;</button><button type="button" onclick="fontScaler(0.909)">&#10134;</button>  
+
+
+The online web page can also be typeset using the [Atkinson Hyperlegible](https://brailleinstitute.org/freefont) font everywhere, other than monospaced computer code, as an aid to legibility. This button is also located at the bottom of the left navigation bar on every page and will toggle between settings.
+

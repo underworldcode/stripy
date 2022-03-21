@@ -3,7 +3,7 @@ name: API docs / jupyterbook
 # We should trigger this from an upload event 
 
 on:
-  push:
+  push:   # We publish the beta docs as well
     branches: 
       - master 
       - dev
@@ -31,7 +31,6 @@ jobs:
           path: |
             ~/conda_pkgs_dir
             ~/.cache/pip
-            /usr/share/miniconda3/envs/jupyter-book
             ~/stripy/jupyterbook/_build
             
           key: macos-jbdoc-conda-${{ env.CACHE_NUMBER }}-${{ hashFiles('.github/workflows/resources/conda_jb_docs_environment.yml') }}
@@ -52,7 +51,7 @@ jobs:
           VERSION=`python setup.py --version`
           echo "VERSION=$(echo $VERSION)" >> $GITHUB_ENV
           cd jupyterbook
-          jupyter-book build .
+          ./build-book.sh 
 
       # Note deploy key needs the ----BEGIN ... KEY---- lines too
 
