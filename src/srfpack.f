@@ -7361,7 +7361,7 @@ C
       ierr = 0
 
       DO i=1,ns
-         CALL intrc0(xs(i),ys(i),ncc,lcc,n,x,y,zdata,lst,lptr,lend,
+         CALL intrc0(xs(i),ys(i),ncc,[lcc],n,x,y,zdata,lst,lptr,lend,
      .                ist,odata(i),ierr1)
 
          edata(i) = ierr1
@@ -7388,7 +7388,7 @@ C
       ierr = 0
 
       DO i=1,ns
-         CALL intrc1(xs(i),ys(i),ncc,lcc,n,x,y,zdata,lst,lptr,lend,
+         CALL intrc1(xs(i),ys(i),ncc,[lcc],n,x,y,zdata,lst,lptr,lend,
      .                iflgs,sigma,grad,iflgg,ist,odata(i),pzx,pzy,ierr1)
 
          edata(i) = ierr1

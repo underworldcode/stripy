@@ -36,7 +36,7 @@ if "Windows" in platform.system():
     link_args = ["-static"]
 
 # in development set version to none and ...
-PYPI_VERSION = "2.0.5b2"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
+PYPI_VERSION = "2.1.0"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
 
 # Return the git revision as a string (from numpy)
 
@@ -101,7 +101,7 @@ if __name__ == "__main__":
           author            = "Louis Moresi",
           author_email      = "louis.moresi@anu.edu.au",
           url               = "https://github.com/underworldcode/stripy",
-          version           = PYPI_VERSION,
+          version           =  PYPI_VERSION,
           description       = "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere",
           long_description  = long_description,
           long_description_content_type='text/markdown',
@@ -122,5 +122,7 @@ if __name__ == "__main__":
                                'Programming Language :: Python :: 3.5',
                                'Programming Language :: Python :: 3.6',
                                'Programming Language :: Python :: 3.7'
+                               'Programming Language :: Python :: 3.8'
+                               'Programming Language :: Python :: 3.9'
                                ]
           )

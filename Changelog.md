@@ -1,5 +1,11 @@
 # Stripy changelog
 
+## 2.1.0 
+
+ - Jupyterbook
+ - Bug fixes
+
+
 ## 2.0.5 (beta) 2
 
   - [Notebooks](https://underworldcode.github.io/stripy/2.0.5b2)
