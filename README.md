@@ -29,8 +29,9 @@ which use the companion package litho1pt0
 
 ### Bleeding edge code 
 
-  - Documentation / Notebooks [https://underworldcode.github.io/stripy/2.0.5b2](https://underworldcode.github.io/stripy/2.0.5b2)
-  - API documentation [https://underworldcode.github.io/stripy/2.0.5b2_api](https://underworldcode.github.io/stripy/2.0.5b2_api)
+
+  - Documentation / Notebooks [https://underworldcode.github.io/stripy/2.1.0b1](https://underworldcode.github.io/stripy/2.1.0b1)
+  - API documentation [https://underworldcode.github.io/stripy/2.1.0b1_api](https://underworldcode.github.io/stripy/2.1.0b1_api)
 
 For previous versions, see the [changelog](Changelog.md)
 
@@ -112,7 +113,7 @@ the next two worked examples show how to search, interpolate and plot with the h
 
 ### Dependencies
 
-You will need **Python 2.7 or 3.5+**.
+You will need **Python 3.6+**.
 Also, the following packages are required:
 
  - [`gfortran`](https://www.fatiando.org/verde/latest/install.html) (or any Fortran compiler)
@@ -122,12 +123,14 @@ Also, the following packages are required:
 **Recommended Packages** for running the notebooks:
 
  - [`litho1pt0`](https://pypi.org/project/litho1pt0/)
- - [`gdal`](https://www.gdal.org/)
  - [`matplotlib`](https://matplotlib.org/)
  - [`imageio`](https://imageio.github.io/)
  - [`cartopy`](https://scitools.org.uk/cartopy/docs/latest/)
- - [`pyproj`](https://github.com/pyproj4/pyproj)
- - [`lavavu`](https://github.com/OKaluza/LavaVu/)
+ - [`k3d`](https://github.com/K3D-tools/K3D-jupyter)
+ - [`xarray`](http://xarray.pydata.org/en/stable/)
+ - [`netcdf4`](https://unidata.github.io/netcdf4-python/)
+
+All of which should be available from pip or anaconda (conda-forge) for most platforms.
 
 ### Installing using pip
 
@@ -135,7 +138,6 @@ You can install `stripy` using the
 [`pip package manager`](https://pypi.org/project/pip/) with either version of Python:
 
 ```bash
-python2 -m pip install stripy
 python3 -m pip install stripy
 ```
 
@@ -147,70 +149,13 @@ If you change the Fortran compiler, you may have to add the
 flags `config_fc --fcompiler=<compiler name>` when `setup.py` is run
 (see docs for [numpy.distutils](http://docs.scipy.org/doc/numpy-dev/f2py/distutils.html)).
 
-### Installing using Docker
+### Installing with conda
 
-A more straightforward installation which does not depend on specific compilers relies on the [docker](http://www.docker.com) virtualisation system.
-
-To install the docker image and test it is working:
+If you use the anaconda packaging system, then you should be able to 
 
 ```bash
-   docker pull underworldcode/stripy:latest
-   docker run --rm underworldcode/stripy:latest help
+conda install -c geo-down-under stripy
 ```
-
-To install the helper scripts for bash:
-
-```bash
-   docker run --rm underworldcode/stripy:latest bash_utils > bash_utils.sh
-   source bash_utils.sh
-```
-
-( you may find it helpful to move/rename this file and source it from
-  your bash profile at login time )
-
-The bash_utils.sh script installs the following functions which are
-available through the bash command line:
-
-```bash
-  stripy-docker-help
-  stripy-docker-sh
-  stripy-docker-nb
-  stripy-docker-browse
-  stripy-docker-serve
-  stripy-docker-terminal
-```
-
-For more information on these functions, run
-
-```bash
-  source bash_utils.sh
-  stripy-docker-help
-```
-
-To use the docker version as you would, say, using ipython to type on the command line:
-
-```bash
-   source bash_utils.sh  # (only needs to be done once)
-   stripy-docker-terminal
-   ls
-   ipython
-```
-
-To use the docker version to run a script
-
-```bash
-   source bash_utils.sh  # (only needs to be done once)
-   stripy-docker-sh my_python_script.py
-```
-
-To build the dockerfile locally, we provide a script. First ensure you have checked out the source code from github and then run the script in the Docker directory. If you modify the dockerfile and want to push the image to make it publicly available, it will need to be retagged to upload somewhere other than the underworldcode repository.
-
-```bash
-git checkout https://github.com/underworldcode/stripy.git
-cd stripy
-source Docker/build-dockerfile.sh
-```
-
 
 ## Usage
 
