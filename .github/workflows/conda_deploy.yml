@@ -3,9 +3,7 @@ name: Conda Deployment
 on:
   release:
     types: [created, edited]
-
   workflow_dispatch:
-
   push:
     branches:
       - conda-testing
