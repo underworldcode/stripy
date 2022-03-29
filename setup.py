@@ -14,9 +14,7 @@
 #
 # (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
-
-from setuptools import dist, setup, find_packages
-dist.Distribution().fetch_build_eggs(['numpy>=1.16.0'])
+from setuptools import setup
 from numpy.distutils.core import setup, Extension
 
 # try: 
@@ -30,13 +28,14 @@ import os
 import subprocess
 import platform 
 
-link_args = []
- 
+link_args = ['-Wl,-rpath,"$ORIGIN"']
+
 if "Windows" in platform.system():
     link_args = ["-static"]
 
 if "Darwin"  in platform.system():
-    link_args = ["-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"]
+    link_args = ['-Wl,-rpath, "@loader_path"']
+
 
 # in development set version to none and ...
 PYPI_VERSION = "2.1.0"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
@@ -124,5 +123,6 @@ if __name__ == "__main__":
                                'Programming Language :: Python :: 3.7',
                                'Programming Language :: Python :: 3.8',
                                'Programming Language :: Python :: 3.9'
+                               'Programming Language :: Python :: 3.10'
                                ]
           )
