@@ -1,15 +1,9 @@
 name: PYPI wheels macos
 
-on: 
+on:
   release:
     types: [created, edited]
-
-  # push:
-  #   branches:
-  #     - dev
-
   workflow_dispatch:
-
 
 jobs:
   deploy_to_pypi:

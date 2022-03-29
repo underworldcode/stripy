@@ -3,7 +3,7 @@ name: PYPI wheels windows
 on:
   release:
     types: [created, edited]
-
+  workflow_dispatch:
 
 jobs:
   deploy_to_pypi:

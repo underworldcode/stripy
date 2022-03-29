@@ -3,6 +3,7 @@ name: PYPI wheels manylinux
 on:
   release:
     types: [created, edited]
+  workflow_dispatch:
 
 jobs:
   deploy_to_pypi:

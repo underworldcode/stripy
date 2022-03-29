@@ -3,8 +3,7 @@ name: PYPI source
 on:
   release:
     types: [created, edited]
-
-  workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
   deploy:
