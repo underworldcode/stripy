@@ -26,6 +26,15 @@ from os import path
 import io
 import os
 import subprocess
+import platform 
+
+link_args = ["-Wl,-rpath='$ORIGIN'"]
+
+if "Windows" in platform.system():
+    link_args = ["-static"]
+
+if "Darwin"  in platform.system():
+    link_args = ["-Wl,-rpath='@loader_path'"]
 
 
 # in development set version to none and ...
@@ -74,19 +83,19 @@ long_description = long_description.replace('(stripy/Notebooks','(https://github
 # interface for Renka's algorithm 772 fortran code
 ext1 = Extension(name    = 'stripy._stripack',
                  sources = ['src/stripack.pyf','src/stripack.f90'],
-                 extra_link_args=["-Wl,-rpath='$ORIGIN'"])
+                 extra_link_args=link_args)
 ext2 = Extension(name    = 'stripy._tripack',
                  sources = ['src/tripack.pyf', 'src/tripack.f90'],
-                 extra_link_args=["-Wl,-rpath='$ORIGIN'"])
+                 extra_link_args=link_args)
 ext3 = Extension(name    = 'stripy._srfpack',
                  sources = ['src/srfpack.pyf', 'src/srfpack.f'],
-                 extra_link_args=["-Wl,-rpath='$ORIGIN'"])
+                 extra_link_args=link_args)
 ext4 = Extension(name    = 'stripy._ssrfpack',
                  sources = ['src/ssrfpack.pyf', 'src/ssrfpack.f'],
-                 extra_link_args=["-Wl,-rpath='$ORIGIN'"])
+                 extra_link_args=link_args)
 ext5 = Extension(name    = 'stripy._fortran',
                  sources = ['src/stripyf.pyf', 'src/stripyf.f90'],
-                 extra_link_args=["-Wl,-rpath='$ORIGIN'"])
+                 extra_link_args=link_args)
 
 
 if __name__ == "__main__":
