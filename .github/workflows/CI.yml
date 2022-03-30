@@ -7,11 +7,82 @@ on:
 
 jobs:
 
-  test:
-    runs-on: ${{ matrix.os }}
+  test_ubuntu:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu]
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+          pip install numpy
+          pip install scipy
+          pip install Cython
+                  
+      - name: Provide gfortran
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
+      
+      - name: Install
+        run: |
+          pip install .
+    
+      - name: Run tests
+        run: |
+          pip install pytest
+          pytest -v
+  
+  test_macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+          pip install numpy
+          pip install scipy
+          pip install Cython
+                  
+      - name: Provide gfortran
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
+      
+      - name: Install
+        run: |
+          pip install .
+    
+      - name: Run tests
+        run: |
+          pip install pytest
+          pytest -v
+  
+  test_windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10"]
     
     steps:
@@ -47,7 +118,7 @@ jobs:
 
   conda_build:
       name: Conda Build (Python ${{matrix.python-version}} ${{ matrix.os }})
-      needs: test
+      needs: [test_ubuntu, test_windows, test_macos]
       runs-on: ${{ matrix.os }}
       strategy:
         fail-fast: false
@@ -82,9 +153,9 @@ jobs:
               conda-build --channel conda-forge --user geo-down-under conda
               anaconda logout
 
-  pypi_windows_macos:
-    runs-on: ${{ matrix.os }}
-    needs: test
+  pypi_windows:
+    runs-on: windows_latest
+    needs: test_windows
     env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
@@ -121,10 +192,50 @@ jobs:
       - name: Upload to Pypi
         run: |
           python -m twine upload dist/* -r pypi --skip-existing
-          
+  
+  pypi_macos:
+    runs-on: macos-latest
+    needs: test_macos
+    env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+          pip install numpy
+          pip install scipy
+          pip install Cython
+                  
+      - name: Provide gfortran
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
+      
+      - name: Package for Pypi
+        run: |
+          python setup.py sdist bdist_wheel
+    
+      - name: Upload to Pypi
+        run: |
+          python -m twine upload dist/* -r pypi --skip-existing
+
+
   manylinux:
     name: Build manylinux package
-    needs: test
+    needs: test_ubuntu
     runs-on: ubuntu-latest
     env:
       TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
