@@ -19,6 +19,7 @@ Stripy source code is available from <https://github.com/underworldcode/stripy>
 
 
 import os as _os
+import sys
 from platform import system as _system
 
 # add '.dll' files if we are on Windows
@@ -29,6 +30,8 @@ if _system() == "Windows":
     extra_dll_dir = _os.path.join(_os.path.dirname(__file__), '.libs')
     if _os.path.isdir(extra_dll_dir):
         _os.environ["PATH"] += _os.pathsep + extra_dll_dir
+    if sys.version_info.minor >= 8:
+        _os.add_dll_directory(__file__)
 
 
 from .spherical import sTriangulation
