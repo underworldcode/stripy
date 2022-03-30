@@ -68,6 +68,11 @@ jobs:
           pip install numpy
           pip install scipy
           pip install Cython
+          
+      - name: Provide gfortran
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
       
       - name: Package for Pypi
         run: |
