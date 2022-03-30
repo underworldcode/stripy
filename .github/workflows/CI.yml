@@ -69,6 +69,16 @@ jobs:
           pip install scipy
           pip install Cython
           
+      - name: Build manylinux Python wheels
+        if: startsWith(matrix.os, 'ubuntu')
+        uses: RalfG/python-wheels-manylinux-build@v0.4.2-manylinux2014_x86_64
+        with:
+          python-versions: 'cp27-cp27m cp36-cp36m cp37-cp37m cp38-cp38 cp39-cp39 cp310-cp310'
+          build-requirements: 'cython numpy scipy'
+          system-packages: 'libgfortran'
+          package-path: ''
+          pip-wheel-args: '--no-deps'
+          
       - name: Provide gfortran
         if: startsWith(matrix.os, 'macos')
         run: |
@@ -81,5 +91,8 @@ jobs:
     
       - name: Upload to Pypi
         #if: github.event_name == 'release'
+        if: startsWith(matrix.os, ['macos', 'windows'])
         run: |
+          rm -rf dist/*linux*.whl
           python -m twine upload dist/* -r pypi --skip-existing
+          python -m twine upload --skip-existing dist/*-manylinux*.whl
