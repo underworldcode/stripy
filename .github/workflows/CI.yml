@@ -36,7 +36,7 @@ jobs:
           run: conda config --set anaconda_upload yes
   
         - name: Upload new Packages
-          #if: github.event_name == 'release'
+          if: github.event_name == 'release'
           shell: bash -l {0}
           run: |
               anaconda login --hostname github-actions-${{ matrix.os  }}-$RANDOM --username ${{ secrets.ANACONDA_USERNAME }} --password ${{ secrets.ANACONDA_PASSWORD }}
