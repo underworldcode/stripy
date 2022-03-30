@@ -477,34 +477,7 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Square mesh               121	 25921
 Elliptical mesh            21	  1301
 (276,) (276,)
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">folders</span><span class="o">/</span><span class="mi">24</span><span class="o">/</span><span class="mi">8</span><span class="n">k48jl6d249_n_qfxwsl6xvm0000gn</span><span class="o">/</span><span class="n">T</span><span class="o">/</span><span class="n">ipykernel_3568</span><span class="o">/</span><span class="mf">1436196765.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">29</span> 
-<span class="g g-Whitespace">     </span><span class="mi">30</span> <span class="n">randR</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">cartesian_meshes</span><span class="o">.</span><span class="n">random_mesh</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">31</span> <span class="n">rand0</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">Triangulation</span><span class="p">(</span><span class="n">randR</span><span class="o">.</span><span class="n">x</span><span class="p">[::</span><span class="mi">50</span><span class="p">],</span> <span class="n">randR</span><span class="o">.</span><span class="n">y</span><span class="p">[::</span><span class="mi">50</span><span class="p">])</span>
-<span class="g g-Whitespace">     </span><span class="mi">32</span> <span class="n">rand2</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">Triangulation</span><span class="p">(</span><span class="n">randR</span><span class="o">.</span><span class="n">x</span><span class="p">[::</span><span class="mi">25</span><span class="p">],</span> <span class="n">randR</span><span class="o">.</span><span class="n">y</span><span class="p">[::</span><span class="mi">25</span><span class="p">])</span>
-<span class="g g-Whitespace">     </span><span class="mi">33</span> 
-
-<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/stripy/cartesian.py</span> in <span class="ni">__init__</span><span class="nt">(self, x, y, refinement_levels, permute, tree)</span>
-<span class="g g-Whitespace">    </span><span class="mi">110</span>         <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span>
-<span class="g g-Whitespace">    </span><span class="mi">111</span> 
-<span class="ne">--&gt; </span><span class="mi">112</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_update_triangulation</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">113</span> 
-<span class="g g-Whitespace">    </span><span class="mi">114</span>         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">refinement_levels</span><span class="p">):</span>
-
-<span class="nn">~/miniconda3/envs/conda-build-docs/lib/python3.7/site-packages/stripy/cartesian.py</span> in <span class="ni">_update_triangulation</span><span class="nt">(self, x, y)</span>
-<span class="nn">    165             raise ValueError(&#39;ierr={}</span> in <span class="ni">trmesh\n{}&#39;.format</span><span class="nt">(ierr, _ier_codes[9999]))</span>
-<span class="g g-Whitespace">    </span><span class="mi">166</span>         <span class="k">elif</span> <span class="n">ierr</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-<span class="nn">--&gt; 167             raise ValueError(&#39;ierr={}</span> in <span class="ni">trmesh\n{}&#39;.format</span><span class="nt">(ierr, _ier_codes[ierr]))</span>
-<span class="g g-Whitespace">    </span><span class="mi">168</span> 
-<span class="g g-Whitespace">    </span><span class="mi">169</span>         <span class="bp">self</span><span class="o">.</span><span class="n">npoints</span> <span class="o">=</span> <span class="n">npoints</span>
-
-<span class="ne">ValueError</span>: ierr=-2 in trmesh
-<span class="n">the</span> <span class="n">first</span> <span class="n">three</span> <span class="n">nodes</span> <span class="n">are</span> <span class="n">collinear</span><span class="o">.</span>
-<span class="n">Set</span> <span class="n">permute</span> <span class="n">to</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">reorder</span> <span class="n">nodes</span> <span class="n">manually</span><span class="o">.</span>
+Random mesh               100	  5000
 </pre></div>
 </div>
 </div>
@@ -639,16 +612,7 @@ measure of the uniformity of each mesh.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">folders</span><span class="o">/</span><span class="mi">24</span><span class="o">/</span><span class="mi">8</span><span class="n">k48jl6d249_n_qfxwsl6xvm0000gn</span><span class="o">/</span><span class="n">T</span><span class="o">/</span><span class="n">ipykernel_3568</span><span class="o">/</span><span class="mf">2692280617.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="n">mesh_fig</span><span class="p">(</span><span class="n">ellip0</span><span class="p">,</span> <span class="n">ellip2</span><span class="p">,</span> <span class="s2">&quot;Elliptical&quot;</span> <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">29</span> 
-<span class="ne">---&gt; </span><span class="mi">30</span> <span class="n">mesh_fig</span><span class="p">(</span><span class="n">rand0</span><span class="p">,</span> <span class="n">rand2</span><span class="p">,</span> <span class="s2">&quot;Random&quot;</span> <span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;rand0&#39; is not defined
-</pre></div>
-</div>
+<img alt="../../_images/Ex2-CartesianGrids_7_0.png" src="../../_images/Ex2-CartesianGrids_7_0.png" />
 <img alt="../../_images/Ex2-CartesianGrids_7_1.png" src="../../_images/Ex2-CartesianGrids_7_1.png" />
 <img alt="../../_images/Ex2-CartesianGrids_7_2.png" src="../../_images/Ex2-CartesianGrids_7_2.png" />
 </div>
