@@ -170,7 +170,6 @@ jobs:
           pip install Cython
                   
       - name: Provide gfortran
-        if: startsWith(matrix.os, 'macos')
         run: |
           ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
       
@@ -209,7 +208,6 @@ jobs:
           pip install Cython
                   
       - name: Provide gfortran
-        if: startsWith(matrix.os, 'macos')
         run: |
           ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
       
