@@ -25,10 +25,10 @@ from platform import system as _system
 if _system() == "Windows":
     extra_dll_dir = _os.path.join(_os.path.dirname(__file__), 'extra-dll')
     if _os.path.isdir(extra_dll_dir):
-        _os.environ["PATH"] += _os.pathsep + extra_dll_dir
+        _os.add_dll_directory(_os.pathsep + extra_dll_dir)
     extra_dll_dir = _os.path.join(_os.path.dirname(__file__), '.libs')
     if _os.path.isdir(extra_dll_dir):
-        _os.environ["PATH"] += _os.pathsep + extra_dll_dir
+        _os.add_dll_directory(_os.pathsep + extra_dll_dir)
 
 
 from .spherical import sTriangulation
