@@ -29,11 +29,6 @@ jobs:
           pip install scipy
           pip install Cython
                   
-      - name: Provide gfortran
-        if: startsWith(matrix.os, 'macos')
-        run: |
-          ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
-      
       - name: Install
         run: |
           pip install .
@@ -66,7 +61,6 @@ jobs:
           pip install Cython
                   
       - name: Provide gfortran
-        if: startsWith(matrix.os, 'macos')
         run: |
           ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
       
@@ -101,11 +95,6 @@ jobs:
           pip install scipy
           pip install Cython
                   
-      - name: Provide gfortran
-        if: startsWith(matrix.os, 'macos')
-        run: |
-          ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
-      
       - name: Install
         run: |
           pip install .
