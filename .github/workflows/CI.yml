@@ -91,7 +91,7 @@ jobs:
     
       - name: Upload to Pypi
         #if: github.event_name == 'release'
-        if: startsWith(matrix.os, ['macos', 'windows'])
+        if: startsWith(matrix.os, 'macos') or startsWith(matrix.os, 'windows')
         run: |
           rm -rf dist/*linux*.whl
           python -m twine upload dist/* -r pypi --skip-existing
