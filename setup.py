@@ -15,8 +15,6 @@
 # (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
 
-from setuptools import dist, setup, find_packages
-dist.Distribution().fetch_build_eggs(['numpy>=1.16.0'])
 from numpy.distutils.core import setup, Extension
 
 # try: 
@@ -28,15 +26,7 @@ from os import path
 import io
 import os
 import subprocess
-import platform 
 
-link_args = []
- 
-if "Windows" in platform.system():
-    link_args = ["-static"]
-
-if "Darwin"  in platform.system():
-    link_args = ["-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"]
 
 # in development set version to none and ...
 PYPI_VERSION = "2.1.0"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
@@ -84,19 +74,19 @@ long_description = long_description.replace('(stripy/Notebooks','(https://github
 # interface for Renka's algorithm 772 fortran code
 ext1 = Extension(name    = 'stripy._stripack',
                  sources = ['src/stripack.pyf','src/stripack.f90'],
-                 extra_link_args=link_args)
+                 extra_link_args=["-Wl,-rpath='$ORIGIN'"])
 ext2 = Extension(name    = 'stripy._tripack',
                  sources = ['src/tripack.pyf', 'src/tripack.f90'],
-                 extra_link_args=link_args)
+                 extra_link_args=["-Wl,-rpath='$ORIGIN'"])
 ext3 = Extension(name    = 'stripy._srfpack',
                  sources = ['src/srfpack.pyf', 'src/srfpack.f'],
-                 extra_link_args=link_args)
+                 extra_link_args=["-Wl,-rpath='$ORIGIN'"])
 ext4 = Extension(name    = 'stripy._ssrfpack',
                  sources = ['src/ssrfpack.pyf', 'src/ssrfpack.f'],
-                 extra_link_args=link_args)
+                 extra_link_args=["-Wl,-rpath='$ORIGIN'"])
 ext5 = Extension(name    = 'stripy._fortran',
                  sources = ['src/stripyf.pyf', 'src/stripyf.f90'],
-                 extra_link_args=link_args)
+                 extra_link_args=["-Wl,-rpath='$ORIGIN'"])
 
 
 if __name__ == "__main__":
@@ -124,5 +114,6 @@ if __name__ == "__main__":
                                'Programming Language :: Python :: 3.7',
                                'Programming Language :: Python :: 3.8',
                                'Programming Language :: Python :: 3.9'
+                               'Programming Language :: Python :: 3.10'
                                ]
           )
