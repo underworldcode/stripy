@@ -7,8 +7,47 @@ on:
 
 jobs:
 
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu]
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+          pip install numpy
+          pip install scipy
+          pip install Cython
+                  
+      - name: Provide gfortran
+        if: startsWith(matrix.os, 'macos')
+        run: |
+          ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
+      
+      - name: Install
+        run: |
+          pip install .
+    
+      - name: Run tests
+        run: |
+          pip install pytest
+          pytest -v
+
+
   conda_build:
       name: Conda Build (Python ${{matrix.python-version}} ${{ matrix.os }})
+      needs: test
       runs-on: ${{ matrix.os }}
       strategy:
         fail-fast: false
@@ -45,6 +84,7 @@ jobs:
 
   pypi_windows_macos:
     runs-on: ${{ matrix.os }}
+    needs: test
     env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
@@ -84,6 +124,7 @@ jobs:
           
   manylinux:
     name: Build manylinux package
+    needs: test
     runs-on: ubuntu-latest
     env:
       TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
