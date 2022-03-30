@@ -14,7 +14,7 @@
 #
 # (see http://peterdowns.com/posts/first-time-with-pypi.html)
 
-
+from setuptools import setup
 from numpy.distutils.core import setup, Extension
 
 # try: 
@@ -34,7 +34,7 @@ if "Windows" in platform.system():
     link_args = ["-static"]
 
 if "Darwin"  in platform.system():
-    link_args = ['-Wl,-rpath,"@loader_path"']
+    link_args = ['-Wl,-rpath, "@loader_path"']
 
 
 # in development set version to none and ...
