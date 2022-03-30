@@ -31,7 +31,7 @@ if _system() == "Windows":
     if _os.path.isdir(extra_dll_dir):
         _os.environ["PATH"] += _os.pathsep + extra_dll_dir
     if sys.version_info.minor >= 8:
-        _os.add_dll_directory(_os.path.join(__file__, '.libs'))
+        _os.add_dll_directory(_os.path.join(_os.path.dirname(__file__), '.libs'))
 
 
 from .spherical import sTriangulation
