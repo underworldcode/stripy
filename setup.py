@@ -28,13 +28,13 @@ import os
 import subprocess
 import platform 
 
-link_args = ["-Wl,-rpath='$ORIGIN'"]
+link_args = ['-Wl,-rpath,"$ORIGIN"']
 
 if "Windows" in platform.system():
     link_args = ["-static"]
 
 if "Darwin"  in platform.system():
-    link_args = ["-Wl,-rpath='@loader_path'"]
+    link_args = ['-Wl,-rpath,"@loader_path"']
 
 
 # in development set version to none and ...
