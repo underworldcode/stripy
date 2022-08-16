@@ -68,6 +68,6 @@ jobs:
         
         with:
           deploy_key: ${{ secrets.GH_PAGES_DEPLOY_PR_KEY }}
-          destination_dir: ${{ env.VERSION }}_api
+          destination_dir: docs/
           publish_dir: docs/api/stripy
 
