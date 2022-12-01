@@ -18,6 +18,8 @@ along with Stripy.  If not, see <http://www.gnu.org/licenses/>.
 
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from multiprocessing import cpu_count
+
 from . import _stripack
 from . import _ssrfpack
 import numpy as np
@@ -763,7 +765,16 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return ff
 
 
-    def interpolate(self, lons, lats, zdata, order=1, grad=None, sigma=None):
+    def interpolate(
+        self,
+        lons,
+        lats,
+        zdata,
+        order=1,
+        grad=None,
+        sigma=None,
+        threads=None,
+    ):
         """
         Base class to handle nearest neighbour, linear, and cubic interpolation.
         Given a triangulation of a set of nodes on the unit sphere, along with data
@@ -790,14 +801,20 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                 `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
                 (only used in cubic interpolation)
 
+            threads : int, optional
+                Number of threads to use for interpolation (cubic
+                interpolation not supported).
+                The default value of `None` corresponds to 1 if `order == 3`,
+                else `multiprocessing.cpu_count()`
+                Negative values count backwards, such that -1 is equivalent to
+                `multiprocessing.cpu_count()`, -2 to `cpu_count() - 1`, etc.
+
         Returns:
             zi : float / array of floats, shape (l,)
                 interpolated value(s) at (lons, lats)
             err : int / array of ints, shape (l,)
                 whether interpolation (0), extrapolation (1) or error (other)
         """
-
-
         shape = np.shape(lons)
 
         lons, lats = self._check_integrity(lons, lats)
@@ -807,53 +824,156 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 
         zdata = self._shuffle_field(zdata)
 
-        if order == 0:
-            zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
-                                          self._x, self._y, self._z, zdata,\
-                                          self.lst, self.lptr, self.lend)
-        elif order == 1:
-            zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
-                                          self._x, self._y, self._z, zdata,\
-                                          self.lst, self.lptr, self.lend)
-        elif order == 3:
-            sigma, iflgs = self._check_sigma(sigma)
-            grad, iflgg = self._check_gradient(zdata, grad)
-
-            zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,\
-                                          self._x, self._y, self._z, zdata,\
-                                          self.lst, self.lptr, self.lend,\
-                                          iflgs, sigma, iflgg, grad)
-        else:
+        if order not in {0, 1, 3}:
             raise ValueError("order must be 0, 1, or 3")
+        if threads == 0:
+            raise ValueError("threads must not be zero")
+
+        if threads is None:  # use default values
+            threads = 1 if order == 3 else cpu_count()
+        threads = int(threads)
+        if order == 3 and threads != 1:
+            import warnings
+
+            warnings.warn(
+                "Multithreading not supported for cubic interpolation",
+                RuntimeWarning,
+            )
+            threads = 1
+
+        if threads < 0:
+            # -1 corresponds to cpu_count(), etc.
+            threads = cpu_count() + threads + 1
+
+        if threads == 1:
+            if order == 3:
+                sigma, iflgs = self._check_sigma(sigma)
+                grad, iflgg = self._check_gradient(zdata, grad)
+
+                zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,
+                                            self._x, self._y, self._z, zdata,
+                                            self.lst, self.lptr, self.lend,
+                                            iflgs, sigma, iflgg, grad)
+            else:
+                zi, zierr, ierr = _stripack.interp_n(order, lats, lons,
+                                            self._x, self._y, self._z, zdata,
+                                            self.lst, self.lptr, self.lend)
+
+        else:
+            # The following code is largely adapted from here:
+            # https://numpy.org/doc/stable/reference/random/multithreading.html
+            import concurrent.futures
+
+            size = lons.size
+            zi = np.full(size, np.nan)
+            zierr = np.full(size, np.nan)
+            ierr = np.full(threads, 0)
+            step = np.ceil(size / threads).astype(np.int_)
+            futures = {}
+            executor = concurrent.futures.ThreadPoolExecutor(threads)
+
+            def _f(
+                out_zi,
+                out_zierr,
+                out_ierr,
+                order,
+                lats,
+                lons,
+                x,
+                y,
+                z,
+                zdata,
+                lst,
+                lptr,
+                lend,
+                first,
+                last,
+                ierr_index,
+            ):
+                tmp_zi, tmp_zierr, tmp_ierr = _stripack.interp_n(
+                    order, lats[first:last], lons[first:last],
+                    x, y, z, zdata,
+                    lst, lptr, lend,
+                )
+                out_zi[first:last] = tmp_zi
+                out_zierr[first:last] = tmp_zierr
+                out_ierr[ierr_index] = tmp_ierr
+
+            for i in range(threads):
+                first = i * step
+                last = (i + 1) * step
+                args = (
+                    _f,
+                    zi,
+                    zierr,
+                    ierr,
+                    order,
+                    lats,
+                    lons,
+                    self._x,
+                    self._y,
+                    self._z,
+                    zdata,
+                    self.lst,
+                    self.lptr,
+                    self.lend,
+                    first,
+                    last,
+                    i,
+                )
+                futures[executor.submit(*args)] = i
+            concurrent.futures.wait(futures)
+            executor.shutdown(False)
+            ierr = int((ierr != 0).any())
 
         if ierr != 0:
             import warnings
-            warnings.warn('Warning some points may have errors - check error array\n'.format(ierr))
+            warnings.warn(
+                'Warning some points may have errors - check error array',
+                RuntimeWarning,
+            )
             zi[zierr < 0] = np.nan
 
         return zi.reshape(shape), zierr.reshape(shape)
 
 
-    def interpolate_nearest(self, lons, lats, data):
+    def interpolate_nearest(self, lons, lats, data, threads=None):
         """
         Interpolate using nearest-neighbour approximation
         Returns the same as `interpolate(lons,lats,data,order=0)`
         """
-        return self.interpolate(lons, lats, data, order=0)
+        return self.interpolate(lons, lats, data, order=0, threads=threads)
 
-    def interpolate_linear(self, lons, lats, data):
+    def interpolate_linear(self, lons, lats, data, threads=None):
         """
         Interpolate using linear approximation
         Returns the same as `interpolate(lons,lats,data,order=1)`
         """
-        return self.interpolate(lons, lats, data, order=1)
+        return self.interpolate(lons, lats, data, order=1, threads=threads)
 
-    def interpolate_cubic(self, lons, lats, data, grad=None, sigma=None):
+    def interpolate_cubic(
+        self,
+        lons,
+        lats,
+        data,
+        grad=None,
+        sigma=None,
+        *,
+        threads=None,  # currently unused; provided for API consistency
+    ):
         """
         Interpolate using cubic spline approximation
         Returns the same as `interpolate(lons,lats,data,order=3)`
         """
-        return self.interpolate(lons, lats, data, order=3, grad=grad, sigma=sigma)
+        return self.interpolate(
+            lons,
+            lats,
+            data,
+            order=3,
+            grad=grad,
+            sigma=sigma,
+            threads=threads,
+        )
 
 
     def neighbour_simplices(self):

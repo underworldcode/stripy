@@ -217,6 +217,7 @@ python module _tripack ! in
             integer(kind=4) dimension(n), intent(in) :: lend
             real(kind=8), intent(out) :: dsq
             integer(kind=4), intent(out) :: nearnd
+            threadsafe
         end function nearnd
         subroutine nearnds(l,xp,yp,ist,n,x,y,list,lptr,lend,dsqs,ier) ! in :_tripack:tripack.f90
             integer(kind=4), depend(xp), intent(hide) :: l=len(xp)
@@ -229,6 +230,7 @@ python module _tripack ! in
             integer(kind=4) dimension(n), intent(in) :: lend
             real(kind=8) dimension(l), intent(out) :: dsqs
             integer(kind=4) dimension(l), intent(out) :: ier
+            threadsafe
         end subroutine nearnds
 !        subroutine optim(x,y,na,list,lptr,lend,nit,iwk,ier) ! in :_tripack:tripack.f90
 !            real(kind=8) dimension(*) :: x
