@@ -41,6 +41,33 @@ _ier_codes = {0:  "no errors were encountered.",
               9999: "Triangulation encountered duplicate nodes."}
 
 
+def _auto_threads(n_in, n_out, order):
+    """Attempt to automatically determine the best number of threads to use
+    for Cartesian interpolation.
+
+    Parameters
+    ----------
+    n_in : int
+        Number of input points for triangulation.
+    n_out : int
+        Number of output points for interpolation.
+    order : {0, 1, 3}
+        Order of interpolation (nearest-neighbour, linear, cubic).
+
+    Returns
+    -------
+    threads : int
+        Number of threads to use.
+    """
+    if n_out >= 50000:
+        use_threads = True
+    elif n_out >= 5000 and n_in >= 10000:
+        use_threads = True
+    else:
+        use_threads = False
+    return cpu_count() if use_threads else 1
+
+
 class Triangulation(object):
     """
     Define a Delaunay triangulation for given Cartesian mesh points (x, y)
@@ -644,7 +671,7 @@ class Triangulation(object):
         order=1,
         grad=None,
         sigma=None,
-        threads=None,
+        threads=1,
     ):
         """
         Base class to handle nearest neighbour, linear, and cubic interpolation.
@@ -671,10 +698,12 @@ class Triangulation(object):
                 `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
                 (only used in cubic interpolation)
 
-            threads : int, optional
+            threads : int or 'auto', optional; default : 1
                 Number of threads to use for interpolation.
-                The default value of `None` corresponds to
-                `multiprocessing.cpu_count()`.
+                By default, only a single thread will be used. Use
+                `threads='auto'` to attempt to automatically determine how
+                many threads to use based on the size of the input and output
+                data.
                 Negative values count backwards, such that -1 is equivalent to
                 `multiprocessing.cpu_count()`, -2 to `cpu_count() - 1`, etc.
 
@@ -685,6 +714,8 @@ class Triangulation(object):
                 whether interpolation (0), extrapolation (1) or error (other)
         """
         shape = np.shape(xi)
+        n_in = np.size(zdata)
+        n_out = np.size(xi)
 
         if not isinstance(zdata, np.ndarray):
             zdata = np.array(zdata)
@@ -693,12 +724,15 @@ class Triangulation(object):
 
         if order not in {0, 1, 3}:
             raise ValueError("order must be 0, 1, or 3")
-        if threads is None:
-            threads = cpu_count()
-        threads = int(threads)
         if threads == 0:
             raise ValueError("threads must not be zero")
+
+        if threads == "auto":
+            # Try to guess whether multiple threads would be helpful
+            threads = _auto_threads(n_in, n_out, order)
+        threads = int(threads)
         if threads < 0:
+            # -1 corresponds to cpu_count(), etc.
             threads = cpu_count() + threads + 1
 
         if order == 3:
@@ -830,14 +864,14 @@ class Triangulation(object):
         return zi.reshape(shape), zierr.reshape(shape)
 
 
-    def interpolate_nearest(self, xi, yi, zdata, threads=None):
+    def interpolate_nearest(self, xi, yi, zdata, threads=1):
         """
         Interpolate using nearest-neighbour approximation
         Returns the same as `interpolate(xi,yi,zdata,order=0)`
         """
         return self.interpolate(xi, yi, zdata, order=0, threads=threads)
 
-    def interpolate_linear(self, xi, yi, zdata, threads=None):
+    def interpolate_linear(self, xi, yi, zdata, threads=1):
         """
         Interpolate using linear approximation
         Returns the same as `interpolate(xi,yi,zdata,order=1)`
@@ -851,7 +885,7 @@ class Triangulation(object):
         zdata,
         grad=None,
         sigma=None,
-        threads=None,
+        threads=1,
     ):
         """
         Interpolate using cubic spline approximation

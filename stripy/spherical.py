@@ -41,6 +41,35 @@ _ier_codes = {0:  "no errors were encountered.",
               9999: "Triangulation encountered duplicate nodes."}
 
 
+def _auto_threads(n_in, n_out, order):
+    """Attempt to automatically determine the best number of threads to use
+    for spherical interpolation.
+
+    Parameters
+    ----------
+    n_in : int
+        Number of input points for triangulation.
+    n_out : int
+        Number of output points for interpolation.
+    order : {0, 1, 3}
+        Order of interpolation (nearest-neighbour, linear, cubic).
+
+    Returns
+    -------
+    threads : int
+        Number of threads to use.
+    """
+    if order == 3:
+        use_threads = False
+    elif n_out >= 50000:
+        use_threads = True
+    elif n_out >= 5000 and n_in >= 10000:
+        use_threads = True
+    else:
+        use_threads = False
+    return cpu_count() if use_threads else 1
+
+
 class sTriangulation(object):
     """
     Define a Delaunay triangulation for given points on a sphere
@@ -773,7 +802,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         order=1,
         grad=None,
         sigma=None,
-        threads=None,
+        threads=1,
     ):
         """
         Base class to handle nearest neighbour, linear, and cubic interpolation.
@@ -801,11 +830,14 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                 `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
                 (only used in cubic interpolation)
 
-            threads : int, optional
-                Number of threads to use for interpolation (cubic
-                interpolation not supported).
-                The default value of `None` corresponds to 1 if `order == 3`,
-                else `multiprocessing.cpu_count()`
+            threads : int or 'auto', optional; default : 1
+                Number of threads to use for linear and nearest-neighbour
+                interpolation (N.B. multi-threaded cubic interpolation is
+                not supported).
+                By default, only a single thread will be used. Use
+                `threads='auto'` to attempt to automatically determine how
+                many threads to use based on the size of the input and output
+                data.
                 Negative values count backwards, such that -1 is equivalent to
                 `multiprocessing.cpu_count()`, -2 to `cpu_count() - 1`, etc.
 
@@ -818,8 +850,10 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         shape = np.shape(lons)
 
         lons, lats = self._check_integrity(lons, lats)
+        n_in = np.size(zdata)
+        n_out = np.size(lons)
 
-        if zdata.size != self.npoints:
+        if n_in != self.npoints:
             raise ValueError("data must be of size {}".format(self.npoints))
 
         zdata = self._shuffle_field(zdata)
@@ -829,9 +863,11 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         if threads == 0:
             raise ValueError("threads must not be zero")
 
-        if threads is None:  # use default values
-            threads = 1 if order == 3 else cpu_count()
+        if threads == "auto":
+            # Try to guess whether multiple threads would be helpful
+            threads = _auto_threads(n_in, n_out, order)
         threads = int(threads)
+
         if order == 3 and threads != 1:
             import warnings
 
@@ -937,14 +973,14 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return zi.reshape(shape), zierr.reshape(shape)
 
 
-    def interpolate_nearest(self, lons, lats, data, threads=None):
+    def interpolate_nearest(self, lons, lats, data, threads=1):
         """
         Interpolate using nearest-neighbour approximation
         Returns the same as `interpolate(lons,lats,data,order=0)`
         """
         return self.interpolate(lons, lats, data, order=0, threads=threads)
 
-    def interpolate_linear(self, lons, lats, data, threads=None):
+    def interpolate_linear(self, lons, lats, data, threads=1):
         """
         Interpolate using linear approximation
         Returns the same as `interpolate(lons,lats,data,order=1)`
@@ -959,7 +995,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         grad=None,
         sigma=None,
         *,
-        threads=None,  # currently unused; provided for API consistency
+        threads=1,  # currently unused; provided for API consistency
     ):
         """
         Interpolate using cubic spline approximation
@@ -972,7 +1008,7 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
             order=3,
             grad=grad,
             sigma=sigma,
-            threads=threads,
+            threads=1,
         )
 
 
