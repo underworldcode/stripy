@@ -65,7 +65,17 @@ def _auto_threads(n_in, n_out, order):
         use_threads = True
     else:
         use_threads = False
-    return cpu_count() if use_threads else 1
+
+    if use_threads:
+        if order == 0:
+            # There appears to be no significant improvement for
+            # nearest-neighbour interpolation using more than two threads
+            nthreads = 2
+        else:
+            nthreads = cpu_count()
+    else:
+        nthreads = 1
+    return nthreads
 
 
 class Triangulation(object):
