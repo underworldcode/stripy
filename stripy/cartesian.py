@@ -65,17 +65,7 @@ def _auto_threads(n_in, n_out, order):
         use_threads = True
     else:
         use_threads = False
-
-    if use_threads:
-        if order == 0:
-            # There appears to be no significant improvement for
-            # nearest-neighbour interpolation using more than two threads
-            nthreads = 2
-        else:
-            nthreads = cpu_count()
-    else:
-        nthreads = 1
-    return nthreads
+    return cpu_count() if use_threads else 1
 
 
 class Triangulation(object):
@@ -810,7 +800,7 @@ class Triangulation(object):
             ):
                 if order == 0:
                     ierr = 0
-                    ist = np.ones(np.shape(xi), dtype=int)
+                    ist = np.ones(np.shape(xi[first:last]), dtype=int)
                     ist, dist, zierr = _tripack.nearnds(
                         xi[first:last], yi[first:last], ist,
                         x, y, lst, lptr, lend,
