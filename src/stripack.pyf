@@ -272,6 +272,7 @@ python module _stripack ! in
             integer(kind=4) :: ist
             real(kind=8) :: pw
             integer(kind=4) :: ier
+            threadsafe
         end subroutine interp
 !        function arclen(p,q) ! in :_stripack:stripack.f90
 !            real(kind=8) dimension(3) :: p
@@ -419,7 +420,7 @@ python module _stripack ! in
             integer( kind = 4 ), intent(in), dimension(npts) :: lend
             integer( kind = 4 ), intent(in), dimension(6*npts-12) :: lst,lptr
             integer( kind = 4 ), intent(out), dimension(nptso) :: edata
-
+            threadsafe
 
         end subroutine interp_n
         subroutine trlist(n,list,lptr,lend,nrow,nt,ltri,ier) ! in :_stripack:stripack.f90

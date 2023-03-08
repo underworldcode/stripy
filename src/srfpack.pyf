@@ -519,6 +519,7 @@ python module _srfpack ! in
             integer dimension(6*n-12), intent(in) :: lst,lptr
             integer dimension(n), intent(in) :: lend
             integer dimension(ns), intent(out) :: edata
+            threadsafe
         end subroutine interp_linear
         subroutine interp_cubic(n,ns,xs,ys,x,y,zdata,lst,lptr,lend,iflgs,sigma,iflgg,grad,odata,edata,ierr)
             integer, depend(x), intent(hide) :: n=len(x)
@@ -534,6 +535,7 @@ python module _srfpack ! in
             logical, intent(in) :: iflgg
             real dimension(2,n), intent(in) :: grad
             integer dimension(ns), intent(out) :: edata
+            threadsafe
         end subroutine interp_cubic
     end interface 
 end python module _srfpack
