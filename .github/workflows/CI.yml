@@ -46,6 +46,11 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
+      - uses: awvwgk/setup-fortran@main
+        id: setup-fortran
+        with:
+          compiler: gcc
+          version: 11
       
       - name: Set up Python
         uses: actions/setup-python@v2
