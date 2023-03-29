@@ -65,9 +65,9 @@ jobs:
           pip install scipy
           pip install Cython
                   
-      - name: Provide gfortran
-        run: |
-          ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
+#      - name: Provide gfortran
+#        run: |
+#          ln -s /usr/local/bin/gfortran-10 /usr/local/bin/gfortran
       
       - name: Install
         run: |
