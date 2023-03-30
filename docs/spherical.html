@@ -3,16 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.8.1" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>stripy.spherical API documentation</title>
 <meta name="description" content="Copyright 2017-2019 Louis Moresi, Ben Mather …" />
-<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
-<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_CHTML'></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML" integrity="sha256-kZafAc6mZvK3W3v1pHOcUix30OHQN6pU/NO2oFkqZVw=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
 <body>
 <main>
@@ -58,6 +60,8 @@ along with Stripy.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
 
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from multiprocessing import cpu_count
+
 from . import _stripack
 from . import _ssrfpack
 import numpy as np
@@ -77,6 +81,35 @@ _ier_codes = {0:  &#34;no errors were encountered.&#34;,
               2: &#34;the triangulation data structure (LIST,LPTR,LEND) is invalid.&#34;,
               &#39;K&#39;: &#39;NPTS(K) is not a valid index in the range 1 to N.&#39;,
               9999: &#34;Triangulation encountered duplicate nodes.&#34;}
+
+
+def _auto_threads(n_in, n_out, order):
+    &#34;&#34;&#34;Attempt to automatically determine the best number of threads to use
+    for spherical interpolation.
+
+    Parameters
+    ----------
+    n_in : int
+        Number of input points for triangulation.
+    n_out : int
+        Number of output points for interpolation.
+    order : {0, 1, 3}
+        Order of interpolation (nearest-neighbour, linear, cubic).
+
+    Returns
+    -------
+    threads : int
+        Number of threads to use.
+    &#34;&#34;&#34;
+    if order == 3:
+        use_threads = False
+    elif n_out &gt;= 50000:
+        use_threads = True
+    elif n_out &gt;= 5000 and n_in &gt;= 10000:
+        use_threads = True
+    else:
+        use_threads = False
+    return cpu_count() if use_threads else 1
 
 
 class sTriangulation(object):
@@ -803,7 +836,16 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return ff
 
 
-    def interpolate(self, lons, lats, zdata, order=1, grad=None, sigma=None):
+    def interpolate(
+        self,
+        lons,
+        lats,
+        zdata,
+        order=1,
+        grad=None,
+        sigma=None,
+        threads=1,
+    ):
         &#34;&#34;&#34;
         Base class to handle nearest neighbour, linear, and cubic interpolation.
         Given a triangulation of a set of nodes on the unit sphere, along with data
@@ -830,70 +872,186 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                 `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
                 (only used in cubic interpolation)
 
+            threads : int or &#39;auto&#39;, optional; default : 1
+                Number of threads to use for linear and nearest-neighbour
+                interpolation (N.B. multi-threaded cubic interpolation is
+                not supported).
+                By default, only a single thread will be used. Use
+                `threads=&#39;auto&#39;` to attempt to automatically determine how
+                many threads to use based on the size of the input and output
+                data.
+                Negative values count backwards, such that -1 is equivalent to
+                `multiprocessing.cpu_count()`, -2 to `cpu_count() - 1`, etc.
+
         Returns:
             zi : float / array of floats, shape (l,)
                 interpolated value(s) at (lons, lats)
             err : int / array of ints, shape (l,)
                 whether interpolation (0), extrapolation (1) or error (other)
         &#34;&#34;&#34;
-
-
         shape = np.shape(lons)
 
         lons, lats = self._check_integrity(lons, lats)
+        n_in = np.size(zdata)
+        n_out = np.size(lons)
 
-        if zdata.size != self.npoints:
+        if n_in != self.npoints:
             raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
         zdata = self._shuffle_field(zdata)
 
-        if order == 0:
-            zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
-                                          self._x, self._y, self._z, zdata,\
-                                          self.lst, self.lptr, self.lend)
-        elif order == 1:
-            zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
-                                          self._x, self._y, self._z, zdata,\
-                                          self.lst, self.lptr, self.lend)
-        elif order == 3:
-            sigma, iflgs = self._check_sigma(sigma)
-            grad, iflgg = self._check_gradient(zdata, grad)
-
-            zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,\
-                                          self._x, self._y, self._z, zdata,\
-                                          self.lst, self.lptr, self.lend,\
-                                          iflgs, sigma, iflgg, grad)
-        else:
+        if order not in {0, 1, 3}:
             raise ValueError(&#34;order must be 0, 1, or 3&#34;)
+        if threads == 0:
+            raise ValueError(&#34;threads must not be zero&#34;)
+
+        if threads == &#34;auto&#34;:
+            # Try to guess whether multiple threads would be helpful
+            threads = _auto_threads(n_in, n_out, order)
+        threads = int(threads)
+
+        if order == 3 and threads != 1:
+            import warnings
+
+            warnings.warn(
+                &#34;Multithreading not supported for cubic interpolation&#34;,
+                RuntimeWarning,
+            )
+            threads = 1
+
+        if threads &lt; 0:
+            # -1 corresponds to cpu_count(), etc.
+            threads = cpu_count() + threads + 1
+
+        if threads == 1:
+            if order == 3:
+                sigma, iflgs = self._check_sigma(sigma)
+                grad, iflgg = self._check_gradient(zdata, grad)
+
+                zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,
+                                            self._x, self._y, self._z, zdata,
+                                            self.lst, self.lptr, self.lend,
+                                            iflgs, sigma, iflgg, grad)
+            else:
+                zi, zierr, ierr = _stripack.interp_n(order, lats, lons,
+                                            self._x, self._y, self._z, zdata,
+                                            self.lst, self.lptr, self.lend)
+
+        else:
+            # The following code is largely adapted from here:
+            # https://numpy.org/doc/stable/reference/random/multithreading.html
+            import concurrent.futures
+
+            size = lons.size
+            zi = np.full(size, np.nan)
+            zierr = np.full(size, np.nan)
+            ierr = np.full(threads, 0)
+            step = np.ceil(size / threads).astype(np.int_)
+            futures = {}
+            executor = concurrent.futures.ThreadPoolExecutor(threads)
+
+            def _f(
+                out_zi,
+                out_zierr,
+                out_ierr,
+                order,
+                lats,
+                lons,
+                x,
+                y,
+                z,
+                zdata,
+                lst,
+                lptr,
+                lend,
+                first,
+                last,
+                ierr_index,
+            ):
+                tmp_zi, tmp_zierr, tmp_ierr = _stripack.interp_n(
+                    order, lats[first:last], lons[first:last],
+                    x, y, z, zdata,
+                    lst, lptr, lend,
+                )
+                out_zi[first:last] = tmp_zi
+                out_zierr[first:last] = tmp_zierr
+                out_ierr[ierr_index] = tmp_ierr
+
+            for i in range(threads):
+                first = i * step
+                last = (i + 1) * step
+                args = (
+                    _f,
+                    zi,
+                    zierr,
+                    ierr,
+                    order,
+                    lats,
+                    lons,
+                    self._x,
+                    self._y,
+                    self._z,
+                    zdata,
+                    self.lst,
+                    self.lptr,
+                    self.lend,
+                    first,
+                    last,
+                    i,
+                )
+                futures[executor.submit(*args)] = i
+            concurrent.futures.wait(futures)
+            executor.shutdown(False)
+            ierr = int((ierr != 0).any())
 
         if ierr != 0:
             import warnings
-            warnings.warn(&#39;Warning some points may have errors - check error array\n&#39;.format(ierr))
+            warnings.warn(
+                &#39;Warning some points may have errors - check error array&#39;,
+                RuntimeWarning,
+            )
             zi[zierr &lt; 0] = np.nan
 
         return zi.reshape(shape), zierr.reshape(shape)
 
 
-    def interpolate_nearest(self, lons, lats, data):
+    def interpolate_nearest(self, lons, lats, data, threads=1):
         &#34;&#34;&#34;
         Interpolate using nearest-neighbour approximation
         Returns the same as `interpolate(lons,lats,data,order=0)`
         &#34;&#34;&#34;
-        return self.interpolate(lons, lats, data, order=0)
+        return self.interpolate(lons, lats, data, order=0, threads=threads)
 
-    def interpolate_linear(self, lons, lats, data):
+    def interpolate_linear(self, lons, lats, data, threads=1):
         &#34;&#34;&#34;
         Interpolate using linear approximation
         Returns the same as `interpolate(lons,lats,data,order=1)`
         &#34;&#34;&#34;
-        return self.interpolate(lons, lats, data, order=1)
+        return self.interpolate(lons, lats, data, order=1, threads=threads)
 
-    def interpolate_cubic(self, lons, lats, data, grad=None, sigma=None):
+    def interpolate_cubic(
+        self,
+        lons,
+        lats,
+        data,
+        grad=None,
+        sigma=None,
+        *,
+        threads=1,  # currently unused; provided for API consistency
+    ):
         &#34;&#34;&#34;
         Interpolate using cubic spline approximation
         Returns the same as `interpolate(lons,lats,data,order=3)`
         &#34;&#34;&#34;
-        return self.interpolate(lons, lats, data, order=3, grad=grad, sigma=sigma)
+        return self.interpolate(
+            lons,
+            lats,
+            data,
+            order=3,
+            grad=grad,
+            sigma=sigma,
+            threads=1,
+        )
 
 
     def neighbour_simplices(self):
@@ -1908,55 +2066,51 @@ and Voronoi diagram on the surface of a sphere"
 ACM Trans. Math. Softw., Vol. 23, No. 3, pp 416-434
 doi:10.1145/275323.275329</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>lons</code></strong> :&ensp;<code>1D array</code></dt>
-<dd>longitudinal coordinates in radians</dd>
-<dt><strong><code>lats</code></strong> :&ensp;<code>1D array</code></dt>
-<dd>latitudinal coordinates in radians</dd>
-<dt><strong><code>refinement_levels</code></strong> :&ensp;<code>int</code></dt>
-<dd>refine the number of points in the triangulation
-(see uniformly_refine_triangulation)</dd>
-<dt><strong><code>permute</code></strong> :&ensp;<code>bool</code></dt>
-<dd>randomises the order of lons and lats to improve
-triangulation efficiency and eliminate issues where the first points lie on a great circle (see notes)</dd>
-<dt><strong><code>tree</code></strong> :&ensp;<code>bool</code></dt>
-<dd>construct a cKDtree for efficient nearest-neighbour lookup</dd>
-</dl>
+<p>lons : 1D array
+longitudinal coordinates in radians
+lats : 1D array
+latitudinal coordinates in radians
+refinement_levels : int
+refine the number of points in the triangulation
+(see uniformly_refine_triangulation)
+permute : bool
+randomises the order of lons and lats to improve
+triangulation efficiency and eliminate issues where the first points lie on a great circle (see notes)
+tree : bool
+construct a cKDtree for efficient nearest-neighbour lookup</p>
 <h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>lons</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>stored longitudinal coordinates on a sphere</dd>
-<dt><strong><code>lats</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>stored latitudinal coordinates on a sphere</dd>
-<dt><strong><code>x</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>stored Cartesian x coordinates from input</dd>
-<dt><strong><code>y</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>stored Cartesian y coordinates from input</dd>
-<dt><strong><code>z</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>stored Cartesian z coordinates from input</dd>
-<dt><strong><code>simplices</code></strong> :&ensp;<code>array</code> of <code>ints, shape (nsimplex, 3)</code></dt>
-<dd>indices of the points forming the simplices in the triangulation
-points are ordered anticlockwise</dd>
-<dt><strong><code>lst</code></strong> :&ensp;<code>array</code> of <code>ints, shape (6n-12,)</code></dt>
-<dd>nodal indices with lptr and lend, define the triangulation as a set of N
+<p>lons : array of floats, shape (n,)
+stored longitudinal coordinates on a sphere
+lats : array of floats, shape (n,)
+stored latitudinal coordinates on a sphere
+x : array of floats, shape (n,)
+stored Cartesian x coordinates from input
+y : array of floats, shape (n,)
+stored Cartesian y coordinates from input
+z : array of floats, shape (n,)
+stored Cartesian z coordinates from input
+simplices : array of ints, shape (nsimplex, 3)
+indices of the points forming the simplices in the triangulation
+points are ordered anticlockwise
+lst : array of ints, shape (6n-12,)
+nodal indices with lptr and lend, define the triangulation as a set of N
 adjacency lists; counterclockwise-ordered sequences of neighboring nodes
 such that the first and last neighbors of a boundary node are boundary
 nodes (the first neighbor of an interior node is arbitrary).
 In order to
 distinguish between interior and boundary nodes, the last neighbor of
 each boundary node is represented by the negative of its index.
-The indices are 1-based (as in Fortran), not zero based (as in python).</dd>
-<dt><strong><code>lptr</code></strong> :&ensp;<code>array</code> of <code>ints, shape (6n-12),)</code></dt>
-<dd>set of pointers in one-to-one correspondence with the elements of lst.
+The indices are 1-based (as in Fortran), not zero based (as in python).
+lptr : array of ints, shape (6n-12),)
+set of pointers in one-to-one correspondence with the elements of lst.
 lst(lptr(i)) indexes the node which follows lst(i) in cyclical
 counterclockwise order (the first neighbor follows the last neighbor).
-The indices are 1-based (as in Fortran), not zero based (as in python).</dd>
-<dt><strong><code>lend</code></strong> :&ensp;<code>array</code> of <code>ints, shape (n,)</code></dt>
-<dd>N pointers to adjacency lists.
+The indices are 1-based (as in Fortran), not zero based (as in python).
+lend : array of ints, shape (n,)
+N pointers to adjacency lists.
 lend(k) points to the last neighbor of node K.
 lst(lend(K)) &lt; 0 if and only if K is a boundary node.
-The indices are 1-based (as in Fortran), not zero based (as in python).</dd>
-</dl>
+The indices are 1-based (as in Fortran), not zero based (as in python).</p>
 <h2 id="notes">Notes</h2>
 <p>Provided the nodes are randomly ordered, the algorithm
 has expected time complexity O(N<em>log(N)) for most nodal
@@ -2696,7 +2850,16 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
         return ff
 
 
-    def interpolate(self, lons, lats, zdata, order=1, grad=None, sigma=None):
+    def interpolate(
+        self,
+        lons,
+        lats,
+        zdata,
+        order=1,
+        grad=None,
+        sigma=None,
+        threads=1,
+    ):
         &#34;&#34;&#34;
         Base class to handle nearest neighbour, linear, and cubic interpolation.
         Given a triangulation of a set of nodes on the unit sphere, along with data
@@ -2723,70 +2886,186 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
                 `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
                 (only used in cubic interpolation)
 
+            threads : int or &#39;auto&#39;, optional; default : 1
+                Number of threads to use for linear and nearest-neighbour
+                interpolation (N.B. multi-threaded cubic interpolation is
+                not supported).
+                By default, only a single thread will be used. Use
+                `threads=&#39;auto&#39;` to attempt to automatically determine how
+                many threads to use based on the size of the input and output
+                data.
+                Negative values count backwards, such that -1 is equivalent to
+                `multiprocessing.cpu_count()`, -2 to `cpu_count() - 1`, etc.
+
         Returns:
             zi : float / array of floats, shape (l,)
                 interpolated value(s) at (lons, lats)
             err : int / array of ints, shape (l,)
                 whether interpolation (0), extrapolation (1) or error (other)
         &#34;&#34;&#34;
-
-
         shape = np.shape(lons)
 
         lons, lats = self._check_integrity(lons, lats)
+        n_in = np.size(zdata)
+        n_out = np.size(lons)
 
-        if zdata.size != self.npoints:
+        if n_in != self.npoints:
             raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
         zdata = self._shuffle_field(zdata)
 
-        if order == 0:
-            zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
-                                          self._x, self._y, self._z, zdata,\
-                                          self.lst, self.lptr, self.lend)
-        elif order == 1:
-            zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
-                                          self._x, self._y, self._z, zdata,\
-                                          self.lst, self.lptr, self.lend)
-        elif order == 3:
-            sigma, iflgs = self._check_sigma(sigma)
-            grad, iflgg = self._check_gradient(zdata, grad)
-
-            zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,\
-                                          self._x, self._y, self._z, zdata,\
-                                          self.lst, self.lptr, self.lend,\
-                                          iflgs, sigma, iflgg, grad)
-        else:
+        if order not in {0, 1, 3}:
             raise ValueError(&#34;order must be 0, 1, or 3&#34;)
+        if threads == 0:
+            raise ValueError(&#34;threads must not be zero&#34;)
+
+        if threads == &#34;auto&#34;:
+            # Try to guess whether multiple threads would be helpful
+            threads = _auto_threads(n_in, n_out, order)
+        threads = int(threads)
+
+        if order == 3 and threads != 1:
+            import warnings
+
+            warnings.warn(
+                &#34;Multithreading not supported for cubic interpolation&#34;,
+                RuntimeWarning,
+            )
+            threads = 1
+
+        if threads &lt; 0:
+            # -1 corresponds to cpu_count(), etc.
+            threads = cpu_count() + threads + 1
+
+        if threads == 1:
+            if order == 3:
+                sigma, iflgs = self._check_sigma(sigma)
+                grad, iflgg = self._check_gradient(zdata, grad)
+
+                zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,
+                                            self._x, self._y, self._z, zdata,
+                                            self.lst, self.lptr, self.lend,
+                                            iflgs, sigma, iflgg, grad)
+            else:
+                zi, zierr, ierr = _stripack.interp_n(order, lats, lons,
+                                            self._x, self._y, self._z, zdata,
+                                            self.lst, self.lptr, self.lend)
+
+        else:
+            # The following code is largely adapted from here:
+            # https://numpy.org/doc/stable/reference/random/multithreading.html
+            import concurrent.futures
+
+            size = lons.size
+            zi = np.full(size, np.nan)
+            zierr = np.full(size, np.nan)
+            ierr = np.full(threads, 0)
+            step = np.ceil(size / threads).astype(np.int_)
+            futures = {}
+            executor = concurrent.futures.ThreadPoolExecutor(threads)
+
+            def _f(
+                out_zi,
+                out_zierr,
+                out_ierr,
+                order,
+                lats,
+                lons,
+                x,
+                y,
+                z,
+                zdata,
+                lst,
+                lptr,
+                lend,
+                first,
+                last,
+                ierr_index,
+            ):
+                tmp_zi, tmp_zierr, tmp_ierr = _stripack.interp_n(
+                    order, lats[first:last], lons[first:last],
+                    x, y, z, zdata,
+                    lst, lptr, lend,
+                )
+                out_zi[first:last] = tmp_zi
+                out_zierr[first:last] = tmp_zierr
+                out_ierr[ierr_index] = tmp_ierr
+
+            for i in range(threads):
+                first = i * step
+                last = (i + 1) * step
+                args = (
+                    _f,
+                    zi,
+                    zierr,
+                    ierr,
+                    order,
+                    lats,
+                    lons,
+                    self._x,
+                    self._y,
+                    self._z,
+                    zdata,
+                    self.lst,
+                    self.lptr,
+                    self.lend,
+                    first,
+                    last,
+                    i,
+                )
+                futures[executor.submit(*args)] = i
+            concurrent.futures.wait(futures)
+            executor.shutdown(False)
+            ierr = int((ierr != 0).any())
 
         if ierr != 0:
             import warnings
-            warnings.warn(&#39;Warning some points may have errors - check error array\n&#39;.format(ierr))
+            warnings.warn(
+                &#39;Warning some points may have errors - check error array&#39;,
+                RuntimeWarning,
+            )
             zi[zierr &lt; 0] = np.nan
 
         return zi.reshape(shape), zierr.reshape(shape)
 
 
-    def interpolate_nearest(self, lons, lats, data):
+    def interpolate_nearest(self, lons, lats, data, threads=1):
         &#34;&#34;&#34;
         Interpolate using nearest-neighbour approximation
         Returns the same as `interpolate(lons,lats,data,order=0)`
         &#34;&#34;&#34;
-        return self.interpolate(lons, lats, data, order=0)
+        return self.interpolate(lons, lats, data, order=0, threads=threads)
 
-    def interpolate_linear(self, lons, lats, data):
+    def interpolate_linear(self, lons, lats, data, threads=1):
         &#34;&#34;&#34;
         Interpolate using linear approximation
         Returns the same as `interpolate(lons,lats,data,order=1)`
         &#34;&#34;&#34;
-        return self.interpolate(lons, lats, data, order=1)
+        return self.interpolate(lons, lats, data, order=1, threads=threads)
 
-    def interpolate_cubic(self, lons, lats, data, grad=None, sigma=None):
+    def interpolate_cubic(
+        self,
+        lons,
+        lats,
+        data,
+        grad=None,
+        sigma=None,
+        *,
+        threads=1,  # currently unused; provided for API consistency
+    ):
         &#34;&#34;&#34;
         Interpolate using cubic spline approximation
         Returns the same as `interpolate(lons,lats,data,order=3)`
         &#34;&#34;&#34;
-        return self.interpolate(lons, lats, data, order=3, grad=grad, sigma=sigma)
+        return self.interpolate(
+            lons,
+            lats,
+            data,
+            order=3,
+            grad=grad,
+            sigma=sigma,
+            threads=1,
+        )
 
 
     def neighbour_simplices(self):
@@ -3724,12 +4003,11 @@ the list provided</p></div>
 <div class="desc"><p>Returns the simplices containing (lons,lats)
 and the local barycentric, normalised coordinates.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>lons</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape(l,)</code></dt>
-<dd>longitudinal coordinates in radians</dd>
-<dt><strong><code>lats</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape(l,)</code></dt>
-<dd>latitudinal coordinates in radians</dd>
-</dl>
+<p>lons : float / array of floats, shape(l,)
+longitudinal coordinates in radians
+lats :
+float / array of floats, shape(l,)
+latitudinal coordinates in radians</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bcc
@@ -3791,12 +4069,10 @@ still be a loop around the simplex.</p></div>
 <dd>
 <div class="desc"><p>Returns indices of the triangles containing lons / lats.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>lons</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
-<dd>longitudinal coordinate(s) on the sphere</dd>
-<dt><strong><code>lats</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
-<dd>latitudinal coordinate(s) on the sphere</dd>
-</dl>
+<p>lons : float / array of floats, shape (l,)
+longitudinal coordinate(s) on the sphere
+lats : float / array of floats, shape (l,)
+latitudinal coordinate(s) on the sphere</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tri_indices </code></dt>
@@ -3857,19 +4133,17 @@ gradient vectors, where Q is an approximation to the linearized
 curvature over the triangulation of a C-1 bivariate function F(x,y)
 which interpolates the nodal values and gradients.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>data</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>field over which to evaluate the gradient</dd>
-<dt><strong><code>nit</code></strong> :&ensp;<code>int (default: 3)</code></dt>
-<dd>number of iterations to reach a convergence tolerance, tol
-nit &gt;= 1</dd>
-<dt><strong><code>tol</code></strong> :&ensp;<code>float (default: 1e-3)</code></dt>
-<dd>maximum change in gradient between iterations.
-convergence is reached when this condition is met.</dd>
-<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
-<dd>precomputed array of spline tension factors from
-<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></dd>
-</dl>
+<p>data : array of floats, shape (n,)
+field over which to evaluate the gradient
+nit : int (default: 3)
+number of iterations to reach a convergence tolerance, tol
+nit &gt;= 1
+tol : float (default: 1e-3)
+maximum change in gradient between iterations.
+convergence is reached when this condition is met.
+sigma : array of floats, shape (6n-12)
+precomputed array of spline tension factors from
+<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>dfdlon </code></dt>
@@ -4091,17 +4365,15 @@ simplices is given then the centroids of only those simplices is returned.</p></
 such that the Hermite interpolatory tension spline, defined by <code>sigma</code> and specified
 endpoint data, preserves local shape properties (monotonicity and convexity) of <code>zdata</code>.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats, shape(n,)</code></dt>
-<dd>value at each point in the triangulation
-must be the same size of the mesh</dd>
-<dt><strong><code>tol</code></strong> :&ensp;<code>float</code></dt>
-<dd>tolerance of each tension factor to its optimal value
-when nonzero finite tension is necessary.</dd>
-<dt><strong><code>grad</code></strong> :&ensp;<code>array</code> of <code>floats, shape(3,n)</code></dt>
-<dd>precomputed gradient of zdata or if not provided,
-the result of <code>self.gradient(zdata)</code>.</dd>
-</dl>
+<p>zdata : array of floats, shape(n,)
+value at each point in the triangulation
+must be the same size of the mesh
+tol : float
+tolerance of each tension factor to its optimal value
+when nonzero finite tension is necessary.
+grad : array of floats, shape(3,n)
+precomputed gradient of zdata or if not provided,
+the result of <code>self.gradient(zdata)</code>.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>sigma </code></dt>
@@ -4212,19 +4484,17 @@ gradient vectors, where Q is an approximation to the linearized
 curvature over the triangulation of a C-1 bivariate function F(x,y)
 which interpolates the nodal values and gradients.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>data</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>field over which to evaluate the gradient</dd>
-<dt><strong><code>nit</code></strong> :&ensp;<code>int (default: 3)</code></dt>
-<dd>number of iterations to reach a convergence tolerance, tol
-nit &gt;= 1</dd>
-<dt><strong><code>tol</code></strong> :&ensp;<code>float (default: 1e-3)</code></dt>
-<dd>maximum change in gradient between iterations.
-convergence is reached when this condition is met.</dd>
-<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
-<dd>precomputed array of spline tension factors from
-<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></dd>
-</dl>
+<p>data : array of floats, shape (n,)
+field over which to evaluate the gradient
+nit : int (default: 3)
+number of iterations to reach a convergence tolerance, tol
+nit &gt;= 1
+tol : float (default: 1e-3)
+maximum change in gradient between iterations.
+convergence is reached when this condition is met.
+sigma : array of floats, shape (6n-12)
+precomputed array of spline tension factors from
+<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>dfdlon </code></dt>
@@ -4323,19 +4593,17 @@ gradient vectors, where Q is an approximation to the linearized
 curvature over the triangulation of a C-1 bivariate function F(x,y)
 which interpolates the nodal values and gradients.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>f</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>field over which to evaluate the gradient</dd>
-<dt><strong><code>nit</code></strong> :&ensp;<code>int (default: 3)</code></dt>
-<dd>number of iterations to reach a convergence tolerance, tol
-nit &gt;= 1</dd>
-<dt><strong><code>tol</code></strong> :&ensp;<code>float (default: 1e-3)</code></dt>
-<dd>maximum change in gradient between iterations.
-convergence is reached when this condition is met.</dd>
-<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
-<dd>precomputed array of spline tension factors from
-<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></dd>
-</dl>
+<p>f : array of floats, shape (n,)
+field over which to evaluate the gradient
+nit : int (default: 3)
+number of iterations to reach a convergence tolerance, tol
+nit &gt;= 1
+tol : float (default: 1e-3)
+maximum change in gradient between iterations.
+convergence is reached when this condition is met.
+sigma : array of floats, shape (6n-12)
+precomputed array of spline tension factors from
+<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>dfdx </code></dt>
@@ -4515,7 +4783,7 @@ array of vertices (n1,n2) where n1 &lt; n2</p></div>
 </details>
 </dd>
 <dt id="stripy.spherical.sTriangulation.interpolate"><code class="name flex">
-<span>def <span class="ident">interpolate</span></span>(<span>self, lons, lats, zdata, order=1, grad=None, sigma=None)</span>
+<span>def <span class="ident">interpolate</span></span>(<span>self, lons, lats, zdata, order=1, grad=None, sigma=None, threads=1)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Base class to handle nearest neighbour, linear, and cubic interpolation.
@@ -4523,28 +4791,33 @@ Given a triangulation of a set of nodes on the unit sphere, along with data
 values at the nodes, this method interpolates (or extrapolates) the value
 at a given longitude and latitude.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>lons</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
-<dd>longitudinal coordinate(s) on the sphere</dd>
-<dt><strong><code>lats</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
-<dd>latitudinal coordinate(s) on the sphere</dd>
-<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>value at each point in the triangulation
-must be the same size of the mesh</dd>
-<dt><strong><code>order</code></strong> :&ensp;<code>int (default=1)</code></dt>
-<dd>
-<p>order of the interpolatory function used</p>
-<ul>
-<li><code>order=0</code> = nearest-neighbour</li>
-<li><code>order=1</code> = linear</li>
-<li><code>order=3</code> = cubic</li>
-</ul>
-</dd>
-<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
-<dd>precomputed array of spline tension factors from
+<p>lons : float / array of floats, shape (l,)
+longitudinal coordinate(s) on the sphere
+lats : float / array of floats, shape (l,)
+latitudinal coordinate(s) on the sphere
+zdata : array of floats, shape (n,)
+value at each point in the triangulation
+must be the same size of the mesh
+order : int (default=1)
+order of the interpolatory function used</p>
+<pre><code>- `order=0` = nearest-neighbour
+- `order=1` = linear
+- `order=3` = cubic
+</code></pre>
+<p>sigma : array of floats, shape (6n-12)
+precomputed array of spline tension factors from
 <code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code>
-(only used in cubic interpolation)</dd>
-</dl>
+(only used in cubic interpolation)</p>
+<p>threads : int or 'auto', optional; default : 1
+Number of threads to use for linear and nearest-neighbour
+interpolation (N.B. multi-threaded cubic interpolation is
+not supported).
+By default, only a single thread will be used. Use
+<code>threads='auto'</code> to attempt to automatically determine how
+many threads to use based on the size of the input and output
+data.
+Negative values count backwards, such that -1 is equivalent to
+<code>multiprocessing.cpu_count()</code>, -2 to <code>cpu_count() - 1</code>, etc.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>zi </code></dt>
@@ -4558,7 +4831,16 @@ whether interpolation (0), extrapolation (1) or error (other)</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def interpolate(self, lons, lats, zdata, order=1, grad=None, sigma=None):
+<pre><code class="python">def interpolate(
+    self,
+    lons,
+    lats,
+    zdata,
+    order=1,
+    grad=None,
+    sigma=None,
+    threads=1,
+):
     &#34;&#34;&#34;
     Base class to handle nearest neighbour, linear, and cubic interpolation.
     Given a triangulation of a set of nodes on the unit sphere, along with data
@@ -4585,52 +4867,151 @@ whether interpolation (0), extrapolation (1) or error (other)</dd>
             `get_spline_tension_factors(zdata, tol=1e-3, grad=None)`
             (only used in cubic interpolation)
 
+        threads : int or &#39;auto&#39;, optional; default : 1
+            Number of threads to use for linear and nearest-neighbour
+            interpolation (N.B. multi-threaded cubic interpolation is
+            not supported).
+            By default, only a single thread will be used. Use
+            `threads=&#39;auto&#39;` to attempt to automatically determine how
+            many threads to use based on the size of the input and output
+            data.
+            Negative values count backwards, such that -1 is equivalent to
+            `multiprocessing.cpu_count()`, -2 to `cpu_count() - 1`, etc.
+
     Returns:
         zi : float / array of floats, shape (l,)
             interpolated value(s) at (lons, lats)
         err : int / array of ints, shape (l,)
             whether interpolation (0), extrapolation (1) or error (other)
     &#34;&#34;&#34;
-
-
     shape = np.shape(lons)
 
     lons, lats = self._check_integrity(lons, lats)
+    n_in = np.size(zdata)
+    n_out = np.size(lons)
 
-    if zdata.size != self.npoints:
+    if n_in != self.npoints:
         raise ValueError(&#34;data must be of size {}&#34;.format(self.npoints))
 
     zdata = self._shuffle_field(zdata)
 
-    if order == 0:
-        zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
-                                      self._x, self._y, self._z, zdata,\
-                                      self.lst, self.lptr, self.lend)
-    elif order == 1:
-        zi, zierr, ierr = _stripack.interp_n(order, lats, lons,\
-                                      self._x, self._y, self._z, zdata,\
-                                      self.lst, self.lptr, self.lend)
-    elif order == 3:
-        sigma, iflgs = self._check_sigma(sigma)
-        grad, iflgg = self._check_gradient(zdata, grad)
-
-        zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,\
-                                      self._x, self._y, self._z, zdata,\
-                                      self.lst, self.lptr, self.lend,\
-                                      iflgs, sigma, iflgg, grad)
-    else:
+    if order not in {0, 1, 3}:
         raise ValueError(&#34;order must be 0, 1, or 3&#34;)
+    if threads == 0:
+        raise ValueError(&#34;threads must not be zero&#34;)
+
+    if threads == &#34;auto&#34;:
+        # Try to guess whether multiple threads would be helpful
+        threads = _auto_threads(n_in, n_out, order)
+    threads = int(threads)
+
+    if order == 3 and threads != 1:
+        import warnings
+
+        warnings.warn(
+            &#34;Multithreading not supported for cubic interpolation&#34;,
+            RuntimeWarning,
+        )
+        threads = 1
+
+    if threads &lt; 0:
+        # -1 corresponds to cpu_count(), etc.
+        threads = cpu_count() + threads + 1
+
+    if threads == 1:
+        if order == 3:
+            sigma, iflgs = self._check_sigma(sigma)
+            grad, iflgg = self._check_gradient(zdata, grad)
+
+            zi, zierr, ierr = _ssrfpack.interp_cubic(lats, lons,
+                                        self._x, self._y, self._z, zdata,
+                                        self.lst, self.lptr, self.lend,
+                                        iflgs, sigma, iflgg, grad)
+        else:
+            zi, zierr, ierr = _stripack.interp_n(order, lats, lons,
+                                        self._x, self._y, self._z, zdata,
+                                        self.lst, self.lptr, self.lend)
+
+    else:
+        # The following code is largely adapted from here:
+        # https://numpy.org/doc/stable/reference/random/multithreading.html
+        import concurrent.futures
+
+        size = lons.size
+        zi = np.full(size, np.nan)
+        zierr = np.full(size, np.nan)
+        ierr = np.full(threads, 0)
+        step = np.ceil(size / threads).astype(np.int_)
+        futures = {}
+        executor = concurrent.futures.ThreadPoolExecutor(threads)
+
+        def _f(
+            out_zi,
+            out_zierr,
+            out_ierr,
+            order,
+            lats,
+            lons,
+            x,
+            y,
+            z,
+            zdata,
+            lst,
+            lptr,
+            lend,
+            first,
+            last,
+            ierr_index,
+        ):
+            tmp_zi, tmp_zierr, tmp_ierr = _stripack.interp_n(
+                order, lats[first:last], lons[first:last],
+                x, y, z, zdata,
+                lst, lptr, lend,
+            )
+            out_zi[first:last] = tmp_zi
+            out_zierr[first:last] = tmp_zierr
+            out_ierr[ierr_index] = tmp_ierr
+
+        for i in range(threads):
+            first = i * step
+            last = (i + 1) * step
+            args = (
+                _f,
+                zi,
+                zierr,
+                ierr,
+                order,
+                lats,
+                lons,
+                self._x,
+                self._y,
+                self._z,
+                zdata,
+                self.lst,
+                self.lptr,
+                self.lend,
+                first,
+                last,
+                i,
+            )
+            futures[executor.submit(*args)] = i
+        concurrent.futures.wait(futures)
+        executor.shutdown(False)
+        ierr = int((ierr != 0).any())
 
     if ierr != 0:
         import warnings
-        warnings.warn(&#39;Warning some points may have errors - check error array\n&#39;.format(ierr))
+        warnings.warn(
+            &#39;Warning some points may have errors - check error array&#39;,
+            RuntimeWarning,
+        )
         zi[zierr &lt; 0] = np.nan
 
     return zi.reshape(shape), zierr.reshape(shape)</code></pre>
 </details>
 </dd>
 <dt id="stripy.spherical.sTriangulation.interpolate_cubic"><code class="name flex">
-<span>def <span class="ident">interpolate_cubic</span></span>(<span>self, lons, lats, data, grad=None, sigma=None)</span>
+<span>def <span class="ident">interpolate_cubic</span></span>(<span>self, lons, lats, data, grad=None, sigma=None, *, threads=1)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Interpolate using cubic spline approximation
@@ -4639,16 +5020,33 @@ Returns the same as <code>interpolate(lons,lats,data,order=3)</code></p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def interpolate_cubic(self, lons, lats, data, grad=None, sigma=None):
+<pre><code class="python">def interpolate_cubic(
+    self,
+    lons,
+    lats,
+    data,
+    grad=None,
+    sigma=None,
+    *,
+    threads=1,  # currently unused; provided for API consistency
+):
     &#34;&#34;&#34;
     Interpolate using cubic spline approximation
     Returns the same as `interpolate(lons,lats,data,order=3)`
     &#34;&#34;&#34;
-    return self.interpolate(lons, lats, data, order=3, grad=grad, sigma=sigma)</code></pre>
+    return self.interpolate(
+        lons,
+        lats,
+        data,
+        order=3,
+        grad=grad,
+        sigma=sigma,
+        threads=1,
+    )</code></pre>
 </details>
 </dd>
 <dt id="stripy.spherical.sTriangulation.interpolate_linear"><code class="name flex">
-<span>def <span class="ident">interpolate_linear</span></span>(<span>self, lons, lats, data)</span>
+<span>def <span class="ident">interpolate_linear</span></span>(<span>self, lons, lats, data, threads=1)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Interpolate using linear approximation
@@ -4657,16 +5055,16 @@ Returns the same as <code>interpolate(lons,lats,data,order=1)</code></p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def interpolate_linear(self, lons, lats, data):
+<pre><code class="python">def interpolate_linear(self, lons, lats, data, threads=1):
     &#34;&#34;&#34;
     Interpolate using linear approximation
     Returns the same as `interpolate(lons,lats,data,order=1)`
     &#34;&#34;&#34;
-    return self.interpolate(lons, lats, data, order=1)</code></pre>
+    return self.interpolate(lons, lats, data, order=1, threads=threads)</code></pre>
 </details>
 </dd>
 <dt id="stripy.spherical.sTriangulation.interpolate_nearest"><code class="name flex">
-<span>def <span class="ident">interpolate_nearest</span></span>(<span>self, lons, lats, data)</span>
+<span>def <span class="ident">interpolate_nearest</span></span>(<span>self, lons, lats, data, threads=1)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Interpolate using nearest-neighbour approximation
@@ -4675,12 +5073,12 @@ Returns the same as <code>interpolate(lons,lats,data,order=0)</code></p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def interpolate_nearest(self, lons, lats, data):
+<pre><code class="python">def interpolate_nearest(self, lons, lats, data, threads=1):
     &#34;&#34;&#34;
     Interpolate using nearest-neighbour approximation
     Returns the same as `interpolate(lons,lats,data,order=0)`
     &#34;&#34;&#34;
-    return self.interpolate(lons, lats, data, order=0)</code></pre>
+    return self.interpolate(lons, lats, data, order=0, threads=threads)</code></pre>
 </details>
 </dd>
 <dt id="stripy.spherical.sTriangulation.interpolate_to_grid"><code class="name flex">
@@ -4693,21 +5091,19 @@ continuously differentiable. Extrapolation is performed at
 grid points exterior to the triangulation when the nodes
 do not cover the entire sphere.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>lons</code></strong> :&ensp;<code>array</code> of <code>floats, shape (ni,)</code></dt>
-<dd>longitudinal coordinates in ascending order</dd>
-<dt><strong><code>lats</code></strong> :&ensp;<code>array</code> of <code>floats, shape (nj,)</code></dt>
-<dd>latitudinal coordinates in ascending order</dd>
-<dt><strong><code>zdata</code></strong> :&ensp;<code>array</code> of <code>floats, shape(n,)</code></dt>
-<dd>value at each point in the triangulation
-must be the same size of the mesh</dd>
-<dt><strong><code>grad</code></strong> :&ensp;<code>array</code> of <code>floats, shape(3,n)</code></dt>
-<dd>precomputed gradient of zdata or if not provided,
-the result of <code>self.gradient(zdata)</code>.</dd>
-<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
-<dd>precomputed array of spline tension factors from
-<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></dd>
-</dl>
+<p>lons : array of floats, shape (ni,)
+longitudinal coordinates in ascending order
+lats : array of floats, shape (nj,)
+latitudinal coordinates in ascending order
+zdata : array of floats, shape(n,)
+value at each point in the triangulation
+must be the same size of the mesh
+grad : array of floats, shape(3,n)
+precomputed gradient of zdata or if not provided,
+the result of <code>self.gradient(zdata)</code>.
+sigma : array of floats, shape (6n-12)
+precomputed array of spline tension factors from
+<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>zgrid </code></dt>
@@ -4848,12 +5244,10 @@ in the triangulation connected to any of the vertices in the list provided</p></
 and return the squared great circle distance between (lons,lats) and
 each nearest neighbour.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>lons</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
-<dd>longitudinal coordinate(s) on the sphere</dd>
-<dt><strong><code>lats</code></strong> :&ensp;<code>float / array</code> of <code>floats, shape (l,)</code></dt>
-<dd>latitudinal coordinate(s) on the sphere</dd>
-</dl>
+<p>lons : float / array of floats, shape (l,)
+longitudinal coordinate(s) on the sphere
+lats : float / array of floats, shape (l,)
+latitudinal coordinate(s) on the sphere</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>index </code></dt>
@@ -4927,16 +5321,14 @@ distance from x,y points.</p>
 <p>Returns 0, 0 if a cKDtree has not been constructed
 (switch <code>tree=True</code> if you need this routine)</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>lon</code></strong> :&ensp;<code>1D array</code></dt>
-<dd>longitudinal coordinates in radians</dd>
-<dt><strong><code>lat</code></strong> :&ensp;<code>1D array</code></dt>
-<dd>latitudinal coordinates in radians</dd>
-<dt><strong><code>k</code></strong> :&ensp;<code>int (default: 1)</code></dt>
-<dd>number of nearest neighbours to return</dd>
-<dt><strong><code>max_distance</code></strong> :&ensp;<code>float (default: 2.0)</code></dt>
-<dd>maximum Euclidean distance to search for neighbours</dd>
-</dl>
+<p>lon : 1D array
+longitudinal coordinates in radians
+lat : 1D array
+latitudinal coordinates in radians
+k : int (default: 1)
+number of nearest neighbours to return
+max_distance : float (default: 2.0)
+maximum Euclidean distance to search for neighbours</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>d </code></dt>
@@ -5156,25 +5548,23 @@ minimize the linearized curvature of F subject to a bound on the
 deviation from the data values. This is more appropriate than interpolation
 when significant errors are present in the data.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>f</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>field to apply smoothing on</dd>
-<dt><strong><code>w</code></strong> :&ensp;<code>array</code> of <code>floats, shape (n,)</code></dt>
-<dd>weights associated with data value in f
-w[i] = 1/sigma_f^2 is a good rule of thumb.</dd>
-<dt><strong><code>sm</code></strong> :&ensp;<code>float</code></dt>
-<dd>positive parameter specifying an upper bound on Q2(f).
-generally n-sqrt(2n) &lt;= sm &lt;= n+sqrt(2n)</dd>
-<dt><strong><code>smtol</code></strong> :&ensp;<code>float</code></dt>
-<dd>specifies relative error in satisfying the constraint
-sm(1-smtol) &lt;= Q2 &lt;= sm(1+smtol) between 0 and 1.</dd>
-<dt><strong><code>gstol</code></strong> :&ensp;<code>float</code></dt>
-<dd>tolerance for convergence.
-gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.</dd>
-<dt><strong><code>sigma</code></strong> :&ensp;<code>array</code> of <code>floats, shape (6n-12)</code></dt>
-<dd>precomputed array of spline tension factors from
-<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></dd>
-</dl>
+<p>f : array of floats, shape (n,)
+field to apply smoothing on
+w : array of floats, shape (n,)
+weights associated with data value in f
+w[i] = 1/sigma_f^2 is a good rule of thumb.
+sm : float
+positive parameter specifying an upper bound on Q2(f).
+generally n-sqrt(2n) &lt;= sm &lt;= n+sqrt(2n)
+smtol : float
+specifies relative error in satisfying the constraint
+sm(1-smtol) &lt;= Q2 &lt;= sm(1+smtol) between 0 and 1.
+gstol : float
+tolerance for convergence.
+gstol = 0.05*mean(sigma_f)^2 is a good rule of thumb.
+sigma : array of floats, shape (6n-12)
+precomputed array of spline tension factors from
+<code>get_spline_tension_factors(zdata, tol=1e-3, grad=None)</code></p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>f_smooth </code></dt>
@@ -5266,12 +5656,10 @@ F, FX, and FY are the values and partials of a linear function which minimizes Q
 <dd>
 <div class="desc"><p>Calculate the area enclosed by 3 points on the unit sphere.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>lons</code></strong> :&ensp;<code>array</code> of <code>floats, shape (3)</code></dt>
-<dd>longitudinal coordinates in radians</dd>
-<dt><strong><code>lats</code></strong> :&ensp;<code>array</code> of <code>floats, shape (3)</code></dt>
-<dd>latitudinal coordinates in radians</dd>
-</dl>
+<p>lons : array of floats, shape (3)
+longitudinal coordinates in radians
+lats : array of floats, shape (3)
+latitudinal coordinates in radians</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>area </code></dt>
@@ -5364,10 +5752,8 @@ in the triangulation</p></div>
 <div class="desc"><p>Calculates the voronoi points from the triangulation.</p>
 <p>This routine returns the circumcentre, circumradius of each triangle.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>return_circumradius</code></strong> :&ensp;<code>bool</code></dt>
-<dd>optionally return circumradius of each circumcentre</dd>
-</dl>
+<p>return_circumradius : bool
+optionally return circumradius of each circumcentre</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>vlons </code></dt>
@@ -5601,9 +5987,7 @@ enclose a region.</dd>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad()</script>
 </body>
 </html>
