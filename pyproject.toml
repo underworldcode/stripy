@@ -1,3 +1,49 @@
 [build-system]
-build-backend = "setuptools.build_meta"
-requires = ["setuptools", "numpy", "pip"]
+build-backend = "mesonpy"
+requires = [
+    "setuptools",
+    "numpy",
+    "pip",
+    "meson-python",
+]
+
+[project]
+name = "stripy"
+version = "2.3"
+description = "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere"
+readme = "README.md"
+authors = [
+  {name = "Louis Moresi", email = "louis.moresi@anu.edu.au"},
+  {name = "Ben Mather", email = "ben.mather@sydney.edu.au"},
+]
+maintainers = [
+  {name = "Louis Moresi", email = "louis.moresi@anu.edu.au"},
+  {name = "Ben Mather", email = "ben.mather@sydney.edu.au"},
+]
+license = { file = "COPYING.LESSER" }
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = ["triangulation", "sphere", "interpolation", "mesh"]
+dependencies = [
+    "numpy>=1.16.0",
+    "scipy>=1.0.0",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "stripy.__version__"}
+
+[project.optional-dependencies]
+dev = ["pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/underworldcode/stripy"
