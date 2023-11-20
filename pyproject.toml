@@ -5,6 +5,7 @@ requires = [
     "numpy",
     "pip",
     "meson-python",
+    "setuptools>=61.0",
 ]
 
 [project]
@@ -39,8 +40,17 @@ dependencies = [
     "scipy>=1.0.0",
 ]
 
-[tool.setuptools.dynamic]
-version = {attr = "stripy.__version__"}
+[tool.setuptools]
+packages = [
+    "stripy",
+    "stripy._tripack",
+    "stripy._stripack",
+    "stripy._srfpack",
+    "stripy._ssrfpack",
+]
+
+# [tool.setuptools.dynamic]
+# version = {attr = "stripy.__version__"}
 
 [project.optional-dependencies]
 dev = ["pip-tools", "pytest"]
