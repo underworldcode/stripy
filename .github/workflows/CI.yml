@@ -86,7 +86,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
-      - uses: fortran-lang/setup_fortran@v1
+      - uses: fortran-lang/setup-fortran@v1
         id: setup-fortran
         with:
           compiler: gcc
