@@ -89,8 +89,8 @@ jobs:
       - uses: fortran-lang/setup-fortran@v1
         id: setup-fortran
         with:
-          compiler: intel-classic
-          version: '2021.10'
+          compiler: intel
+          version: '2023.2'
       
       - name: Set up Python
         uses: actions/setup-python@v2
