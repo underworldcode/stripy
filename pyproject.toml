@@ -1,10 +1,9 @@
 [build-system]
 build-backend = "mesonpy"
 requires = [
-    "setuptools",
     "numpy",
     "pip",
-    "meson",
+    "meson-python>=0.15.0",
     "setuptools>=61.0",
     "build",
 ]
