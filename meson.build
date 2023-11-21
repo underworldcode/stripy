@@ -6,7 +6,8 @@ add_languages('fortran')
 
 platform = host_machine.system()
 if platform == 'windows'
-  add_project_link_arguments('-static,-lquadmath', language: ['fortran', 'c'])
+  add_project_link_arguments('-static', language: ['fortran', 'c'])
+  m_dep = dependency('libquadmath', required: true)
 elif platform == 'darwin'
   add_project_link_arguments('-Wl,-rpath, "@loader_path"', language: ['fortran', 'c'])
 else
