@@ -327,9 +327,9 @@ jobs:
           pip install meson
           pip install build
       - name: Build manylinux Python wheels
-        uses: RalfG/python-wheels-manylinux-build@v0.4.2-manylinux2014_x86_64
+        uses: RalfG/python-wheels-manylinux-build@v0.7.1
         with:
-          python-versions: 'cp36-cp36m cp37-cp37m cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311'    
+          python-versions: 'cp36-cp36m cp37-cp37m cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311 cp312-cp312'    
           pip-wheel-args: '--no-deps'
           build-requirements: 'cython numpy meson build'
       - name: Publish wheels to PyPI
