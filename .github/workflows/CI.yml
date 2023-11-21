@@ -225,6 +225,7 @@ jobs:
               anaconda logout
 
   pypi_windows:
+    name: Build windows PYPI package
     runs-on: windows_latest
     needs: test_windows
     env:
@@ -265,6 +266,7 @@ jobs:
           python -m twine upload dist/* -r pypi --skip-existing
   
   pypi_macos:
+    name: Build macos PYPI package
     runs-on: macos-latest
     needs: test_macos
     env:
@@ -280,7 +282,7 @@ jobs:
         id: setup-fortran
         with:
           compiler: gcc
-          version: 11
+          version: 12
       
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -311,7 +313,7 @@ jobs:
 
 
   manylinux:
-    name: Build manylinux package
+    name: Build manylinux PYPI package
     needs: test_ubuntu
     runs-on: ubuntu-latest
     env:
@@ -337,7 +339,7 @@ jobs:
         with:
           python-versions: 'cp36-cp36m cp37-cp37m cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311 cp312-cp312'    
           pip-wheel-args: '--no-deps'
-          build-requirements: 'cython numpy meson build'
+          build-requirements: 'cython numpy meson build setuptools'
       - name: Publish wheels to PyPI
         env:
           TWINE_USERNAME: __token__
