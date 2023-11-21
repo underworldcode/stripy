@@ -45,7 +45,7 @@ stripack_source = custom_target('_stripackmodule.c',
 
 srfpack_source = custom_target('_srfpackmodule.c',
   input : ['src/srfpack.pyf'],  # .f so no F90 wrappers
-  output : ['_srfpackmodule.c', '_srfpack-f2pywrappers.f'],
+  output : ['_srfpackmodule.c'],
   command : [py, '-m', 'numpy.f2py', '@INPUT@']
 )
 
