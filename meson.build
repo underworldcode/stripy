@@ -4,6 +4,15 @@ name = 'stripy'
 
 add_languages('fortran')
 
+platform = host_machine.system()
+if platform == 'windows'
+  add_project_link_arguments('-static', language: ['fortran', 'c'])
+elif platform == 'darwin'
+  add_project_link_arguments('-Wl,-rpath, "@loader_path"', language: ['fortran', 'c'])
+else
+  add_project_link_arguments('-Wl,-rpath,"$ORIGIN"', language: ['fortran', 'c'])
+endif
+
 py_mod = import('python')
 py = py_mod.find_installation(pure: false)
 py_dep = py.dependency()
@@ -23,33 +32,33 @@ inc_np = include_directories(incdir_numpy, incdir_f2py)
 install_subdir(name, install_dir: py.get_install_dir() / name, strip_directory: true)
 
 tripack_source = custom_target('_tripackmodule.c',
-  input : ['src/tripack.pyf', 'src/tripack.f90'],  # .f so no F90 wrappers
-  output : ['_tripackmodule.c', '_tripack-f2pywrappers.f', '_tripack-f2pywrappers2.f90'],
-  command : [py, '-m', 'numpy.f2py', '@INPUT@', '-m', '_tripack', '--lower']
+  input : ['src/tripack.pyf'],  # .f so no F90 wrappers
+  output : ['_tripackmodule.c', '_tripack-f2pywrappers.f'],
+  command : [py, '-m', 'numpy.f2py', '@INPUT@']
 )
 
 stripack_source = custom_target('_stripackmodule.c',
-  input : ['src/stripack.pyf', 'src/stripack.f90'],  # .f so no F90 wrappers
+  input : ['src/stripack.pyf'],  # .f so no F90 wrappers
   output : ['_stripackmodule.c', '_stripack-f2pywrappers.f'],
-  command : [py, '-m', 'numpy.f2py', '@INPUT@', '-m', '_stripack', '--lower']
+  command : [py, '-m', 'numpy.f2py', '@INPUT@']
 )
 
 srfpack_source = custom_target('_srfpackmodule.c',
-  input : ['src/srfpack.pyf', 'src/srfpack.f'],  # .f so no F90 wrappers
+  input : ['src/srfpack.pyf'],  # .f so no F90 wrappers
   output : ['_srfpackmodule.c', '_srfpack-f2pywrappers.f'],
-  command : [py, '-m', 'numpy.f2py', '@INPUT@', '-m', '_srfpack', '--lower']
+  command : [py, '-m', 'numpy.f2py', '@INPUT@']
 )
 
 ssrfpack_source = custom_target('_ssrfpackmodule.c',
-  input : ['src/ssrfpack.pyf', 'src/ssrfpack.f'],  # .f so no F90 wrappers
+  input : ['src/ssrfpack.pyf'],  # .f so no F90 wrappers
   output : ['_ssrfpackmodule.c', '_ssrfpack-f2pywrappers.f'],
-  command : [py, '-m', 'numpy.f2py', '@INPUT@', '-m', '_ssrfpack', '--lower']
+  command : [py, '-m', 'numpy.f2py', '@INPUT@']
 )
 
 fortran_source = custom_target('_fortranmodule.c',
-  input : ['src/stripyf.pyf', 'src/stripyf.f90'],  # .f so no F90 wrappers
+  input : ['src/stripyf.pyf'],  # .f so no F90 wrappers
   output : ['_fortranmodule.c', '_fortran-f2pywrappers.f'],
-  command : [py, '-m', 'numpy.f2py', '@INPUT@', '-m', '_fortran', '--lower']
+  command : [py, '-m', 'numpy.f2py', '@INPUT@']
 )
 
 
