@@ -90,7 +90,7 @@ jobs:
         id: setup-fortran
         with:
           compiler: gcc
-          version: 12
+          version: 11
       
       - name: Set up Python
         uses: actions/setup-python@v2
