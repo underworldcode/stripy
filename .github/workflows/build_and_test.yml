@@ -4,7 +4,9 @@
 name: Test stripy
 
 on:
-  push
+  push:
+  release:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -23,7 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: mamba-org/setup-micromamba@v1
-      - with:
+        with:
+          micromamba-version: "1.3.1-0"
           environment-name: test-env
           create-args: >-
             python=${{ matrix.python-version }}
@@ -33,14 +36,13 @@ jobs:
             gfortran
             build
             meson
-          micromamba-version: "1.3.1-0"
           init-shell: >-
             bash
             powershell
           cache-environment: true
           post-cleanup: "all"
 
-      - name: Install current stripy
+      - name: Install current gplately
         run: |
           pip install .
 
