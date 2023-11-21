@@ -31,9 +31,9 @@ jobs:
           create-args: >-
             python=${{ matrix.python-version }}
             numpy
+            scipy
             pytest
             fortran-compiler
-            gfortran
             build
             meson
           init-shell: >-
@@ -44,7 +44,7 @@ jobs:
 
       - name: Install current gplately
         run: |
-          pip install .
+          pip install . --no-binary :all: --no-cache-dir --no-dependencies
 
       - name: Test with pytest
         run: |
