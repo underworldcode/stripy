@@ -50,7 +50,7 @@ jobs:
         id: setup-fortran
         with:
           compiler: gcc
-          version: 11
+          version: 12
       
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -86,17 +86,17 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
+      - uses: fortran-lang/setup_fortran@v1
+        id: setup-fortran
+        with:
+          compiler: gcc
+          version: 12
       
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
 
-        uses: fortran-lang/setup_fortran@v1
-        id: setup-fortran
-        with:
-          compiler: gcc
-          version: 12
 
       - name: Install dependencies
         run: |
