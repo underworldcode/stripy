@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
     
     steps:
       - uses: actions/checkout@v2
@@ -42,7 +42,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
     
     steps:
       - uses: actions/checkout@v2
@@ -82,7 +82,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
     
     steps:
       - uses: actions/checkout@v2
@@ -117,7 +117,7 @@ jobs:
       strategy:
         fail-fast: false
         matrix:
-          python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+          python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
       steps:
         - uses: actions/checkout@v2
         - uses: conda-incubator/setup-miniconda@v2
@@ -153,7 +153,7 @@ jobs:
       strategy:
         fail-fast: false
         matrix:
-          python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+          python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
       steps:
         - uses: actions/checkout@v2
         - uses: conda-incubator/setup-miniconda@v2
@@ -189,7 +189,7 @@ jobs:
       strategy:
         fail-fast: false
         matrix:
-          python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+          python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
       steps:
         - uses: actions/checkout@v2
         - uses: conda-incubator/setup-miniconda@v2
@@ -226,7 +226,7 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
     
     steps:
       - uses: actions/checkout@v2
@@ -266,7 +266,7 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
     
     steps:
       - uses: actions/checkout@v2
@@ -331,7 +331,7 @@ jobs:
         with:
           python-versions: 'cp36-cp36m cp37-cp37m cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311'    
           pip-wheel-args: '--no-deps'
-          build-requirements: 'cython numpy'
+          build-requirements: 'cython numpy meson build'
       - name: Publish wheels to PyPI
         env:
           TWINE_USERNAME: __token__
