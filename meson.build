@@ -1,5 +1,7 @@
 project('stripy', 'c')
 
+name = 'stripy'
+
 add_languages('fortran')
 
 py_mod = import('python')
@@ -17,6 +19,8 @@ incdir_f2py = run_command(py,
 ).stdout().strip()
 
 inc_np = include_directories(incdir_numpy, incdir_f2py)
+
+install_subdir(name, install_dir: py.get_install_dir() / name, strip_directory: true)
 
 tripack_source = custom_target('_tripackmodule.c',
   input : ['src/tripack.pyf', 'src/tripack.f90'],  # .f so no F90 wrappers
@@ -52,6 +56,7 @@ fortran_source = custom_target('_fortranmodule.c',
 py.extension_module('_tripack',
   ['src/tripack.f90', tripack_source],
   incdir_f2py / 'fortranobject.c',
+  subdir: 'stripy',
   include_directories: inc_np,
   dependencies: py_dep,
   install: true,
@@ -60,6 +65,7 @@ py.extension_module('_tripack',
 py.extension_module('_stripack',
   ['src/stripack.f90', stripack_source],
   incdir_f2py / 'fortranobject.c',
+  subdir: 'stripy',
   include_directories: inc_np,
   dependencies: py_dep,
   install: true,
@@ -68,6 +74,7 @@ py.extension_module('_stripack',
 py.extension_module('_srfpack',
   ['src/srfpack.f', srfpack_source],
   incdir_f2py / 'fortranobject.c',
+  subdir: 'stripy',
   include_directories: inc_np,
   dependencies: py_dep,
   install: true,
@@ -76,6 +83,7 @@ py.extension_module('_srfpack',
 py.extension_module('_ssrfpack',
   ['src/ssrfpack.f', ssrfpack_source],
   incdir_f2py / 'fortranobject.c',
+  subdir: 'stripy',
   include_directories: inc_np,
   dependencies: py_dep,
   install: true,
@@ -84,6 +92,7 @@ py.extension_module('_ssrfpack',
 py.extension_module('_fortran',
   ['src/stripyf.f90', fortran_source],
   incdir_f2py / 'fortranobject.c',
+  subdir: 'stripy',
   include_directories: inc_np,
   dependencies: py_dep,
   install: true,

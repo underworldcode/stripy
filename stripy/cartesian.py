@@ -20,8 +20,8 @@ along with Stripy.  If not, see <http://www.gnu.org/licenses/>.
 # -*- coding: utf-8 -*-
 from multiprocessing import cpu_count
 
-import _tripack
-import _srfpack
+from . import _tripack
+from . import _srfpack
 import numpy as np
 
 try: range = xrange
