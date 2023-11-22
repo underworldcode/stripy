@@ -3,37 +3,6 @@ name: Build wheels
 on: [push]
 
 jobs:
-
-  setup_env:
-    name: Setup build environment
-    description: "Install ninja and a fortran compiler"
-
-    # It's assumed that `actions/setup-python` is run before this one.
-
-    runs:
-      using: "composite"
-      steps:
-        - uses: awvwgk/setup-fortran@v1
-          # id: setup-fortran
-          # with:
-          #   compiler: gcc
-          #   version: 12
-
-        - run: pip install --upgrade pip
-          shell: bash
-
-        - if: runner.os == 'Linux'
-          run: sudo apt-get install -y ninja-build
-          shell: bash
-
-        - if: runner.os == 'macOS'
-          run: brew install ninja
-          shell: bash
-
-        - if: runner.os == 'Windows'
-          run: choco install ninja
-          shell: bash
-
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -46,7 +15,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: 3.x
-      - uses: setup_env
+      - uses: ./github/workflows/setup-build-env.yml
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
