@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: 3.x
-      - uses: ./github/workflows/setup-build-env
+      - uses: ./.github/workflows/setup-build-env
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
