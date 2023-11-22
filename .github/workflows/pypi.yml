@@ -12,6 +12,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v3
+
+      - name: Add fortran compiler
+        uses: fortran-lang/setup-fortran@v1
+        id: setup-fortran
+        with:
+          compiler: gcc
+          version: 12
+
+      - name: Add meson
+        uses: BSFishy/meson-build@v1.0.3
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
