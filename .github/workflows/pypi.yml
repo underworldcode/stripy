@@ -24,15 +24,12 @@ jobs:
       - name: Install python dependencies
         run: python -m pip install numpy setuptools build meson
 
-      # - name: Add meson
-      #   uses: BSFishy/meson-build@v1.0.3
-      #   with:
-      #     action: build
-
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
-        # env:
-        #   CIBW_SOME_OPTION: value
+        env:
+          CIBW_BEFORE_BUILD_LINUX: "pip install numpy meson-python ninja setuptools build"
+          CIBW_BEFORE_BUILD_WINDOWS: "pip install numpy meson-python ninja setuptools build"
+          CIBW_BEFORE_BUILD_MACOS: "pip install numpy meson-python ninja setuptools build"
         #    ...
         # with:
         #   package-dir: .
