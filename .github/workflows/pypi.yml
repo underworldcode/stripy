@@ -21,7 +21,7 @@ jobs:
         env:
           # Disable building PyPy wheels on all platforms
           CIBW_SKIP: 'pp*'
-          CIBW_ENVIRONMENT: "CFLAGS='-lquadmath'"
+          CIBW_ENVIRONMENT_WINDOWS: "CFLAGS='-lquadmath'"
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.7"
           CIBW_ARCHS: 'auto64'
           CIBW_BEFORE_BUILD_WINDOWS: "choco install ninja"
