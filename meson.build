@@ -4,14 +4,14 @@ name = 'stripy'
 
 add_languages('fortran')
 
-platform = host_machine.system()
-if platform == 'windows'
-  add_project_link_arguments('-static', language: ['fortran', 'c'])
-elif platform == 'darwin'
-  add_project_link_arguments('-Wl,-rpath, "@loader_path"', language: ['fortran', 'c'])
-else
-  add_project_link_arguments('-Wl,-rpath,"$ORIGIN"', language: ['fortran', 'c'])
-endif
+# platform = host_machine.system()
+# if platform == 'windows'
+#   add_project_link_arguments('-static', language: ['fortran', 'c'])
+# elif platform == 'darwin'
+#   add_project_link_arguments('-Wl,-rpath, "@loader_path"', language: ['fortran', 'c'])
+# else
+#   add_project_link_arguments('-Wl,-rpath,"$ORIGIN"', language: ['fortran', 'c'])
+# endif
 
 py_mod = import('python')
 py = py_mod.find_installation(pure: false)
