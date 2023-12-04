@@ -36,7 +36,6 @@ classifiers = [
 keywords = ["triangulation", "sphere", "interpolation", "mesh"]
 dependencies = [
     "numpy>=1.16.0",
-    "scipy>=1.0.0",
 ]
 
 [tool.setuptools]
@@ -52,7 +51,7 @@ packages = [
 # version = {attr = "stripy.__version__"}
 
 [project.optional-dependencies]
-dev = ["pip-tools", "pytest"]
+dev = ["pip-tools", "pytest", "scipy>=1.0.0"]
 
 [project.urls]
 Homepage = "https://github.com/underworldcode/stripy"
