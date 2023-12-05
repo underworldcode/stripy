@@ -6,11 +6,6 @@ def test_numpy_import():
     import numpy
     return
 
-def test_scipy_import():
-    import scipy
-    print("\t\t You have scipy version {}".format(scipy.__version__))
-
-
 def test_stripy_modules():
     import stripy
     from stripy import documentation

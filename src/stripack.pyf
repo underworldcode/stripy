@@ -409,7 +409,7 @@ python module _stripack ! in
 !            real(kind=8) :: pw
 !            real(kind=8) dimension(3) :: pg
 !        end subroutine wval
-        subroutine interp_n(npts,nptso,order,olats,olons,x,y,z,data,lst,lptr,lend,odata,edata,ierr)
+        subroutine interp_n(npts,nptso,order,olats,olons,x,y,z,data,lst,lptr,lend,odata,edata,ierr) ! in :_stripack:stripack.f90
             integer( kind = 4 ), depend(x), intent(hide) :: npts=len(x)
             integer( kind = 4 ), depend(olats), intent(hide) :: nptso=len(olats)
             integer( kind = 4 ), intent(in) :: order
