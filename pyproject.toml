@@ -10,7 +10,7 @@ requires = [
 
 [project]
 name = "stripy"
-version = "2.3"
+version = "2.3.2"
 description = "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere"
 readme = "README.md"
 authors = [
