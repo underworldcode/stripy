@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-<meta name="generator" content="pdoc3 0.11.1">
+<meta name="generator" content="pdoc3 0.11.5">
 <title>stripy.cartesian_meshes API documentation</title>
 <meta name="description" content="Copyright 2017-2019 Louis Moresi, Ben Mather …">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: { inlineMath: [ ['$','$'], ["\\(","\\)"] ], processEscapes: true } });</script>
@@ -18,6 +18,17 @@
 <script>window.addEventListener('DOMContentLoaded', () => {
 hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
 hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
 })</script>
 </head>
 <body>
@@ -52,6 +63,89 @@ If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/<
 <span>def <span class="ident">elliptical_base_mesh_points</span></span>(<span>axisX, axisY, spacing, remove_artifacts=True)</span>
 </code></dt>
 <dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def elliptical_base_mesh_points(axisX, axisY, spacing, remove_artifacts=True):
+    &#34;&#34;&#34;
+    Generate well-spaced points in an ellipse - assumes the ellipse is axis-aligned and centred on the origin
+    &#34;&#34;&#34;
+
+    import numpy as np 
+    import scipy 
+    from scipy import optimize, special
+
+    b = axisX
+    a = axisY
+
+    def equal_angles_in_ellipse(arc_length, a, b):
+        &#34;&#34;&#34; This is a routine that returns equal spaced points around the perimeter of an ellipse
+        &#34;&#34;&#34;
+    
+        if a == b: 
+            tot_size = 2.0 * np.pi * a 
+            num = tot_size // arc_length
+            angles = 2 * np.pi * np.arange(num) / num
+            
+            return a * np.cos(angles), a * np.sin(angles)
+            
+        if (a &lt; b):
+            e = (1.0 - a ** 2.0 / b ** 2.0) ** 0.5
+        else:
+            e = (1.0 - b ** 2.0 / a ** 2.0) ** 0.5       
+            
+        
+        # approximate perimeter of this ellipse    
+        h = (a-b)**2 / (a+b)**2
+        length = np.pi * (a+b) * ( 1.0 + 3.0 * h / (10.0 + np.sqrt(4.0-3*h)))    
+        num = length // arc_length
+            
+        # This is normalised 
+        tot_size = scipy.special.ellipeinc(2.0 * np.pi, e)
+        arc_size = tot_size / num
+        
+        # starting points for search
+        angles = 2 * np.pi * np.arange(num) / num
+    
+        arcs = np.arange(num) * arc_size 
+        res = scipy.optimize.root(
+            lambda x: (scipy.special.ellipeinc(x, e) - arcs), angles)
+        
+        angles = res.x 
+        
+        if a &lt; b: 
+            return b * np.sin(angles), a * np.cos(angles)
+        else:
+            return b * np.cos(angles), a * np.sin(angles)
+
+
+    pointsx, pointsy = equal_angles_in_ellipse( spacing, a, b)
+    bmask = np.full_like(pointsx, 0, dtype=np.bool)
+    a -= spacing 
+    b -= spacing 
+
+    while (a &gt;= 0.0 and b &gt;= 0.0):
+        points = equal_angles_in_ellipse( spacing, a, b)
+        pointsx = np.append(pointsx,points[0])
+        pointsy = np.append(pointsy,points[1])
+        bmask   = np.append(bmask, np.full_like(points[0], 1, dtype=np.bool))
+        a -= spacing 
+        b -= spacing 
+
+
+    # The mesh can have some artefacts close to the longer axis so we drop a small fraction of points in that case
+
+    from ._fortran import ntriw
+    # from . import _srfpack
+
+
+    tri = _cartesian.Triangulation(pointsx, pointsy)
+    area, weight = ntriw(pointsx, pointsy, tri.simplices.T+1)
+    tiny = np.logical_and(bmask, area &lt; np.mean(area)*0.2)
+
+    return pointsx[~tiny], pointsy[~tiny], bmask[~tiny]</code></pre>
+</details>
 <div class="desc"><p>Generate well-spaced points in an ellipse - assumes the ellipse is axis-aligned and centred on the origin</p></div>
 </dd>
 </dl>
@@ -64,9 +158,6 @@ If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/<
 <span>(</span><span>axisX, axisY, spacing, refinement_levels=0, tree=False, remove_artifacts=True)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An elliptical mesh where points are successively populated at an
-increasing radius from the midpoint of the extent.</p>
-<p>This is a parallel-safe mesh object.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -90,6 +181,9 @@ increasing radius from the midpoint of the extent.</p>
 
         return</code></pre>
 </details>
+<div class="desc"><p>An elliptical mesh where points are successively populated at an
+increasing radius from the midpoint of the extent.</p>
+<p>This is a parallel-safe mesh object.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></li>
@@ -147,9 +241,6 @@ increasing radius from the midpoint of the extent.</p>
 <span>(</span><span>extent, spacingX, spacingY, random_scale=0.0, refinement_levels=0, tree=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An elliptical mesh where points are successively populated at an
-increasing radius from the midpoint of the extent.</p>
-<p>Caution in parallel and for reproducibility - random noise in point locations !</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -213,6 +304,9 @@ increasing radius from the midpoint of the extent.</p>
 
         return</code></pre>
 </details>
+<div class="desc"><p>An elliptical mesh where points are successively populated at an
+increasing radius from the midpoint of the extent.</p>
+<p>Caution in parallel and for reproducibility - random noise in point locations !</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></li>
@@ -270,8 +364,6 @@ increasing radius from the midpoint of the extent.</p>
 <span>(</span><span>extent, number_of_points=5000, tree=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A mesh of random points. Take care if you use this is parallel
-as the location of points will not be the same on all processors.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -313,6 +405,8 @@ as the location of points will not be the same on all processors.</p></div>
 
         return</code></pre>
 </details>
+<div class="desc"><p>A mesh of random points. Take care if you use this is parallel
+as the location of points will not be the same on all processors.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></li>
@@ -370,8 +464,6 @@ as the location of points will not be the same on all processors.</p></div>
 <span>(</span><span>extent, spacingX, spacingY, refinement_levels=0, tree=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Square border to add to any mesh.
-Creates a set of points around the extent of the domain.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -419,6 +511,8 @@ Creates a set of points around the extent of the domain.</p></div>
 
         return</code></pre>
 </details>
+<div class="desc"><p>Square border to add to any mesh.
+Creates a set of points around the extent of the domain.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></li>
@@ -476,8 +570,6 @@ Creates a set of points around the extent of the domain.</p></div>
 <span>(</span><span>extent, spacingX, spacingY, random_scale=0.0, refinement_levels=0, tree=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A square mesh where points are uniformly populated
-along x and y directions defined by extent.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -533,6 +625,8 @@ along x and y directions defined by extent.</p></div>
 
         return</code></pre>
 </details>
+<div class="desc"><p>A square mesh where points are uniformly populated
+along x and y directions defined by extent.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="stripy.cartesian.Triangulation" href="cartesian.html#stripy.cartesian.Triangulation">Triangulation</a></li>
@@ -626,7 +720,7 @@ along x and y directions defined by extent.</p></div>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.5</a>.</p>
 </footer>
 </body>
 </html>
