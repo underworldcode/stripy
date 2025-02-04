@@ -489,7 +489,34 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Square mesh               121	 25921
 Elliptical mesh            21	  1301
 (276,) (276,)
-Random mesh               100	  5000
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">31</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="nb">print</span><span class="p">(</span><span class="n">str_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Elliptical mesh&#39;</span><span class="p">,</span> <span class="n">ellip0</span><span class="o">.</span><span class="n">npoints</span><span class="p">,</span> <span class="n">ellipR</span><span class="o">.</span><span class="n">npoints</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span> <span class="n">randR</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">cartesian_meshes</span><span class="o">.</span><span class="n">random_mesh</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">nsamples</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">31</span> <span class="n">rand0</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">Triangulation</span><span class="p">(</span><span class="n">randR</span><span class="o">.</span><span class="n">x</span><span class="p">[::</span><span class="mi">50</span><span class="p">],</span> <span class="n">randR</span><span class="o">.</span><span class="n">y</span><span class="p">[::</span><span class="mi">50</span><span class="p">])</span>
+<span class="g g-Whitespace">     </span><span class="mi">32</span> <span class="n">rand2</span> <span class="o">=</span> <span class="n">stripy</span><span class="o">.</span><span class="n">Triangulation</span><span class="p">(</span><span class="n">randR</span><span class="o">.</span><span class="n">x</span><span class="p">[::</span><span class="mi">25</span><span class="p">],</span> <span class="n">randR</span><span class="o">.</span><span class="n">y</span><span class="p">[::</span><span class="mi">25</span><span class="p">])</span>
+<span class="g g-Whitespace">     </span><span class="mi">35</span> <span class="nb">print</span><span class="p">(</span><span class="n">str_fmt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Random mesh&#39;</span><span class="p">,</span> <span class="n">rand0</span><span class="o">.</span><span class="n">npoints</span><span class="p">,</span> <span class="n">randR</span><span class="o">.</span><span class="n">npoints</span><span class="p">))</span>
+
+<span class="nn">File ~/.local/lib/python3.12/site-packages/stripy/cartesian.py:141,</span> in <span class="ni">Triangulation.__init__</span><span class="nt">(self, x, y, refinement_levels, permute, tree)</span>
+<span class="g g-Whitespace">    </span><span class="mi">138</span> <span class="bp">self</span><span class="o">.</span><span class="n">permute</span> <span class="o">=</span> <span class="n">permute</span>
+<span class="g g-Whitespace">    </span><span class="mi">139</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span>
+<span class="ne">--&gt; </span><span class="mi">141</span> <span class="bp">self</span><span class="o">.</span><span class="n">_update_triangulation</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">143</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">refinement_levels</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">144</span>     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uniformly_refine_triangulation</span><span class="p">(</span><span class="n">faces</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">trisect</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.12/site-packages/stripy/cartesian.py:196,</span> in <span class="ni">Triangulation._update_triangulation</span><span class="nt">(self, x, y)</span>
+<span class="nn">    194     raise ValueError(&#39;ierr={}</span> in <span class="ni">trmesh\n{}&#39;.format</span><span class="nt">(ierr, _ier_codes[9999]))</span>
+<span class="g g-Whitespace">    </span><span class="mi">195</span> <span class="k">elif</span> <span class="n">ierr</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="nn">--&gt; 196     raise ValueError(&#39;ierr={}</span> in <span class="ni">trmesh\n{}&#39;.format</span><span class="nt">(ierr, _ier_codes[ierr]))</span>
+<span class="g g-Whitespace">    </span><span class="mi">198</span> <span class="bp">self</span><span class="o">.</span><span class="n">npoints</span> <span class="o">=</span> <span class="n">npoints</span>
+<span class="g g-Whitespace">    </span><span class="mi">199</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+
+<span class="ne">ValueError</span>: ierr=-2 in trmesh
+<span class="n">the</span> <span class="n">first</span> <span class="n">three</span> <span class="n">nodes</span> <span class="n">are</span> <span class="n">collinear</span><span class="o">.</span>
+<span class="n">Set</span> <span class="n">permute</span> <span class="n">to</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">reorder</span> <span class="n">nodes</span> <span class="n">manually</span><span class="o">.</span>
 </pre></div>
 </div>
 </div>
