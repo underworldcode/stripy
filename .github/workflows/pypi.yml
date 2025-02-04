@@ -22,7 +22,7 @@ jobs:
           # Disable building PyPy wheels on all platforms
           CIBW_SKIP: 'pp*'
           CIBW_ENVIRONMENT_WINDOWS: "CFLAGS='-lquadmath'"
-          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.7"
+          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
           CIBW_ARCHS: 'auto64'
           CIBW_BEFORE_BUILD_WINDOWS: "choco install ninja"
           CIBW_BEFORE_BUILD_MACOS: "brew install ninja gcc && brew reinstall gcc"
@@ -36,7 +36,7 @@ jobs:
         #   output-dir: wheelhouse
         #   config-file: "{package}/pyproject.toml"
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
 
@@ -49,7 +49,7 @@ jobs:
       - name: Build sdist
         run: pipx run build --sdist
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
 
