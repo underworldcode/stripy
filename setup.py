@@ -38,7 +38,7 @@ if "Darwin"  in platform.system():
 
 
 # in development set version to none and ...
-PYPI_VERSION = "2.3.3"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
+PYPI_VERSION = "2.3.4"  # Note: don't add any dashes if you want to use conda, use b1 not .b1 
 
 # Return the git revision as a string (from numpy)
 

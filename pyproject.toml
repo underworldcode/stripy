@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "mesonpy"
 requires = [
-    "numpy",
+    "numpy>=2.0",
     "pip",
     "meson-python>=0.15.0",
     "setuptools>=61.0",
@@ -10,7 +10,7 @@ requires = [
 
 [project]
 name = "stripy"
-version = "2.3.3"
+version = "2.3.4"
 description = "Python interface to TRIPACK and STRIPACK fortran code for triangulation/interpolation in Cartesian coordinates and on a sphere"
 readme = "README.md"
 authors = [
@@ -22,12 +22,9 @@ maintainers = [
   {name = "Ben Mather", email = "ben.mather@sydney.edu.au"},
 ]
 license = { file = "COPYING.LESSER" }
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -35,7 +32,7 @@ classifiers = [
 ]
 keywords = ["triangulation", "sphere", "interpolation", "mesh"]
 dependencies = [
-    "numpy>=1.16.0",
+    "numpy>=2.0.0",
 ]
 
 [tool.setuptools]
