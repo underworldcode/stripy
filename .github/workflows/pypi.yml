@@ -24,8 +24,7 @@ jobs:
         include:
           - os: ubuntu-latest
           - os: windows-latest
-          - os: macos-13
-            macos_target: "13.0"
+          # Apple-silicon (arm64) only; Intel-mac (x86_64) users are served by conda.
           - os: macos-14
             macos_target: "14.0"
 
@@ -47,7 +46,7 @@ jobs:
           # pip fall back to the newest scipy that ships one.
           CIBW_ENVIRONMENT_LINUX: "PIP_ONLY_BINARY=scipy"
           CIBW_ENVIRONMENT_WINDOWS: "CFLAGS='-lquadmath' PIP_ONLY_BINARY=scipy"
-          # Homebrew's gfortran on the macos-13/14 runners targets the runner's
+          # Homebrew's gfortran on the macos-14 runner targets the runner's
           # macOS version, so the libgfortran/libquadmath that delocate bundles
           # require that minimum. Match MACOSX_DEPLOYMENT_TARGET to the runner or
           # delocate rejects the wheel ("Library dependencies do not satisfy

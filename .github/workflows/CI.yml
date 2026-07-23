@@ -18,16 +18,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      # This workflow's unique job is to prove a NumPy-2-built package runs on
+      # NumPy 1.x (the gh-114 ABI path) from a source install. Per-OS / per-Python
+      # coverage with NumPy 2.x is already provided by the wheel build+test in
+      # pypi.yml, so we only need a small representative matrix here:
+      #   - NumPy 1.x runtime on the oldest and a recent Python (the ABI path)
+      #   - one NumPy 2.x source-build smoke test on the newest Python
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
-        # Build always happens against NumPy 2.x (build-system.requires), then we
-        # force the *runtime* NumPy to exercise both the 1.x and 2.x ABI paths.
-        # This is the exact scenario from gh-114 (numpy-2-built wheel on numpy 1.x).
-        numpy-spec: ["numpy>=1.19,<2", "numpy>=2"]
-        exclude:
-          # NumPy 1.x has no wheels for Python 3.13
-          - python-version: "3.13"
+        include:
+          - python-version: "3.9"
             numpy-spec: "numpy>=1.19,<2"
+          - python-version: "3.12"
+            numpy-spec: "numpy>=1.19,<2"
+          - python-version: "3.13"
+            numpy-spec: "numpy>=2"
 
     steps:
       - uses: actions/checkout@v4
