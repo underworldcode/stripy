@@ -55,6 +55,13 @@ jobs:
           CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=${{ matrix.macos_target }} PIP_ONLY_BINARY=scipy"
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
           CIBW_ARCHS: 'auto64'
+          # Use the modern manylinux/musllinux images (GCC 12). The default
+          # manylinux2014 image ships GCC 10.2, but recent NumPy only publishes
+          # manylinux_2_28 wheels and its source build requires GCC >= 10.3, so
+          # the build-isolation NumPy install would fail there. manylinux_2_28
+          # has wheels available and a new enough compiler.
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+          CIBW_MUSLLINUX_X86_64_IMAGE: musllinux_1_2
           CIBW_BEFORE_BUILD_WINDOWS: "choco install ninja"
           CIBW_BEFORE_BUILD_MACOS: "brew install ninja gcc && brew reinstall gcc"
           # CIBW_BEFORE_BUILD_LINUX: "apt-get install -y ninja-build"
