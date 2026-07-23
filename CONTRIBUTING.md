@@ -26,7 +26,7 @@ It is a good idea to commit frequently and with commit messages that refer to th
 We use `pytest` for the unit testing framework in stripy. In the source directory this means running:
 
 ```bash
-python setup.py test
+pytest
 ```
 
 The existing tests should be passing before you start coding (help us out with an issue if that is not the case !) and when you have finished. Any new functionality should also have tests that we can use to verify the code. It is important that you make it clear if the original tests have had to change to accomodate new code / functionality.

@@ -74,7 +74,7 @@ def weighted_average_to_nodes(x1, x2, data, interpolator ):
 
     gridded_data = np.zeros(interpolator.npoints)
     norm         = np.zeros(interpolator.npoints)
-    count        = np.zeros(interpolator.npoints, dtype=np.int)
+    count        = np.zeros(interpolator.npoints, dtype=int)
 
     bcc, nodes = interpolator.containing_simplex_and_bcc(x1, x2)
 

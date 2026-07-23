@@ -59,14 +59,17 @@ def test_linear_interpolation(permute):
     # but machine precision may differ so we don't test it
     # print((Zi == ilons).all())
 
-    bounded = Zi[0] == ilons[0] and Zi[-1] == ilons[-1]
+    # The endpoints coincide with input nodes, so linear interpolation should
+    # recover their longitude. Compare with a tolerance rather than exact
+    # equality: for a permuted mesh the result differs at the ~1e-16 level and
+    # exact equality is platform-dependent (see gh-115). The interior is not
+    # checked because machine precision may differ.
+    bounded = np.isclose(Zi[0], ilons[0]) and np.isclose(Zi[-1], ilons[-1])
     ascending = ( np.diff(Zi) > 0 ).all()
 
     # check if linear gradient across the equator
-    if bounded and ascending:
-        print("PASS! (Interpolation - linear")
-    else:
-        assert False, "FAIL! (Interpolation - linear)"
+    assert bounded and ascending, \
+        "FAIL! (Interpolation - linear): Zi={}, ilons={}, ierr={}".format(Zi, ilons, ierr)
 
 
 @pytest.mark.parametrize("permute", [False, True])

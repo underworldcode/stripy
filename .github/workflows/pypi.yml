@@ -1,34 +1,77 @@
 name: Build wheels
 
-on: [push,pull_request,release,workflow_dispatch]
+on:
+  push:
+    branches: [master]   # feature branches are covered by the pull_request event
+  pull_request:
+  release:
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref so stale wheel builds don't pile up in
+# the (slow) macOS runner queue.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      # Don't let one OS failing cancel (and mask) the others.
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        include:
+          - os: ubuntu-latest
+          - os: windows-latest
+          # Apple-silicon (arm64) only; Intel-mac (x86_64) users are served by conda.
+          - os: macos-14
+            macos_target: "14.0"
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.x
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.20.0
+        uses: pypa/cibuildwheel@v2.21.3
         env:
           # Disable building PyPy wheels on all platforms
           CIBW_SKIP: 'pp*'
-          CIBW_ENVIRONMENT_WINDOWS: "CFLAGS='-lquadmath'"
+          # PIP_ONLY_BINARY=scipy: install the test-time scipy from a wheel only.
+          # Otherwise pip may pick a scipy version with no wheel for the target
+          # interpreter and try to build it from source, which fails in the
+          # manylinux container (no OpenBLAS/build tooling). Forcing wheels makes
+          # pip fall back to the newest scipy that ships one.
+          CIBW_ENVIRONMENT_LINUX: "PIP_ONLY_BINARY=scipy"
+          CIBW_ENVIRONMENT_WINDOWS: "CFLAGS='-lquadmath' PIP_ONLY_BINARY=scipy"
+          # Homebrew's gfortran on the macos-14 runner targets the runner's
+          # macOS version, so the libgfortran/libquadmath that delocate bundles
+          # require that minimum. Match MACOSX_DEPLOYMENT_TARGET to the runner or
+          # delocate rejects the wheel ("Library dependencies do not satisfy
+          # target MacOS version"). (This does raise the wheel's minimum macOS;
+          # a portable gfortran targeting an older macOS could lower it later.)
+          CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=${{ matrix.macos_target }} PIP_ONLY_BINARY=scipy"
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
           CIBW_ARCHS: 'auto64'
+          # Use the modern manylinux/musllinux images (GCC 12). The default
+          # manylinux2014 image ships GCC 10.2, but recent NumPy only publishes
+          # manylinux_2_28 wheels and its source build requires GCC >= 10.3, so
+          # the build-isolation NumPy install would fail there. manylinux_2_28
+          # has wheels available and a new enough compiler.
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
+          CIBW_MUSLLINUX_X86_64_IMAGE: musllinux_1_2
           CIBW_BEFORE_BUILD_WINDOWS: "choco install ninja"
           CIBW_BEFORE_BUILD_MACOS: "brew install ninja gcc && brew reinstall gcc"
           # CIBW_BEFORE_BUILD_LINUX: "apt-get install -y ninja-build"
-          CIBW_BEFORE_BUILD: "pip install numpy meson-python ninja setuptools build"
-          CIBW_TEST_REQUIRES: pytest
+          # NumPy is NOT installed here on purpose: cibuildwheel builds with PEP 517
+          # isolation, so the compile-time NumPy comes from `build-system.requires`
+          # in pyproject.toml (numpy>=2.0), giving wheels that run on NumPy 1.x and 2.x.
+          # A system ninja just lets meson find one without a per-build pip install.
+          CIBW_BEFORE_BUILD: "pip install ninja"
+          # scipy is needed by the mesh tests (stripy uses scipy.optimize/spatial lazily)
+          CIBW_TEST_REQUIRES: pytest scipy
           CIBW_TEST_COMMAND: "pytest {project}/stripy/tests"
         #    ...
         # with:
@@ -38,6 +81,9 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
+          # Unique name per matrix job: upload-artifact@v4 rejects duplicate
+          # artifact names within a run, so a shared default name would fail the build.
+          name: cibw-wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
 
   build_sdist:
@@ -51,6 +97,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
+          name: cibw-sdist
           path: dist/*.tar.gz
 
   upload_pypi:
@@ -63,11 +110,11 @@ jobs:
     # or, alternatively, upload to PyPI on every tag starting with 'v' (remove on: release above to use this)
     # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     steps:
-      - uses: actions/download-artifact@v4.1.7
+      - uses: actions/download-artifact@v4
         with:
-          # unpacks default artifact into dist/
-          # if `name: artifact` is omitted, the action will create extra parent dir
-          name: artifact
+          # Gather every wheel/sdist artifact from the build jobs into dist/
+          pattern: cibw-*
+          merge-multiple: true
           path: dist
 
       - uses: pypa/gh-action-pypi-publish@release/v1

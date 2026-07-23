@@ -3,9 +3,8 @@
 [![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/underworldcode/stripy.svg)](https://hub.docker.com/r/underworldcode/stripy)
 [![PyPI](https://img.shields.io/pypi/v/stripy.svg)](https://pypi.org/project/stripy/)
 
-[![pip builds](https://github.com/underworldcode/stripy/workflows/pip%20builds/badge.svg)](https://github.com/underworldcode/stripy/actions?query=workflow%3A%22pip+builds%22)
-
-![Conda Deployment](https://github.com/underworldcode/stripy/workflows/Conda%20Deployment/badge.svg)
+[![Build wheels](https://github.com/underworldcode/stripy/actions/workflows/pypi.yml/badge.svg)](https://github.com/underworldcode/stripy/actions/workflows/pypi.yml)
+[![Run tests](https://github.com/underworldcode/stripy/actions/workflows/CI.yml/badge.svg)](https://github.com/underworldcode/stripy/actions/workflows/CI.yml)
 
 
 A Python interface to TRIPACK and STRIPACK Fortran code for (constrained) triangulation in Cartesian coordinates and on a sphere. Stripy is an object-oriented package and includes routines from SRFPACK and SSRFPACK for interpolation (nearest neighbor, linear and hermite cubic) and to evaluate derivatives (Renka 1996a,b and 1997a,b).
@@ -145,16 +144,16 @@ All the dependencies will be automatically installed by `pip`, except for `gfort
 (or any Fortran compiler). It must be installed in your system before installing
 `stripy` with `pip`.
 
-If you change the Fortran compiler, you may have to add the
-flags `config_fc --fcompiler=<compiler name>` when `setup.py` is run
-(see docs for [numpy.distutils](http://docs.scipy.org/doc/numpy-dev/f2py/distutils.html)).
+The Fortran extensions are built with [meson-python](https://meson-python.readthedocs.io).
+If you need to select a specific Fortran compiler, set the standard `FC` environment
+variable (e.g. `FC=gfortran-13`) before invoking `pip install`.
 
 ### Installing with conda
 
 If you use the anaconda packaging system, then you should be able to 
 
 ```bash
-conda install -c geo-down-under stripy
+conda install -c conda-forge stripy
 ```
 
 ## Usage

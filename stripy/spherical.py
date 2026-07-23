@@ -29,7 +29,12 @@ except: pass
 
 _ier_codes = {0:  "no errors were encountered.",
               -1: "N < 3 on input.",
-              -2: "the first three nodes lie on a great circle.\nSet permute to True or reorder nodes manually.",
+              -2: "collinear nodes were encountered: either the first three "
+                  "nodes lie on a common great circle, or STRMESH's incremental "
+                  "insertion (ADDNOD) found all nodes up to some node to be "
+                  "collinear.\nSet permute=True or reorder the nodes manually; if "
+                  "the error persists the points may be (near-)collinear or "
+                  "degenerate on the sphere.",
               -3: "duplicate nodes were encountered.",
               -4: "an error flag was returned by a call to SWAP in ADDNOD.\n \
                    This is an internal error and should be reported to the programmer.",
