@@ -1,6 +1,17 @@
 name: Build wheels
 
-on: [push,pull_request,release,workflow_dispatch]
+on:
+  push:
+    branches: [master]   # feature branches are covered by the pull_request event
+  pull_request:
+  release:
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref so stale wheel builds don't pile up in
+# the (slow) macOS runner queue.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build_wheels:
