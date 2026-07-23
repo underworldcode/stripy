@@ -1,9 +1,9 @@
-name: API docs / pdoc3 
+name: API docs / pdoc3
 
-# We should trigger this from an upload event 
+# We should trigger this from an upload event
 
 on:
-  push:       # This is not really a great idea 
+  push:       # This is not really a great idea
     branches:
       - master
 
@@ -11,22 +11,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Set up build environment (Fortran + ninja)
+        uses: ./.github/workflows/setup-build-env
+
+      - name: Install stripy and doc dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install setuptools wheel twine
-          pip install numpy
-          pip install scipy
-          pip install Cython
-          pip install pdoc3
-          pip install pytest
-                  
-      - name: Install latest stripy
-        run: |
+          pip install scipy pdoc3
           pip install .
 
       - name: Build docs with pdoc
@@ -38,14 +36,14 @@ jobs:
           cd docs
           pdoc --config latex_math=True --html -o api --force stripy
 
-      # Here we can add an action to build the jupyter book to a different directory 
+      # Here we can add an action to build the jupyter book to a different directory
       # and then they can be uploaded together. The jupyter book can contain a link to the
       # API docs.
 
       # Note deploy key needs the ----BEGIN ... KEY---- lines too
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        
+
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           destination_dir: docs/

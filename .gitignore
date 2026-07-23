@@ -7,6 +7,10 @@ __pycache__
 .pytest_cache
 *.png
 
+# Local notebook run outputs / GPlates data caches (not part of the package)
+stripy/Notebooks/spherical_grid.*
+*.gplates.cache
+
 .coverage
 
 swpcom.mod
@@ -24,8 +28,11 @@ litho1pt0-src/dist/*
 *.egg
 .eggs
 
-src/_*module.c
-src/_*wrappers.f
+# f2py-generated extension sources (the historical in-root location and src/)
+/_*module.c
+/_*-f2pywrappers.f
+src/*module.c
+src/*wrappers.f
 
 .local
 .ipython

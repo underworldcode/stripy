@@ -11,13 +11,13 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-13, macos-14]
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.x
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.20.0
+        uses: pypa/cibuildwheel@v2.21.3
         env:
           # Disable building PyPy wheels on all platforms
           CIBW_SKIP: 'pp*'
@@ -27,8 +27,13 @@ jobs:
           CIBW_BEFORE_BUILD_WINDOWS: "choco install ninja"
           CIBW_BEFORE_BUILD_MACOS: "brew install ninja gcc && brew reinstall gcc"
           # CIBW_BEFORE_BUILD_LINUX: "apt-get install -y ninja-build"
-          CIBW_BEFORE_BUILD: "pip install numpy meson-python ninja setuptools build"
-          CIBW_TEST_REQUIRES: pytest
+          # NumPy is NOT installed here on purpose: cibuildwheel builds with PEP 517
+          # isolation, so the compile-time NumPy comes from `build-system.requires`
+          # in pyproject.toml (numpy>=2.0), giving wheels that run on NumPy 1.x and 2.x.
+          # A system ninja just lets meson find one without a per-build pip install.
+          CIBW_BEFORE_BUILD: "pip install ninja"
+          # scipy is needed by the mesh tests (stripy uses scipy.optimize/spatial lazily)
+          CIBW_TEST_REQUIRES: pytest scipy
           CIBW_TEST_COMMAND: "pytest {project}/stripy/tests"
         #    ...
         # with:
@@ -38,6 +43,9 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
+          # Unique name per matrix job: upload-artifact@v4 rejects duplicate
+          # artifact names within a run, so a shared default name would fail the build.
+          name: cibw-wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
 
   build_sdist:
@@ -51,6 +59,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
+          name: cibw-sdist
           path: dist/*.tar.gz
 
   upload_pypi:
@@ -63,11 +72,11 @@ jobs:
     # or, alternatively, upload to PyPI on every tag starting with 'v' (remove on: release above to use this)
     # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     steps:
-      - uses: actions/download-artifact@v4.1.7
+      - uses: actions/download-artifact@v4
         with:
-          # unpacks default artifact into dist/
-          # if `name: artifact` is omitted, the action will create extra parent dir
-          name: artifact
+          # Gather every wheel/sdist artifact from the build jobs into dist/
+          pattern: cibw-*
+          merge-multiple: true
           path: dist
 
       - uses: pypa/gh-action-pypi-publish@release/v1

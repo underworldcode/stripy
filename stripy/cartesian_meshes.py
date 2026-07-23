@@ -252,7 +252,7 @@ def elliptical_base_mesh_points(axisX, axisY, spacing, remove_artifacts=True):
 
 
     pointsx, pointsy = equal_angles_in_ellipse( spacing, a, b)
-    bmask = np.full_like(pointsx, 0, dtype=np.bool)
+    bmask = np.full_like(pointsx, 0, dtype=bool)
     a -= spacing 
     b -= spacing 
 
@@ -260,7 +260,7 @@ def elliptical_base_mesh_points(axisX, axisY, spacing, remove_artifacts=True):
         points = equal_angles_in_ellipse( spacing, a, b)
         pointsx = np.append(pointsx,points[0])
         pointsy = np.append(pointsy,points[1])
-        bmask   = np.append(bmask, np.full_like(points[0], 1, dtype=np.bool))
+        bmask   = np.append(bmask, np.full_like(points[0], 1, dtype=bool))
         a -= spacing 
         b -= spacing 
 

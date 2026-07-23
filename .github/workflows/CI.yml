@@ -2,38 +2,54 @@ name: Run tests
 
 on:
   push:
+  pull_request:
   release:
   workflow_dispatch:
 
 jobs:
 
   test_ubuntu:
+    name: py${{ matrix.python-version }} / ${{ matrix.numpy-spec }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
-    
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        # Build always happens against NumPy 2.x (build-system.requires), then we
+        # force the *runtime* NumPy to exercise both the 1.x and 2.x ABI paths.
+        # This is the exact scenario from gh-114 (numpy-2-built wheel on numpy 1.x).
+        numpy-spec: ["numpy>=1.19,<2", "numpy>=2"]
+        exclude:
+          # NumPy 1.x has no wheels for Python 3.13
+          - python-version: "3.13"
+            numpy-spec: "numpy>=1.19,<2"
+
     steps:
-      - uses: actions/checkout@v2
-      
+      - uses: actions/checkout@v4
+
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install setuptools wheel twine
-          pip install numpy
-          pip install scipy
-          pip install Cython
-                  
-      - name: Install
-        run: |
-          pip install .
-    
+      - name: Set up build environment (Fortran + ninja)
+        uses: ./.github/workflows/setup-build-env
+
+      - name: Build and install stripy
+        # Built with PEP 517 isolation -> compiled against NumPy 2.x
+        run: pip install .
+
+      - name: Pin runtime NumPy and install test deps
+        # Resolve together so the NumPy pin is honoured (a separate scipy/pytest
+        # resolve could otherwise pull NumPy back up).
+        run: pip install "${{ matrix.numpy-spec }}" pytest scipy
+
+      - name: Show resolved versions
+        run: pip list | grep -iE "numpy|stripy" || true
+
       - name: Run tests
+        # Run from a neutral directory so the *installed* package (with its
+        # compiled extensions) is imported, not the ./stripy source-tree shadow.
         run: |
-          pip install pytest
-          pytest -v
+          cd "${{ runner.temp }}"
+          python -m pytest -v "${{ github.workspace }}/stripy/tests"

@@ -1,11 +1,11 @@
 [build-system]
 build-backend = "mesonpy"
 requires = [
-    "numpy>=2.0",
-    "pip",
     "meson-python>=0.15.0",
-    "setuptools>=61.0",
-    "build",
+    # Build against NumPy 2.x: the resulting binaries are compatible with
+    # both NumPy 1.x and 2.x at runtime. Building against 1.x is NOT
+    # forward-compatible with 2.x, which is the cause of gh-114.
+    "numpy>=2.0.0",
 ]
 
 [project]
@@ -29,23 +29,15 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 keywords = ["triangulation", "sphere", "interpolation", "mesh"]
 dependencies = [
-    "numpy>=2.0.0",
+    # Runtime requirement is intentionally looser than the build requirement:
+    # wheels built against NumPy 2.x remain ABI-compatible with older NumPy
+    # at runtime, back to the 2.0 backward-compat floor of 1.19.3 (see gh-114).
+    "numpy>=1.19.3",
 ]
-
-[tool.setuptools]
-packages = [
-    "stripy",
-    "stripy._tripack",
-    "stripy._stripack",
-    "stripy._srfpack",
-    "stripy._ssrfpack",
-]
-
-# [tool.setuptools.dynamic]
-# version = {attr = "stripy.__version__"}
 
 [project.optional-dependencies]
 dev = ["pip-tools", "pytest", "scipy>=1.0.0"]

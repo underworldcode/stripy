@@ -6,7 +6,7 @@ description: "Install ninja and a fortran compiler"
 runs:
   using: "composite"
   steps:
-    - uses: awvwgk/setup-fortran@v1
+    - uses: fortran-lang/setup-fortran@v1
 
     - run: pip install --upgrade pip
       shell: bash
