@@ -5,12 +5,27 @@ name = 'stripy'
 add_languages('fortran')
 
 platform = host_machine.system()
-if platform == 'windows'
-  add_project_link_arguments('-static', language: ['fortran', 'c'])
-elif platform == 'darwin'
-  add_project_link_arguments('-Wl,-rpath,@loader_path', language: ['fortran', 'c'])
-else
-  add_project_link_arguments('-Wl,-rpath,$ORIGIN', language: ['fortran', 'c'])
+
+# These link arguments make each extension module self-contained, but they are
+# GNU/gfortran conventions. Other Fortran toolchains (LLVM flang, Intel, the
+# MSVC-based linkers) warn about, reject, or silently ignore them and provide
+# their runtime libraries differently, so only emit them for a GNU (gfortran/GCC)
+# compiler (see gh-116). Non-GNU builds rely on the packaging step
+# (delocate/auditwheel, or conda compiler activation) to resolve the runtime.
+#
+# This stays correct under cross-compilation: both host_machine.system() and
+# meson.get_compiler('fortran') refer to the *host* (target) machine, so a cross
+# build with a gfortran cross-compiler (e.g. conda-forge linux-aarch64 or
+# osx-arm64) still selects the right per-target flags.
+if meson.get_compiler('fortran').get_id() == 'gcc'
+  if platform == 'windows'
+    # Statically link libgfortran/libquadmath (MinGW) so the .pyd is standalone.
+    add_project_link_arguments('-static', language: ['fortran', 'c'])
+  elif platform == 'darwin'
+    add_project_link_arguments('-Wl,-rpath,@loader_path', language: ['fortran', 'c'])
+  else
+    add_project_link_arguments('-Wl,-rpath,$ORIGIN', language: ['fortran', 'c'])
+  endif
 endif
 
 py_mod = import('python')
