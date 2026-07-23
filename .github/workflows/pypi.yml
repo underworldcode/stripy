@@ -29,14 +29,20 @@ jobs:
         env:
           # Disable building PyPy wheels on all platforms
           CIBW_SKIP: 'pp*'
-          CIBW_ENVIRONMENT_WINDOWS: "CFLAGS='-lquadmath'"
+          # PIP_ONLY_BINARY=scipy: install the test-time scipy from a wheel only.
+          # Otherwise pip may pick a scipy version with no wheel for the target
+          # interpreter and try to build it from source, which fails in the
+          # manylinux container (no OpenBLAS/build tooling). Forcing wheels makes
+          # pip fall back to the newest scipy that ships one.
+          CIBW_ENVIRONMENT_LINUX: "PIP_ONLY_BINARY=scipy"
+          CIBW_ENVIRONMENT_WINDOWS: "CFLAGS='-lquadmath' PIP_ONLY_BINARY=scipy"
           # Homebrew's gfortran on the macos-13/14 runners targets the runner's
           # macOS version, so the libgfortran/libquadmath that delocate bundles
           # require that minimum. Match MACOSX_DEPLOYMENT_TARGET to the runner or
           # delocate rejects the wheel ("Library dependencies do not satisfy
           # target MacOS version"). (This does raise the wheel's minimum macOS;
           # a portable gfortran targeting an older macOS could lower it later.)
-          CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=${{ matrix.macos_target }}"
+          CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=${{ matrix.macos_target }} PIP_ONLY_BINARY=scipy"
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
           CIBW_ARCHS: 'auto64'
           CIBW_BEFORE_BUILD_WINDOWS: "choco install ninja"
