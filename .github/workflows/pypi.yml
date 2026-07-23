@@ -7,8 +7,16 @@ jobs:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      # Don't let one OS failing cancel (and mask) the others.
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        include:
+          - os: ubuntu-latest
+          - os: windows-latest
+          - os: macos-13
+            macos_target: "13.0"
+          - os: macos-14
+            macos_target: "14.0"
 
     steps:
       - uses: actions/checkout@v4
@@ -22,6 +30,13 @@ jobs:
           # Disable building PyPy wheels on all platforms
           CIBW_SKIP: 'pp*'
           CIBW_ENVIRONMENT_WINDOWS: "CFLAGS='-lquadmath'"
+          # Homebrew's gfortran on the macos-13/14 runners targets the runner's
+          # macOS version, so the libgfortran/libquadmath that delocate bundles
+          # require that minimum. Match MACOSX_DEPLOYMENT_TARGET to the runner or
+          # delocate rejects the wheel ("Library dependencies do not satisfy
+          # target MacOS version"). (This does raise the wheel's minimum macOS;
+          # a portable gfortran targeting an older macOS could lower it later.)
+          CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=${{ matrix.macos_target }}"
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
           CIBW_ARCHS: 'auto64'
           CIBW_BEFORE_BUILD_WINDOWS: "choco install ninja"
